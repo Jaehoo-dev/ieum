@@ -1,0 +1,215 @@
+import {
+  AnnualIncome,
+  AssetsValue,
+  BasicCondition,
+  BlindCondition,
+  BodyShape,
+  BooksReadPerYear,
+  ContactFrequency,
+  ContactMethod,
+  DrinkingFrequency,
+  EducationLevel,
+  ExercisePerWeek,
+  Eyelid,
+  FashionStyle,
+  Gender,
+  MatchStatus,
+  OccupationStatus,
+  PlannedNumberOfChildren,
+  Religion,
+} from "@ieum/prisma";
+
+export const 성별_라벨: Record<Gender, string> = {
+  [Gender.MALE]: "남성",
+  [Gender.FEMALE]: "여성",
+} as const;
+
+const Region = {
+  서울: "SEOUL",
+  "경기 남부": "SOUTH_GYEONGGI",
+  "경기 북부": "NORTH_GYEONGGI",
+  "한 시간 이내": "WITHIN_ONE_HOUR",
+  "서울 경기권": "SEOUL_OR_GYEONGGI",
+  기타: "OTHER",
+} as const;
+
+type Region = (typeof Region)[keyof typeof Region];
+
+export const 지역_라벨: Record<Region, string> = {
+  [Region.서울]: "서울",
+  [Region["경기 남부"]]: "경기 남부",
+  [Region["경기 북부"]]: "경기 북부",
+  [Region["한 시간 이내"]]: "한 시간 이내",
+  [Region["서울 경기권"]]: "서울 경기권",
+  [Region.기타]: "기타",
+} as const;
+
+export const 체형_라벨: Record<BodyShape, string> = {
+  [BodyShape.THIN]: "마름",
+  [BodyShape.SLIM]: "슬림탄탄",
+  [BodyShape.NORMAL]: "보통",
+  [BodyShape.CHUBBY]: "통통",
+  [BodyShape.FAT]: "풍만",
+} as const;
+
+export const 종교_라벨: Record<Religion, string> = {
+  [Religion.NONE]: "없음(무교)",
+  [Religion.CHRISTIAN]: "개신교",
+  [Religion.CATHOLIC]: "천주교",
+  [Religion.BUDDHIST]: "불교",
+  [Religion.OTHER]: "기타",
+} as const;
+
+export const 블라인드_조건_라벨: Record<BlindCondition, string> = {
+  [BlindCondition.REGION]: "지역",
+  [BlindCondition.HEIGHT]: "키",
+  [BlindCondition.PREFERRED_BODY_SHAPES]: "체형",
+  [BlindCondition.PREFERRED_MBTIS]: "선호 MBTI",
+  [BlindCondition.NON_PREFERRED_MBTIS]: "기피 MBTI",
+  [BlindCondition.IS_SMOKER_OK]: "흡연 여부",
+  [BlindCondition.NON_PREFERRED_RELIGIONS]: "기피 종교",
+} as const;
+
+export const 상태_라벨: Record<MatchStatus, string> = {
+  [MatchStatus.BACKLOG]: "백로그",
+  [MatchStatus.PREPARING]: "준비중",
+  [MatchStatus.PENDING]: "대기중",
+  [MatchStatus.REJECTED]: "거절",
+  [MatchStatus.ACCEPTED]: "성사",
+  [MatchStatus.BROKEN_UP]: "헤어짐",
+} as const;
+
+export const 베이직_조건_라벨: Record<BasicCondition, string> = {
+  [BasicCondition.AGE]: "나이",
+  [BasicCondition.REGION]: "지역",
+  [BasicCondition.HEIGHT]: "키",
+  [BasicCondition.BODY_SHAPES]: "체형",
+  [BasicCondition.EYELID]: "눈",
+  [BasicCondition.FACIAL_BODY_PART]: "얼굴/신체 특징",
+  [BasicCondition.EDUCATION_LEVEL]: "학력",
+  [BasicCondition.SCHOOL_LEVEL]: "학벌",
+  [BasicCondition.OCCUPATION_STATUS]: "신분",
+  [BasicCondition.NON_PREFERRED_JOB]: "기피 직무",
+  [BasicCondition.PREFERRED_MBTIS]: "선호 MBTI",
+  [BasicCondition.NON_PREFERRED_MBTIS]: "기피 MBTI",
+  [BasicCondition.IS_SMOKER_OK]: "흡연 여부",
+  [BasicCondition.DRINKING_FREQUENCY]: "음주량",
+  [BasicCondition.PREFERRED_RELIGIONS]: "선호 종교",
+  [BasicCondition.NON_PREFERRED_RELIGIONS]: "기피 종교",
+  [BasicCondition.MIN_ANNUAL_INCOME]: "연봉",
+  [BasicCondition.MIN_ASSETS_VALUE]: "자산",
+  [BasicCondition.HOBBY]: "취미/관심사",
+  [BasicCondition.BOOKS_READ_PER_YEAR]: "독서량",
+  [BasicCondition.CHARACTERISTICS]: "특징 5가지",
+  [BasicCondition.IS_TATTOO_OK]: "문신 여부",
+  [BasicCondition.EXERCISE_PER_WEEK]: "운동 여부",
+  [BasicCondition.SHOULD_HAVE_CAR]: "자차 유무",
+  [BasicCondition.IS_GAMING_OK]: "게임 여부",
+  [BasicCondition.IS_PET_OK]: "반려동물 유무",
+} as const;
+
+export const 옷_스타일_라벨: Record<FashionStyle, string> = {
+  [FashionStyle.CASUAL]: "캐주얼",
+  [FashionStyle.STREET]: "스트릿",
+  [FashionStyle.VINTAGE]: "빈티지",
+  [FashionStyle.MODERN]: "모던",
+  [FashionStyle.FEMININE]: "페미닌",
+  [FashionStyle.DANDY]: "댄디",
+  [FashionStyle.MINIMAL]: "미니멀",
+  [FashionStyle.MAXIMAL]: "맥시멀",
+  [FashionStyle.CLASSIC]: "클래식",
+  [FashionStyle.SPORTY]: "스포티",
+} as const;
+
+export const 쌍꺼풀_라벨: Record<Eyelid, string> = {
+  [Eyelid.SINGLE]: "무쌍꺼풀",
+  [Eyelid.OUTER_DOUBLE]: "겉쌍꺼풀",
+  [Eyelid.INNER_DOUBLE]: "속쌍꺼풀",
+  [Eyelid.OTHER]: "기타",
+} as const;
+
+export const 학력_라벨: Record<EducationLevel, string> = {
+  [EducationLevel.ELEMENTARY_SCHOOL_GRADUATE]: "초졸",
+  [EducationLevel.MIDDLE_SCHOOL_GRADUATE]: "중졸",
+  [EducationLevel.HIGH_SCHOOL_GRADUATE]: "고졸",
+  [EducationLevel.ASSOCIATE_DEGREE]: "전문학사",
+  [EducationLevel.BACHELOR_DEGREE]: "학사",
+  [EducationLevel.MASTER_DEGREE]: "석사",
+  [EducationLevel.DOCTORATE_DEGREE]: "박사",
+} as const;
+
+export const 신분_라벨: Record<OccupationStatus, string> = {
+  [OccupationStatus.EMPLOYED]: "직장인",
+  [OccupationStatus.ENTREPRENEUR]: "사업가/자영업",
+  [OccupationStatus.STUDENT]: "학생",
+  [OccupationStatus.UNEMPLOYED]: "무직",
+} as const;
+
+export const 연간_벌이_라벨: Record<AnnualIncome, string> = {
+  [AnnualIncome.LT_30M]: "3천만 원 미만",
+  [AnnualIncome.GTE_30M_LT_50M]: "3천만 ~ 5천만 원",
+  [AnnualIncome.GTE_50M_LT_70M]: "5천만 ~ 7천만 원",
+  [AnnualIncome.GTE_70M_LT_100M]: "7천만 ~ 1억 원",
+  [AnnualIncome.GTE_100M_LT_150M]: "1억 ~ 1억5천만 원",
+  [AnnualIncome.GTE_150M_LT_200M]: "1억5천만 ~ 2억 원",
+  [AnnualIncome.GTE_200M_LT_300M]: "2억 ~ 3억 원",
+  [AnnualIncome.GTE_300M_LT_500M]: "3억 ~ 5억 원",
+  [AnnualIncome.GTE_500M]: "5억 원 이상",
+} as const;
+
+export const 자산_라벨: Record<AssetsValue, string> = {
+  [AssetsValue.LT_30M]: "3천만 원 미만",
+  [AssetsValue.GTE_30M_LT_50M]: "3천만 ~ 5천만 원",
+  [AssetsValue.GTE_50M_LT_100M]: "5천만 ~ 1억 원",
+  [AssetsValue.GTE_100M_LT_300M]: "1억 ~ 3억 원",
+  [AssetsValue.GTE_300M_LT_500M]: "3억 ~ 5억 원",
+  [AssetsValue.GTE_500M_LT_1B]: "5억 ~ 10억 원",
+  [AssetsValue.GTE_1B_LT_2B]: "10억 ~ 20억 원",
+  [AssetsValue.GTE_2B_LT_5B]: "20억 ~ 50억 원",
+  [AssetsValue.GTE_5B]: "50억 원 이상",
+} as const;
+
+export const 독서량_라벨: Record<BooksReadPerYear, string> = {
+  [BooksReadPerYear.ZERO]: "0권",
+  [BooksReadPerYear.GTE_1_LT_5]: "1권 이상 5권 미만",
+  [BooksReadPerYear.GTE_5_LT_10]: "5권 이상 10권 미만",
+  [BooksReadPerYear.GTE_10]: "10권 이상",
+} as const;
+
+export const 자녀수_라벨: Record<PlannedNumberOfChildren, string> = {
+  [PlannedNumberOfChildren.NONE]: "0명",
+  [PlannedNumberOfChildren.ONE]: "1명",
+  [PlannedNumberOfChildren.TWO]: "2명",
+  [PlannedNumberOfChildren.GTE_THREE]: "3명 이상",
+  [PlannedNumberOfChildren.NO_INTENTION_OF_MARRIAGE]: "결혼 생각 없음",
+} as const;
+
+export const 주간_운동량_라벨: Record<ExercisePerWeek, string> = {
+  [ExercisePerWeek.NONE]: "0회",
+  [ExercisePerWeek.ONE_TO_TWO]: "1~2회",
+  [ExercisePerWeek.THREE_TO_FOUR]: "3~4회",
+  [ExercisePerWeek.FIVE_OR_MORE]: "5회 이상",
+} as const;
+
+export const 연락_빈도_라벨: Record<ContactFrequency, string> = {
+  [ContactFrequency.SPECIAL_OCCASIONALLY]: "특별한 일이 있을 때만",
+  [ContactFrequency.ONCE_OR_TWICE_A_DAY]: "하루 한두 번",
+  [ContactFrequency.OCCASIONALLY]: "수시로 잠깐씩",
+  [ContactFrequency.ALL_DAY]: "하루종일",
+  [ContactFrequency.OTHER]: "기타",
+} as const;
+
+export const 연락_수단_라벨: Record<ContactMethod, string> = {
+  [ContactMethod.MESSAGE]: "문자(메신저)",
+  [ContactMethod.CALL]: "전화",
+  [ContactMethod.OTHER]: "기타",
+} as const;
+
+export const 음주량_라벨: Record<DrinkingFrequency, string> = {
+  [DrinkingFrequency.NEVER]: "음주를 하지 않으면 좋겠어요",
+  [DrinkingFrequency.ONLY_WHEN_NECESSARY]: "일 때문에 어쩔 수 없을 때만",
+  [DrinkingFrequency.OCCASIONALLY]: "가끔 맥주 한 캔 정도",
+  [DrinkingFrequency.OFTEN]: "종종",
+  [DrinkingFrequency.ALWAYS]: "애주가",
+  [DrinkingFrequency.OTHER]: "기타",
+} as const;
