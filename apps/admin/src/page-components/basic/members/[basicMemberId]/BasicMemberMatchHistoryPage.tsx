@@ -211,16 +211,21 @@ export function BasicMemberMatchHistoryPage() {
                     <StatusButtons match={match} />
                   </div>
                 </div>
-                <div className="flex items-center gap-10">
-                  <div className="flex items-center gap-1">
-                    <span className="text-2xl">👈</span>
-                    <RespondField actionMember={basicMember!} match={match} />
+                {match.status === MatchStatus.PENDING ? (
+                  <div className="flex items-center gap-10">
+                    <div className="flex items-center gap-1">
+                      <span className="text-2xl">👈</span>
+                      <RespondField actionMember={basicMember!} match={match} />
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-2xl">👆</span>
+                      <RespondField
+                        actionMember={matchedMember}
+                        match={match}
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-2xl">👆</span>
-                    <RespondField actionMember={matchedMember} match={match} />
-                  </div>
-                </div>
+                ) : null}
               </div>
             );
           })}
