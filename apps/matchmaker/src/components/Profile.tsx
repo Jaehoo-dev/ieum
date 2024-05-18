@@ -32,6 +32,13 @@ export function Profile({ profile }: Props) {
 
   return (
     <div className="flex w-full flex-col items-center gap-4">
+      <div className="flex w-full items-start gap-1">
+        <p className="text-md text-gray-800">※</p>
+        <p className="text-md text-gray-800">
+          스크린 캡처 및 무단 유출을 절대 금지합니다. 무단 유출 시 법적 책임을
+          물을 수 있습니다.
+        </p>
+      </div>
       <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-3">
         <p className="text-xl font-semibold text-gray-900">인적사항</p>
         <DataField label="나이" value={`${birthYear}년생`} />
@@ -88,13 +95,6 @@ export function Profile({ profile }: Props) {
       {image3BucketPath != null ? (
         <ImageField bucketPath={image3BucketPath} />
       ) : null}
-      <div className="mt-2 flex w-full items-start gap-1">
-        <p className="text-md text-gray-800">※</p>
-        <p className="text-md text-gray-800">
-          스크린 캡처 및 무단 유출을 절대 금지합니다. 무단 유출 시 법적 책임을
-          물을 수 있습니다.
-        </p>
-      </div>
     </div>
   );
 }

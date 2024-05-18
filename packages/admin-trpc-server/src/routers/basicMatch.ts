@@ -1,3 +1,4 @@
+import { assert } from "@ieum/utils";
 import { MatchStatus } from "@prisma/client";
 import { endOfDay, startOfDay } from "date-fns";
 import { z } from "zod";
@@ -186,7 +187,6 @@ export const basicMatchRouter = createTRPCRouter({
         status: z.nativeEnum({
           [MatchStatus.BACKLOG]: MatchStatus.BACKLOG,
           [MatchStatus.PREPARING]: MatchStatus.PREPARING,
-          [MatchStatus.PENDING]: MatchStatus.PENDING,
           [MatchStatus.BROKEN_UP]: MatchStatus.BROKEN_UP,
         }),
       }),
@@ -198,6 +198,41 @@ export const basicMatchRouter = createTRPCRouter({
         },
         data: {
           status: input.status,
+        },
+      });
+    }),
+  shiftToPending: protectedAdminProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input: { id } }) => {
+      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+        where: {
+          id,
+        },
+        select: {
+          pendingBy: {
+            include: {
+              profile: true,
+            },
+          },
+        },
+      });
+
+      assert(
+        match.pendingBy[0]?.profile != null &&
+          match.pendingBy[1]?.profile != null,
+        "Match must have 2 pending members with profiles.",
+      );
+
+      return ctx.prisma.basicMatch.update({
+        where: {
+          id,
+        },
+        data: {
+          status: MatchStatus.PENDING,
         },
       });
     }),

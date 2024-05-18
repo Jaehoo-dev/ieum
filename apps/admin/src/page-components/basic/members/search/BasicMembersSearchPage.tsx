@@ -11,6 +11,8 @@ import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
 export function BasicMembersSearchPage() {
+  const { mutateAsync: sendMatchNotiMessage } =
+    api.adminMessageRouter.sendMatchNotiMessage.useMutation();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       name: "",
@@ -66,47 +68,62 @@ export function BasicMembersSearchPage() {
           </button>
         </form>
         <div className="flex w-full justify-center">
-          {members?.map((member) => {
-            return (
-              <div
-                key={member.id}
-                className="flex w-full flex-row justify-center gap-2"
-              >
-                <BasicMemberCard member={member} defaultMode="DETAILED" />
-                <div className="flex flex-col gap-2">
-                  <span>{`회원 상태: ${getStatusLabel(member.status)}`}</span>
-                  <button
-                    className="rounded-md bg-gray-500 px-4 py-2 text-white"
-                    onClick={() => inactivate({ id: member.id })}
-                    disabled={isInAction}
+          {members != null && members.length > 0
+            ? members.map((member) => {
+                return (
+                  <div
+                    key={member.id}
+                    className="flex w-full flex-row justify-center gap-2"
                   >
-                    Inactivate
-                  </button>
-                  <button
-                    className="rounded-md bg-yellow-500 px-4 py-2 text-white"
-                    onClick={() => softDelete({ id: member.id })}
-                    disabled={isInAction}
-                  >
-                    Soft Delete
-                  </button>
-                  <button
-                    className="rounded-md bg-red-500 px-4 py-2 text-white"
-                    onClick={async () => {
-                      const confirmed =
-                        confirm("정말로 하드 삭제하시겠습니까?");
+                    <div className="flex flex-col gap-2">
+                      <span>{`회원 상태: ${getStatusLabel(
+                        member.status,
+                      )}`}</span>
+                      <button
+                        className="rounded-md bg-gray-500 px-4 py-2 text-white"
+                        onClick={() => inactivate({ id: member.id })}
+                        disabled={isInAction}
+                      >
+                        Inactivate
+                      </button>
+                      <button
+                        className="rounded-md bg-yellow-500 px-4 py-2 text-white"
+                        onClick={() => softDelete({ id: member.id })}
+                        disabled={isInAction}
+                      >
+                        Soft Delete
+                      </button>
+                      <button
+                        className="rounded-md bg-red-500 px-4 py-2 text-white"
+                        onClick={async () => {
+                          const confirmed = confirm("정말로 삭제하시겠습니까?");
 
-                      if (confirmed) {
-                        await hardDelete({ id: member.id });
-                      }
-                    }}
-                    disabled={isInAction}
-                  >
-                    Hard Delete
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+                          if (confirmed) {
+                            await hardDelete({ id: member.id });
+                          }
+                        }}
+                        disabled={isInAction}
+                      >
+                        Hard Delete
+                      </button>
+                    </div>
+                    <BasicMemberCard member={member} defaultMode="DETAILED" />
+                    <div>
+                      <button
+                        className="rounded-md bg-blue-500 px-4 py-2 text-white"
+                        onClick={async () => {
+                          await sendMatchNotiMessage({ memberId: member.id });
+
+                          alert("문자를 보냈습니다.");
+                        }}
+                      >
+                        문자 보내기
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            : "검색 결과가 없습니다."}
         </div>
       </div>
     </div>

@@ -52,7 +52,7 @@ function Resolved() {
       <Profile profile={profile} />
       {isPendingByMember ? (
         <>
-          <Spacing size={96} />
+          <Spacing size={92} />
           <Buttons
             memberId={member.id}
             onRejectClick={() => {
