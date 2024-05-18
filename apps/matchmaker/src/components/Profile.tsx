@@ -91,8 +91,8 @@ export function Profile({ profile }: Props) {
       <div className="mt-2 flex w-full items-start gap-1">
         <p className="text-md text-gray-800">※</p>
         <p className="text-md text-gray-800">
-          스크린 캡처 및 무단 유출을 절대 금지하며 무단 유출 땐 법적 책임을 물을
-          수 있습니다.
+          스크린 캡처 및 무단 유출을 절대 금지합니다. 무단 유출 시 법적 책임을
+          물을 수 있습니다.
         </p>
       </div>
     </div>
