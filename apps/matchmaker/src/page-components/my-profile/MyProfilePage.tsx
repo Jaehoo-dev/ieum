@@ -3,9 +3,9 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 
 import { Layout } from "~/components/Layout";
-import { useMemberAuthContext } from "~/components/MemberAuthProvider";
 import { Profile } from "~/components/Profile";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MyProfilePage() {

@@ -1,5 +1,5 @@
 import { appRouter } from "@ieum/admin-trpc-server";
-import { createTRPCContext } from "@ieum/matchmaker-trpc-server/src/trpc";
+import { createTRPCContext } from "@ieum/matchmaker-trpc-server";
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 
 import { env } from "~/env.mjs";

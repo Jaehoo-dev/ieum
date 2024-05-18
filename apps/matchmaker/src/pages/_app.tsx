@@ -7,7 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 
 import { AuthGuard } from "~/components/AuthGuard";
-import { MemberAuthProvider } from "~/components/MemberAuthProvider";
+import { MemberAuthProvider } from "~/providers/MemberAuthProvider";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

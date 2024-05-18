@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { MemberAuth } from "~/components/MemberAuth";
-import { useMemberAuthContext } from "~/components/MemberAuthProvider";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import heartImgSrc from "../../public/heart.webp";
 
 export function Home() {
@@ -61,6 +61,8 @@ export function Home() {
     </>
   );
 }
+
+Home.auth = false;
 
 function LoggedIn() {
   const { registered } = useMemberAuthContext();
