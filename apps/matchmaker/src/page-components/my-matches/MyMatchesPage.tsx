@@ -9,8 +9,8 @@ import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
-import { useMemberAuthContext } from "~/components/MemberAuthProvider";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MyMatchesPage() {

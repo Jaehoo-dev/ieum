@@ -4,10 +4,10 @@ import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 
 import { Layout } from "~/components/Layout";
-import { useMemberAuthContext } from "~/components/MemberAuthProvider";
 import { Profile } from "~/components/Profile";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MyMatchPage() {

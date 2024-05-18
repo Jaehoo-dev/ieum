@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 
-import { useMemberAuthContext } from "./MemberAuthProvider";
+import { useMemberAuthContext } from "../providers/MemberAuthProvider";
 
 interface Props {
   children: ReactNode;
