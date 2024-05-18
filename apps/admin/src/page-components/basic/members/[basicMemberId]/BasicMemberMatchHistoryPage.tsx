@@ -241,6 +241,15 @@ function StatusButtons({ match }: { match: BasicMatch }) {
         ]);
       },
     });
+  const { mutateAsync: shiftToPending, isPending: isShiftingToPendingPending } =
+    api.basicMatchRouter.shiftToPending.useMutation({
+      onSuccess: () => {
+        return Promise.all([
+          utils.basicMatchRouter.invalidate(),
+          utils.basicMemberRouter.invalidate(),
+        ]);
+      },
+    });
   const { mutateAsync: deleteMatch, isPending: isDeletePending } =
     api.basicMatchRouter.delete.useMutation({
       onSuccess: () => {
@@ -250,6 +259,9 @@ function StatusButtons({ match }: { match: BasicMatch }) {
         ]);
       },
     });
+
+  const disabled =
+    isUpdatePending || isShiftingToPendingPending || isDeletePending;
 
   return (
     <div className="flex flex-col gap-2">
@@ -261,15 +273,19 @@ function StatusButtons({ match }: { match: BasicMatch }) {
       ]
         .filter((status) => match.status !== status)
         .map((status) => {
-          const disabled = match.status === status || isUpdatePending;
-
           return (
             <button
               key={`${match.id}-${status}`}
               className={`rounded-lg px-4 py-2 text-white ${getStatusButtonBackgroundClassName(
                 status,
               )}`}
-              onClick={() => {
+              onClick={async () => {
+                if (status === MatchStatus.PENDING) {
+                  await shiftToPending({ id: match.id });
+
+                  return;
+                }
+
                 void updateStatus({
                   id: match.id,
                   status,
@@ -283,7 +299,7 @@ function StatusButtons({ match }: { match: BasicMatch }) {
         })}
       <button
         className="rounded-lg bg-red-500 px-4 py-2 text-white"
-        disabled={isDeletePending}
+        disabled={disabled}
         onClick={() => {
           const confirmed = window.confirm("정말 삭제하시겠습니까?");
 

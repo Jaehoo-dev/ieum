@@ -22,7 +22,7 @@ export const basicMatchRouter = createTRPCRouter({
             where: {
               status: MatchStatus.PENDING,
               updatedAt: {
-                gt: subHours(new Date(), 24),
+                gt: subHours(new Date(), 25),
               },
             },
           },
