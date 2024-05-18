@@ -12,18 +12,30 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+interface CreateContextOptions {
+  session: null;
+}
+
 /**
- * This is the actual context you will use in your router. It will be used to process every request
- * that goes through your tRPC endpoint.
- *
- * @see https://trpc.io/docs/context
+ * Inner function for `createContext` where we create the context.
+ * This is useful for testing when we don't want to mock Next.js' request/response
  */
-export const createTRPCContext = async () => {
+export async function createContextInner(opts: CreateContextOptions) {
   return {
+    session: opts.session,
     prisma,
   };
-};
+}
 
+export async function createTRPCContext() {
+  // for API-response caching see https://trpc.io/docs/v11/caching
+
+  return await createContextInner({
+    session: null,
+  });
+}
+
+export type Context = Awaited<ReturnType<typeof createContextInner>>;
 /**
  * 2. INITIALIZATION
  *

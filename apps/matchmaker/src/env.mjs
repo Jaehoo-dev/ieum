@@ -14,7 +14,10 @@ export const env = createEnv({
    * built with invalid env vars.
    */
   server: {
-    // DATABASE_URL: z.string().url(),
+    DATABASE_URL: z.string().url(),
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -31,6 +34,8 @@ export const env = createEnv({
     PORT: process.env.PORT,
     // DATABASE_URL: process.env.DATABASE_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    DATABASE_URL: process.env.DATABASE_URL,
+    NODE_ENV: process.env.NODE_ENV,
   },
   skipValidation:
     !!process.env.CI ||
