@@ -1,88 +1,120 @@
-import type { DefaultSession } from "@auth/core/types";
+import type { GetServerSidePropsContext } from "next";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma, Role } from "@flatwhite-team/prisma";
-import NextAuth from "next-auth";
-import type { KakaoProfile } from "next-auth/providers/kakao";
-import KakaoProvider from "next-auth/providers/kakao";
+import { prisma } from "@ieum/prisma";
+import type { Role } from "@prisma/client";
+import { format } from "date-fns";
+import { getServerSession } from "next-auth";
+import type { DefaultSession, NextAuthOptions } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export type { Session } from "next-auth";
 
-const shouldUseSecureCookies = process.env.VERCEL_URL != null;
-const cookiePrefix = shouldUseSecureCookies ? "__Secure-" : "";
-const hostName =
-  process.env.VERCEL_URL != null ? "flatwhite.cafe" : "localhost";
-
+/**
+ * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
+ * object and keep type safety.
+ *
+ * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
+ */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: {
+    user: DefaultSession["user"] & {
       id: string;
+      username: string;
       role: Role;
-    } & DefaultSession["user"];
+    };
+  }
+
+  interface User {
+    username: string;
+    role: Role;
   }
 }
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-  update,
-} = NextAuth({
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    KakaoProvider({
-      clientId: process.env.AUTH_KAKAO_CLIENT_ID,
-      clientSecret: process.env.AUTH_KAKAO_CLIENT_SECRET,
-      profile(profile: KakaoProfile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.kakao_account?.name,
-          email: profile.kakao_account?.email,
-          emailVerified: profile.kakao_account?.is_email_verified,
-          phoneNumber: profile.kakao_account?.phone_number,
-          image: profile.properties?.profile_image,
-          role: Role.STORE_MANAGER,
-        };
-      },
-    }),
-  ],
-  pages: {
-    signIn: "/auth",
-  },
+/**
+ * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
+ *
+ * @see https://next-auth.js.org/configuration/options
+ */
+export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => {
+    jwt: ({ token, user }) => {
+      if (user == null) {
+        return token;
+      }
+
+      return {
+        ...token,
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      };
+    },
+    session: ({ session, token }) => {
       return {
         ...session,
         user: {
           ...session.user,
-          ...user,
+          id: token.id,
+          username: token.username,
+          role: token.role,
         },
       };
     },
-    authorized: ({ auth }) => {
-      return (
-        auth?.user.role === Role.APP_ADMIN ||
-        auth?.user.role === Role.STORE_MANAGER
-      );
-    },
   },
-  cookies: {
-    sessionToken: {
-      name: `${cookiePrefix}next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        domain: "." + hostName,
-        secure: shouldUseSecureCookies,
+  adapter: PrismaAdapter(prisma) as Adapter,
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: {
+          label: "Username",
+          type: "text",
+        },
+        password: { label: "Password", type: "password" },
       },
-    },
+      authorize: async (credentials) => {
+        if (credentials == null) {
+          return null;
+        }
+
+        const [_password, secret] = credentials.password.split("-");
+        const currentMinute = format(new Date(), "mm");
+
+        const user = await prisma.user.findUnique({
+          where: {
+            username: credentials.username,
+            password: _password,
+          },
+        });
+
+        if (user == null || secret !== currentMinute) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          username: user.username,
+          role: user.role,
+        };
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60,
   },
-});
+  secret: process.env.NEXTAUTH_SECRET,
+};
 
-export * from "next-auth/react";
-
-export {
-  signIn as signInClient,
-  signOut as signOutClient,
-} from "next-auth/react";
+/**
+ * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
+ *
+ * @see https://next-auth.js.org/configuration/nextjs
+ */
+export const getServerAuthSession = (ctx: {
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
+}) => {
+  return getServerSession(ctx.req, ctx.res, authOptions);
+};

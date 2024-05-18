@@ -1,5 +1,5 @@
 {
-  "name": "@flatwhite-team/prisma",
+  "name": "@ieum/prisma",
   "version": "2.0.7",
   "main": "./index.ts",
   "types": "./index.ts",

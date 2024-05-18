@@ -2,189 +2,58 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
-
-model Store {
-  id              String          @id @default(cuid())
-  name            String
-  address         String
-  phoneNumber     String?
-  latitude        Float
-  longitude       Float
-  description     String?         @db.Text
-  images          Image[]
-  menus           Menu[]
-  businessDays    BusinessDay[]
-  managers        StoreManager[]
-  characteristics StoreCharacteristic[]
-
-  @@unique([name, latitude, longitude])
-}
-
-model StoreCharacteristic {
-  characteristic Characteristic
-  store          Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId        String
-
-  @@unique([characteristic, storeId])
-  @@index([storeId])
-  @@index([characteristic])
-}
-
-enum Characteristic {
-  // 음식료
-  SPECIALTY_COFFEE
-  DECAFFEINATED_COFFEE
-  HAND_DRIP
-  COLD_BREW
-  SINGLE_ORIGIN
-  ESPRESSO
-  TEA
-  VEGAN
-  // 종류
-  BAKERY
-  DESSERT
-  BRUNCH
-  ROASTERY
-  ESPRESSO_BAR
-  BOOK_CAFE
-  STUDY_CAFE
-  // 분위기
-  SPACIOUS
-  CALM
-  QUIET
-  COZY
-  WARM
-  MODERN
-  ANTIQUE
-  CLASSIC
-  LUXURY
-  TRENDY
-  CHIC
-  TALK
-  FAMILY
-  FRIENDS
-  DATE
-  GROUP
-  WORK
-  MEETING
-  STUDY
-  LONG_HOURS
-  // 시설
-  WIFI
-  MULTI_FLOOR
-  OUTDOOR
-  PET_FRIENDLY
-  PARKING
-  DRIVE_THRU
-  OUTLET
-  RESERVATION
-  RENT
-}
-
-enum DayOfWeek {
-  SUN
-  MON
-  TUE
-  WED
-  THU
-  FRI
-  SAT
-  WEEKDAYS
-  WEEKENDS
-  EVERYDAY
-}
-
-model BusinessDay {
-  dayOfWeek DayOfWeek
-  openTime  String?   @db.VarChar(5)
-  closeTime String?   @db.VarChar(5)
-  store     Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId   String
-
-  @@unique([dayOfWeek, storeId])
-  @@index([storeId])
-}
-
-model Image {
-  url     String  @id @db.VarChar(255)
-  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId String
-  menu    Menu?   @relation(fields: [menuId, storeId], references: [id, storeId], onDelete: Cascade)
-  menuId  String?
-
-  @@index([storeId])
-  @@index([menuId, storeId])
-}
-
-model Menu {
-  id          String  @id @default(cuid())
-  name        String
-  price       Int?
-  description String? @db.Text
-  store       Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId     String
-  images      Image[]
-
-  @@unique([id, storeId])
-  @@unique([name, storeId])
-  @@index([storeId])
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
-  id                       String  @id @default(cuid())
-  userId                   String
-  type                     String
-  provider                 String
-  providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
-  expires_at               Int?
-  token_type               String?
-  scope                    String?
-  id_token                 String? @db.Text
-  session_state            String?
-  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  refresh_token_expires_in Int?
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
 
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@unique([providerId, providerAccountId])
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id            String         @id @default(cuid())
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  role          Role
-  manages       StoreManager[]
+  id        String    @id @default(cuid())
+  username  String    @unique
+  password  String
+  role      Role
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  accounts  Account[]
+  sessions  Session[]
+
+  @@index([username])
 }
 
 enum Role {
-  APP_ADMIN
-  STORE_MANAGER
-  CUSTOMER
+  ADMIN
+  MEMBER
 }
 
 model VerificationToken {
@@ -195,20 +64,436 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model StoreManager {
-  id      String    @id @default(cuid())
-  user    User      @relation(fields: [userId], references: [id])
-  userId  String
-  store   Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId String
-  role    StoreRole
-
-  @@unique([userId, storeId])
-  @@index([userId])
-  @@index([storeId])
+enum Gender {
+  MALE
+  FEMALE
 }
 
-enum StoreRole {
-  OWNER
-  MANAGER
+enum BodyShape {
+  THIN
+  SLIM
+  NORMAL
+  CHUBBY
+  FAT
+}
+
+enum MBTI {
+  INTJ
+  INTP
+  ENTJ
+  ENTP
+  INFJ
+  INFP
+  ENFJ
+  ENFP
+  ISTJ
+  ISTP
+  ESTJ
+  ESTP
+  ISFJ
+  ISFP
+  ESFJ
+  ESFP
+}
+
+enum Religion {
+  NONE
+  CHRISTIAN
+  CATHOLIC
+  BUDDHIST
+  OTHER
+}
+
+model BlindMember {
+  id          Int       @id @default(autoincrement())
+  name        String
+  nickname    String    @default("")
+  phoneNumber String
+  gender      Gender
+  birthYear   Int
+  residence   String
+  height      Int
+  bodyShape   BodyShape
+  weight      Int
+  mbti        MBTI
+  workplace   String
+  job         String
+  isSmoker    Boolean
+  religion    Religion
+
+  idealMinAgeBirthYear       Int?
+  idealMaxAgeBirthYear       Int?
+  idealRegions               String[]
+  idealMinHeight             Int?
+  idealMaxHeight             Int?
+  idealBodyShapes            BodyShape[]
+  idealPreferredMbtis        MBTI[]
+  idealNonPreferredMbtis     MBTI[]
+  idealIsSmokerOk            Boolean
+  idealNonPreferredReligions Religion[]
+
+  nonNegotiableConditions BlindCondition[]
+
+  memo String?
+
+  matchHistory BlindMatch[]
+  matchesLeft  Int
+
+  @@unique([phoneNumber])
+}
+
+model BlindMatch {
+  id        Int           @id @default(autoincrement())
+  members   BlindMember[]
+  status    MatchStatus
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum MatchStatus {
+  BACKLOG
+  PREPARING
+  PENDING
+  REJECTED
+  ACCEPTED
+  BROKEN_UP
+}
+
+enum BlindCondition {
+  REGION
+  HEIGHT
+  PREFERRED_BODY_SHAPES
+  PREFERRED_MBTIS
+  NON_PREFERRED_MBTIS
+  IS_SMOKER_OK
+  NON_PREFERRED_RELIGIONS
+}
+
+model BasicMember {
+  id                      Int                     @id @default(autoincrement())
+  name                    String
+  phoneNumber             String
+  gender                  Gender
+  birthYear               Int
+  residence               String
+  height                  Float
+  weight                  Int?
+  bmi                     Float?
+  bodyShape               BodyShape
+  fashionStyles           FashionStyle[]
+  eyelid                  Eyelid
+  customEyelid            String?
+  confidentFacialBodyPart String
+  educationLevel          EducationLevel
+  graduatedUniversity     String?
+  occupationStatus        OccupationStatus
+  workplace               String?
+  job                     String?
+  currentSchool           String?
+  mbti                    MBTI?
+  isSmoker                Boolean
+  isDrinker               Boolean
+  alcoholConsumption      String?
+  alcoholTolerance        String?
+  religion                Religion
+  annualIncome            AnnualIncome?
+  assetsValue             AssetsValue?
+  assetManagementApproach String?
+  hobby                   String
+  booksReadPerYear        BooksReadPerYear
+  bookTaste               String?
+  leisureActivity         String?
+  siblings                String?
+  characteristics         String?
+  tenYearFuture           String?
+  plannedNumberOfChildren PlannedNumberOfChildren
+  lifePhilosophy          String?
+  workPhilosophy          String?
+  hasTattoo               Boolean
+  exercisePerWeek         ExercisePerWeek
+  exerciseType            String?
+  hasCar                  Boolean
+  doesGame                Boolean
+  gameType                String?
+  datingStyle             String?
+  contactFrequency        ContactFrequency
+  customContactFrequency  String?
+  contactMethod           ContactMethod
+  customContactMethod     String?
+  hasPet                  Boolean
+  selfIntroduction        String?
+
+  idealMinAgeBirthYear         Int?
+  idealMaxAgeBirthYear         Int?
+  idealRegions                 Region[]
+  idealCustomRegion            String?
+  idealMinHeight               Int?
+  idealMaxHeight               Int?
+  idealBodyShapes              BodyShape[]
+  idealFashionStyles           FashionStyle[]
+  idealEyelids                 Eyelid[]
+  idealFacialBodyPart          String?
+  idealEducationLevel          EducationLevel?
+  idealSchoolLevel             String?
+  idealOccupationStatuses      OccupationStatus[]
+  idealNonPreferredWorkplace   String?
+  idealNonPreferredJob         String?
+  idealPreferredMbtis          MBTI[]
+  idealNonPreferredMbtis       MBTI[]
+  idealIsSmokerOk              Boolean
+  idealDrinkingFrequency       DrinkingFrequency?
+  idealCustomDrinkingFrequency String?
+  idealPreferredReligions      Religion[]
+  idealNonPreferredReligions   Religion[]
+  idealMinAnnualIncome         AnnualIncome?
+  idealMinAssetsValue          AssetsValue?
+  idealHobby                   String?
+  idealBooksReadPerYear        BooksReadPerYear?
+  idealCharacteristics         String?
+  idealLifePhilosophy          String?
+  idealIsTattooOk              Boolean
+  idealExercisePerWeek         ExercisePerWeek?
+  idealShouldHaveCar           Boolean
+  idealIsGamingOk              Boolean
+  idealIsPetOk                 Boolean
+  idealTypeDescription         String?
+
+  nonNegotiableConditions BasicCondition[]
+
+  memo String?
+
+  vouchersLeft Int @default(0)
+
+  pendingMatches  BasicMatch[] @relation(name: "pendingMatchMember")
+  rejectedMatches BasicMatch[] @relation(name: "rejectedMatchMember")
+  acceptedMatches BasicMatch[] @relation(name: "acceptedMatchMember")
+
+  blacklisting  BasicBlacklistItem[] @relation(name: "blacklister")
+  blacklistedBy BasicBlacklistItem[] @relation(name: "blacklistTarget")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status  MemberStatus        @default(ACTIVE)
+  profile BasicMemberProfile?
+
+  @@unique([phoneNumber])
+  @@index([name])
+  @@index([gender])
+  @@index([birthYear])
+  @@index([height])
+  @@index([educationLevel])
+  @@index([isSmoker])
+  @@index([religion])
+  @@index([annualIncome])
+  @@index([assetsValue])
+  @@index([hasTattoo])
+  @@index([exercisePerWeek])
+  @@index([hasCar])
+  @@index([hasPet])
+  @@index([status])
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+model BasicMemberProfile {
+  id                   String      @id @default(cuid())
+  member               BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId             Int         @unique
+  birthYear            Int
+  residence            String
+  height               Float
+  education            String
+  job                  String
+  annualIncome         String?
+  assetsValue          String?
+  mbti                 MBTI?
+  hobby                String?
+  characteristic       String?
+  lifePhilosophy       String?
+  datingStyle          String?
+  isSmoker             Boolean
+  religion             Religion
+  selfIntroduction     String?
+  idealTypeDescription String?
+  image1BucketPath     String
+  image2BucketPath     String?
+  image3BucketPath     String?
+}
+
+model BasicMatch {
+  id         Int           @id @default(autoincrement())
+  pendingBy  BasicMember[] @relation(name: "pendingMatchMember")
+  rejectedBy BasicMember[] @relation(name: "rejectedMatchMember")
+  acceptedBy BasicMember[] @relation(name: "acceptedMatchMember")
+  status     MatchStatus
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([status])
+}
+
+model BasicBlacklistItem {
+  id            Int         @id @default(autoincrement())
+  blacklister   BasicMember @relation(name: "blacklister", fields: [blacklisterId], references: [id], onDelete: Cascade)
+  blacklisterId Int
+  target        BasicMember @relation(name: "blacklistTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  targetId      Int
+  createdAt     DateTime    @default(now())
+
+  @@unique([blacklisterId, targetId])
+}
+
+enum Region {
+  SEOUL
+  SOUTH_GYEONGGI
+  NORTH_GYEONGGI
+  WITHIN_ONE_HOUR
+  SEOUL_OR_GYEONGGI
+  OTHER
+}
+
+enum FashionStyle {
+  CASUAL
+  STREET
+  VINTAGE
+  MODERN
+  FEMININE
+  DANDY
+  MINIMAL
+  MAXIMAL
+  CLASSIC
+  SPORTY
+}
+
+enum WearsGlasses {
+  ALWAYS
+  SOMETIMES
+  NEVER
+}
+
+enum Eyelid {
+  SINGLE
+  OUTER_DOUBLE
+  INNER_DOUBLE
+  OTHER
+}
+
+enum EducationLevel {
+  ELEMENTARY_SCHOOL_GRADUATE
+  MIDDLE_SCHOOL_GRADUATE
+  HIGH_SCHOOL_GRADUATE
+  ASSOCIATE_DEGREE
+  BACHELOR_DEGREE
+  MASTER_DEGREE
+  DOCTORATE_DEGREE
+}
+
+enum OccupationStatus {
+  EMPLOYED
+  ENTREPRENEUR
+  STUDENT
+  UNEMPLOYED
+}
+
+enum AnnualIncome {
+  LT_30M
+  GTE_30M_LT_50M
+  GTE_50M_LT_70M
+  GTE_70M_LT_100M
+  GTE_100M_LT_150M
+  GTE_150M_LT_200M
+  GTE_200M_LT_300M
+  GTE_300M_LT_500M
+  GTE_500M
+}
+
+enum AssetsValue {
+  LT_30M
+  GTE_30M_LT_50M
+  GTE_50M_LT_100M
+  GTE_100M_LT_300M
+  GTE_300M_LT_500M
+  GTE_500M_LT_1B
+  GTE_1B_LT_2B
+  GTE_2B_LT_5B
+  GTE_5B
+}
+
+enum BooksReadPerYear {
+  ZERO
+  GTE_1_LT_5
+  GTE_5_LT_10
+  GTE_10
+}
+
+enum PlannedNumberOfChildren {
+  NONE
+  ONE
+  TWO
+  GTE_THREE
+  NO_INTENTION_OF_MARRIAGE
+}
+
+enum ExercisePerWeek {
+  NONE
+  ONE_TO_TWO
+  THREE_TO_FOUR
+  FIVE_OR_MORE
+}
+
+enum ContactFrequency {
+  SPECIAL_OCCASIONALLY
+  ONCE_OR_TWICE_A_DAY
+  OCCASIONALLY
+  ALL_DAY
+  OTHER
+}
+
+enum ContactMethod {
+  MESSAGE
+  CALL
+  OTHER
+}
+
+enum DrinkingFrequency {
+  NEVER
+  ONLY_WHEN_NECESSARY
+  OCCASIONALLY
+  OFTEN
+  ALWAYS
+  OTHER
+}
+
+enum BasicCondition {
+  AGE
+  REGION
+  HEIGHT
+  BODY_SHAPES
+  EYELID
+  FACIAL_BODY_PART
+  EDUCATION_LEVEL
+  SCHOOL_LEVEL
+  OCCUPATION_STATUS
+  NON_PREFERRED_JOB
+  PREFERRED_MBTIS
+  NON_PREFERRED_MBTIS
+  IS_SMOKER_OK
+  DRINKING_FREQUENCY
+  PREFERRED_RELIGIONS
+  NON_PREFERRED_RELIGIONS
+  MIN_ANNUAL_INCOME
+  MIN_ASSETS_VALUE
+  HOBBY
+  BOOKS_READ_PER_YEAR
+  CHARACTERISTICS
+  IS_TATTOO_OK
+  EXERCISE_PER_WEEK
+  SHOULD_HAVE_CAR
+  IS_GAMING_OK
+  IS_PET_OK
 }

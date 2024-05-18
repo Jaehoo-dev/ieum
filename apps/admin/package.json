@@ -1,5 +1,5 @@
 {
-  "name": "@flatwhite-team/admin",
+  "name": "@ieum/admin",
   "version": "0.1.2",
   "private": true,
   "scripts": {
@@ -12,9 +12,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@flatwhite-team/admin-auth": "*",
-    "@flatwhite-team/prisma": "*",
-    "@flatwhite-team/trpc-server": "*",
+    "@ieum/admin-auth": "*",
+    "@ieum/prisma": "*",
+    "@ieum/trpc-server": "*",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^4.35.3",
     "@tanstack/react-query-devtools": "^4.35.3",

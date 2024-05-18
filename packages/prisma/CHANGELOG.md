@@ -1,4 +1,4 @@
-# @flatwhite-team/prisma
+# @ieum/prisma
 
 ## 2.0.1
 

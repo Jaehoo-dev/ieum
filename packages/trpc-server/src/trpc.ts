@@ -6,10 +6,12 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { auth } from "@flatwhite-team/admin-auth";
-import type { Session } from "@flatwhite-team/admin-auth";
-import { prisma } from "@flatwhite-team/prisma";
+
+import type { Session } from "@ieum/admin-auth";
+import { getServerAuthSession } from "@ieum/admin-auth";
+import { prisma, Role } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -43,17 +45,16 @@ const createInnerTRPCContext = (options: CreateContextOptions) => {
 };
 
 /**
- * This is the actual context you'll use in your router. It will be used to
- * process every request that goes through your tRPC endpoint
- * @link https://trpc.io/docs/context
+ * This is the actual context you will use in your router. It will be used to process every request
+ * that goes through your tRPC endpoint.
+ *
+ * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (
-  options: {
-    req?: Request;
-    auth?: Session | null;
-  } = {},
-) => {
-  const session = options.auth ?? (await auth());
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  const { req, res } = opts;
+
+  // Get the session from the server using the getServerSession wrapper function
+  const session = await getServerAuthSession({ req, res });
 
   return createInnerTRPCContext({
     session,
@@ -136,3 +137,18 @@ const enforceUserIsServerAuthed = t.middleware(({ ctx, next }) => {
 export const protectedServerProcedure = t.procedure.use(
   enforceUserIsServerAuthed,
 );
+
+const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
+  if (ctx.session?.user == null || ctx.session.user.role !== Role.ADMIN) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
+export const protectedAdminProcedure = t.procedure.use(enforceUserIsAdmin);

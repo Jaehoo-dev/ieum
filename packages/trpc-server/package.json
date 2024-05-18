@@ -1,5 +1,5 @@
 {
-  "name": "@flatwhite-team/trpc-server",
+  "name": "@ieum/trpc-server",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -11,8 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@flatwhite-team/admin-auth": "*",
-    "@flatwhite-team/prisma": "*",
+    "@ieum/admin-auth": "*",
+    "@ieum/prisma": "*",
+    "@ieum/slack": "*",
     "@trpc/client": "^10.43.0",
     "@trpc/server": "^10.43.0",
     "superjson": "1.13.1",

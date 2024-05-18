@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { createContext, useContext } from "react";
-import type { Session } from "@flatwhite-team/admin-auth";
+import type { Session } from "@ieum/admin-auth";
 
 const AuthorizedSessionContext = createContext<Session | null>(null);
 

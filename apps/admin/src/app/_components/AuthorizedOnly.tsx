@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { useSession } from "@flatwhite-team/admin-auth";
-import { Role } from "@flatwhite-team/prisma";
+import { useSession } from "@ieum/admin-auth";
+import { Role } from "@ieum/prisma";
 
 import { AuthorizedSessionProvider } from "../_providers/AuthorizedSessionProvider";
 

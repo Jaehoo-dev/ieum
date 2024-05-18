@@ -1,4 +1,4 @@
-name: "Publish @flatwhite-team/prisma"
+name: "Publish @ieum/prisma"
 on:
   push:
     branches:

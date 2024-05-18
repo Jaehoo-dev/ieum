@@ -5,7 +5,7 @@ import "~/styles/globals.css";
 
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
-import { SessionProvider } from "@flatwhite-team/admin-auth";
+import { SessionProvider } from "@ieum/admin-auth";
 
 import { AuthorizedOnly } from "./_components/AuthorizedOnly";
 import { TRPCReactProvider } from "./_providers/TRPCReactProvider";
