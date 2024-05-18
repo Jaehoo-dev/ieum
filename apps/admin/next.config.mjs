@@ -5,7 +5,14 @@ import "./src/env.mjs";
 const config = {
   reactStrictMode: true,
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ["@ieum/trpc-server", "@ieum/prisma", "@ieum/admin-auth"],
+  transpilePackages: [
+    "@ieum/admin-auth",
+    "@ieum/labels",
+    "@ieum/prisma",
+    "@ieum/admin-trpc-server",
+    "@ieum/utils",
+    "@ieum/supabase",
+  ],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },

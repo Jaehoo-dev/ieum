@@ -7,7 +7,7 @@
     "clean:workspaces": "turbo clean",
     "db:push": "yarn -F db push",
     "db:studio": "yarn -F db studio",
-    "dev": "turbo dev --concurrency 12",
+    "dev": "turbo dev --concurrency 17",
     "lint": "turbo lint --continue -- --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg check",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg fix",
     "publish-packages": "turbo run build lint && changeset version && changeset publish",

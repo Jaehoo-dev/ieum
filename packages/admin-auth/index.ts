@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@ieum/prisma";
 import type { Role } from "@prisma/client";
 import { format } from "date-fns";
-import { getServerSession } from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import type { DefaultSession, NextAuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -118,3 +118,5 @@ export const getServerAuthSession = (ctx: {
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };
+
+export const AdminNextAuth = NextAuth(authOptions);
