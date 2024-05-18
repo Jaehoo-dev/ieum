@@ -44,8 +44,8 @@ export function Profile({ profile }: Props) {
         <DataField label="나이" value={`${birthYear}년생`} />
         <DataField label="사는 곳" value={`${residence}`} />
         <DataField label="키" value={`${height}cm`} />
-        <DataField label="학력" value={`${education}`} />
-        <DataField label="직업" value={`${job}`} />
+        <DataField label="학력" value={education} />
+        <DataField label="직업" value={job} />
         {annualIncome != null ? (
           <DataField label="연간 소득 구간" value={annualIncome} />
         ) : null}
