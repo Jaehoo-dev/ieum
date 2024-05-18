@@ -27,7 +27,7 @@ export function Home() {
         <meta property="og:title" content="내편소" />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_DOMAIN_HOSTNAME}/heart.webp`}
+          content={`${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}/heart.webp`}
         />
         <meta
           property="og:description"
