@@ -3,11 +3,14 @@ import { 종교_라벨 } from "@ieum/labels";
 import type { BasicMemberProfile } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
+import { Watermarks } from "./Watermarks";
+
 interface Props {
   profile: BasicMemberProfile;
+  watermarkText?: string;
 }
 
-export function Profile({ profile }: Props) {
+export function Profile({ profile, watermarkText }: Props) {
   const {
     birthYear,
     residence,
@@ -86,20 +89,30 @@ export function Profile({ profile }: Props) {
           </p>
         </div>
       ) : null}
-      <div>
-        <ImageField bucketPath={image1BucketPath} />
-      </div>
+      <ImageField bucketPath={image1BucketPath} watermarkText={watermarkText} />
       {image2BucketPath != null ? (
-        <ImageField bucketPath={image2BucketPath} />
+        <ImageField
+          bucketPath={image2BucketPath}
+          watermarkText={watermarkText}
+        />
       ) : null}
       {image3BucketPath != null ? (
-        <ImageField bucketPath={image3BucketPath} />
+        <ImageField
+          bucketPath={image3BucketPath}
+          watermarkText={watermarkText}
+        />
       ) : null}
     </div>
   );
 }
 
-function ImageField({ bucketPath }: { bucketPath: string }) {
+function ImageField({
+  bucketPath,
+  watermarkText,
+}: {
+  bucketPath: string;
+  watermarkText?: string;
+}) {
   const {
     data: { publicUrl },
   } = supabase.storage
@@ -107,13 +120,16 @@ function ImageField({ bucketPath }: { bucketPath: string }) {
     .getPublicUrl(bucketPath);
 
   return (
-    <Image
-      src={publicUrl}
-      alt="프로필 이미지"
-      width={576}
-      height={600}
-      className="rounded-lg"
-    />
+    <div className="relative max-w-xl">
+      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
+      <Image
+        src={publicUrl}
+        alt="프로필 이미지"
+        width={576}
+        height={600}
+        className="rounded-lg"
+      />
+    </div>
   );
 }
 

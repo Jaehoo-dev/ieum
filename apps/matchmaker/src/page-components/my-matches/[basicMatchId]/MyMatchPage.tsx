@@ -49,7 +49,7 @@ function Resolved() {
 
   return (
     <div className="flex w-full flex-col">
-      <Profile profile={profile} />
+      <Profile profile={profile} watermarkText={member.name} />
       {isPendingByMember ? (
         <>
           <Spacing size={92} />
