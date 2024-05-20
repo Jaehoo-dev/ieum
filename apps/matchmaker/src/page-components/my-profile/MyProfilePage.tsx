@@ -31,7 +31,11 @@ function Resolved() {
     id: member.id,
   });
 
-  return profile != null ? <Profile profile={profile} /> : <Empty />;
+  return profile != null ? (
+    <Profile profile={profile} watermarkText="내편소" />
+  ) : (
+    <Empty />
+  );
 }
 
 function Empty() {
