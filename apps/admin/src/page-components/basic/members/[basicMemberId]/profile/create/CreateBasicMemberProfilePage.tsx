@@ -126,6 +126,28 @@ function Resolved() {
             return;
           }
 
+          if (
+            imageFile2 != null &&
+            isEmptyStringOrNil(fields.profile.image2BucketPath)
+          ) {
+            setError("profile.image2BucketPath", {
+              message: "사진2를 등록하지 않았습니다",
+            });
+
+            return;
+          }
+
+          if (
+            imageFile3 != null &&
+            isEmptyStringOrNil(fields.profile.image3BucketPath)
+          ) {
+            setError("profile.image3BucketPath", {
+              message: "사진3를 등록하지 않았습니다",
+            });
+
+            return;
+          }
+
           await createProfile({
             memberId: fields.memberId,
             profile: fields.profile,
