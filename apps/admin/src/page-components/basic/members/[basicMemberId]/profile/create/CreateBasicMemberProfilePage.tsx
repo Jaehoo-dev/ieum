@@ -2,18 +2,16 @@ import assert from "assert";
 import { Suspense, useState } from "react";
 import type { InputHTMLAttributes, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 연간_벌이_라벨, 자산_라벨, 종교_라벨, 학력_라벨 } from "@ieum/labels";
-import type { BasicMember, MBTI } from "@ieum/prisma";
+import { 연간_벌이_라벨, 자산_라벨, 학력_라벨 } from "@ieum/labels";
+import type { BasicMember } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
-import { Religion } from "@prisma/client";
+import { isEmptyStringOrNil } from "@ieum/utils";
 import { nanoid } from "nanoid";
 import { Controller, useForm } from "react-hook-form";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Checkbox } from "~/components/Checkbox";
 import { Layout } from "~/components/Layout";
-import { Select } from "~/components/Select";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
@@ -39,13 +37,13 @@ interface Form {
     job: string;
     annualIncome: string | null;
     assetsValue: string | null;
-    mbti: MBTI | null;
+    mbti: string | null;
     hobby: string | null;
     characteristic: string | null;
     lifePhilosophy: string | null;
     datingStyle: string | null;
     isSmoker: boolean;
-    religion: Religion;
+    religion: string;
     selfIntroduction: string | null;
     idealTypeDescription: string | null;
     image1BucketPath: string;
@@ -201,11 +199,6 @@ function Resolved() {
         <Controller
           control={control}
           name="profile.mbti"
-          rules={{
-            validate: (value: string | null) => {
-              return value == null || isMbti(value);
-            },
-          }}
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
@@ -213,9 +206,7 @@ function Resolved() {
                 error={errors.profile?.mbti != null}
                 value={value ?? ""}
                 onChange={({ target: { value } }) => {
-                  isEmptyStringOrNil(value)
-                    ? onChange(null)
-                    : onChange(value.toUpperCase());
+                  isEmptyStringOrNil(value) ? onChange(null) : onChange(value);
                 }}
               />
             );
@@ -262,23 +253,11 @@ function Resolved() {
           흡연
           <Checkbox label="함" {...register("profile.isSmoker")} />
         </div>
-        <Controller
-          control={control}
-          name="profile.religion"
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <Select label="종교" value={value} onChange={onChange}>
-                {Object.values(Religion).map((religion) => {
-                  return (
-                    <option key={religion} value={religion}>
-                      {종교_라벨[religion]}
-                    </option>
-                  );
-                })}
-              </Select>
-            );
-          }}
+        <TextInput
+          label="종교"
+          {...register("profile.religion", {
+            required: true,
+          })}
         />
         <TextareaInput
           label="자기소개"

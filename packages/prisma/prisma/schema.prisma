@@ -311,13 +311,13 @@ model BasicMemberProfile {
   job                  String
   annualIncome         String?
   assetsValue          String?
-  mbti                 MBTI?
+  mbti                 String?
   hobby                String?
   characteristic       String?
   lifePhilosophy       String?
   datingStyle          String?
   isSmoker             Boolean
-  religion             Religion
+  religion             String
   selfIntroduction     String?
   idealTypeDescription String?
   image1BucketPath     String
