@@ -2,7 +2,7 @@ import assert from "assert";
 import { Suspense, useState } from "react";
 import type { InputHTMLAttributes, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 연간_벌이_라벨, 자산_라벨, 학력_라벨 } from "@ieum/labels";
+import { 연간_벌이_라벨, 자산_라벨, 종교_라벨, 학력_라벨 } from "@ieum/labels";
 import type { BasicMember } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { isEmptyStringOrNil } from "@ieum/utils";
@@ -98,7 +98,7 @@ function Resolved() {
         lifePhilosophy: member.lifePhilosophy,
         datingStyle: member.datingStyle,
         isSmoker: member.isSmoker,
-        religion: member.religion,
+        religion: 종교_라벨[member.religion],
         selfIntroduction: member.selfIntroduction,
         idealTypeDescription: member.idealTypeDescription,
         image1BucketPath: "",
