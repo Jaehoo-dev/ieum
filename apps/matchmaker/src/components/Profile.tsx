@@ -31,7 +31,6 @@ export function Profile({ profile, watermarkText }: Props) {
     image2BucketPath,
     image3BucketPath,
   } = profile;
-
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div className="flex w-full items-start gap-1">
@@ -73,7 +72,13 @@ export function Profile({ profile, watermarkText }: Props) {
       {selfIntroduction != null ? (
         <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-3">
           <p className="text-xl font-semibold text-gray-900">자기소개</p>
-          <p className="text-lg text-gray-900">{profile.selfIntroduction}</p>
+          {selfIntroduction.split("\\n").map((line, index) => {
+            return (
+              <p key={`${line}-${index}`} className="text-lg text-gray-900">
+                {line}
+              </p>
+            );
+          })}
         </div>
       ) : null}
       {idealTypeDescription != null ? (
@@ -81,9 +86,13 @@ export function Profile({ profile, watermarkText }: Props) {
           <p className="text-xl font-semibold text-gray-900">
             만나고 싶은 이성상
           </p>
-          <p className="text-lg text-gray-900">
-            {profile.idealTypeDescription}
-          </p>
+          {idealTypeDescription.split("\\n").map((line, index) => {
+            return (
+              <p key={`${line}-${index}`} className="text-lg text-gray-900">
+                {line}
+              </p>
+            );
+          })}
         </div>
       ) : null}
       <ImageField bucketPath={image1BucketPath} watermarkText={watermarkText} />
