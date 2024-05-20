@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { 종교_라벨 } from "@ieum/labels";
 import type { BasicMemberProfile } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
@@ -69,9 +68,7 @@ export function Profile({ profile, watermarkText }: Props) {
         {isSmoker != null ? (
           <DataField label="흡연 여부" value={isSmoker ? "예" : "아니요"} />
         ) : null}
-        {religion != null ? (
-          <DataField label="종교" value={종교_라벨[religion]} />
-        ) : null}
+        {religion != null ? <DataField label="종교" value={religion} /> : null}
       </div>
       {selfIntroduction != null ? (
         <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-3">
