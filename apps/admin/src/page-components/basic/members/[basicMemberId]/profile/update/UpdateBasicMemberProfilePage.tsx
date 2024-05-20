@@ -64,7 +64,7 @@ function Resolved() {
   const [imageFile1, setImageFile1] = useState<File>();
   const [imageFile2, setImageFile2] = useState<File>();
   const [imageFile3, setImageFile3] = useState<File>();
-  console.log(register("profile.image1BucketPath"));
+
   return (
     <div className="grid grid-cols-2 gap-12">
       <BasicMemberCard member={member} defaultMode="DETAILED" />
