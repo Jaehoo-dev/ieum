@@ -316,7 +316,7 @@ model BasicMemberProfile {
   characteristic       String?
   lifePhilosophy       String?
   datingStyle          String?
-  isSmoker             Boolean
+  isSmoker             String
   religion             String
   selfIntroduction     String?
   idealTypeDescription String?

@@ -15,7 +15,7 @@ export interface ProfileForm {
     characteristic: string | null;
     lifePhilosophy: string | null;
     datingStyle: string | null;
-    isSmoker: boolean;
+    isSmoker: string;
     religion: string;
     selfIntroduction: string | null;
     idealTypeDescription: string | null;

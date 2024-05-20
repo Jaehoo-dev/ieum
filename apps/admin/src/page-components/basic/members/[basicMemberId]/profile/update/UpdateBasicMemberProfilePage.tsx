@@ -7,7 +7,6 @@ import { nanoid } from "nanoid";
 import { Controller, useForm } from "react-hook-form";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
-import { Checkbox } from "~/components/Checkbox";
 import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
@@ -201,10 +200,12 @@ function Resolved() {
             },
           })}
         />
-        <div>
-          흡연
-          <Checkbox label="함" {...register("profile.isSmoker")} />
-        </div>
+        <TextInput
+          label="흡연"
+          {...register("profile.isSmoker", {
+            required: true,
+          })}
+        />
         <TextInput
           label="종교"
           {...register("profile.religion", {
