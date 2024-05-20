@@ -1,6 +1,6 @@
 import assert from "assert";
 import { Suspense, useState } from "react";
-import type { InputHTMLAttributes, ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { 연간_벌이_라벨, 자산_라벨, 종교_라벨, 학력_라벨 } from "@ieum/labels";
 import { supabase } from "@ieum/supabase";
@@ -14,6 +14,7 @@ import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
+import { ImageField } from "../ImageField";
 import type { ProfileForm } from "../ProfileForm";
 
 export function CreateBasicMemberProfilePage() {
@@ -125,7 +126,10 @@ function Resolved() {
 
           await createProfile({
             memberId: fields.memberId,
-            profile: fields.profile,
+            profile: {
+              ...fields.profile,
+              image1BucketPath: fields.profile.image1BucketPath!,
+            },
           });
 
           alert("프로필 생성 완료");
@@ -352,50 +356,6 @@ function Resolved() {
           {isCreatingProfile ? "생성중.." : "프로필 생성"}
         </button>
       </form>
-    </div>
-  );
-}
-
-interface ImageFieldProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
-  label: string;
-  onChange: (file: File | undefined) => void;
-  onRegister: () => void;
-  error?: boolean;
-}
-
-function ImageField({
-  label,
-  onChange,
-  onRegister,
-  error,
-  ...props
-}: ImageFieldProps) {
-  return (
-    <div className="flex items-center gap-2">
-      <div>
-        {label}
-        <div className="flex gap-2">
-          <input
-            type="file"
-            accept="image/*"
-            className={`flex-1 rounded p-2 ${
-              error ? "border-2 border-red-500" : "border border-gray-300"
-            }`}
-            onChange={(e) => {
-              onChange(e.target.files?.[0]);
-            }}
-            {...props}
-          />
-          <button
-            type="button"
-            className="rounded bg-gray-300 px-4 py-2"
-            onClick={onRegister}
-          >
-            등록
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

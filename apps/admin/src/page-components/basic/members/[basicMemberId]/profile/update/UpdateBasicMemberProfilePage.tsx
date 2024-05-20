@@ -1,7 +1,9 @@
 import type { ReactElement } from "react";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/router";
+import { supabase } from "@ieum/supabase";
 import { assert, isEmptyStringOrNil } from "@ieum/utils";
+import { nanoid } from "nanoid";
 import { Controller, useForm } from "react-hook-form";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
@@ -10,6 +12,7 @@ import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
+import { ImageField } from "../ImageField";
 import type { ProfileForm } from "../ProfileForm";
 
 export function UpdateBasicMemberProfilePage() {
@@ -46,6 +49,10 @@ function Resolved() {
   const {
     register,
     control,
+    watch,
+    getValues,
+    setValue,
+    clearErrors,
     formState: { errors },
     handleSubmit,
   } = useForm<ProfileForm>({
@@ -54,16 +61,27 @@ function Resolved() {
       profile,
     },
   });
-
+  const [imageFile1, setImageFile1] = useState<File>();
+  const [imageFile2, setImageFile2] = useState<File>();
+  const [imageFile3, setImageFile3] = useState<File>();
+  console.log(register("profile.image1BucketPath"));
   return (
     <div className="grid grid-cols-2 gap-12">
       <BasicMemberCard member={member} defaultMode="DETAILED" />
       <form
         className="flex flex-col gap-3"
         onSubmit={handleSubmit(async (fields) => {
+          assert(
+            fields.profile.image1BucketPath != null,
+            "image1BucketPath is required",
+          );
+
           await updateProfile({
             memberId: fields.memberId,
-            profile: fields.profile,
+            profile: {
+              ...fields.profile,
+              image1BucketPath: fields.profile.image1BucketPath,
+            },
           });
 
           alert("프로필 수정 완료");
@@ -209,37 +227,180 @@ function Resolved() {
             },
           })}
         />
-        <TextInput
-          label="사진1 버킷"
-          {...register("profile.image1BucketPath", {
-            required: true,
-          })}
-        />
-        <TextInput
-          label="사진2 버킷"
-          {...register("profile.image2BucketPath", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
-        <TextInput
-          label="사진3 버킷"
-          {...register("profile.image3BucketPath", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
+        {isEmptyStringOrNil(watch("profile.image1BucketPath")) ? (
+          <ImageField
+            label="사진1"
+            onChange={(file) => {
+              setImageFile1(file);
+            }}
+            onRegister={async () => {
+              if (imageFile1 == null) {
+                return;
+              }
+
+              const { data, error } = await supabase.storage
+                .from(
+                  process.env
+                    .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+                )
+                .upload(nanoid(), imageFile1);
+
+              assert(error == null, error?.message);
+
+              setValue("profile.image1BucketPath", data.path);
+              clearErrors("profile.image1BucketPath");
+              alert("사진1 등록 완료");
+            }}
+            error={errors.profile?.image1BucketPath != null}
+          />
+        ) : (
+          <div className="flex flex-row gap-2">
+            <TextInput
+              label="사진1 버킷"
+              error={errors.profile?.image1BucketPath != null}
+              {...register("profile.image1BucketPath", {
+                required: true,
+              })}
+            />
+            <div className="flex items-end">
+              <RemoveButton
+                bucketPath={getValues("profile.image1BucketPath")!}
+                afterRemove={() => {
+                  setValue("profile.image1BucketPath", null);
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {isEmptyStringOrNil(watch("profile.image2BucketPath")) ? (
+          <ImageField
+            label="사진2"
+            onChange={(file) => {
+              setImageFile2(file);
+            }}
+            onRegister={async () => {
+              if (imageFile2 == null) {
+                return;
+              }
+
+              const { data, error } = await supabase.storage
+                .from(
+                  process.env
+                    .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+                )
+                .upload(nanoid(), imageFile2);
+
+              assert(error == null, error?.message);
+
+              setValue("profile.image2BucketPath", data.path);
+              clearErrors("profile.image2BucketPath");
+              alert("사진2 등록 완료");
+            }}
+            error={errors.profile?.image2BucketPath != null}
+          />
+        ) : (
+          <div className="flex flex-row gap-2">
+            <TextInput
+              label="사진2 버킷"
+              error={errors.profile?.image2BucketPath != null}
+              {...register("profile.image2BucketPath", {
+                setValueAs: (value: string | null) => {
+                  return isEmptyStringOrNil(value) ? null : value;
+                },
+              })}
+            />
+            <div className="flex items-end">
+              <RemoveButton
+                bucketPath={getValues("profile.image2BucketPath")!}
+                afterRemove={() => {
+                  setValue("profile.image2BucketPath", null);
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {isEmptyStringOrNil(watch("profile.image3BucketPath")) ? (
+          <ImageField
+            label="사진3"
+            onChange={(file) => {
+              setImageFile3(file);
+            }}
+            onRegister={async () => {
+              if (imageFile3 == null) {
+                return;
+              }
+
+              const { data, error } = await supabase.storage
+                .from(
+                  process.env
+                    .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+                )
+                .upload(nanoid(), imageFile3);
+
+              assert(error == null, error?.message);
+
+              setValue("profile.image3BucketPath", data.path);
+              clearErrors("profile.image3BucketPath");
+              alert("사진3 등록 완료");
+            }}
+            error={errors.profile?.image3BucketPath != null}
+          />
+        ) : (
+          <div className="flex flex-row gap-2">
+            <TextInput
+              label="사진3 버킷"
+              error={errors.profile?.image3BucketPath != null}
+              {...register("profile.image3BucketPath", {
+                setValueAs: (value: string | null) => {
+                  return isEmptyStringOrNil(value) ? null : value;
+                },
+              })}
+            />
+            <div className="flex items-end">
+              <RemoveButton
+                bucketPath={getValues("profile.image3BucketPath")!}
+                afterRemove={() => {
+                  setValue("profile.image3BucketPath", null);
+                }}
+              />
+            </div>
+          </div>
+        )}
         <button
           type="submit"
           className="mt-2 rounded bg-blue-500 px-4 py-3 text-xl font-medium text-white"
           disabled={isUpdatingProfile}
         >
-          {isUpdatingProfile ? "생성중.." : "프로필 수정"}
+          {isUpdatingProfile ? "수정중.." : "프로필 수정"}
         </button>
       </form>
     </div>
+  );
+}
+
+function RemoveButton({
+  bucketPath,
+  afterRemove,
+}: {
+  bucketPath: string;
+  afterRemove: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="rounded-lg bg-red-500 px-3 py-2 text-sm text-white"
+      onClick={async () => {
+        await supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+          )
+          .remove([bucketPath]);
+
+        afterRemove();
+      }}
+    >
+      삭제
+    </button>
   );
 }
 

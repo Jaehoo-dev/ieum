@@ -19,7 +19,7 @@ export interface ProfileForm {
     religion: string;
     selfIntroduction: string | null;
     idealTypeDescription: string | null;
-    image1BucketPath: string;
+    image1BucketPath: string | null;
     image2BucketPath: string | null;
     image3BucketPath: string | null;
   };
