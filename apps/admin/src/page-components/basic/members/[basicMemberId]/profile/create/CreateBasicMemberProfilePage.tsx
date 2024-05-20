@@ -117,7 +117,6 @@ function Resolved() {
       <form
         className="flex flex-col gap-3"
         onSubmit={handleSubmit(async (fields) => {
-          console.log(fields);
           if (isEmptyStringOrNil(fields.profile.image1BucketPath)) {
             setError("profile.image1BucketPath", {
               type: "required",
