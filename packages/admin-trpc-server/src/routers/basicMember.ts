@@ -650,6 +650,54 @@ export const basicMemberRouter = createTRPCRouter({
         },
       });
     }),
+  updateProfile: protectedAdminProcedure
+    .input(
+      z.object({
+        memberId: z.number(),
+        profile: z.object({
+          birthYear: z.number(),
+          residence: z.string(),
+          height: z.number(),
+          education: z.string(),
+          job: z.string(),
+          annualIncome: z.string().nullable(),
+          assetsValue: z.string().nullable(),
+          mbti: z.string().nullable(),
+          hobby: z.string().nullable(),
+          characteristic: z.string().nullable(),
+          lifePhilosophy: z.string().nullable(),
+          datingStyle: z.string().nullable(),
+          isSmoker: z.boolean(),
+          religion: z.string(),
+          selfIntroduction: z.string().nullable(),
+          idealTypeDescription: z.string().nullable(),
+          image1BucketPath: z.string(),
+          image2BucketPath: z.string().nullable(),
+          image3BucketPath: z.string().nullable(),
+        }),
+      }),
+    )
+    .mutation(({ ctx, input: { memberId, profile } }) => {
+      return ctx.prisma.basicMemberProfile.update({
+        where: {
+          memberId,
+        },
+        data: profile,
+      });
+    }),
+  getProfileByMemberId: protectedAdminProcedure
+    .input(
+      z.object({
+        memberId: z.number(),
+      }),
+    )
+    .query(({ ctx, input: { memberId } }) => {
+      return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
+        where: {
+          memberId,
+        },
+      });
+    }),
 });
 
 function createConditionANDClause(member: BasicMember) {
