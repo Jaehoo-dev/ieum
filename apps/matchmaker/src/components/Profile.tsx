@@ -76,7 +76,7 @@ export function Profile({ profile, watermarkText }: Props) {
       {selfIntroduction != null ? (
         <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-3">
           <p className="text-xl font-semibold text-gray-900">자기소개</p>
-          <p className="text-xl text-gray-900">{profile.selfIntroduction}</p>
+          <p className="text-lg text-gray-900">{profile.selfIntroduction}</p>
         </div>
       ) : null}
       {idealTypeDescription != null ? (
@@ -84,7 +84,7 @@ export function Profile({ profile, watermarkText }: Props) {
           <p className="text-xl font-semibold text-gray-900">
             만나고 싶은 이성상
           </p>
-          <p className="text-xl text-gray-900">
+          <p className="text-lg text-gray-900">
             {profile.idealTypeDescription}
           </p>
         </div>
@@ -136,8 +136,8 @@ function ImageField({
 function DataField({ label, value }: { label: string; value: string }) {
   return (
     <span className="flex gap-1">
-      <p className="text-xl text-gray-900">•</p>
-      <p className="text-xl text-gray-900">{`${label}: ${value}`}</p>
+      <p className="text-lg text-gray-900">•</p>
+      <p className="text-lg text-gray-900">{`${label}: ${value}`}</p>
     </span>
   );
 }

@@ -52,7 +52,7 @@ function Resolved() {
       <Profile profile={profile} watermarkText={member.name} />
       {isPendingByMember ? (
         <>
-          <Spacing size={92} />
+          <Spacing size={120} />
           <Buttons
             memberId={member.id}
             onRejectClick={() => {
@@ -97,37 +97,42 @@ function Buttons({
     });
 
   return (
-    <div className="fixed bottom-0 left-0 flex w-full gap-4 border-t border-gray-200 bg-white p-4 md:px-6">
-      <button
-        className="flex-1 rounded-lg bg-gray-500 p-4 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
-        onClick={async () => {
-          onRejectClick();
-          await reject({
-            memberId,
-            matchId,
-          });
-          alert("거절하셨습니다. 더 잘 맞는 분을 찾아 드릴게요.");
-          void router.push("/my-matches");
-        }}
-        disabled={isRejecting || isAccepting}
-      >
-        {isRejecting ? "처리중.." : "거절"}
-      </button>
-      <button
-        className="flex-1 rounded-lg bg-primary-500 p-4 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
-        onClick={async () => {
-          onAcceptClick();
-          await accept({
-            memberId,
-            matchId,
-          });
-          alert("수락하셨습니다. 호스트가 연락 드릴게요!");
-          void router.push("/my-matches");
-        }}
-        disabled={isAccepting || isRejecting}
-      >
-        {isAccepting ? "처리중.." : "수락"}
-      </button>
+    <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t border-gray-200 bg-white p-4 pt-2 md:px-6">
+      <span className="text-center text-sm text-gray-600">
+        ※ 24시간 이상 무응답 시 휴면회원으로 전환합니다
+      </span>
+      <div className="flex w-full gap-4">
+        <button
+          className="flex-1 rounded-lg bg-gray-500 p-4 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
+          onClick={async () => {
+            onRejectClick();
+            await reject({
+              memberId,
+              matchId,
+            });
+            alert("거절하셨습니다. 더 잘 맞는 분을 찾아 드릴게요.");
+            void router.push("/my-matches");
+          }}
+          disabled={isRejecting || isAccepting}
+        >
+          {isRejecting ? "처리중.." : "거절"}
+        </button>
+        <button
+          className="flex-1 rounded-lg bg-primary-500 p-4 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
+          onClick={async () => {
+            onAcceptClick();
+            await accept({
+              memberId,
+              matchId,
+            });
+            alert("수락하셨습니다. 호스트가 연락 드릴게요!");
+            void router.push("/my-matches");
+          }}
+          disabled={isAccepting || isRejecting}
+        >
+          {isAccepting ? "처리중.." : "수락"}
+        </button>
+      </div>
     </div>
   );
 }
