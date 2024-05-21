@@ -1,3 +1,4 @@
+import { MemberStatus } from "@ieum/prisma";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -13,6 +14,7 @@ export const basicMemberRouter = createTRPCRouter({
       return ctx.prisma.basicMember.findUnique({
         where: {
           phoneNumber,
+          status: MemberStatus.ACTIVE,
         },
         select: {
           id: true,
@@ -31,6 +33,9 @@ export const basicMemberRouter = createTRPCRouter({
       return ctx.prisma.basicMemberProfile.findUnique({
         where: {
           memberId: input.id,
+          member: {
+            status: MemberStatus.ACTIVE,
+          },
         },
       });
     }),
