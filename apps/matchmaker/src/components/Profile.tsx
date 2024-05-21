@@ -64,9 +64,7 @@ export function Profile({ profile, watermarkText }: Props) {
         {datingStyle != null ? (
           <DataField label="데이트 스타일" value={datingStyle} />
         ) : null}
-        {isSmoker != null ? (
-          <DataField label="흡연 여부" value={isSmoker ? "예" : "아니요"} />
-        ) : null}
+        <DataField label="흡연 여부" value={isSmoker} />
         {religion != null ? <DataField label="종교" value={religion} /> : null}
       </div>
       {selfIntroduction != null ? (
