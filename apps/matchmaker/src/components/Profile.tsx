@@ -40,7 +40,7 @@ export function Profile({ profile, watermarkText }: Props) {
           워터마크로 추적이 가능하며 법적 책임을 질 수 있습니다.
         </p>
       </div>
-      <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-4">
+      <div className="flex w-full flex-col gap-1 rounded-lg border-2 border-primary-500 p-4">
         <p className="text-xl font-semibold text-gray-900">인적사항</p>
         <DataField label="나이" value={`${birthYear}년생`} />
         <DataField label="사는 곳" value={`${residence}`} />
