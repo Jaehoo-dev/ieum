@@ -44,9 +44,9 @@ export const adminMessageRouter = createTRPCRouter({
 아래 사이트에서 상대방 프로필을 확인하고 수락 여부를 결정해주세요.
 ${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}
 
-양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드릴게요.
+양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드릴게요. 감사합니다 :)
 
-감사합니다 :)
+(개인정보를 우려하시는 분들이 많아 시스템을 바꿔봤습니다. 혹시 버그가 있다면 호스트에게 제보해주세요!)
         `,
       });
     }),
