@@ -168,9 +168,11 @@ function getStatusLabel(match: BasicMatch) {
 function calculateLeftHours(match: BasicMatch) {
   const expiresAt = addHours(match.updatedAt, 24);
 
-  return Math.floor(
+  const result = Math.floor(
     (expiresAt.getTime() - new Date().getTime()) / 1000 / 60 / 60,
   );
+
+  return result < 0 ? 0 : result;
 }
 
 MyMatchesPage.getLayout = function getLayout(page: ReactElement) {
