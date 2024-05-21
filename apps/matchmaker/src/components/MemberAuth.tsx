@@ -2,8 +2,10 @@ import assert from "assert";
 import { useState } from "react";
 import {
   auth,
+  browserSessionPersistence,
   PhoneAuthProvider,
   RecaptchaVerifier,
+  setPersistence,
   signInWithCredential,
   signInWithPhoneNumber,
 } from "@ieum/firebase";
@@ -138,6 +140,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
+      shouldPersist: true,
       verificationCode: "",
     },
   });
@@ -146,8 +149,8 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
   return (
     <div>
       <form
-        className="flex flex-col"
-        onSubmit={handleSubmit(async ({ verificationCode }) => {
+        className="flex flex-col items-center gap-2"
+        onSubmit={handleSubmit(async ({ shouldPersist, verificationCode }) => {
           assert(verificationId != null, "verificationId must be set");
 
           const credential = PhoneAuthProvider.credential(
@@ -157,13 +160,18 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
 
           try {
             void sendMessage("로그인 시도");
+
+            if (!shouldPersist) {
+              await setPersistence(auth, browserSessionPersistence);
+            }
+
             await signInWithCredential(auth, credential);
           } catch {
             alert("인증에 실패했습니다. 다시 시도해주세요.");
           }
         })}
       >
-        <label className="flex flex-col">
+        <label className="flex w-full flex-col">
           <span className="text-xl text-gray-700">인증번호</span>
           <input
             className={`rounded-lg border ${
@@ -182,9 +190,44 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
             autoFocus={true}
           />
         </label>
+        <div className="inline-flex items-center">
+          <label
+            className="relative flex cursor-pointer items-center rounded-full p-3"
+            htmlFor="shouldPersist"
+          >
+            <input
+              type="checkbox"
+              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-12 before:w-12 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500"
+              id="shouldPersist"
+              {...register("shouldPersist")}
+            />
+            <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                stroke="currentColor"
+                strokeWidth="1"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </span>
+          </label>
+          <label
+            className="mt-[2px] cursor-pointer select-none text-gray-500"
+            htmlFor="shouldPersist"
+          >
+            로그인 유지
+          </label>
+        </div>
         <button
           id="sign-in-button"
-          className="mt-3 w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
+          className="w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
           disabled={isSubmitting}
         >
           {isSubmitting ? "인증중.." : "인증하기"}
