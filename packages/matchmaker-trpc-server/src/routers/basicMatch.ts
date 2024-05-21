@@ -41,9 +41,6 @@ export const basicMatchRouter = createTRPCRouter({
       const member = await ctx.prisma.basicMember.findUniqueOrThrow({
         where: {
           id: memberId,
-          updatedAt: {
-            gt: subDays(new Date(), 14),
-          },
           status: MemberStatus.ACTIVE,
         },
         select: {
@@ -51,6 +48,9 @@ export const basicMatchRouter = createTRPCRouter({
             where: {
               status: {
                 in: [MatchStatus.PENDING, MatchStatus.REJECTED],
+              },
+              updatedAt: {
+                gt: subDays(new Date(), 7),
               },
             },
           },
@@ -62,6 +62,9 @@ export const basicMatchRouter = createTRPCRouter({
                   MatchStatus.REJECTED,
                   MatchStatus.ACCEPTED,
                 ],
+              },
+              updatedAt: {
+                gt: subDays(new Date(), 7),
               },
             },
           },
