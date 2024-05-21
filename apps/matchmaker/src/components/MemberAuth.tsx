@@ -2,10 +2,8 @@ import assert from "assert";
 import { useState } from "react";
 import {
   auth,
-  browserSessionPersistence,
   PhoneAuthProvider,
   RecaptchaVerifier,
-  setPersistence,
   signInWithCredential,
   signInWithPhoneNumber,
 } from "@ieum/firebase";
@@ -72,7 +70,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
 
         try {
           void sendMessage(`인증번호 전송: ${phoneNumber}`);
-          await setPersistence(auth, browserSessionPersistence);
+
           const result = await signInWithPhoneNumber(
             auth,
             krHyphenToGlobal(phoneNumber),
