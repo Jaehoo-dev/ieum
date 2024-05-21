@@ -57,7 +57,11 @@ export const basicMatchRouter = createTRPCRouter({
           acceptedMatches: {
             where: {
               status: {
-                in: [MatchStatus.PENDING, MatchStatus.ACCEPTED],
+                in: [
+                  MatchStatus.PENDING,
+                  MatchStatus.REJECTED,
+                  MatchStatus.ACCEPTED,
+                ],
               },
             },
           },
