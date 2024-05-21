@@ -36,11 +36,18 @@ function Resolved() {
 
   assert(!isNaN(basicMemberId), "basicMemberId must be a number");
 
+  const utils = api.useUtils();
   const [member] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,
   });
   const { mutateAsync: createProfile, isPending: isCreatingProfile } =
-    api.basicMemberRouter.createProfile.useMutation();
+    api.basicMemberRouter.createProfile.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberRouter.findById.invalidate({
+          id: basicMemberId,
+        });
+      },
+    });
 
   const {
     register,
