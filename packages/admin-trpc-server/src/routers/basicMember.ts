@@ -25,6 +25,7 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
+import { supabase } from "@ieum/supabase";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
@@ -573,6 +574,7 @@ export const basicMemberRouter = createTRPCRouter({
             pendingMatches: true,
             rejectedMatches: true,
             acceptedMatches: true,
+            profile: true,
           },
         });
 
@@ -591,6 +593,28 @@ export const basicMemberRouter = createTRPCRouter({
             },
           },
         });
+
+        if (member.profile != null) {
+          const bucketPaths = [
+            member.profile.image1BucketPath,
+            member.profile.image2BucketPath,
+            member.profile.image3BucketPath,
+          ].filter((bucketPath) => {
+            return bucketPath != null;
+          }) as string[];
+
+          await tx.basicMemberProfile.delete({
+            where: {
+              memberId: member.id,
+            },
+          });
+
+          await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .remove(bucketPaths);
+        }
 
         return tx.basicMember.delete({
           where: {
