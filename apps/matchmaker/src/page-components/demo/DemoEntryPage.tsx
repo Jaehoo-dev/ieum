@@ -17,20 +17,20 @@ export function DemoEntryPage() {
   return (
     <div className="flex w-full flex-col gap-6">
       <h1 className="mt-2 text-center text-2xl font-semibold text-gray-700">
-        누구로 체험하시겠어요?
+        본인의 성별을 선택해주세요
       </h1>
       <div className="flex flex-row gap-2">
         <Link
           href="/demo/match?my-gender=male"
           className="block w-full rounded-full bg-blue-500 p-3 text-center text-xl font-medium text-white hover:bg-blue-600"
         >
-          홍길동
+          남성
         </Link>
         <Link
           href="/demo/match?my-gender=female"
           className="block w-full rounded-full bg-pink-500 p-3 text-center text-xl font-medium text-white hover:bg-pink-600"
         >
-          김영희
+          여성
         </Link>
       </div>
     </div>
