@@ -1,6 +1,9 @@
 import { MemberStatus } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
+import { 테스트남성_아이디, 테스트여성_아이디 } from "../constants";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const basicMemberRouter = createTRPCRouter({
@@ -39,13 +42,26 @@ export const basicMemberRouter = createTRPCRouter({
         },
       });
     }),
-  getDemoProfile: publicProcedure.query(({ ctx }) => {
-    const 테스트여성_아이디 = 143;
+  getDemoProfile: publicProcedure
+    .input(
+      z.object({
+        selfGender: z.string(),
+      }),
+    )
+    .query(({ ctx, input: { selfGender } }) => {
+      assert(
+        selfGender === "male" || selfGender === "female",
+        new TRPCError({
+          code: "BAD_REQUEST",
+          message: "gender should be male or female",
+        }),
+      );
 
-    return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
-      where: {
-        memberId: 테스트여성_아이디,
-      },
-    });
-  }),
+      return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
+        where: {
+          memberId:
+            selfGender === "male" ? 테스트남성_아이디 : 테스트여성_아이디,
+        },
+      });
+    }),
 });

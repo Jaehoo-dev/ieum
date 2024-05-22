@@ -13,6 +13,7 @@
   "dependencies": {
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
+    "@ieum/utils": "*",
     "@trpc/client": "next",
     "@trpc/server": "next",
     "date-fns": "^3.6.0",

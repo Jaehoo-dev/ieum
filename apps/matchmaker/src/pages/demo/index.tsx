@@ -1,1 +1,1 @@
-export { DemoPage as default } from "~/page-components/demo/DemoPage";
+export { DemoEntryPage as default } from "~/page-components/demo/DemoEntryPage";
