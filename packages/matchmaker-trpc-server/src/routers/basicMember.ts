@@ -39,4 +39,13 @@ export const basicMemberRouter = createTRPCRouter({
         },
       });
     }),
+  getDemoProfile: publicProcedure.query(({ ctx }) => {
+    const 테스트여성_아이디 = 143;
+
+    return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
+      where: {
+        memberId: 테스트여성_아이디,
+      },
+    });
+  }),
 });
