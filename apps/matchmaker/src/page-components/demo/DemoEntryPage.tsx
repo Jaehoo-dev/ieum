@@ -21,13 +21,13 @@ export function DemoEntryPage() {
       </h1>
       <div className="flex flex-row gap-2">
         <Link
-          href="/demo/male"
+          href="/demo/match?my-gender=male"
           className="block w-full rounded-full bg-blue-500 p-3 text-center text-xl font-medium text-white hover:bg-blue-600"
         >
           홍길동
         </Link>
         <Link
-          href="/demo/female"
+          href="/demo/match?my-gender=female"
           className="block w-full rounded-full bg-pink-500 p-3 text-center text-xl font-medium text-white hover:bg-pink-600"
         >
           김영희

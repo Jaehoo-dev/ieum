@@ -9,9 +9,9 @@ import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
 
-export function DemoPage() {
+export function DemoMatchPage() {
   const router = useRouter();
-  const genderQuery = router.query.gender as string;
+  const genderQuery = router.query["my-gender"] as string;
   const { data: profile } = api.basicMemberRouter.getDemoProfile.useQuery(
     { selfGender: genderQuery },
     { enabled: !isEmptyStringOrNil(genderQuery) },
@@ -37,11 +37,11 @@ export function DemoPage() {
   );
 }
 
-DemoPage.getLayout = function getLayout(page: ReactElement) {
+DemoMatchPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout title="매칭 체험">{page}</Layout>;
 };
 
-DemoPage.auth = false;
+DemoMatchPage.auth = false;
 
 function Buttons() {
   return (
