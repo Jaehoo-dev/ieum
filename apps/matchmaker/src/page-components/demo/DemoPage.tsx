@@ -29,7 +29,7 @@ export function DemoPage() {
       {profile != null ? (
         <Profile
           profile={profile}
-          watermarkText={genderQuery === "male" ? "홍길동" : "김영희"}
+          watermarkText={genderQuery === "male" ? "김영희" : "홍길동"}
         />
       ) : null}
       <>
