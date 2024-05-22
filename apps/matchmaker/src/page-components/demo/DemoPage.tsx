@@ -27,10 +27,7 @@ export function DemoPage() {
   return (
     <div className="flex w-full flex-col">
       {profile != null ? (
-        <Profile
-          profile={profile}
-          watermarkText={genderQuery === "male" ? "홍길동" : "김영희"}
-        />
+        <Profile profile={profile} watermarkText="체험중" />
       ) : null}
       <>
         <Spacing size={108} />
