@@ -1,5 +1,7 @@
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import type { ReactElement } from "react";
+import { useRouter } from "next/router";
+import { isEmptyStringOrNil } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Profile } from "~/components/Profile";
@@ -8,33 +10,38 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
 
 export function DemoPage() {
+  const router = useRouter();
+  const genderQuery = router.query.gender as string;
+  const { data: profile } = api.basicMemberRouter.getDemoProfile.useQuery(
+    { selfGender: genderQuery },
+    { enabled: !isEmptyStringOrNil(genderQuery) },
+  );
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
     void sendMessage(
-      `데모 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      `체험 - 프로필 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
     );
   }, [sendMessage]);
 
   return (
     <div className="flex w-full flex-col">
-      <Suspense fallback={null}>
-        <Resolved />
-      </Suspense>
-      <Spacing size={108} />
-      <Buttons />
+      {profile != null ? (
+        <Profile
+          profile={profile}
+          watermarkText={genderQuery === "male" ? "홍길동" : "김영희"}
+        />
+      ) : null}
+      <>
+        <Spacing size={108} />
+        <Buttons />
+      </>
     </div>
   );
 }
 
-function Resolved() {
-  const [profile] = api.basicMemberRouter.getDemoProfile.useSuspenseQuery();
-
-  return <Profile profile={profile} watermarkText="홍길동" />;
-}
-
 DemoPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="상대방 프로필 예시">{page}</Layout>;
+  return <Layout title="매칭 체험">{page}</Layout>;
 };
 
 DemoPage.auth = false;
