@@ -52,7 +52,7 @@ function Resolved() {
       <Profile profile={profile} watermarkText={member.name} />
       {isPendingByMember ? (
         <>
-          <Spacing size={120} />
+          <Spacing size={108} />
           <Buttons
             memberId={member.id}
             onRejectClick={() => {
@@ -103,7 +103,7 @@ function Buttons({
       </span>
       <div className="flex w-full gap-4">
         <button
-          className="flex-1 rounded-lg bg-gray-500 p-4 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-gray-500 p-3 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={async () => {
             onRejectClick();
             await reject({
@@ -118,7 +118,7 @@ function Buttons({
           {isRejecting ? "처리중.." : "거절"}
         </button>
         <button
-          className="flex-1 rounded-lg bg-primary-500 p-4 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
           onClick={async () => {
             onAcceptClick();
             await accept({
