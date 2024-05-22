@@ -1,12 +1,21 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 
 import { Layout } from "~/components/Layout";
 import { Profile } from "~/components/Profile";
 import { Spacing } from "~/components/Spacing";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
 
 export function DemoPage() {
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    void sendMessage(
+      `데모 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+    );
+  }, [sendMessage]);
+
   return (
     <div className="flex w-full flex-col">
       <Suspense fallback={null}>
