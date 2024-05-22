@@ -1,5 +1,5 @@
 import assert from "assert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   auth,
   browserSessionPersistence,
@@ -18,6 +18,14 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
   const [verificationId, setVerificationId] = useState<string>();
+
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    void sendMessage(
+      `로그인 창 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+    );
+  }, [sendMessage]);
 
   return (
     <div className="w-full max-w-md">

@@ -10,13 +10,6 @@ import heartImgSrc from "../../public/heart.webp";
 
 export function Home() {
   const { loggedIn } = useMemberAuthContext();
-  const { sendMessage } = useSlackNotibot();
-
-  useEffect(() => {
-    void sendMessage(
-      `홈 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
-    );
-  }, [sendMessage]);
 
   return (
     <>
@@ -75,6 +68,10 @@ function Registered() {
   const { member, signOut } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
+  useEffect(() => {
+    void sendMessage(`${member?.name} - 홈 진입`);
+  }, [member?.name, sendMessage]);
+
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-4">
       <button
@@ -109,6 +106,12 @@ function Registered() {
 }
 
 function Unregistered() {
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    void sendMessage(`미가입자 - 홈 진입`);
+  }, [sendMessage]);
+
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-4">
       <a
