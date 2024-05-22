@@ -60,7 +60,7 @@ export const basicMemberRouter = createTRPCRouter({
       return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
         where: {
           memberId:
-            selfGender === "male" ? 테스트남성_아이디 : 테스트여성_아이디,
+            selfGender === "male" ? 테스트여성_아이디 : 테스트남성_아이디,
         },
       });
     }),
