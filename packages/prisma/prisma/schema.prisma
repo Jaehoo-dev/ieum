@@ -106,15 +106,12 @@ enum Religion {
 
 model BlindMember {
   id          Int       @id @default(autoincrement())
-  name        String
-  nickname    String    @default("")
-  phoneNumber String
+  nickname    String
   gender      Gender
   birthYear   Int
   residence   String
   height      Int
   bodyShape   BodyShape
-  weight      Int
   mbti        MBTI
   workplace   String
   job         String
@@ -123,7 +120,7 @@ model BlindMember {
 
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
-  idealRegions               String[]
+  idealRegions               Region[]
   idealMinHeight             Int?
   idealMaxHeight             Int?
   idealBodyShapes            BodyShape[]
@@ -134,12 +131,7 @@ model BlindMember {
 
   nonNegotiableConditions BlindCondition[]
 
-  memo String?
-
   matchHistory BlindMatch[]
-  matchesLeft  Int
-
-  @@unique([phoneNumber])
 }
 
 model BlindMatch {
@@ -160,6 +152,7 @@ enum MatchStatus {
 }
 
 enum BlindCondition {
+  AGE
   REGION
   HEIGHT
   PREFERRED_BODY_SHAPES

@@ -15,7 +15,7 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
-import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
+import { isMbti } from "@ieum/utils";
 import {
   Controller,
   FormProvider,
@@ -28,14 +28,12 @@ import { Layout } from "~/components/Layout";
 import { api } from "~/utils/api";
 
 interface Form {
-  name: string;
-  phoneNumber: string;
+  nickname: string;
   gender: Gender;
   birthYear: number;
   residence: string;
   height: number;
   bodyShape: BodyShape;
-  weight: number;
   mbti: MBTI;
   workplace: string;
   job: string;
@@ -52,18 +50,15 @@ interface Form {
   idealIsSmokerOk: boolean;
   idealNonPreferredReligions: { value: Religion }[];
   nonNegotiableConditions: { value: BlindCondition }[];
-  memo: string | null;
 }
 
 const defaultValues: Form = {
-  name: "",
-  phoneNumber: "",
+  nickname: "",
   gender: Gender.MALE,
   birthYear: 0,
   residence: "",
   height: 0,
   bodyShape: BodyShape.NORMAL,
-  weight: 0,
   mbti: "" as MBTI,
   workplace: "",
   job: "",
@@ -80,7 +75,6 @@ const defaultValues: Form = {
   idealIsSmokerOk: false,
   idealNonPreferredReligions: [],
   nonNegotiableConditions: [],
-  memo: null,
 };
 
 export function CreateBlindMemberPage() {
@@ -120,7 +114,6 @@ export function CreateBlindMemberPage() {
             <IdealTypeFields />
             <NonNegotiableConditionsField />
           </div>
-          <MemoField />
           <button
             type="button"
             className="w-full rounded bg-gray-300 py-2"
@@ -160,33 +153,14 @@ function SelfFields() {
     <div className="flex flex-col gap-2">
       <h1 className="text-xl font-bold">본인</h1>
       <label className="flex flex-col">
-        이름
+        닉네임
         <input
           className={`rounded border border-gray-300 ${
-            errors.name ? "border-2 border-red-500" : ""
+            errors.nickname ? "border-2 border-red-500" : ""
           }`}
           type="text"
-          {...register("name", {
+          {...register("nickname", {
             required: true,
-          })}
-        />
-      </label>
-      <label className="flex flex-col">
-        전화번호
-        <input
-          className={`rounded border border-gray-300 ${
-            errors.phoneNumber ? "border-2 border-red-500" : ""
-          }`}
-          type="text"
-          {...register("phoneNumber", {
-            required: true,
-            validate: (value) => {
-              return (
-                !isEmptyStringOrNil(value) &&
-                value.startsWith("010") &&
-                value.length === 11
-              );
-            },
           })}
         />
       </label>
@@ -284,22 +258,6 @@ function SelfFields() {
               </select>
             );
           }}
-        />
-      </label>
-      <label className="flex flex-col">
-        몸무게
-        <input
-          className={`rounded border border-gray-300 ${
-            errors.weight ? "border-2 border-red-500" : ""
-          }`}
-          type="number"
-          {...register("weight", {
-            required: true,
-            valueAsNumber: true,
-            validate: (value) => {
-              return value >= 30 && value <= 200;
-            },
-          })}
         />
       </label>
       <label className="flex flex-col">
@@ -747,29 +705,6 @@ function NonNegotiableConditionsField() {
         })}
       </div>
     </div>
-  );
-}
-
-function MemoField() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext<Form>();
-
-  return (
-    <label className="flex flex-col">
-      메모
-      <textarea
-        className={`rounded border border-gray-300 ${
-          errors.memo ? "border-2 border-red-500" : ""
-        }`}
-        {...register("memo", {
-          setValueAs: (value: string) => {
-            return value === "" ? null : value;
-          },
-        })}
-      />
-    </label>
   );
 }
 

@@ -38,7 +38,7 @@ export function BlindMemberMatchesPage() {
                   : "text-pink-500"
               }`}
             >
-              {`${blindMember.name}(${blindMember.nickname})`}
+              {blindMember.nickname}
             </span>
           ) : null}
           <span>{" 님의 매칭 이력"}</span>
@@ -47,7 +47,7 @@ export function BlindMemberMatchesPage() {
           onClick={async () => {
             assert(blindMember != null, "blindMember must not be null");
             await copyBlindMemberProfile(blindMember);
-            alert(`${blindMember.name} 님의 프로필을 복사했어요.`);
+            alert(`${blindMember.nickname} 님의 프로필을 복사했어요.`);
           }}
         >
           프로필 복사

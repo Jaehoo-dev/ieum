@@ -9,24 +9,19 @@ export const blindMatchRouter = createTRPCRouter({
     .input(
       z.object({
         statuses: z.array(z.nativeEnum(MatchStatus)).optional(),
-        name: z.string().optional(),
         from: z.string(),
         to: z.string(),
       }),
     )
-    .query(({ ctx, input: { statuses, name, from, to } }) => {
+    .query(({ ctx, input: { statuses, from, to } }) => {
       const 상태_필터가_있는가 =
         statuses != null &&
         statuses.length > 0 &&
         statuses.length < Object.values(MatchStatus).length;
-      const 이름_필터가_있는가 = name != null && name !== "";
 
       return ctx.prisma.blindMatch.findMany({
         where: {
           status: 상태_필터가_있는가 ? { in: statuses } : undefined,
-          members: 이름_필터가_있는가
-            ? { some: { name: { equals: name } } }
-            : undefined,
           createdAt: {
             gte: startOfDay(from),
             lte: endOfDay(to),
@@ -48,38 +43,13 @@ export const blindMatchRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.$transaction(async (tx) => {
-        await tx.blindMatch.create({
-          data: {
-            members: {
-              connect: [{ id: input.member1Id }, { id: input.member2Id }],
-            },
-            status: "PREPARING",
+      return ctx.prisma.blindMatch.create({
+        data: {
+          members: {
+            connect: [{ id: input.member1Id }, { id: input.member2Id }],
           },
-        });
-
-        await Promise.all([
-          tx.blindMember.update({
-            where: {
-              id: input.member1Id,
-            },
-            data: {
-              matchesLeft: {
-                decrement: 1,
-              },
-            },
-          }),
-          tx.blindMember.update({
-            where: {
-              id: input.member2Id,
-            },
-            data: {
-              matchesLeft: {
-                decrement: 1,
-              },
-            },
-          }),
-        ]);
+          status: "PREPARING",
+        },
       });
     }),
   findByMemberId: protectedAdminProcedure
