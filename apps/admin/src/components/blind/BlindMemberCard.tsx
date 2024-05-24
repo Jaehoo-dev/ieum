@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { 종교_라벨, 지역_라벨, 체형_라벨 } from "@ieum/labels";
 import type { BlindMember, Region } from "@ieum/prisma";
-import { $Enums } from "@ieum/prisma";
-import { calculateBmi, getBmiLabel } from "@ieum/utils";
+import { Gender } from "@ieum/prisma";
 
 import { copyBlindMemberProfile } from "~/domains/blind/copyBlindMemberProfile";
 
@@ -12,9 +11,7 @@ interface Props {
 }
 
 export function BlindMemberCard({ member }: Props) {
-  const router = useRouter();
   const [folded, setFolded] = useState(false);
-  const bmi = calculateBmi(member.height, member.weight);
 
   return (
     <div className="w-full max-w-xl rounded-lg border border-gray-200 p-4">
@@ -22,50 +19,44 @@ export function BlindMemberCard({ member }: Props) {
         <div className="flex items-center gap-2">
           <span
             className={`${
-              member.gender === $Enums.Gender.MALE
-                ? "text-blue-500"
-                : "text-pink-500"
+              member.gender === Gender.MALE ? "text-blue-500" : "text-pink-500"
             } text-lg font-semibold`}
           >
-            {`${member.name}(${member.nickname})`}
+            {member.nickname}
           </span>
-          <span>|</span>
-          <span>{`${member.matchesLeft}회 남음`}</span>
           <span>|</span>
           <button
             onClick={async () => {
               await copyBlindMemberProfile(member);
-              alert(
-                `${member.name}(${member.nickname})님의 프로필을 복사했어요.`,
-              );
+              alert(`${member.nickname}님의 프로필을 복사했어요.`);
             }}
           >
             프로필 복사
           </button>
         </div>
-        <button
-          onClick={() => {
-            setFolded(!folded);
-          }}
-        >
-          {folded ? "펼치기" : "접기"}
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/blind/members/${member.id}/matchmaker`}
+            className="text-blue-600 hover:underline"
+          >
+            매치
+          </Link>
+          <span>|</span>
+          <button
+            onClick={() => {
+              setFolded(!folded);
+            }}
+          >
+            {folded ? "펼치기" : "접기"}
+          </button>
+        </div>
       </div>
       {folded ? null : (
-        <button
-          className="mt-2 flex gap-4"
-          onClick={() => {
-            void router.push(`/blind/members/${member.id}/matchmaker`);
-          }}
-        >
-          <div className="flex flex-col gap-1">
+        <div className="mt-2 flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <div>출생연도: {member.birthYear}</div>
             <div>거주지: {member.residence}</div>
             <div>키: {member.height}cm</div>
-            <div>몸무게: {member.weight}kg</div>
-            <div>
-              BMI: {bmi.toFixed(2)} ({getBmiLabel(bmi)})
-            </div>
             <div>체형: {체형_라벨[member.bodyShape]}</div>
             <div>MBTI: {member.mbti}</div>
             <div>직장: {member.workplace}</div>
@@ -74,8 +65,14 @@ export function BlindMemberCard({ member }: Props) {
             <div>종교: {종교_라벨[member.religion]}</div>
           </div>
           <div className="min-h-fit border-l border-gray-200" />
-          <div className="flex flex-col gap-1">
-            <div>
+          <div className="flex flex-1 flex-col gap-1">
+            <div
+              className={
+                member.nonNegotiableConditions.includes("AGE")
+                  ? "text-red-500"
+                  : undefined
+              }
+            >
               나이: {member.idealMinAgeBirthYear} ~{" "}
               {member.idealMaxAgeBirthYear}
             </div>
@@ -170,7 +167,7 @@ export function BlindMemberCard({ member }: Props) {
                 .join(", ")}
             </div>
           </div>
-        </button>
+        </div>
       )}
     </div>
   );

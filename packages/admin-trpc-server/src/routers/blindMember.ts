@@ -4,6 +4,7 @@ import {
   BodyShape,
   Gender,
   MBTI,
+  Region,
   Religion,
 } from "@ieum/prisma";
 import { match } from "ts-pattern";
@@ -15,14 +16,12 @@ export const blindMemberRouter = createTRPCRouter({
   create: protectedAdminProcedure
     .input(
       z.object({
-        name: z.string(),
-        phoneNumber: z.string(),
+        nickname: z.string(),
         gender: z.nativeEnum(Gender),
         birthYear: z.number(),
         residence: z.string(),
         height: z.number(),
         bodyShape: z.nativeEnum(BodyShape),
-        weight: z.number(),
         mbti: z.nativeEnum(MBTI),
         workplace: z.string(),
         job: z.string(),
@@ -30,7 +29,7 @@ export const blindMemberRouter = createTRPCRouter({
         religion: z.nativeEnum(Religion),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
-        idealRegions: z.array(z.string()),
+        idealRegions: z.array(z.nativeEnum(Region)),
         idealMinHeight: z.number().nullable(),
         idealMaxHeight: z.number().nullable(),
         idealBodyShapes: z.array(z.nativeEnum(BodyShape)),
@@ -43,10 +42,7 @@ export const blindMemberRouter = createTRPCRouter({
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.blindMember.create({
-        data: {
-          ...input,
-          matchesLeft: 5,
-        },
+        data: input,
       });
     }),
   findAllByGender: protectedAdminProcedure
@@ -61,9 +57,6 @@ export const blindMemberRouter = createTRPCRouter({
       return ctx.prisma.blindMember.findMany({
         where: {
           gender,
-          matchesLeft: {
-            gt: 0,
-          },
         },
         include: {
           matchHistory: includeMatchHistory,
@@ -94,16 +87,13 @@ export const blindMemberRouter = createTRPCRouter({
         },
       });
 
+      const and = createConditionANDClause(self);
+
+      console.log(and);
+
       return ctx.prisma.blindMember.findMany({
         where: {
           gender: self.gender === "MALE" ? "FEMALE" : "MALE",
-          matchesLeft: {
-            gt: 0,
-          },
-          birthYear: {
-            gte: self.idealMaxAgeBirthYear ?? undefined,
-            lte: self.idealMinAgeBirthYear ?? undefined,
-          },
           matchHistory: {
             none: {
               members: {
@@ -113,25 +103,7 @@ export const blindMemberRouter = createTRPCRouter({
               },
             },
           },
-          AND: [
-            ...createConditionANDClause(self),
-            {
-              AND: [
-                {
-                  OR: [
-                    { idealMinAgeBirthYear: null },
-                    { idealMinAgeBirthYear: { gte: self.birthYear } },
-                  ],
-                },
-                {
-                  OR: [
-                    { idealMaxAgeBirthYear: null },
-                    { idealMaxAgeBirthYear: { lte: self.birthYear } },
-                  ],
-                },
-              ],
-            },
-          ],
+          AND: and,
         },
         include: {
           matchHistory: true,
@@ -143,6 +115,14 @@ export const blindMemberRouter = createTRPCRouter({
 function createConditionANDClause(member: BlindMember) {
   return member.nonNegotiableConditions.map((condition) => {
     return match(condition)
+      .with("AGE", () => {
+        return {
+          birthYear: {
+            lte: member.idealMinAgeBirthYear ?? undefined,
+            gte: member.idealMaxAgeBirthYear ?? undefined,
+          },
+        };
+      })
       .with("HEIGHT", () => {
         return {
           height: {

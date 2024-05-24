@@ -58,7 +58,7 @@ export function BlindMemberMatchmakerPage() {
                 : "text-pink-500"
             }`}
           >
-            {blindMember.name}
+            {blindMember.nickname}
           </span>
         ) : null}
         <span>{" 님 매칭"}</span>
@@ -112,11 +112,10 @@ export function BlindMemberMatchmakerPage() {
                         member2Id: member.id,
                       });
 
-                      alert(`${blindMember?.name} - ${member.name} 매칭 완료`);
+                      alert(
+                        `${blindMember?.nickname} - ${member.nickname} 매칭 완료`,
+                      );
                     }}
-                    disabled={
-                      blindMember == null || blindMember.matchesLeft < 1
-                    }
                   >
                     Match
                   </button>
@@ -141,6 +140,14 @@ function satisfiesNonNegotiableConditions({
 
   for (const condition of conditions) {
     const satisfiesCondition = match(condition)
+      .with("AGE", () => {
+        return (
+          (self.idealMinAgeBirthYear == null ||
+            target.birthYear <= self.idealMinAgeBirthYear) &&
+          (self.idealMaxAgeBirthYear == null ||
+            target.birthYear >= self.idealMaxAgeBirthYear)
+        );
+      })
       .with("HEIGHT", () => {
         return (
           (self.idealMinHeight == null ||
@@ -164,8 +171,7 @@ function satisfiesNonNegotiableConditions({
       .with("NON_PREFERRED_RELIGIONS", () => {
         return !self.idealNonPreferredReligions.includes(target.religion);
       })
-      .with("REGION", () => true)
-      .with("PREFERRED_BODY_SHAPES", () => true)
+      .with("REGION", "PREFERRED_BODY_SHAPES", () => true)
       .exhaustive();
 
     if (!satisfiesCondition) {

@@ -61,6 +61,7 @@ export const 종교_라벨: Record<Religion, string> = {
 } as const;
 
 export const 블라인드_조건_라벨: Record<BlindCondition, string> = {
+  [BlindCondition.AGE]: "나이",
   [BlindCondition.REGION]: "지역",
   [BlindCondition.HEIGHT]: "키",
   [BlindCondition.PREFERRED_BODY_SHAPES]: "체형",
