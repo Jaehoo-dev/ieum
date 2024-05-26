@@ -87,10 +87,6 @@ export const blindMemberRouter = createTRPCRouter({
         },
       });
 
-      const and = createConditionANDClause(self);
-
-      console.log(and);
-
       return ctx.prisma.blindMember.findMany({
         where: {
           gender: self.gender === "MALE" ? "FEMALE" : "MALE",
@@ -103,7 +99,7 @@ export const blindMemberRouter = createTRPCRouter({
               },
             },
           },
-          AND: and,
+          AND: createConditionANDClause(self),
         },
         include: {
           matchHistory: true,
