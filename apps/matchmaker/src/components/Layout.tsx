@@ -11,9 +11,7 @@ export function Layout({ children, title }: Props) {
   return (
     <>
       <Head>
-        <title>
-          {isEmptyStringOrNil(title) ? "내편소" : `${title} | 내편소`}
-        </title>
+        <title>{isEmptyStringOrNil(title) ? "이음" : `${title} | 이음`}</title>
       </Head>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
         <Header title={title} />
