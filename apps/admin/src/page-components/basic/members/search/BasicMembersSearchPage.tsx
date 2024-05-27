@@ -76,9 +76,9 @@ export function BasicMembersSearchPage() {
                     className="flex w-full flex-row justify-center gap-2"
                   >
                     <div className="flex flex-col gap-2">
-                      <span>{`회원 상태: ${getStatusLabel(
-                        member.status,
-                      )}`}</span>
+                      <span>
+                        {`회원 상태: ${getStatusLabel(member.status)}`}
+                      </span>
                       <button
                         className="rounded-md bg-gray-500 px-4 py-2 text-white"
                         onClick={async () => {
@@ -115,18 +115,20 @@ export function BasicMembersSearchPage() {
                       </button>
                     </div>
                     <BasicMemberCard member={member} defaultMode="DETAILED" />
-                    <div>
-                      <button
-                        className="rounded-md bg-blue-500 px-4 py-2 text-white"
-                        onClick={async () => {
-                          await sendMatchNotiMessage({ memberId: member.id });
+                    {member.status === MemberStatus.ACTIVE ? (
+                      <div>
+                        <button
+                          className="rounded-md bg-blue-500 px-4 py-2 text-white"
+                          onClick={async () => {
+                            await sendMatchNotiMessage({ memberId: member.id });
 
-                          alert("문자를 보냈습니다.");
-                        }}
-                      >
-                        문자 보내기
-                      </button>
-                    </div>
+                            alert("문자를 보냈습니다.");
+                          }}
+                        >
+                          문자 보내기
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                 );
               })
