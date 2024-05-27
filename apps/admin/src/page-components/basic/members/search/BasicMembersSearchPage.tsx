@@ -81,14 +81,20 @@ export function BasicMembersSearchPage() {
                       )}`}</span>
                       <button
                         className="rounded-md bg-gray-500 px-4 py-2 text-white"
-                        onClick={() => inactivate({ id: member.id })}
+                        onClick={async () => {
+                          await inactivate({ id: member.id });
+                          alert("휴면 처리 완료");
+                        }}
                         disabled={isInAction}
                       >
                         Inactivate
                       </button>
                       <button
                         className="rounded-md bg-yellow-500 px-4 py-2 text-white"
-                        onClick={() => softDelete({ id: member.id })}
+                        onClick={async () => {
+                          await softDelete({ id: member.id });
+                          alert("탈퇴 처리 완료");
+                        }}
                         disabled={isInAction}
                       >
                         Soft Delete
@@ -100,6 +106,7 @@ export function BasicMembersSearchPage() {
 
                           if (confirmed) {
                             await hardDelete({ id: member.id });
+                            alert("데이터 삭제 완료");
                           }
                         }}
                         disabled={isInAction}
