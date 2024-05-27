@@ -39,7 +39,7 @@ export const adminMessageRouter = createTRPCRouter({
         to: member.phoneNumber,
         from: process.env.ADMIN_PHONE_NUMBER,
         subject: "[내편소] 매칭 안내",
-        text: `${member.name} 님 안녕하세요! 내편소 호스트입니다. 매칭 제안드려요 :)
+        text: `${member.name} 님 안녕하세요! 이음(구 내편소) 호스트입니다. 매칭 제안드려요 :)
 
 아래 사이트에서 상대방 프로필을 확인하시고 수락 여부를 결정해주세요.
 ${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}

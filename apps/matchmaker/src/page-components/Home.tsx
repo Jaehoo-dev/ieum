@@ -14,18 +14,15 @@ export function Home() {
   return (
     <>
       <Head>
-        <title>내편소</title>
-        <meta name="description" content="나랑 딱 맞는 이상형 찾기, 내편소" />
+        <title>이음</title>
+        <meta name="description" content="나랑 딱 맞는 이상형 찾기, 이음" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="내편소" />
+        <meta property="og:title" content="이음" />
         <meta
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}/heart.webp`}
         />
-        <meta
-          property="og:description"
-          content="내가 찾던 이상형을 만나는 곳, 내편소"
-        />
+        <meta property="og:description" content="나만을 위한 맞춤 소개, 이음" />
         <meta property="og:locale" content="ko_KR" />
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
@@ -39,7 +36,7 @@ export function Home() {
         <div className="mt-12 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
             <h1 className="text-4xl font-semibold text-primary-500 md:text-5xl">
-              내편소
+              이음
             </h1>
             {loggedIn ? (
               <Suspense fallback={null}>

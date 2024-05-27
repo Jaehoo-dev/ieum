@@ -32,7 +32,7 @@ function Resolved() {
   });
 
   return profile != null ? (
-    <Profile profile={profile} watermarkText="내편소" />
+    <Profile profile={profile} watermarkText="이음" />
   ) : (
     <Empty />
   );
