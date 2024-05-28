@@ -1,4 +1,4 @@
-import { MatchStatus } from "@prisma/client";
+import { MatchStatus } from "@ieum/prisma";
 import { endOfDay, startOfDay } from "date-fns";
 import { z } from "zod";
 

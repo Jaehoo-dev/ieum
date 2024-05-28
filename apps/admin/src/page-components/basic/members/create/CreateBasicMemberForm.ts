@@ -1,23 +1,25 @@
+import type {
+  BasicCondition,
+  BasicMember,
+  FashionStyle,
+  Region,
+} from "@ieum/prisma";
 import {
   BodyShape,
   BooksReadPerYear,
   ContactFrequency,
   ContactMethod,
+  DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
   Eyelid,
   Gender,
   MBTI,
+  MemberStatus,
   OccupationStatus,
   PlannedNumberOfChildren,
-  type Region,
   Religion,
-  type BasicMember,
-  type FashionStyle,
-  type BasicCondition,
-  DrinkingFrequency,
-  MemberStatus,
-} from "@prisma/client";
+} from "@ieum/prisma";
 
 export interface CreateBasicMemberForm
   extends Omit<
@@ -37,17 +39,17 @@ export interface CreateBasicMemberForm
     | "createdAt"
     | "updatedAt"
   > {
-  fashionStyles: Array<{ value: FashionStyle }>;
-  idealRegions: Array<{ value: Region }>;
-  idealBodyShapes: Array<{ value: BodyShape }>;
-  idealFashionStyles: Array<{ value: FashionStyle }>;
-  idealEyelids: Array<{ value: Eyelid }>;
-  idealOccupationStatuses: Array<{ value: OccupationStatus }>;
-  idealPreferredMbtis: Array<{ value: MBTI }>;
-  idealNonPreferredMbtis: Array<{ value: MBTI }>;
-  idealPreferredReligions: Array<{ value: Religion }>;
-  idealNonPreferredReligions: Array<{ value: Religion }>;
-  nonNegotiableConditions: Array<{ value: BasicCondition }>;
+  fashionStyles: { value: FashionStyle }[];
+  idealRegions: { value: Region }[];
+  idealBodyShapes: { value: BodyShape }[];
+  idealFashionStyles: { value: FashionStyle }[];
+  idealEyelids: { value: Eyelid }[];
+  idealOccupationStatuses: { value: OccupationStatus }[];
+  idealPreferredMbtis: { value: MBTI }[];
+  idealNonPreferredMbtis: { value: MBTI }[];
+  idealPreferredReligions: { value: Religion }[];
+  idealNonPreferredReligions: { value: Religion }[];
+  nonNegotiableConditions: { value: BasicCondition }[];
 }
 
 export const createBasicMemberFormDefaultValues: CreateBasicMemberForm = {

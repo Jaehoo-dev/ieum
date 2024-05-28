@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext } from "next";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Role } from "@ieum/prisma";
 import { prisma } from "@ieum/prisma";
-import type { Role } from "@prisma/client";
 import { format } from "date-fns";
 import NextAuth, { getServerSession } from "next-auth";
 import type { DefaultSession, NextAuthOptions } from "next-auth";

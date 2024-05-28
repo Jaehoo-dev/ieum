@@ -3,8 +3,8 @@ import { createContext, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { auth, signOut as signOutFirebase } from "@ieum/firebase";
+import type { BasicMember } from "@ieum/prisma";
 import { globalKrToBasicKr } from "@ieum/utils";
-import type { BasicMember } from "@prisma/client";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { api } from "~/utils/api";

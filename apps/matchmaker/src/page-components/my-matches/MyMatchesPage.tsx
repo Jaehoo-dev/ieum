@@ -3,8 +3,8 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { MatchStatus } from "@prisma/client";
-import type { BasicMatch } from "@prisma/client";
+import type { BasicMatch } from "@ieum/prisma";
+import { MatchStatus } from "@ieum/prisma";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
