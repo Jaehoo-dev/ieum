@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
-import heartImgSrc from "../../public/heart.webp";
+import heartImgSrc from "../../public/clamped-heart.webp";
 
 export function Home() {
   const { loggedIn } = useMemberAuthContext();
