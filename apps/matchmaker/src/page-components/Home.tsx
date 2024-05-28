@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
-import heartImgSrc from "../../public/clamped-heart.webp";
 
 export function Home() {
   const { loggedIn } = useMemberAuthContext();
@@ -28,7 +27,9 @@ export function Home() {
       <div className="flex h-screen w-screen flex-col md:flex-row">
         <div className="relative h-2/5 w-full md:h-full md:w-2/3">
           <Image
-            src={heartImgSrc}
+            src="/heart.webp"
+            width={1920}
+            height={1080}
             alt="이미지"
             className="h-full w-full object-cover object-center"
           />
