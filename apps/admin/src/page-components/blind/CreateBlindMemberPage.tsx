@@ -25,6 +25,8 @@ import {
 } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
+import { Select } from "~/components/Select";
+import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
 interface Form {
@@ -164,32 +166,30 @@ function SelfFields() {
           })}
         />
       </label>
-      <label className="flex flex-col">
-        성별
-        <Controller
-          control={control}
-          name="gender"
-          render={({ field: { onChange, value } }) => {
-            return (
-              <select
-                className={`rounded border border-gray-300 ${
-                  errors.gender ? "border-2 border-red-500" : ""
-                }`}
-                value={value}
-                onChange={onChange}
-              >
-                {Object.values(Gender).map((gender) => {
-                  return (
-                    <option key={gender} value={gender}>
-                      {성별_라벨[gender]}
-                    </option>
-                  );
-                })}
-              </select>
-            );
-          }}
-        />
-      </label>
+      <Controller
+        control={control}
+        name="gender"
+        render={({ field: { onChange, value } }) => {
+          return (
+            <Select
+              label="성별"
+              className={`rounded border border-gray-300 ${
+                errors.gender ? "border-2 border-red-500" : ""
+              }`}
+              value={value}
+              onChange={onChange}
+            >
+              {Object.values(Gender).map((gender) => {
+                return (
+                  <option key={gender} value={gender}>
+                    {성별_라벨[gender]}
+                  </option>
+                );
+              })}
+            </Select>
+          );
+        }}
+      />
       <label className="flex flex-col">
         출생연도
         <input
@@ -234,58 +234,54 @@ function SelfFields() {
           })}
         />
       </label>
-      <label className="flex flex-col">
-        체형
-        <Controller
-          control={control}
-          name="bodyShape"
-          render={({ field: { onChange, value } }) => {
-            return (
-              <select
-                className={`rounded border border-gray-300 ${
-                  errors.bodyShape ? "border-2 border-red-500" : ""
-                }`}
-                value={value}
-                onChange={onChange}
-              >
-                {Object.values(BodyShape).map((bodyShape) => {
-                  return (
-                    <option key={bodyShape} value={bodyShape}>
-                      {체형_라벨[bodyShape]}
-                    </option>
-                  );
-                })}
-              </select>
-            );
-          }}
-        />
-      </label>
-      <label className="flex flex-col">
-        MBTI
-        <Controller
-          control={control}
-          name="mbti"
-          rules={{
-            required: true,
-            validate: (value) => {
-              return isMbti(value);
-            },
-          }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <input
-                className={`rounded border border-gray-300 ${
-                  errors.mbti ? "border-2 border-red-500" : ""
-                }`}
-                value={value}
-                onChange={(event) => {
-                  onChange(event.target.value.toUpperCase());
-                }}
-              />
-            );
-          }}
-        />
-      </label>
+      <Controller
+        control={control}
+        name="bodyShape"
+        render={({ field: { onChange, value } }) => {
+          return (
+            <Select
+              label="체형"
+              className={`rounded border border-gray-300 ${
+                errors.bodyShape ? "border-2 border-red-500" : ""
+              }`}
+              value={value}
+              onChange={onChange}
+            >
+              {Object.values(BodyShape).map((bodyShape) => {
+                return (
+                  <option key={bodyShape} value={bodyShape}>
+                    {체형_라벨[bodyShape]}
+                  </option>
+                );
+              })}
+            </Select>
+          );
+        }}
+      />
+      <Controller
+        control={control}
+        name="mbti"
+        rules={{
+          required: true,
+          validate: (value) => {
+            return isMbti(value);
+          },
+        }}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <TextInput
+              label="MBTI"
+              className={`rounded border border-gray-300 ${
+                errors.mbti ? "border-2 border-red-500" : ""
+              }`}
+              value={value}
+              onChange={(event) => {
+                onChange(event.target.value.toUpperCase());
+              }}
+            />
+          );
+        }}
+      />
       <label className="flex flex-col">
         직장
         <input
@@ -320,35 +316,33 @@ function SelfFields() {
           {...register("isSmoker")}
         />
       </label>
-      <label className="flex flex-col">
-        종교
-        <Controller
-          control={control}
-          name="religion"
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <select
-                className={`rounded border border-gray-300 ${
-                  errors.religion ? "border-2 border-red-500" : ""
-                }`}
-                value={value}
-                onChange={onChange}
-              >
-                {Object.values(Religion).map((religion) => {
-                  return (
-                    <option key={religion} value={religion}>
-                      {종교_라벨[religion]}
-                    </option>
-                  );
-                })}
-              </select>
-            );
-          }}
-        />
-      </label>
+      <Controller
+        control={control}
+        name="religion"
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value } }) => {
+          return (
+            <Select
+              label="종교"
+              className={`rounded border border-gray-300 ${
+                errors.religion ? "border-2 border-red-500" : ""
+              }`}
+              value={value}
+              onChange={onChange}
+            >
+              {Object.values(Religion).map((religion) => {
+                return (
+                  <option key={religion} value={religion}>
+                    {종교_라벨[religion]}
+                  </option>
+                );
+              })}
+            </Select>
+          );
+        }}
+      />
     </div>
   );
 }
