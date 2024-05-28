@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BasicMatch } from "@ieum/prisma";
-import { Gender, MatchStatus } from "@ieum/prisma";
+import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 
 import type { BasicMemberWithMatches } from "~/domains/basic/types";
 import { DetailedSelfFields } from "./DetailedSelfFields";
@@ -32,7 +32,9 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
           <div className="flex items-center gap-2">
             <span
               className={`${
-                member.gender === Gender.MALE
+                member.status !== MemberStatus.ACTIVE
+                  ? "text-gray-400"
+                  : member.gender === Gender.MALE
                   ? "text-blue-500"
                   : "text-pink-500"
               } text-lg font-semibold`}
@@ -68,13 +70,17 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
         </div>
         <div className="flex flex-col items-end gap-1">
           <div className="flex items-center gap-2">
-            <Link
-              href={`/basic/members/${member.id}/matchmaker`}
-              className="text-blue-600 hover:underline"
-            >
-              매치
-            </Link>
-            <span>|</span>
+            {member.status === MemberStatus.ACTIVE ? (
+              <>
+                <Link
+                  href={`/basic/members/${member.id}/matchmaker`}
+                  className="text-blue-600 hover:underline"
+                >
+                  매치
+                </Link>
+                <span>|</span>
+              </>
+            ) : null}
             <Link
               href={`/basic/members/${member.id}/matches`}
               className="text-blue-600 hover:underline"

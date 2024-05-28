@@ -252,7 +252,7 @@ export const basicMatchRouter = createTRPCRouter({
           return member.id !== memberId;
         });
 
-      await ctx.prisma.basicMatch.update({
+      const result = await ctx.prisma.basicMatch.update({
         where: {
           id: matchId,
         },
@@ -269,11 +269,24 @@ export const basicMatchRouter = createTRPCRouter({
             },
           },
         },
+        include: {
+          rejectedBy: true,
+          acceptedBy: true,
+        },
       });
 
       if (hasOtherReplied) {
         void sendMessageToMatchResultChannel(
-          `[제안 실패] ${members[0].name} - ${members[1].name}`,
+          `[제안 실패]${
+            result.acceptedBy.length > 0
+              ? `\n수락: ${result.acceptedBy.join(", ")}`
+              : ""
+          }${
+            result.rejectedBy.length > 0
+              ? `\n거절: ${result.rejectedBy.join(", ")}`
+              : ""
+          }
+          `,
         );
       }
 
