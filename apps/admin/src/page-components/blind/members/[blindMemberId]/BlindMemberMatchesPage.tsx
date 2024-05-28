@@ -3,8 +3,8 @@ import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { 상태_라벨 } from "@ieum/labels";
-import { Gender, MatchStatus } from "@prisma/client";
-import type { BlindMatch } from "@prisma/client";
+import type { BlindMatch } from "@ieum/prisma";
+import { Gender, MatchStatus } from "@ieum/prisma";
 import { match } from "ts-pattern";
 
 import { BlindMemberCard } from "~/components/blind/BlindMemberCard";
