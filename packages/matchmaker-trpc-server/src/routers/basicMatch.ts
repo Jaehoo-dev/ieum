@@ -279,11 +279,15 @@ export const basicMatchRouter = createTRPCRouter({
         void sendMessageToMatchResultChannel(
           `[제안 실패]${
             result.acceptedBy.length > 0
-              ? `\n수락: ${result.acceptedBy.join(", ")}`
+              ? `\n수락: ${result.acceptedBy
+                  .map((member) => member.name)
+                  .join(", ")}`
               : ""
           }${
             result.rejectedBy.length > 0
-              ? `\n거절: ${result.rejectedBy.join(", ")}`
+              ? `\n거절: ${result.rejectedBy
+                  .map((member) => member.name)
+                  .join(", ")}`
               : ""
           }
           `,
