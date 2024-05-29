@@ -113,7 +113,12 @@ function ImageField({
     data: { publicUrl },
   } = supabase.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
-    .getPublicUrl(bucketPath);
+    .getPublicUrl(bucketPath, {
+      transform: {
+        width: 464,
+        resize: "contain",
+      },
+    });
 
   return (
     <div className="relative max-w-xl">
@@ -121,7 +126,7 @@ function ImageField({
       <Image
         src={publicUrl}
         alt="프로필 이미지"
-        width={576}
+        width={480}
         height={600}
         className="rounded-lg"
       />
