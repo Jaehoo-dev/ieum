@@ -90,7 +90,7 @@ function Registered() {
       >
         매칭 목록 보기
       </button>
-      <BlogLink />
+      <BlogLink rel="noopener" />
       <button
         className="font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
@@ -119,7 +119,7 @@ function Unregistered() {
       >
         알아보기
       </Link>
-      <BlogLink />
+      <BlogLink rel="noopener" />
     </div>
   );
 }
