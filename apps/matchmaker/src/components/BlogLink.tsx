@@ -5,7 +5,7 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 type Props = Omit<ComponentProps<typeof Link>, "href">;
 
-export function BlogLink({ target, rel, ...props }: Props) {
+export function BlogLink({ target, rel, onClick, ...props }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   return (
@@ -14,8 +14,9 @@ export function BlogLink({ target, rel, ...props }: Props) {
       className="text-lg text-gray-500 underline hover:text-gray-700"
       target={target ?? "_blank"}
       rel={rel ?? "noopener noreferrer"}
-      onClick={() => {
+      onClick={(event) => {
         sendMessage("'소개팅 꿀팁 보러 가기' 클릭");
+        onClick?.(event);
       }}
       {...props}
     >
