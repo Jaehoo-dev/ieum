@@ -56,7 +56,7 @@ export function Profile({ profile, watermarkText }: Props) {
         {mbti != null ? <DataField label="MBTI" value={mbti} /> : null}
         {hobby != null ? <DataField label="취미" value={hobby} /> : null}
         {characteristic != null ? (
-          <DataField label="성격" value={characteristic} />
+          <DataField label="특징" value={characteristic} />
         ) : null}
         {lifePhilosophy != null ? (
           <DataField label="인생관" value={lifePhilosophy} />
