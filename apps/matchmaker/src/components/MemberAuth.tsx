@@ -14,6 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { BlogLink } from "./BlogLink";
 
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
@@ -69,70 +70,73 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
   const { sendMessage } = useSlackNotibot();
 
   return (
-    <form
-      className="flex flex-col"
-      onSubmit={handleSubmit(async ({ phoneNumber }) => {
-        const recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "sign-in-button",
-          { size: "invisible" },
-        );
-
-        try {
-          void sendMessage(`인증번호 전송: ${phoneNumber}`);
-
-          const result = await signInWithPhoneNumber(
+    <div className="flex flex-col items-center gap-6">
+      <form
+        className="flex w-full flex-col"
+        onSubmit={handleSubmit(async ({ phoneNumber }) => {
+          const recaptchaVerifier = new RecaptchaVerifier(
             auth,
-            krHyphenToGlobal(phoneNumber),
-            recaptchaVerifier,
+            "sign-in-button",
+            { size: "invisible" },
           );
 
-          onSignIn(result.verificationId);
-          alert("인증번호를 전송했습니다.");
-        } catch (err) {
-          alert(`인증번호 전송에 실패했습니다. 잠시 후 다시 시도해주세요.`);
-          recaptchaVerifier.clear();
-        }
-      })}
-    >
-      <label className="flex flex-col" htmlFor="phoneNumber">
-        <span className="text-xl text-gray-700">전화번호</span>
-        <Controller
-          control={control}
-          name="phoneNumber"
-          render={({ field: { onChange, value }, fieldState: { error } }) => {
-            return (
-              <input
-                id="phoneNumber"
-                className={`rounded-lg border ${
-                  error ? "border-red-500" : "border-gray-300"
-                } px-4 py-3 text-xl text-gray-700`}
-                type="text"
-                placeholder="010-0000-0000"
-                value={value}
-                onChange={({ target: { value } }) => {
-                  onChange(formatPhoneNumberInput(value));
-                }}
-              />
+          try {
+            void sendMessage(`인증번호 전송: ${phoneNumber}`);
+
+            const result = await signInWithPhoneNumber(
+              auth,
+              krHyphenToGlobal(phoneNumber),
+              recaptchaVerifier,
             );
-          }}
-          rules={{
-            required: "전화번호를 입력해주세요",
-            pattern: {
-              value: /^010-\d{4}-\d{4}$/,
-              message: "올바른 전화번호를 입력해주세요",
-            },
-          }}
-        />
-      </label>
-      <button
-        id="sign-in-button"
-        className="mt-3 w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
-        disabled={isSubmitting || errors.phoneNumber != null}
+
+            onSignIn(result.verificationId);
+            alert("인증번호를 전송했습니다.");
+          } catch (err) {
+            alert(`인증번호 전송에 실패했습니다. 잠시 후 다시 시도해주세요.`);
+            recaptchaVerifier.clear();
+          }
+        })}
       >
-        {isSubmitting ? "전송중.." : "인증번호 전송"}
-      </button>
-    </form>
+        <label className="flex flex-col" htmlFor="phoneNumber">
+          <span className="text-xl text-gray-700">전화번호</span>
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
+              return (
+                <input
+                  id="phoneNumber"
+                  className={`rounded-lg border ${
+                    error ? "border-red-500" : "border-gray-300"
+                  } px-4 py-3 text-xl text-gray-700`}
+                  type="text"
+                  placeholder="010-0000-0000"
+                  value={value}
+                  onChange={({ target: { value } }) => {
+                    onChange(formatPhoneNumberInput(value));
+                  }}
+                />
+              );
+            }}
+            rules={{
+              required: "전화번호를 입력해주세요",
+              pattern: {
+                value: /^010-\d{4}-\d{4}$/,
+                message: "올바른 전화번호를 입력해주세요",
+              },
+            }}
+          />
+        </label>
+        <button
+          id="sign-in-button"
+          className="mt-3 w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
+          disabled={isSubmitting || errors.phoneNumber != null}
+        >
+          {isSubmitting ? "전송중.." : "인증번호 전송"}
+        </button>
+      </form>
+      <BlogLink />
+    </div>
   );
 }
 
@@ -155,9 +159,9 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
   const { sendMessage } = useSlackNotibot();
 
   return (
-    <div>
+    <div className="w-full">
       <form
-        className="flex flex-col items-center gap-2"
+        className="flex flex-col items-center gap-1"
         onSubmit={handleSubmit(async ({ shouldPersist, verificationCode }) => {
           assert(verificationId != null, "verificationId must be set");
 

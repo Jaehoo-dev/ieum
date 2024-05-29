@@ -214,3 +214,6 @@ export const 음주량_라벨: Record<DrinkingFrequency, string> = {
   [DrinkingFrequency.ALWAYS]: "애주가",
   [DrinkingFrequency.OTHER]: "기타",
 } as const;
+
+export const HOMEPAGE_URL = "https://ieum.love";
+export const MATCHMAKER_URL = "https://match.ieum.love";

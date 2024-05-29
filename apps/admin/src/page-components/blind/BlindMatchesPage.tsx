@@ -1,7 +1,7 @@
 import assert from "assert";
 import { useState } from "react";
 import type { ReactElement } from "react";
-import { 상태_라벨 } from "@ieum/labels";
+import { 상태_라벨 } from "@ieum/constants";
 import type { BlindMatch, BlindMember } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
 import { format } from "date-fns";

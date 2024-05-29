@@ -12,13 +12,13 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@ieum/constants": "*",
     "@ieum/firebase": "*",
-    "@ieum/prisma": "*",
-    "@ieum/supabase": "*",
     "@ieum/matchmaker-trpc-server": "*",
+    "@ieum/prisma": "*",
     "@ieum/slack": "*",
+    "@ieum/supabase": "*",
     "@ieum/utils": "*",
-    "@ieum/labels": "*",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^5.25.0",
     "@tanstack/react-query-devtools": "^5.25.0",

@@ -1,4 +1,4 @@
-import { 종교_라벨, 체형_라벨 } from "@ieum/labels";
+import { 종교_라벨, 체형_라벨 } from "@ieum/constants";
 import type { BlindMember } from "@ieum/prisma";
 
 export function copyBlindMemberProfile(member: BlindMember) {

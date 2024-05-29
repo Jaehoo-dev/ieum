@@ -2,7 +2,12 @@ import assert from "assert";
 import { Suspense, useState } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 연간_벌이_라벨, 자산_라벨, 종교_라벨, 학력_라벨 } from "@ieum/labels";
+import {
+  연간_벌이_라벨,
+  자산_라벨,
+  종교_라벨,
+  학력_라벨,
+} from "@ieum/constants";
 import { supabase } from "@ieum/supabase";
 import { isEmptyStringOrNil } from "@ieum/utils";
 import { nanoid } from "nanoid";

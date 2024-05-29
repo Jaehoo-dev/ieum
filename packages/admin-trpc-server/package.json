@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ieum/admin-auth": "*",
+    "@ieum/constants": "*",
     "@ieum/prisma": "*",
     "@ieum/solapi": "*",
     "@ieum/supabase": "*",

@@ -10,7 +10,7 @@ import {
   지역_라벨,
   체형_라벨,
   학력_라벨,
-} from "@ieum/labels";
+} from "@ieum/constants";
 import {
   AnnualIncome,
   AssetsValue,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { 종교_라벨, 지역_라벨, 체형_라벨 } from "@ieum/labels";
+import { 종교_라벨, 지역_라벨, 체형_라벨 } from "@ieum/constants";
 import type { BlindMember, Region } from "@ieum/prisma";
 import { Gender } from "@ieum/prisma";
 

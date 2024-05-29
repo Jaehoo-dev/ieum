@@ -1,8 +1,11 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
+import { BlogLink } from "~/components/BlogLink";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -14,13 +17,10 @@ export function Home() {
     <>
       <Head>
         <title>이음</title>
-        <meta name="description" content="나랑 딱 맞는 이상형 찾기, 이음" />
+        <meta name="description" content="나만을 위한 맞춤 소개, 이음" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="이음" />
-        <meta
-          property="og:image"
-          content={`${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}/heart.webp`}
-        />
+        <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
         <meta property="og:description" content="나만을 위한 맞춤 소개, 이음" />
         <meta property="og:locale" content="ko_KR" />
       </Head>
@@ -36,7 +36,7 @@ export function Home() {
         </div>
         <div className="mt-12 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
-            <h1 className="text-4xl font-semibold text-primary-500 md:text-5xl">
+            <h1 className="mb-2 text-4xl font-semibold text-primary-500 md:text-5xl">
               이음
             </h1>
             {loggedIn ? (
@@ -90,8 +90,9 @@ function Registered() {
       >
         매칭 목록 보기
       </button>
+      <BlogLink />
       <button
-        className="text-lg font-light text-gray-500 underline hover:text-gray-700"
+        className="font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
           void sendMessage(`${member?.name} - 로그아웃 클릭`);
           void signOut();
@@ -112,12 +113,13 @@ function Unregistered() {
 
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-4">
-      <a
+      <Link
+        href={HOMEPAGE_URL}
         className="w-full rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
-        href="https://frip.co.kr/products/176056"
       >
-        가입하러 가기
-      </a>
+        알아보기
+      </Link>
+      <BlogLink />
     </div>
   );
 }

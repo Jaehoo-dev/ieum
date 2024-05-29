@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
-import { 상태_라벨 } from "@ieum/labels";
+import { 상태_라벨 } from "@ieum/constants";
 import { Gender, MatchStatus } from "@ieum/prisma";
 import { format, subDays } from "date-fns";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
