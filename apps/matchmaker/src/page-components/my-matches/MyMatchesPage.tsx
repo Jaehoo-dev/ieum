@@ -1,10 +1,10 @@
-import assert from "assert";
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { BasicMatch } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 

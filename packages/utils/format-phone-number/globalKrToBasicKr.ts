@@ -1,6 +1,6 @@
 // +821012345678 -> 01012345678
 
-import assert from "assert";
+import { assert } from "../assert";
 
 /**
  * Formats a phone number to basic Korean format.
