@@ -1,6 +1,6 @@
-import assert from "assert";
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
 import { sendMessageToMatchResultChannel } from "@ieum/slack";
+import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
 import { z } from "zod";

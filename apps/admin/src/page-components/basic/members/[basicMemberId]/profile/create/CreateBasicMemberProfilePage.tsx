@@ -1,4 +1,3 @@
-import assert from "assert";
 import { Suspense, useState } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
@@ -9,7 +8,7 @@ import {
   학력_라벨,
 } from "@ieum/constants";
 import { supabase } from "@ieum/supabase";
-import { isEmptyStringOrNil } from "@ieum/utils";
+import { assert, isEmptyStringOrNil } from "@ieum/utils";
 import { nanoid } from "nanoid";
 import { Controller, useForm } from "react-hook-form";
 

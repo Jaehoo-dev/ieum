@@ -1,10 +1,9 @@
-import assert from "assert";
 import { createContext, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { auth, signOut as signOutFirebase } from "@ieum/firebase";
 import type { BasicMember } from "@ieum/prisma";
-import { globalKrToBasicKr } from "@ieum/utils";
+import { assert, globalKrToBasicKr } from "@ieum/utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { api } from "~/utils/api";

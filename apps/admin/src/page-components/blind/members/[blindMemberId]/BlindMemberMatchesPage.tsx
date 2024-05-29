@@ -1,10 +1,10 @@
-import assert from "assert";
 import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { 상태_라벨 } from "@ieum/constants";
 import type { BlindMatch } from "@ieum/prisma";
 import { Gender, MatchStatus } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
 import { BlindMemberCard } from "~/components/blind/BlindMemberCard";

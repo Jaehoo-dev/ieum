@@ -1,6 +1,6 @@
-import assert from "assert";
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
+import { assert } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Profile } from "~/components/Profile";

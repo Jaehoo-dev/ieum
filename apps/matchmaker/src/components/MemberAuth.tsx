@@ -1,4 +1,3 @@
-import assert from "assert";
 import { useEffect, useState } from "react";
 import {
   auth,
@@ -9,7 +8,7 @@ import {
   signInWithCredential,
   signInWithPhoneNumber,
 } from "@ieum/firebase";
-import { isEmptyStringOrNil, krHyphenToGlobal } from "@ieum/utils";
+import { assert, isEmptyStringOrNil, krHyphenToGlobal } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
