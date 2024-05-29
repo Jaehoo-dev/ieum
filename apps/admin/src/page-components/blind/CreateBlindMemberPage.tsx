@@ -6,7 +6,7 @@ import {
   종교_라벨,
   지역_라벨,
   체형_라벨,
-} from "@ieum/labels";
+} from "@ieum/constants";
 import {
   BlindCondition,
   BodyShape,

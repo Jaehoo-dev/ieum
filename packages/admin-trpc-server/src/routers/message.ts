@@ -1,3 +1,4 @@
+import { MATCHMAKER_URL } from "@ieum/constants";
 import { MatchStatus } from "@ieum/prisma";
 import { solapiMessageService } from "@ieum/solapi";
 import { assert } from "@ieum/utils";
@@ -42,7 +43,7 @@ export const adminMessageRouter = createTRPCRouter({
         text: `${member.name} 님 안녕하세요! 이음(구 내편소) 호스트입니다. 매칭 제안드려요 :)
 
 아래 사이트에서 상대방 프로필을 확인하시고 수락 여부를 결정해주세요.
-${process.env.NEXT_PUBLIC_MATCHMAKER_DOMAIN_HOSTNAME}
+${MATCHMAKER_URL}
 
 양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드립니다.
 

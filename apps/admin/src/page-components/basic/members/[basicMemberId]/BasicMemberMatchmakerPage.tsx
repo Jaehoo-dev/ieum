@@ -10,7 +10,7 @@ import {
   종교_라벨,
   주간_운동량_라벨,
   학력_라벨,
-} from "@ieum/labels";
+} from "@ieum/constants";
 import type { BasicMember } from "@ieum/prisma";
 import {
   AnnualIncome,

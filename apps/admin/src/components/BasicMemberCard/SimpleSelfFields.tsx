@@ -5,7 +5,7 @@ import {
   종교_라벨,
   체형_라벨,
   학력_라벨,
-} from "@ieum/labels";
+} from "@ieum/constants";
 import type { BasicMember } from "@ieum/prisma";
 import { getBmiLabel } from "@ieum/utils";
 

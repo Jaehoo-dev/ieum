@@ -8,6 +8,7 @@ import { MatchStatus } from "@ieum/prisma";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
+import { BlogLink } from "~/components/BlogLink";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -72,6 +73,9 @@ function Resolved() {
           ) : (
             <Empty />
           )}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <BlogLink />
         </div>
       </div>
       {pastMatches.length > 0 ? (

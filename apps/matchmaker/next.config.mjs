@@ -12,7 +12,7 @@ const config = {
     "@ieum/matchmaker-trpc-server",
     "@ieum/slack",
     "@ieum/utils",
-    "@ieum/labels",
+    "@ieum/constants",
   ],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },

@@ -1,4 +1,4 @@
-import { 베이직_조건_라벨 } from "@ieum/labels";
+import { 베이직_조건_라벨 } from "@ieum/constants";
 import { BasicCondition } from "@ieum/prisma";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
