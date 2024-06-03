@@ -406,11 +406,11 @@ export const basicMemberRouter = createTRPCRouter({
                   : undefined,
               },
               {
-                isSmoker: nonNegotiableConditionsSet.has(
-                  BasicCondition.IS_SMOKER_OK,
-                )
-                  ? isSmokerOk ?? undefined
-                  : undefined,
+                isSmoker:
+                  nonNegotiableConditionsSet.has(BasicCondition.IS_SMOKER_OK) &&
+                  !isSmokerOk
+                    ? false
+                    : undefined,
               },
               {
                 religion: nonNegotiableConditionsSet.has(
@@ -460,11 +460,11 @@ export const basicMemberRouter = createTRPCRouter({
                         ),
                       }
                     : undefined,
-                hasTattoo: nonNegotiableConditionsSet.has(
-                  BasicCondition.IS_TATTOO_OK,
-                )
-                  ? isTattooOk ?? undefined
-                  : undefined,
+                hasTattoo:
+                  nonNegotiableConditionsSet.has(BasicCondition.IS_TATTOO_OK) &&
+                  !isTattooOk
+                    ? false
+                    : undefined,
                 exercisePerWeek:
                   exercisePerWeek != null &&
                   nonNegotiableConditionsSet.has(
@@ -835,7 +835,7 @@ function createConditionANDClause(member: BasicMember) {
       })
       .with("IS_SMOKER_OK", () => {
         return {
-          isSmoker: member.idealIsSmokerOk,
+          isSmoker: !member.idealIsSmokerOk ? false : undefined,
         };
       })
       .with("PREFERRED_RELIGIONS", () => {
@@ -892,7 +892,7 @@ function createConditionANDClause(member: BasicMember) {
       })
       .with("IS_TATTOO_OK", () => {
         return {
-          hasTattoo: member.idealIsTattooOk,
+          hasTattoo: !member.idealIsTattooOk ? false : undefined,
         };
       })
       .with("EXERCISE_PER_WEEK", () => {
