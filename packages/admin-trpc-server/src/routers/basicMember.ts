@@ -32,6 +32,16 @@ import { z } from "zod";
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
 
 export const basicMemberRouter = createTRPCRouter({
+  getAllByGender: protectedAdminProcedure
+    .input(z.nativeEnum(Gender))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.basicMember.findMany({
+        where: {
+          gender: input,
+          status: MemberStatus.ACTIVE,
+        },
+      });
+    }),
   create: protectedAdminProcedure
     .input(
       z.object({
@@ -743,6 +753,30 @@ export const basicMemberRouter = createTRPCRouter({
         where: {
           memberId,
         },
+      });
+    }),
+  getAllNeverMatchedByGender: protectedAdminProcedure
+    .input(z.nativeEnum(Gender))
+    .query(async ({ ctx, input: gender }) => {
+      const members = await ctx.prisma.basicMember.findMany({
+        where: {
+          status: MemberStatus.ACTIVE,
+          gender,
+        },
+        include: {
+          pendingMatches: true,
+          rejectedMatches: true,
+          acceptedMatches: true,
+        },
+      });
+
+      return members.filter((member) => {
+        const hasBeenMatched =
+          member.pendingMatches.length > 0 ||
+          member.rejectedMatches.length > 0 ||
+          member.acceptedMatches.length > 0;
+
+        return !hasBeenMatched;
       });
     }),
 });
