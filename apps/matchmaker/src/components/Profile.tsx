@@ -115,7 +115,7 @@ function ImageField({
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath, {
       transform: {
-        width: 464,
+        width: 600,
         resize: "contain",
       },
     });
