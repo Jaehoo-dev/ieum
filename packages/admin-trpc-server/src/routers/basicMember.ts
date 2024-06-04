@@ -1,3 +1,4 @@
+import { auth, FirebaseAuthError } from "@ieum/firebase-admin";
 import type { BasicMember } from "@ieum/prisma";
 import {
   AnnualIncome,
@@ -26,6 +27,7 @@ import {
   Religion,
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
+import { krHyphenToGlobal } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
@@ -541,22 +543,14 @@ export const basicMemberRouter = createTRPCRouter({
           },
           include: {
             pendingMatches: true,
-            rejectedMatches: true,
-            acceptedMatches: true,
             profile: true,
           },
         });
 
-        const matches = [
-          ...member.pendingMatches,
-          ...member.rejectedMatches,
-          ...member.acceptedMatches,
-        ];
-
         await tx.basicMatch.deleteMany({
           where: {
             id: {
-              in: matches.map((match) => {
+              in: member.pendingMatches.map((match) => {
                 return match.id;
               }),
             },
@@ -583,6 +577,20 @@ export const basicMemberRouter = createTRPCRouter({
               memberId: member.id,
             },
           });
+        }
+
+        try {
+          const firebaseUser = await auth.getUserByPhoneNumber(
+            krHyphenToGlobal(member.phoneNumber),
+          );
+          await auth.deleteUser(firebaseUser.uid);
+        } catch (error) {
+          if (
+            !(error instanceof FirebaseAuthError) ||
+            error.code !== "auth/user-not-found"
+          ) {
+            throw error;
+          }
         }
 
         return tx.basicMember.update({

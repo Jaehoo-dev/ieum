@@ -49,6 +49,21 @@ export const basicMatchRouter = createTRPCRouter({
               status: {
                 in: [MatchStatus.PENDING, MatchStatus.REJECTED],
               },
+              pendingBy: {
+                every: {
+                  status: MemberStatus.ACTIVE,
+                },
+              },
+              rejectedBy: {
+                every: {
+                  status: MemberStatus.ACTIVE,
+                },
+              },
+              acceptedBy: {
+                every: {
+                  status: MemberStatus.ACTIVE,
+                },
+              },
               updatedAt: {
                 gt: subDays(new Date(), 7),
               },
@@ -62,6 +77,23 @@ export const basicMatchRouter = createTRPCRouter({
                   MatchStatus.REJECTED,
                   MatchStatus.ACCEPTED,
                 ],
+              },
+              pendingBy: {
+                every: {
+                  status: MemberStatus.ACTIVE,
+                },
+              },
+              rejectedBy: {
+                every: {
+                  status: MemberStatus.ACTIVE,
+                },
+              },
+              acceptedBy: {
+                every: {
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
+                },
               },
               updatedAt: {
                 gt: subDays(new Date(), 7),
@@ -126,7 +158,11 @@ export const basicMatchRouter = createTRPCRouter({
             include: { profile: true },
           },
           acceptedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: { profile: true },
           },
         },
