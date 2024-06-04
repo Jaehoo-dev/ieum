@@ -1,5 +1,5 @@
 {
-  "name": "@ieum/admin-trpc-server",
+  "name": "@ieum/firebase-admin",
   "version": "0.1.0",
   "private": true,
   "main": "./index.ts",
@@ -8,22 +8,11 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
+    "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ieum/admin-auth": "*",
-    "@ieum/constants": "*",
-    "@ieum/firebase-admin": "*",
-    "@ieum/prisma": "*",
-    "@ieum/solapi": "*",
-    "@ieum/supabase": "*",
-    "@ieum/utils": "*",
-    "@trpc/client": "next",
-    "@trpc/server": "next",
-    "date-fns": "^3.6.0",
-    "superjson": "1.13.1",
-    "ts-pattern": "^5.1.1",
-    "zod": "^3.22.2"
+    "firebase-admin": "^12.1.1"
   },
   "devDependencies": {
     "@acme/eslint-config": "^0.2.0",

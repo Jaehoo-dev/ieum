@@ -17,7 +17,9 @@ export const basicMemberRouter = createTRPCRouter({
       return ctx.prisma.basicMember.findUnique({
         where: {
           phoneNumber,
-          status: MemberStatus.ACTIVE,
+          status: {
+            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+          },
         },
         select: {
           id: true,
@@ -37,7 +39,9 @@ export const basicMemberRouter = createTRPCRouter({
         where: {
           memberId: input.id,
           member: {
-            status: MemberStatus.ACTIVE,
+            status: {
+              in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+            },
           },
         },
       });
