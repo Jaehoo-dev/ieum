@@ -13,7 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { BlogLink } from "./BlogLink";
+import { HomepageTipsTabLink } from "./HomepageTipsTabLink";
 
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
@@ -134,7 +134,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           {isSubmitting ? "전송중.." : "인증번호 전송"}
         </button>
       </form>
-      <BlogLink rel="noopener" />
+      <HomepageTipsTabLink rel="noopener" />
     </div>
   );
 }
