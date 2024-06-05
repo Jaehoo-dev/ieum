@@ -27,7 +27,7 @@ import {
   Religion,
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { krHyphenToGlobal } from "@ieum/utils";
+import { krToGlobal } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
@@ -581,7 +581,7 @@ export const basicMemberRouter = createTRPCRouter({
 
         try {
           const firebaseUser = await auth.getUserByPhoneNumber(
-            krHyphenToGlobal(member.phoneNumber),
+            krToGlobal(member.phoneNumber),
           );
           await auth.deleteUser(firebaseUser.uid);
         } catch (error) {

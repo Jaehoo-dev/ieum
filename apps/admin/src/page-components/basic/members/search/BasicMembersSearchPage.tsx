@@ -92,8 +92,13 @@ export function BasicMembersSearchPage() {
                       <button
                         className="rounded-md bg-yellow-500 px-4 py-2 text-white"
                         onClick={async () => {
-                          await softDelete({ id: member.id });
-                          alert("탈퇴 처리 완료");
+                          const confirmed =
+                            confirm("정말로 탈퇴 처리하시겠습니까?");
+
+                          if (confirmed) {
+                            await softDelete({ id: member.id });
+                            alert("탈퇴 처리 완료");
+                          }
                         }}
                         disabled={isInAction}
                       >
