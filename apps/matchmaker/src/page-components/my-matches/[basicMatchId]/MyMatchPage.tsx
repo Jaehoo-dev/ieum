@@ -125,7 +125,7 @@ function Buttons({
               memberId,
               matchId,
             });
-            alert("수락하셨습니다. 호스트가 연락 드릴게요!");
+            alert("수락하셨습니다. 성사되면 호스트가 연락 드릴게요!");
             void router.push("/my-matches");
           }}
           disabled={isAccepting || isRejecting}
