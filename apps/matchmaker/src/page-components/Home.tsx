@@ -26,7 +26,7 @@ export function Home() {
         <meta property="og:url" content={MATCHMAKER_URL} />
         <meta
           property="keywords"
-          content="소개팅,소개팅앱,소개팅어플,소개팅사이트,카톡소개팅,이음,소개팅서비스"
+          content="소개팅,소개팅앱,소개팅어플,소개팅사이트,카톡소개팅,이음,소개팅서비스,직장인소개팅"
         />
         <meta
           name="google-site-verification"
