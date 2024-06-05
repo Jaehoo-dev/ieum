@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
-import { BlogLink } from "~/components/BlogLink";
+import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -90,7 +90,7 @@ function Registered() {
       >
         매칭 목록 보기
       </button>
-      <BlogLink rel="noopener" />
+      <HomepageTipsTabLink rel="noopener" />
       <button
         className="font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
@@ -119,7 +119,7 @@ function Unregistered() {
       >
         알아보기
       </Link>
-      <BlogLink rel="noopener" />
+      <HomepageTipsTabLink rel="noopener" />
     </div>
   );
 }

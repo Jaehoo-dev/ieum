@@ -8,7 +8,7 @@ import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
-import { BlogLink } from "~/components/BlogLink";
+import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -75,7 +75,7 @@ function Resolved() {
           )}
         </div>
         <div className="mt-6 flex justify-center">
-          <BlogLink />
+          <HomepageTipsTabLink />
         </div>
       </div>
       {pastMatches.length > 0 ? (

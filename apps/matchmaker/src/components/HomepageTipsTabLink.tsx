@@ -5,7 +5,7 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 type Props = Omit<ComponentProps<typeof Link>, "href">;
 
-export function BlogLink({ target, rel, onClick, ...props }: Props) {
+export function HomepageTipsTabLink({ target, rel, onClick, ...props }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   return (
@@ -25,5 +25,4 @@ export function BlogLink({ target, rel, onClick, ...props }: Props) {
   );
 }
 
-export const DEFAULT_BLOG_URL =
-  "https://m.blog.naver.com/ieum-love/223459288593";
+export const DEFAULT_BLOG_URL = "https://ieum.love/tips";
