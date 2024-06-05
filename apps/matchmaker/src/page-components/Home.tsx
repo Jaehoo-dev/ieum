@@ -23,6 +23,11 @@ export function Home() {
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
         <meta property="og:description" content="나만을 위한 맞춤 소개, 이음" />
         <meta property="og:locale" content="ko_KR" />
+        <meta property="og:url" content={MATCHMAKER_URL} />
+        <meta
+          property="keywords"
+          content="소개팅,소개팅앱,소개팅어플,소개팅사이트,카톡소개팅,이음,소개팅서비스"
+        />
         <meta
           name="google-site-verification"
           content="HRlaMCw3qEkNsohFD2phsygDAqpqyd86sig2CoDlXCY"
