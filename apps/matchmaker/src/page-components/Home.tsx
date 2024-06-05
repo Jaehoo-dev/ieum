@@ -23,6 +23,10 @@ export function Home() {
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
         <meta property="og:description" content="나만을 위한 맞춤 소개, 이음" />
         <meta property="og:locale" content="ko_KR" />
+        <meta
+          name="google-site-verification"
+          content="HRlaMCw3qEkNsohFD2phsygDAqpqyd86sig2CoDlXCY"
+        />
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
         <div className="relative h-2/5 w-full md:h-full md:w-2/3">
