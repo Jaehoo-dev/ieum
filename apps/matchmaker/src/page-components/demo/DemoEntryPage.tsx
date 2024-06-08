@@ -2,19 +2,21 @@ import { useEffect } from "react";
 import type { ReactElement } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { MATCHMAKER_URL } from "@ieum/constants";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 export function DemoEntryPage() {
+  const router = useRouter();
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
     void sendMessage(
-      `체험 - 선택 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      `체험 - 선택 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
     );
-  }, [sendMessage]);
+  }, [router.query.from, sendMessage]);
 
   return (
     <>
