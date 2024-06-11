@@ -328,7 +328,7 @@ function getStatusTextColorClassName(status: MatchStatus) {
     .with("PENDING", () => "text-yellow-500")
     .with("REJECTED", () => "text-red-500")
     .with("ACCEPTED", () => "text-green-500")
-    .with("BROKEN_UP", () => "text-white")
+    .with("BROKEN_UP", () => "text-black")
     .exhaustive();
 }
 
