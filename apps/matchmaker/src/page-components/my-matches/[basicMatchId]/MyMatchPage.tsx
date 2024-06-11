@@ -47,6 +47,25 @@ function Resolved() {
     );
   }, [match.id, member.name, profile.id, sendMessage]);
 
+  useEffect(() => {
+    if (isPendingByMember || match.acceptedBy.length === 2) {
+      return;
+    }
+
+    void sendMessage(
+      `${member.name} - ${match.id} 매칭 페이지 진입 -> redirect to /my-matches`,
+    );
+
+    router.replace("/my-matches");
+  }, [
+    isPendingByMember,
+    match.acceptedBy.length,
+    match.id,
+    member.name,
+    router,
+    sendMessage,
+  ]);
+
   return (
     <div className="flex w-full flex-col">
       <Profile profile={profile} watermarkText={member.name} />
