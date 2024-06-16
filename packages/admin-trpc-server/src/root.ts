@@ -1,5 +1,6 @@
 import { basicMatchRouter } from "./routers/basicMatch";
 import { basicMemberRouter } from "./routers/basicMember";
+import { basicMemberImageRouter } from "./routers/basicMemberImage";
 import { blindMatchRouter } from "./routers/blindMatch";
 import { blindMemberRouter } from "./routers/blindMember";
 import { indexingApiRouter } from "./routers/indexingApi";
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   basicMemberRouter,
+  basicMemberImageRouter,
   basicMatchRouter,
   blindMemberRouter,
   blindMatchRouter,

@@ -1,5 +1,3 @@
-import { InputHTMLAttributes, useState } from "react";
-import Image from "next/image";
 import {
   독서량_라벨,
   성별_라벨,
@@ -30,18 +28,14 @@ import {
   PlannedNumberOfChildren,
   Religion,
 } from "@ieum/prisma";
-import { supabase } from "@ieum/supabase";
-import { assert, isEmptyStringOrNil, isMbti } from "@ieum/utils";
-import { nanoid } from "nanoid";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { Checkbox } from "~/components/Checkbox";
-import { ImageInput } from "~/components/ImageInput";
 import { Select } from "~/components/Select";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
-import { ImagePreview } from "~/page-components/basic/components/ImagePreview";
-import type { CreateBasicMemberForm } from "../CreateBasicMemberForm";
+import { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function SelfFields() {
   const {
@@ -50,16 +44,7 @@ export function SelfFields() {
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext<CreateBasicMemberForm>();
-  const [imageFile, setImageFile] = useState<File>();
-  const {
-    fields: imageBucketPathFields,
-    append: appendImageBucketPath,
-    remove: removeImageBucketPath,
-  } = useFieldArray({
-    control,
-    name: "imageBucketPaths",
-  });
+  } = useFormContext<BasicMemberForm>();
 
   return (
     <div className="flex flex-col gap-3">
@@ -697,51 +682,6 @@ export function SelfFields() {
           },
         })}
       />
-      <ImageInput
-        label="사진"
-        onChange={(file) => {
-          setImageFile(file);
-        }}
-        onRegister={async () => {
-          if (imageFile == null) {
-            return;
-          }
-
-          const { data, error } = await supabase.storage
-            .from(
-              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-            )
-            .upload(nanoid(), imageFile);
-
-          assert(error == null, error?.message);
-
-          appendImageBucketPath({ value: data.path });
-        }}
-      />
-      {imageBucketPathFields.map((field, index) => {
-        return (
-          <div key={field.id} className="flex gap-2">
-            <ImagePreview bucketPath={field.value} />
-            <button
-              type="button"
-              onClick={async () => {
-                const { error } = await supabase.storage
-                  .from(
-                    process.env
-                      .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-                  )
-                  .remove([field.value]);
-
-                assert(error == null, error?.message);
-
-                removeImageBucketPath(index);
-              }}
-            >
-              삭제
-            </button>
-          </div>
-        );
-      })}
     </div>
   );
 }

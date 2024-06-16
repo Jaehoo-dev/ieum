@@ -1,21 +1,30 @@
 import { useState } from "react";
 import type { ReactElement } from "react";
-import { calculateBmi } from "@ieum/utils";
-import { FormProvider, useForm } from "react-hook-form";
+import { supabase } from "@ieum/supabase";
+import { assert, calculateBmi } from "@ieum/utils";
+import { nanoid } from "nanoid";
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 
+import { ImageInput } from "~/components/ImageInput";
 import { Layout } from "~/components/Layout";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
-import { IdealTypeFields } from "./components/IdealTypeFields";
-import { MemoField } from "./components/MemoField";
-import { NonNegotiableConditionsField } from "./components/NonNegotiableConditionField";
-import { SelfFields } from "./components/SelfFields";
+import { IdealTypeFields } from "../../components/form/IdealTypeFields";
+import { MemoField } from "../../components/form/MemoField";
+import { NonNegotiableConditionsField } from "../../components/form/NonNegotiableConditionField";
+import { SelfFields } from "../../components/form/SelfFields";
+import { ImagePreview } from "../../components/ImagePreview";
+import { BasicMemberForm } from "../BasicMemberForm";
 import { createBasicMemberFormDefaultValues } from "./CreateBasicMemberForm";
-import type { CreateBasicMemberForm } from "./CreateBasicMemberForm";
 
 export function CreateBasicMemberPage() {
   const [done, setDone] = useState(false);
-  const methods = useForm<CreateBasicMemberForm>({
+  const methods = useForm<BasicMemberForm>({
     defaultValues: createBasicMemberFormDefaultValues,
   });
   const { mutateAsync: create } = api.basicMemberRouter.create.useMutation();
@@ -56,6 +65,7 @@ export function CreateBasicMemberPage() {
             </div>
           </div>
           <MemoField />
+          <ImageField />
           <button
             type="button"
             className="w-full rounded bg-gray-300 py-2"
@@ -85,7 +95,66 @@ export function CreateBasicMemberPage() {
   );
 }
 
-function formToPayload(form: CreateBasicMemberForm) {
+function ImageField() {
+  const { control } = useFormContext<BasicMemberForm>();
+  const [imageFile, setImageFile] = useState<File>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "imageBucketPaths",
+  });
+
+  return (
+    <>
+      <ImageInput
+        label="사진"
+        onChange={(file) => {
+          setImageFile(file);
+        }}
+        onRegister={async () => {
+          if (imageFile == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .upload(nanoid(), imageFile);
+
+          assert(error == null, error?.message);
+
+          append({ value: data.path });
+        }}
+      />
+      {fields.map((field, index) => {
+        return (
+          <div key={field.id} className="flex gap-2">
+            <ImagePreview bucketPath={field.value} />
+            <button
+              type="button"
+              onClick={async () => {
+                const { error } = await supabase.storage
+                  .from(
+                    process.env
+                      .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+                  )
+                  .remove([field.value]);
+
+                assert(error == null, error?.message);
+
+                remove(index);
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+function formToPayload(form: BasicMemberForm) {
   return {
     ...form,
     bmi:
