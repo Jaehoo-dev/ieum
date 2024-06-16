@@ -113,6 +113,7 @@ function formToPayload(form: CreateBasicMemberForm) {
     nonNegotiableConditions: form.nonNegotiableConditions.map(
       (condition) => condition.value,
     ),
+    imageBucketPaths: form.imageBucketPaths.map((path) => path.value),
   };
 }
 

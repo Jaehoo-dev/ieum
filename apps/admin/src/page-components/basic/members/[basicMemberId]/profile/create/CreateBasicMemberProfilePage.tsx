@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
@@ -7,17 +7,15 @@ import {
   종교_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import { supabase } from "@ieum/supabase";
 import { assert, isEmptyStringOrNil } from "@ieum/utils";
-import { nanoid } from "nanoid";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
+import { ImagePreview } from "~/page-components/basic/components/ImagePreview";
 import { api } from "~/utils/api";
-import { ImageField } from "../ImageField";
 import type { ProfileForm } from "../ProfileForm";
 
 export function CreateBasicMemberProfilePage() {
@@ -56,9 +54,6 @@ function Resolved() {
   const {
     register,
     control,
-    setValue,
-    setError,
-    clearErrors,
     formState: { errors },
     handleSubmit,
   } = useForm<ProfileForm>({
@@ -87,15 +82,20 @@ function Resolved() {
         religion: 종교_라벨[member.religion],
         selfIntroduction: member.selfIntroduction,
         idealTypeDescription: member.idealTypeDescription,
-        image1BucketPath: "",
-        image2BucketPath: null,
-        image3BucketPath: null,
+        memberImages: member.images.map((image) => {
+          return { value: image };
+        }),
       },
     },
   });
-  const [imageFile1, setImageFile1] = useState<File>();
-  const [imageFile2, setImageFile2] = useState<File>();
-  const [imageFile3, setImageFile3] = useState<File>();
+  const {
+    fields: memberImageFields,
+    append: appendMemberImageField,
+    remove: removeMemberImageField,
+  } = useFieldArray({
+    control,
+    name: "profile.memberImages",
+  });
 
   return (
     <div className="grid grid-cols-2 gap-12">
@@ -103,42 +103,13 @@ function Resolved() {
       <form
         className="flex flex-col gap-3"
         onSubmit={handleSubmit(async (fields) => {
-          if (isEmptyStringOrNil(fields.profile.image1BucketPath)) {
-            setError("profile.image1BucketPath", {
-              type: "required",
-              message: "사진1을 등록해주세요",
-            });
-
-            return;
-          }
-
-          if (
-            imageFile2 != null &&
-            isEmptyStringOrNil(fields.profile.image2BucketPath)
-          ) {
-            setError("profile.image2BucketPath", {
-              message: "사진2를 등록하지 않았습니다",
-            });
-
-            return;
-          }
-
-          if (
-            imageFile3 != null &&
-            isEmptyStringOrNil(fields.profile.image3BucketPath)
-          ) {
-            setError("profile.image3BucketPath", {
-              message: "사진3를 등록하지 않았습니다",
-            });
-
-            return;
-          }
-
           await createProfile({
             memberId: fields.memberId,
             profile: {
               ...fields.profile,
-              image1BucketPath: fields.profile.image1BucketPath!,
+              memberImageIds: fields.profile.memberImages.map(({ value }) => {
+                return value.id;
+              }),
             },
           });
 
@@ -287,79 +258,23 @@ function Resolved() {
             },
           })}
         />
-        <ImageField
-          label="사진1"
-          onChange={(file) => {
-            setImageFile1(file);
-          }}
-          onRegister={async () => {
-            if (imageFile1 == null) {
-              return;
-            }
-
-            const { data, error } = await supabase.storage
-              .from(
-                process.env
-                  .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-              )
-              .upload(nanoid(), imageFile1);
-
-            assert(error == null, error?.message);
-
-            setValue("profile.image1BucketPath", data.path);
-            clearErrors("profile.image1BucketPath");
-            alert("사진1 등록 완료");
-          }}
-          error={errors.profile?.image1BucketPath != null}
-        />
-        <ImageField
-          label="사진2"
-          onChange={(file) => {
-            setImageFile2(file);
-          }}
-          onRegister={async () => {
-            if (imageFile2 == null) {
-              return;
-            }
-
-            const { data, error } = await supabase.storage
-              .from(
-                process.env
-                  .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-              )
-              .upload(nanoid(), imageFile2);
-
-            assert(error == null, error?.message);
-
-            setValue("profile.image2BucketPath", data.path);
-            alert("사진2 등록 완료");
-          }}
-          error={errors.profile?.image2BucketPath != null}
-        />
-        <ImageField
-          label="사진3"
-          onChange={(file) => {
-            setImageFile3(file);
-          }}
-          onRegister={async () => {
-            if (imageFile3 == null) {
-              return;
-            }
-
-            const { data, error } = await supabase.storage
-              .from(
-                process.env
-                  .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-              )
-              .upload(nanoid(), imageFile3);
-
-            assert(error == null, error?.message);
-
-            setValue("profile.image3BucketPath", data.path);
-            alert("사진3 등록 완료");
-          }}
-          error={errors.profile?.image3BucketPath != null}
-        />
+        <div className="grid grid-cols-3 gap-2">
+          {memberImageFields.map((field, index) => {
+            return (
+              <div key={field.id} className="flex gap-2">
+                <ImagePreview bucketPath={field.value.bucketPath} />
+                <button
+                  type="button"
+                  onClick={async () => {
+                    removeMemberImageField(index);
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+            );
+          })}
+        </div>
         <button
           type="submit"
           className="mt-2 rounded bg-blue-500 px-4 py-3 text-xl font-medium text-white"

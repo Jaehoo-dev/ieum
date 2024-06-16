@@ -2,10 +2,11 @@ import Image from "next/image";
 import type { BasicMemberProfile } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
+import { BasicMemberProfileWithImages } from "~/types";
 import { Watermarks } from "./Watermarks";
 
 interface Props {
-  profile: BasicMemberProfile;
+  profile: BasicMemberProfileWithImages;
   watermarkText?: string;
 }
 
@@ -27,10 +28,9 @@ export function Profile({ profile, watermarkText }: Props) {
     religion,
     selfIntroduction,
     idealTypeDescription,
-    image1BucketPath,
-    image2BucketPath,
-    image3BucketPath,
+    member: { images },
   } = profile;
+
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <div className="flex w-full items-start gap-1">
@@ -85,19 +85,15 @@ export function Profile({ profile, watermarkText }: Props) {
           </p>
         </div>
       ) : null}
-      <ImageField bucketPath={image1BucketPath} watermarkText={watermarkText} />
-      {image2BucketPath != null ? (
-        <ImageField
-          bucketPath={image2BucketPath}
-          watermarkText={watermarkText}
-        />
-      ) : null}
-      {image3BucketPath != null ? (
-        <ImageField
-          bucketPath={image3BucketPath}
-          watermarkText={watermarkText}
-        />
-      ) : null}
+      {images.map(({ id, bucketPath }) => {
+        return (
+          <ImageField
+            key={id}
+            bucketPath={bucketPath}
+            watermarkText={watermarkText}
+          />
+        );
+      })}
     </div>
   );
 }

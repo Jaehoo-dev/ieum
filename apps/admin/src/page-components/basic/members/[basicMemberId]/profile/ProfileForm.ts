@@ -1,4 +1,4 @@
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMember, MemberImage } from "@ieum/prisma";
 
 export interface ProfileForm {
   memberId: BasicMember["id"];
@@ -19,8 +19,6 @@ export interface ProfileForm {
     religion: string;
     selfIntroduction: string | null;
     idealTypeDescription: string | null;
-    image1BucketPath: string | null;
-    image2BucketPath: string | null;
-    image3BucketPath: string | null;
+    memberImages: Array<{ value: MemberImage }>;
   };
 }
