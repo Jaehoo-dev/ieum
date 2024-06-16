@@ -245,7 +245,9 @@ function Resolved() {
         <div className="flex flex-row gap-4">
           {member.images.map((image) => {
             return (
-              <ImagePreview key={image.id} bucketPath={image.bucketPath} />
+              <div key={image.id}>
+                <ImagePreview bucketPath={image.bucketPath} />
+              </div>
             );
           })}
         </div>
