@@ -135,11 +135,24 @@ export const basicMemberRouter = createTRPCRouter({
         nonNegotiableConditions: z.array(z.nativeEnum(BasicCondition)),
         memo: z.string().nullable(),
         vouchersLeft: z.number(),
+        imageBucketPaths: z.array(z.string()),
       }),
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(({ ctx, input: { imageBucketPaths, ...rest } }) => {
       return ctx.prisma.basicMember.create({
-        data: input,
+        data: {
+          ...rest,
+          images: {
+            createMany: {
+              data: imageBucketPaths.map((bucketPath, index) => {
+                return {
+                  bucketPath,
+                  index,
+                };
+              }),
+            },
+          },
+        },
       });
     }),
   infiniteFindByGender: protectedAdminProcedure
@@ -184,6 +197,7 @@ export const basicMemberRouter = createTRPCRouter({
           id,
         },
         include: {
+          images: true,
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
@@ -558,20 +572,6 @@ export const basicMemberRouter = createTRPCRouter({
         });
 
         if (member.profile != null) {
-          const bucketPaths = [
-            member.profile.image1BucketPath,
-            member.profile.image2BucketPath,
-            member.profile.image3BucketPath,
-          ].filter((bucketPath) => {
-            return bucketPath != null;
-          }) as string[];
-
-          supabase.storage
-            .from(
-              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-            )
-            .remove(bucketPaths);
-
           await tx.basicMemberProfile.delete({
             where: {
               memberId: member.id,
@@ -636,20 +636,6 @@ export const basicMemberRouter = createTRPCRouter({
         });
 
         if (member.profile != null) {
-          const bucketPaths = [
-            member.profile.image1BucketPath,
-            member.profile.image2BucketPath,
-            member.profile.image3BucketPath,
-          ].filter((bucketPath) => {
-            return bucketPath != null;
-          }) as string[];
-
-          supabase.storage
-            .from(
-              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-            )
-            .remove(bucketPaths);
-
           await tx.basicMemberProfile.delete({
             where: {
               memberId: member.id,
@@ -697,24 +683,30 @@ export const basicMemberRouter = createTRPCRouter({
           religion: z.string(),
           selfIntroduction: z.string().nullable(),
           idealTypeDescription: z.string().nullable(),
-          image1BucketPath: z.string(),
-          image2BucketPath: z.string().nullable(),
-          image3BucketPath: z.string().nullable(),
+          memberImageIds: z.array(z.number()),
         }),
       }),
     )
-    .mutation(async ({ ctx, input: { memberId, profile } }) => {
-      return ctx.prisma.basicMemberProfile.create({
-        data: {
-          ...profile,
-          member: {
-            connect: {
-              id: memberId,
+    .mutation(
+      async ({
+        ctx,
+        input: {
+          memberId,
+          profile: { memberImageIds, ...profileData },
+        },
+      }) => {
+        return ctx.prisma.basicMemberProfile.create({
+          data: {
+            ...profileData,
+            member: {
+              connect: {
+                id: memberId,
+              },
             },
           },
-        },
-      });
-    }),
+        });
+      },
+    ),
   updateProfile: protectedAdminProcedure
     .input(
       z.object({
@@ -736,20 +728,26 @@ export const basicMemberRouter = createTRPCRouter({
           religion: z.string(),
           selfIntroduction: z.string().nullable(),
           idealTypeDescription: z.string().nullable(),
-          image1BucketPath: z.string(),
-          image2BucketPath: z.string().nullable(),
-          image3BucketPath: z.string().nullable(),
+          memberImageIds: z.array(z.number()),
         }),
       }),
     )
-    .mutation(({ ctx, input: { memberId, profile } }) => {
-      return ctx.prisma.basicMemberProfile.update({
-        where: {
+    .mutation(
+      ({
+        ctx,
+        input: {
           memberId,
+          profile: { memberImageIds, ...profileData },
         },
-        data: profile,
-      });
-    }),
+      }) => {
+        return ctx.prisma.basicMemberProfile.update({
+          where: {
+            memberId,
+          },
+          data: profileData,
+        });
+      },
+    ),
   getProfileByMemberId: protectedAdminProcedure
     .input(
       z.object({
@@ -760,6 +758,17 @@ export const basicMemberRouter = createTRPCRouter({
       return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
         where: {
           memberId,
+        },
+        include: {
+          member: {
+            select: {
+              images: {
+                orderBy: {
+                  index: "asc",
+                },
+              },
+            },
+          },
         },
       });
     }),

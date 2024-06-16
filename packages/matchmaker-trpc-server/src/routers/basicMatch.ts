@@ -151,11 +151,39 @@ export const basicMatchRouter = createTRPCRouter({
         include: {
           pendingBy: {
             where: { status: MemberStatus.ACTIVE },
-            include: { profile: true },
+            include: {
+              profile: {
+                include: {
+                  member: {
+                    select: {
+                      images: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           rejectedBy: {
             where: { status: MemberStatus.ACTIVE },
-            include: { profile: true },
+            include: {
+              profile: {
+                include: {
+                  member: {
+                    select: {
+                      images: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           acceptedBy: {
             where: {
@@ -163,7 +191,21 @@ export const basicMatchRouter = createTRPCRouter({
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
               },
             },
-            include: { profile: true },
+            include: {
+              profile: {
+                include: {
+                  member: {
+                    select: {
+                      images: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       });

@@ -50,6 +50,7 @@ export interface CreateBasicMemberForm
   idealPreferredReligions: { value: Religion }[];
   idealNonPreferredReligions: { value: Religion }[];
   nonNegotiableConditions: { value: BasicCondition }[];
+  imageBucketPaths: { value: string }[];
 }
 
 export const createBasicMemberFormDefaultValues: CreateBasicMemberForm = {
@@ -104,6 +105,7 @@ export const createBasicMemberFormDefaultValues: CreateBasicMemberForm = {
   customContactMethod: null,
   hasPet: false,
   selfIntroduction: null,
+  imageBucketPaths: [],
 
   idealMinAgeBirthYear: null,
   idealMaxAgeBirthYear: null,

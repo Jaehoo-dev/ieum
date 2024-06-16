@@ -105,18 +105,18 @@ enum Religion {
 }
 
 model BlindMember {
-  id          Int       @id @default(autoincrement())
-  nickname    String
-  gender      Gender
-  birthYear   Int
-  residence   String
-  height      Int
-  bodyShape   BodyShape
-  mbti        MBTI
-  workplace   String
-  job         String
-  isSmoker    Boolean
-  religion    Religion
+  id        Int       @id @default(autoincrement())
+  nickname  String
+  gender    Gender
+  birthYear Int
+  residence String
+  height    Int
+  bodyShape BodyShape
+  mbti      MBTI
+  workplace String
+  job       String
+  isSmoker  Boolean
+  religion  Religion
 
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
@@ -215,6 +215,7 @@ model BasicMember {
   customContactMethod     String?
   hasPet                  Boolean
   selfIntroduction        String?
+  images                  MemberImage[]
 
   idealMinAgeBirthYear         Int?
   idealMaxAgeBirthYear         Int?
@@ -287,6 +288,14 @@ model BasicMember {
   @@index([status])
 }
 
+model MemberImage {
+  id           Int           @id @default(autoincrement())
+  member       BasicMember   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId     Int
+  bucketPath   String
+  index        Int
+}
+
 enum MemberStatus {
   ACTIVE
   INACTIVE
@@ -294,9 +303,9 @@ enum MemberStatus {
 }
 
 model BasicMemberProfile {
-  id                   String      @id @default(cuid())
-  member               BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  memberId             Int         @unique
+  id                   String         @id @default(cuid())
+  member               BasicMember    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId             Int            @unique
   birthYear            Int
   residence            String
   height               Float
@@ -313,10 +322,8 @@ model BasicMemberProfile {
   religion             String
   selfIntroduction     String?
   idealTypeDescription String?
-  image1BucketPath     String
-  image2BucketPath     String?
-  image3BucketPath     String?
 }
+
 
 model BasicMatch {
   id         Int           @id @default(autoincrement())

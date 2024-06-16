@@ -8,7 +8,7 @@ interface ImageFieldProps
   error?: boolean;
 }
 
-export function ImageField({
+export function ImageInput({
   label,
   onChange,
   onRegister,
