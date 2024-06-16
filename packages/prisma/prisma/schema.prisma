@@ -293,7 +293,7 @@ model MemberImage {
   member       BasicMember   @relation(fields: [memberId], references: [id], onDelete: Cascade)
   memberId     Int
   bucketPath   String
-  index        Int
+  index        Int          @default(autoincrement())
 }
 
 enum MemberStatus {

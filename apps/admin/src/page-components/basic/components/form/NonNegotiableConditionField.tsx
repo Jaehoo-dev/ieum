@@ -2,13 +2,13 @@ import { 베이직_조건_라벨 } from "@ieum/constants";
 import { BasicCondition } from "@ieum/prisma";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import type { CreateBasicMemberForm } from "../CreateBasicMemberForm";
+import { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function NonNegotiableConditionsField() {
   const {
     control,
     formState: { errors },
-  } = useFormContext<CreateBasicMemberForm>();
+  } = useFormContext<BasicMemberForm>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "nonNegotiableConditions",

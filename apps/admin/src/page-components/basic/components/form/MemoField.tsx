@@ -1,13 +1,13 @@
 import { isEmptyStringOrNil } from "@ieum/utils";
 import { useFormContext } from "react-hook-form";
 
-import type { CreateBasicMemberForm } from "../CreateBasicMemberForm";
+import { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function MemoField() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<CreateBasicMemberForm>();
+  } = useFormContext<BasicMemberForm>();
 
   return (
     <label className="flex flex-col">

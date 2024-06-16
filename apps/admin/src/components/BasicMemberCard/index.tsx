@@ -30,7 +30,8 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <span
+            <Link
+              href={`/basic/members/${member.id}/update`}
               className={`${
                 member.status !== MemberStatus.ACTIVE
                   ? "text-gray-400"
@@ -40,7 +41,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
               } text-lg font-semibold`}
             >
               {member.name}
-            </span>
+            </Link>
             <span>|</span>
             {member.profile == null ? (
               <Link

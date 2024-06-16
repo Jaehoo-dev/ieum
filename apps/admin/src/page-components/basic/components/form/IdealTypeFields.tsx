@@ -32,7 +32,7 @@ import { Checkbox } from "~/components/Checkbox";
 import { Select } from "~/components/Select";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
-import type { CreateBasicMemberForm } from "../CreateBasicMemberForm";
+import { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function IdealTypeFields() {
   const {
@@ -42,7 +42,7 @@ export function IdealTypeFields() {
     getValues,
     setValue,
     formState: { errors },
-  } = useFormContext<CreateBasicMemberForm>();
+  } = useFormContext<BasicMemberForm>();
   const {
     fields: idealRegionFields,
     append: appendIdealRegion,
