@@ -125,6 +125,7 @@ function ImageField({
         width={480}
         height={600}
         className="rounded-lg"
+        priority={true}
       />
     </div>
   );
