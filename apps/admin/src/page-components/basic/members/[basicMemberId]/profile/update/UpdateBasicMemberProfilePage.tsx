@@ -56,12 +56,6 @@ function Resolved() {
       profile,
     },
   });
-  const { fields: memberImageFields, remove: removeMemberImageField } =
-    useFieldArray({
-      control,
-      name: "profile.memberImages",
-    });
-
   return (
     <div className="grid grid-cols-2 gap-12">
       <BasicMemberCard member={member} defaultMode="DETAILED" />
@@ -70,12 +64,7 @@ function Resolved() {
         onSubmit={handleSubmit(async (fields) => {
           await updateProfile({
             memberId: fields.memberId,
-            profile: {
-              ...fields.profile,
-              memberImageIds: fields.profile.memberImages.map(({ value }) => {
-                return value.id;
-              }),
-            },
+            profile: fields.profile,
           });
 
           alert("프로필 수정 완료");
@@ -223,20 +212,10 @@ function Resolved() {
             },
           })}
         />
-        <div className="grid grid-cols-3 gap-2">
-          {memberImageFields.map((field, index) => {
+        <div className="flex flex-row gap-4">
+          {member.images.map((image) => {
             return (
-              <div key={field.id} className="flex gap-2">
-                <ImagePreview bucketPath={field.value.bucketPath} />
-                <button
-                  type="button"
-                  onClick={async () => {
-                    removeMemberImageField(index);
-                  }}
-                >
-                  삭제
-                </button>
-              </div>
+              <ImagePreview key={image.id} bucketPath={image.bucketPath} />
             );
           })}
         </div>

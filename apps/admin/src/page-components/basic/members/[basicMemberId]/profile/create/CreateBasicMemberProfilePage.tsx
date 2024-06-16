@@ -82,19 +82,8 @@ function Resolved() {
         religion: 종교_라벨[member.religion],
         selfIntroduction: member.selfIntroduction,
         idealTypeDescription: member.idealTypeDescription,
-        memberImages: member.images.map((image) => {
-          return { value: image };
-        }),
       },
     },
-  });
-  const {
-    fields: memberImageFields,
-    append: appendMemberImageField,
-    remove: removeMemberImageField,
-  } = useFieldArray({
-    control,
-    name: "profile.memberImages",
   });
 
   return (
@@ -105,12 +94,7 @@ function Resolved() {
         onSubmit={handleSubmit(async (fields) => {
           await createProfile({
             memberId: fields.memberId,
-            profile: {
-              ...fields.profile,
-              memberImageIds: fields.profile.memberImages.map(({ value }) => {
-                return value.id;
-              }),
-            },
+            profile: fields.profile,
           });
 
           alert("프로필 생성 완료");
@@ -258,20 +242,10 @@ function Resolved() {
             },
           })}
         />
-        <div className="grid grid-cols-3 gap-2">
-          {memberImageFields.map((field, index) => {
+        <div className="flex flex-row gap-4">
+          {member.images.map((image) => {
             return (
-              <div key={field.id} className="flex gap-2">
-                <ImagePreview bucketPath={field.value.bucketPath} />
-                <button
-                  type="button"
-                  onClick={async () => {
-                    removeMemberImageField(index);
-                  }}
-                >
-                  삭제
-                </button>
-              </div>
+              <ImagePreview key={image.id} bucketPath={image.bucketPath} />
             );
           })}
         </div>

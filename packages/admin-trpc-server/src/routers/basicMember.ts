@@ -683,30 +683,21 @@ export const basicMemberRouter = createTRPCRouter({
           religion: z.string(),
           selfIntroduction: z.string().nullable(),
           idealTypeDescription: z.string().nullable(),
-          memberImageIds: z.array(z.number()),
         }),
       }),
     )
-    .mutation(
-      async ({
-        ctx,
-        input: {
-          memberId,
-          profile: { memberImageIds, ...profileData },
-        },
-      }) => {
-        return ctx.prisma.basicMemberProfile.create({
-          data: {
-            ...profileData,
-            member: {
-              connect: {
-                id: memberId,
-              },
+    .mutation(async ({ ctx, input: { memberId, profile } }) => {
+      return ctx.prisma.basicMemberProfile.create({
+        data: {
+          ...profile,
+          member: {
+            connect: {
+              id: memberId,
             },
           },
-        });
-      },
-    ),
+        },
+      });
+    }),
   updateProfile: protectedAdminProcedure
     .input(
       z.object({
@@ -728,26 +719,17 @@ export const basicMemberRouter = createTRPCRouter({
           religion: z.string(),
           selfIntroduction: z.string().nullable(),
           idealTypeDescription: z.string().nullable(),
-          memberImageIds: z.array(z.number()),
         }),
       }),
     )
-    .mutation(
-      ({
-        ctx,
-        input: {
+    .mutation(({ ctx, input: { memberId, profile } }) => {
+      return ctx.prisma.basicMemberProfile.update({
+        where: {
           memberId,
-          profile: { memberImageIds, ...profileData },
         },
-      }) => {
-        return ctx.prisma.basicMemberProfile.update({
-          where: {
-            memberId,
-          },
-          data: profileData,
-        });
-      },
-    ),
+        data: profile,
+      });
+    }),
   getProfileByMemberId: protectedAdminProcedure
     .input(
       z.object({
