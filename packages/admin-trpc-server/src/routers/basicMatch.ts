@@ -342,4 +342,34 @@ export const basicMatchRouter = createTRPCRouter({
         },
       });
     }),
+  getPendingMatchMembers: protectedAdminProcedure.query(async ({ ctx }) => {
+    const matches = await ctx.prisma.basicMatch.findMany({
+      where: {
+        status: MatchStatus.PENDING,
+      },
+      select: {
+        pendingBy: {
+          select: {
+            id: true,
+            name: true,
+            phoneNumber: true,
+          },
+        },
+      },
+    });
+
+    const result = new Map();
+
+    matches.forEach((match) => {
+      match.pendingBy.forEach((member) => {
+        if (result.has(member.id)) {
+          return;
+        }
+
+        result.set(member.id, member);
+      });
+    });
+
+    return Array.from(result.values());
+  }),
 });

@@ -8,6 +8,10 @@ export function Sidebar() {
   return (
     <aside className="fixed bottom-0 left-0 top-0 flex h-screen w-40 flex-col justify-between  overflow-auto bg-gray-100 p-4">
       <div className="flex flex-col gap-4">
+        <Link href="/messaging" className="text-blue-600 hover:underline">
+          메시지 보내기
+        </Link>
+        <hr />
         <Link href="/basic/members" className="text-blue-600 hover:underline">
           베이직 회원 목록
         </Link>

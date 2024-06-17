@@ -47,8 +47,27 @@ ${MATCHMAKER_URL}
 
 양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드립니다.
 
-감사합니다!
-        `,
+감사합니다!`,
       });
+    }),
+  sendMessages: protectedAdminProcedure
+    .input(
+      z.array(
+        z.object({
+          to: z.string(),
+          subject: z.string().optional(),
+          text: z.string(),
+        }),
+      ),
+    )
+    .mutation(({ input }) => {
+      return solapiMessageService.send(
+        input.map((messageData) => {
+          return {
+            from: process.env.ADMIN_PHONE_NUMBER,
+            ...messageData,
+          };
+        }),
+      );
     }),
 });
