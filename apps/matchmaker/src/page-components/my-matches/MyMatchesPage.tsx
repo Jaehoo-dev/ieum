@@ -25,9 +25,24 @@ export function MyMatchesPage() {
           내 프로필 보기
         </Link>
         <hr className="w-full" />
+        <Description />
+        <hr className="w-full" />
         <Resolved />
       </div>
     </Suspense>
+  );
+}
+
+function Description() {
+  return (
+    <div className="flex w-full flex-col gap-2">
+      <h2 className="text-xl font-semibold text-gray-800">안내</h2>
+      <div className="flex flex-col gap-2 text-gray-800">
+        <p>🟡 응답 대기 중</p>
+        <p>🔴 본인 또는 상대방이 거절</p>
+        <p>🟢 소개 성사</p>
+      </div>
+    </div>
   );
 }
 
