@@ -115,7 +115,7 @@ function ImageSection({
   watermarkText?: string;
 }) {
   return (
-    <AccordionSection title="마지막으로 제 모습은요">
+    <AccordionSection title="제 모습은요">
       <div className="flex flex-col gap-4">
         {images.map(({ id, bucketPath }) => {
           return (
