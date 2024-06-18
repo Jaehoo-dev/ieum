@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { assert } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
-import { Profile } from "~/components/Profile";
+import { Profile } from "~/components/profile/Profile";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";

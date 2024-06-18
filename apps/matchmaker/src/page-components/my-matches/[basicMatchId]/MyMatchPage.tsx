@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { assert } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
-import { Profile } from "~/components/Profile";
+import { Profile } from "~/components/profile/Profile";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
