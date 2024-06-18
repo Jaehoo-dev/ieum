@@ -89,15 +89,18 @@ function Resolved() {
             <Empty />
           )}
         </div>
-        <div className="mt-6 flex justify-center">
-          <HomepageTipsTabLink />
-        </div>
       </div>
       {pastMatches.length > 0 ? (
         <>
           <hr className="w-full" />
           <div className="flex w-full flex-col gap-2">
             <h2 className="text-xl font-semibold text-gray-800">지난 매칭</h2>
+            <div className="flex w-full items-start gap-1">
+              <p className="text-md text-gray-700">※</p>
+              <p className="text-md text-gray-700">
+                응답 대기 중 또는 거절 프로필은 조회할 수 없습니다.
+              </p>
+            </div>
             <div className="flex w-full flex-col items-center gap-4">
               {pastMatches.map((match) => {
                 return (
@@ -117,6 +120,9 @@ function Resolved() {
           </div>
         </>
       ) : null}
+      <div className="mt-4 flex justify-center">
+        <HomepageTipsTabLink />
+      </div>
     </div>
   );
 }
