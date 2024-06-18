@@ -289,11 +289,11 @@ model BasicMember {
 }
 
 model MemberImage {
-  id           Int           @id @default(autoincrement())
-  member       BasicMember   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  memberId     Int
-  bucketPath   String
-  index        Int          @default(autoincrement())
+  id         Int         @id @default(autoincrement())
+  member     BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId   Int
+  bucketPath String
+  index      Int
 }
 
 enum MemberStatus {
@@ -303,9 +303,9 @@ enum MemberStatus {
 }
 
 model BasicMemberProfile {
-  id                   String         @id @default(cuid())
-  member               BasicMember    @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  memberId             Int            @unique
+  id                   String      @id @default(cuid())
+  member               BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId             Int         @unique
   birthYear            Int
   residence            String
   height               Float
@@ -323,7 +323,6 @@ model BasicMemberProfile {
   selfIntroduction     String?
   idealTypeDescription String?
 }
-
 
 model BasicMatch {
   id         Int           @id @default(autoincrement())

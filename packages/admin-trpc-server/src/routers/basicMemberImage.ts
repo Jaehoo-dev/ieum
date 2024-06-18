@@ -8,6 +8,7 @@ export const basicMemberImageRouter = createTRPCRouter({
       z.object({
         memberId: z.number(),
         bucketPath: z.string(),
+        index: z.number(),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -19,6 +20,7 @@ export const basicMemberImageRouter = createTRPCRouter({
             },
           },
           bucketPath: input.bucketPath,
+          index: input.index,
         },
       });
     }),
@@ -32,6 +34,23 @@ export const basicMemberImageRouter = createTRPCRouter({
       return ctx.prisma.memberImage.delete({
         where: {
           id: input.id,
+        },
+      });
+    }),
+  updateIndex: protectedAdminProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        index: z.number(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.memberImage.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          index: input.index,
         },
       });
     }),
