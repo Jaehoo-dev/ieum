@@ -24,7 +24,10 @@ export function Profile({ profile, watermarkText }: Props) {
       {selfIntroduction != null ? (
         <SelfIntroductionSection content={selfIntroduction} />
       ) : null}
-      <PersonalInformationSection profile={profile} />
+      <PersonalInformationSection
+        profile={profile}
+        initiallyOpened={selfIntroduction == null}
+      />
       {idealTypeDescription != null ? (
         <IdealTypeDescriptionSection content={idealTypeDescription} />
       ) : null}
@@ -34,8 +37,10 @@ export function Profile({ profile, watermarkText }: Props) {
 }
 
 function PersonalInformationSection({
+  initiallyOpened,
   profile,
 }: {
+  initiallyOpened: boolean;
   profile: BasicMemberProfileWithImages;
 }) {
   const {
@@ -56,7 +61,10 @@ function PersonalInformationSection({
   } = profile;
 
   return (
-    <AccordionSection title="저는 이런 사람이에요">
+    <AccordionSection
+      title="저는 이런 사람이에요"
+      initiallyOpened={initiallyOpened}
+    >
       <div className="flex flex-col gap-0.5">
         <DataField label="나이" value={`${birthYear}년생`} />
         <DataField label="사는 곳" value={`${residence}`} />
@@ -89,7 +97,7 @@ function PersonalInformationSection({
 
 function SelfIntroductionSection({ content }: { content: string }) {
   return (
-    <AccordionSection title="안녕하세요">
+    <AccordionSection title="안녕하세요" initiallyOpened={true}>
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
