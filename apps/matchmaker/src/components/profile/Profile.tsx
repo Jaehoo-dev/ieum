@@ -1,9 +1,10 @@
 import Image from "next/image";
-import type { BasicMemberProfile } from "@ieum/prisma";
+import type { BasicMemberProfile, MemberImage } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 import { BasicMemberProfileWithImages } from "~/types";
-import { Watermarks } from "./Watermarks";
+import { Watermarks } from "../Watermarks";
+import { AccordionSection } from "./AccordionSection";
 
 interface Props {
   profile: BasicMemberProfileWithImages;
@@ -11,6 +12,32 @@ interface Props {
 }
 
 export function Profile({ profile, watermarkText }: Props) {
+  const {
+    selfIntroduction,
+    idealTypeDescription,
+    member: { images },
+  } = profile;
+
+  return (
+    <div className="flex w-full flex-col items-center gap-4">
+      <Warning />
+      {selfIntroduction != null ? (
+        <SelfIntroductionSection content={selfIntroduction} />
+      ) : null}
+      <PersonalInformationSection profile={profile} />
+      {idealTypeDescription != null ? (
+        <IdealTypeDescriptionSection content={idealTypeDescription} />
+      ) : null}
+      <ImageSection images={images} watermarkText={watermarkText} />
+    </div>
+  );
+}
+
+function PersonalInformationSection({
+  profile,
+}: {
+  profile: BasicMemberProfileWithImages;
+}) {
   const {
     birthYear,
     residence,
@@ -26,22 +53,11 @@ export function Profile({ profile, watermarkText }: Props) {
     datingStyle,
     isSmoker,
     religion,
-    selfIntroduction,
-    idealTypeDescription,
-    member: { images },
   } = profile;
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <div className="flex w-full items-start gap-1">
-        <p className="text-md text-gray-800">※</p>
-        <p className="text-md text-gray-800">
-          스크린 캡처 및 무단 유출을 절대 금지합니다. 무단 유출 시 로그와
-          워터마크로 추적이 가능하며 법적 책임을 질 수 있습니다.
-        </p>
-      </div>
-      <div className="flex w-full flex-col gap-1 rounded-lg border-2 border-primary-500 p-4">
-        <p className="text-xl font-semibold text-gray-900">인적사항</p>
+    <AccordionSection title="인적사항">
+      <div className="flex flex-col gap-0.5">
         <DataField label="나이" value={`${birthYear}년생`} />
         <DataField label="사는 곳" value={`${residence}`} />
         <DataField label="키" value={`${height}cm`} />
@@ -67,34 +83,51 @@ export function Profile({ profile, watermarkText }: Props) {
         <DataField label="흡연 여부" value={isSmoker} />
         {religion != null ? <DataField label="종교" value={religion} /> : null}
       </div>
-      {selfIntroduction != null ? (
-        <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-4">
-          <p className="text-xl font-semibold text-gray-900">자기소개</p>
-          <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
-            {selfIntroduction}
-          </p>
-        </div>
-      ) : null}
-      {idealTypeDescription != null ? (
-        <div className="flex w-full flex-col gap-2 rounded-lg border-2 border-primary-500 p-4">
-          <p className="text-xl font-semibold text-gray-900">
-            만나고 싶은 이성상
-          </p>
-          <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
-            {idealTypeDescription}
-          </p>
-        </div>
-      ) : null}
-      {images.map(({ id, bucketPath }) => {
-        return (
-          <ImageField
-            key={id}
-            bucketPath={bucketPath}
-            watermarkText={watermarkText}
-          />
-        );
-      })}
-    </div>
+    </AccordionSection>
+  );
+}
+
+function SelfIntroductionSection({ content }: { content: string }) {
+  return (
+    <AccordionSection title="자기소개">
+      <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
+        {content}
+      </p>
+    </AccordionSection>
+  );
+}
+
+function IdealTypeDescriptionSection({ content }: { content: string }) {
+  return (
+    <AccordionSection title="만나고 싶은 이성상">
+      <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
+        {content}
+      </p>
+    </AccordionSection>
+  );
+}
+
+function ImageSection({
+  images,
+  watermarkText,
+}: {
+  images: MemberImage[];
+  watermarkText?: string;
+}) {
+  return (
+    <AccordionSection title="모습">
+      <div className="flex flex-col gap-4">
+        {images.map(({ id, bucketPath }) => {
+          return (
+            <ImageField
+              key={id}
+              bucketPath={bucketPath}
+              watermarkText={watermarkText}
+            />
+          );
+        })}
+      </div>
+    </AccordionSection>
   );
 }
 
@@ -125,7 +158,6 @@ function ImageField({
         width={480}
         height={600}
         className="rounded-lg"
-        priority={true}
       />
     </div>
   );
@@ -137,5 +169,17 @@ function DataField({ label, value }: { label: string; value: string }) {
       <p className="text-lg text-gray-900">•</p>
       <p className="text-lg text-gray-900">{`${label}: ${value}`}</p>
     </span>
+  );
+}
+
+function Warning() {
+  return (
+    <div className="flex w-full items-start gap-1">
+      <p className="text-md text-gray-800">※</p>
+      <p className="text-md text-gray-800">
+        스크린 캡처 및 무단 유출을 절대 금지합니다. 무단 유출 시 로그와
+        워터마크로 추적이 가능하며 법적 책임을 질 수 있습니다.
+      </p>
+    </div>
   );
 }
