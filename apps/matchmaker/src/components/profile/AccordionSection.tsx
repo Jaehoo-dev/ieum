@@ -3,12 +3,13 @@ import { ReactNode, useState } from "react";
 import { Chevron } from "../Chevron";
 
 interface Props {
+  initiallyOpened?: boolean;
   title: string;
   children: ReactNode;
 }
 
-export function AccordionSection({ title, children }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
+export function AccordionSection({ initiallyOpened, title, children }: Props) {
+  const [isOpen, setIsOpen] = useState(initiallyOpened ?? false);
 
   return (
     <div className="flex w-full flex-col rounded-lg border-2 border-primary-500 p-4">
