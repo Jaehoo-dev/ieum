@@ -56,7 +56,7 @@ function PersonalInformationSection({
   } = profile;
 
   return (
-    <AccordionSection title="인적사항">
+    <AccordionSection title="저는 이런 사람이에요">
       <div className="flex flex-col gap-0.5">
         <DataField label="나이" value={`${birthYear}년생`} />
         <DataField label="사는 곳" value={`${residence}`} />
@@ -89,7 +89,7 @@ function PersonalInformationSection({
 
 function SelfIntroductionSection({ content }: { content: string }) {
   return (
-    <AccordionSection title="자기소개">
+    <AccordionSection title="안녕하세요">
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
@@ -99,7 +99,7 @@ function SelfIntroductionSection({ content }: { content: string }) {
 
 function IdealTypeDescriptionSection({ content }: { content: string }) {
   return (
-    <AccordionSection title="만나고 싶은 이성상">
+    <AccordionSection title="이런 분을 만나고 싶어요">
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
@@ -115,7 +115,7 @@ function ImageSection({
   watermarkText?: string;
 }) {
   return (
-    <AccordionSection title="모습">
+    <AccordionSection title="마지막으로 제 모습은요">
       <div className="flex flex-col gap-4">
         {images.map(({ id, bucketPath }) => {
           return (
