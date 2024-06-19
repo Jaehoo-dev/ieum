@@ -32,7 +32,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             {member.images[0] != null ? (
-              <Avatar image={member.images[0]} />
+              <Avatar image={member.images[0]} style={{ marginRight: "4px" }} />
             ) : null}
             <Link
               href={`/basic/members/${member.id}/update`}
