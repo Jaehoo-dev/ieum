@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /$
-Allow: /demo/
-Disallow: /
+Allow: /
+Disallow: /my-profile/
+Disallow: /my-matches/
