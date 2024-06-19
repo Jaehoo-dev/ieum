@@ -16,7 +16,10 @@ ${MATCHMAKER_URL}
 
 양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드립니다.
 
-감사합니다!`;
+감사합니다!
+
+자주 묻는 질문
+https://ieum.love/faq`;
 
 interface Form {
   subject: string;
