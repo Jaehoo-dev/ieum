@@ -108,7 +108,7 @@ export function TipsPage() {
               이음 소개팅이 궁금하다면?
             </p>
             <Link
-              href={`${MATCHMAKER_URL}/demo?from=tips`}
+              href="/demo?from=tips"
               className="rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
             >
               매칭 구경하기

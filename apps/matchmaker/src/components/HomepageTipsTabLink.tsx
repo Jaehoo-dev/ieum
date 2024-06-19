@@ -10,7 +10,7 @@ export function HomepageTipsTabLink({ target, rel, onClick, ...props }: Props) {
 
   return (
     <Link
-      href={DEFAULT_BLOG_URL}
+      href="/tips"
       className="text-lg text-gray-500 underline hover:text-gray-700"
       target={target ?? "_blank"}
       rel={rel ?? "noopener noreferrer"}
@@ -24,5 +24,3 @@ export function HomepageTipsTabLink({ target, rel, onClick, ...props }: Props) {
     </Link>
   );
 }
-
-export const DEFAULT_BLOG_URL = "https://ieum.love/tips";
