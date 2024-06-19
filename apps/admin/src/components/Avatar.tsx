@@ -20,6 +20,7 @@ export function Avatar({ image }: { image: MemberImage }) {
       src={publicUrl}
       alt="프로필 사진"
       width={크기}
+      height={크기}
       className="rounded-full"
     />
   );
