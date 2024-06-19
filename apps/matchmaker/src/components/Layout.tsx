@@ -15,7 +15,7 @@ export function Layout({ children, title }: Props) {
       </Head>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
         <Header title={title} />
-        <div className="mt-16 w-full p-6">{children}</div>
+        <main className="mt-16 w-full p-6">{children}</main>
       </div>
     </>
   );
@@ -27,8 +27,8 @@ interface HeaderProps {
 
 function Header({ title }: HeaderProps) {
   return (
-    <div className="shadow-xs fixed top-0 z-10 flex h-16 w-full items-center justify-center border-b border-b-gray-200 bg-white">
+    <header className="shadow-xs fixed top-0 z-10 flex h-16 w-full items-center justify-center border-b border-b-gray-200 bg-white">
       <h1 className="text-3xl font-semibold text-gray-700">{title}</h1>
-    </div>
+    </header>
   );
 }
