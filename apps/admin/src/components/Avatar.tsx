@@ -3,7 +3,11 @@ import { supabase } from "@ieum/supabase";
 
 const 크기 = 100;
 
-export function Avatar({ image }: { image: MemberImage }) {
+interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
+  image: MemberImage;
+}
+
+export function Avatar({ image, ...props }: Props) {
   const {
     data: { publicUrl },
   } = supabase.storage
@@ -22,6 +26,7 @@ export function Avatar({ image }: { image: MemberImage }) {
       width={크기}
       height={크기}
       className="rounded-full"
+      {...props}
     />
   );
 }
