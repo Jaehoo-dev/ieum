@@ -160,7 +160,7 @@ function ImageField({
   return (
     <div className="relative max-w-xl">
       {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
-      <Image
+      <img
         src={publicUrl}
         alt="프로필 이미지"
         width={480}

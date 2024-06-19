@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { supabase } from "@ieum/supabase";
 
 export function ImagePreview({ bucketPath }: { bucketPath: string }) {
@@ -13,5 +12,5 @@ export function ImagePreview({ bucketPath }: { bucketPath: string }) {
       },
     });
 
-  return <Image src={publicUrl} alt="사진" width={200} height={200} />;
+  return <img src={publicUrl} alt="사진" width={200} height={200} />;
 }

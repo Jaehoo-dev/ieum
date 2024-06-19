@@ -1,6 +1,5 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
@@ -35,7 +34,7 @@ export function Home() {
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
         <div className="relative h-2/5 w-full md:h-full md:w-2/3">
-          <Image
+          <img
             src="/heart.webp"
             width={1920}
             height={1080}
