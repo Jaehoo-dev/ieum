@@ -2,12 +2,12 @@ import type { BasicMatch, BasicMember } from "@ieum/prisma";
 
 import type {
   BasicMatchWithMembers,
-  BasicMemberWithMatches,
+  BasicMemberWithJoined,
 } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 
 interface Props {
-  actionMember: BasicMemberWithMatches;
+  actionMember: BasicMemberWithJoined;
   match: BasicMatchWithMembers;
 }
 

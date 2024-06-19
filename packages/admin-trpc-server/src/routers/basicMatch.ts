@@ -58,6 +58,12 @@ export const basicMatchRouter = createTRPCRouter({
               rejectedMatches: true,
               acceptedMatches: true,
               profile: true,
+              images: {
+                take: 1,
+                where: {
+                  index: 0,
+                },
+              },
             },
           },
           rejectedBy: {
@@ -66,6 +72,12 @@ export const basicMatchRouter = createTRPCRouter({
               rejectedMatches: true,
               acceptedMatches: true,
               profile: true,
+              images: {
+                take: 1,
+                where: {
+                  index: 0,
+                },
+              },
             },
           },
           acceptedBy: {
@@ -74,6 +86,12 @@ export const basicMatchRouter = createTRPCRouter({
               rejectedMatches: true,
               acceptedMatches: true,
               profile: true,
+              images: {
+                take: 1,
+                where: {
+                  index: 0,
+                },
+              },
             },
           },
         },
@@ -155,6 +173,12 @@ export const basicMatchRouter = createTRPCRouter({
                 rejectedMatches: true,
                 acceptedMatches: true,
                 profile: true,
+                images: {
+                  take: 1,
+                  where: {
+                    index: 0,
+                  },
+                },
               },
             },
             rejectedBy: {
@@ -163,6 +187,12 @@ export const basicMatchRouter = createTRPCRouter({
                 rejectedMatches: true,
                 acceptedMatches: true,
                 profile: true,
+                images: {
+                  take: 1,
+                  where: {
+                    index: 0,
+                  },
+                },
               },
             },
             acceptedBy: {
@@ -171,6 +201,12 @@ export const basicMatchRouter = createTRPCRouter({
                 rejectedMatches: true,
                 acceptedMatches: true,
                 profile: true,
+                images: {
+                  take: 1,
+                  where: {
+                    index: 0,
+                  },
+                },
               },
             },
           },
