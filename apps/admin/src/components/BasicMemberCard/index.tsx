@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { BasicMatch } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 
-import type { BasicMemberWithMatches } from "~/domains/basic/types";
+import type { BasicMemberWithJoined } from "~/domains/basic/types";
+import { Avatar } from "../Avatar";
 import { DetailedSelfFields } from "./DetailedSelfFields";
 import { IdealTypeFields } from "./IdealTypeFields";
 import { SimpleSelfFields } from "./SimpleSelfFields";
@@ -11,7 +12,7 @@ import { SimpleSelfFields } from "./SimpleSelfFields";
 type Mode = "SIMPLE" | "DETAILED";
 
 interface Props {
-  member: BasicMemberWithMatches;
+  member: BasicMemberWithJoined;
   defaultMode?: Mode;
 }
 
@@ -30,6 +31,9 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
+            {member.images[0] != null ? (
+              <Avatar image={member.images[0]} />
+            ) : null}
             <Link
               href={`/basic/members/${member.id}/update`}
               className={`${

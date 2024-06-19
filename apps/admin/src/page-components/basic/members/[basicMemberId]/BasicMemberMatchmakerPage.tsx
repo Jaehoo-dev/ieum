@@ -45,7 +45,7 @@ import { Checkbox } from "~/components/Checkbox";
 import { Layout } from "~/components/Layout";
 import { Select } from "~/components/Select";
 import { TextInput } from "~/components/TextInput";
-import type { BasicMemberWithMatches } from "~/domains/basic/types";
+import type { BasicMemberWithJoined } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 
 interface CustomCanditatesSearchForm {
@@ -228,7 +228,7 @@ export function BasicMemberMatchmakerPage() {
                   return (
                     <div key={member.id} className="flex w-full gap-4">
                       <BasicMemberCard
-                        member={member as BasicMemberWithMatches}
+                        member={member as BasicMemberWithJoined}
                       />
                       <div className="flex flex-col gap-2">
                         <button

@@ -279,6 +279,12 @@ export const basicMemberRouter = createTRPCRouter({
           rejectedMatches: true,
           acceptedMatches: true,
           profile: true,
+          images: {
+            take: 1,
+            where: {
+              index: 0,
+            },
+          },
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
@@ -321,6 +327,12 @@ export const basicMemberRouter = createTRPCRouter({
           rejectedMatches: true,
           acceptedMatches: true,
           profile: true,
+          images: {
+            take: 1,
+            where: {
+              index: 0,
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -387,6 +399,12 @@ export const basicMemberRouter = createTRPCRouter({
           rejectedMatches: true,
           acceptedMatches: true,
           profile: true,
+          images: {
+            take: 1,
+            where: {
+              index: 0,
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
