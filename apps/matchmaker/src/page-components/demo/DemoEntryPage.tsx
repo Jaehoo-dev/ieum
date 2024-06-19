@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { MATCHMAKER_URL } from "@ieum/constants";
 
 import { Layout } from "~/components/Layout";
+import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 export function DemoEntryPage() {
@@ -28,10 +29,11 @@ export function DemoEntryPage() {
         <meta property="og:description" content="이음 매칭 체험" />
         <meta property="og:locale" content="ko_KR" />
       </Head>
-      <div className="flex w-full flex-col gap-6">
-        <h1 className="mt-2 text-center text-2xl font-semibold text-gray-700">
+      <div className="flex w-full flex-col">
+        <h2 className="mt-2 text-center text-2xl font-semibold text-gray-700">
           본인의 성별을 선택해주세요
-        </h1>
+        </h2>
+        <Spacing size={24} />
         <div className="flex flex-row gap-2">
           <Link
             href="/demo/match?my-gender=male"
@@ -52,6 +54,13 @@ export function DemoEntryPage() {
             여성
           </Link>
         </div>
+        <Spacing size={32} />
+        <Link
+          href="/tips?from=demo-entry"
+          className="text-center text-lg text-gray-600 underline hover:text-gray-800"
+        >
+          소개팅 꿀팁 보러 가기
+        </Link>
       </div>
     </>
   );
