@@ -56,10 +56,12 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
               </Link>
             ) : (
               <Link
-                href={`/basic/members/${member.id}/profile/update`}
+                href={`/basic/members/${member.id}/profile`}
+                target="_blank"
+                rel="noreferrer noopener"
                 className="text-blue-600 hover:underline"
               >
-                프로필 수정
+                프로필 보기
               </Link>
             )}
           </div>
