@@ -1,9 +1,9 @@
 import type { MemberImage } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
-import { BasicMemberProfileWithImages } from "~/types";
-import { Watermarks } from "../Watermarks";
-import { AccordionSection } from "./AccordionSection";
+import { AccordionSection } from "./components/AccordionSection";
+import { Watermarks } from "./components/Watermarks";
+import { BasicMemberProfileWithImages } from "./types";
 
 interface Props {
   profile: BasicMemberProfileWithImages;
