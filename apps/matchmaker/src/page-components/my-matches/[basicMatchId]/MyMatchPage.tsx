@@ -6,6 +6,7 @@ import { assert } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
+import { Warning } from "~/components/Warning";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
@@ -68,20 +69,20 @@ function Resolved() {
 
   return (
     <div className="flex w-full flex-col">
+      <Warning />
+      <Spacing size={16} />
       <Profile profile={profile} watermarkText={member.name} />
+      <Spacing size={108} />
       {isPendingByMember ? (
-        <>
-          <Spacing size={108} />
-          <Buttons
-            memberId={member.id}
-            onRejectClick={() => {
-              void sendMessage(`${member.name} - ${match.id} 매칭 거절 클릭`);
-            }}
-            onAcceptClick={() => {
-              void sendMessage(`${member.name} - ${match.id} 매칭 수락 클릭`);
-            }}
-          />
-        </>
+        <Buttons
+          memberId={member.id}
+          onRejectClick={() => {
+            void sendMessage(`${member.name} - ${match.id} 매칭 거절 클릭`);
+          }}
+          onAcceptClick={() => {
+            void sendMessage(`${member.name} - ${match.id} 매칭 수락 클릭`);
+          }}
+        />
       ) : null}
     </div>
   );
