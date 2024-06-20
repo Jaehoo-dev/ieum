@@ -681,6 +681,7 @@ export function SelfFields() {
             return isEmptyStringOrNil(value) ? null : value;
           },
         })}
+        rows={4}
       />
     </div>
   );
