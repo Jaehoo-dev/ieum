@@ -1,5 +1,4 @@
-import Image from "next/image";
-import type { BasicMemberProfile, MemberImage } from "@ieum/prisma";
+import type { MemberImage } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 import { BasicMemberProfileWithImages } from "~/types";
