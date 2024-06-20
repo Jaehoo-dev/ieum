@@ -59,9 +59,8 @@ export const basicMatchRouter = createTRPCRouter({
               acceptedMatches: true,
               profile: true,
               images: {
-                take: 1,
-                where: {
-                  index: 0,
+                orderBy: {
+                  index: "asc",
                 },
               },
             },
@@ -73,9 +72,8 @@ export const basicMatchRouter = createTRPCRouter({
               acceptedMatches: true,
               profile: true,
               images: {
-                take: 1,
-                where: {
-                  index: 0,
+                orderBy: {
+                  index: "asc",
                 },
               },
             },
@@ -87,9 +85,8 @@ export const basicMatchRouter = createTRPCRouter({
               acceptedMatches: true,
               profile: true,
               images: {
-                take: 1,
-                where: {
-                  index: 0,
+                orderBy: {
+                  index: "asc",
                 },
               },
             },
@@ -174,9 +171,8 @@ export const basicMatchRouter = createTRPCRouter({
                 acceptedMatches: true,
                 profile: true,
                 images: {
-                  take: 1,
-                  where: {
-                    index: 0,
+                  orderBy: {
+                    index: "asc",
                   },
                 },
               },
@@ -188,9 +184,8 @@ export const basicMatchRouter = createTRPCRouter({
                 acceptedMatches: true,
                 profile: true,
                 images: {
-                  take: 1,
-                  where: {
-                    index: 0,
+                  orderBy: {
+                    index: "asc",
                   },
                 },
               },
@@ -202,9 +197,8 @@ export const basicMatchRouter = createTRPCRouter({
                 acceptedMatches: true,
                 profile: true,
                 images: {
-                  take: 1,
-                  where: {
-                    index: 0,
+                  orderBy: {
+                    index: "asc",
                   },
                 },
               },

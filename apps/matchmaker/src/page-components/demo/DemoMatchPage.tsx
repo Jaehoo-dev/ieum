@@ -6,6 +6,7 @@ import { isEmptyStringOrNil } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
+import { Warning } from "~/components/Warning";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
 
@@ -26,6 +27,8 @@ export function DemoMatchPage() {
 
   return (
     <div className="flex w-full flex-col">
+      <Warning />
+      <Spacing size={16} />
       {profile != null ? (
         <Profile profile={profile} watermarkText="체험중" />
       ) : null}
