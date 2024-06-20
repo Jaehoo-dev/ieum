@@ -263,7 +263,7 @@ export const basicMemberRouter = createTRPCRouter({
     .input(
       z.object({
         gender: z.nativeEnum(Gender),
-        limit: z.number().min(1).max(100).default(10),
+        limit: z.number().min(1).max(100).default(3),
         cursor: z.number().optional(),
       }),
     )
@@ -652,6 +652,12 @@ export const basicMemberRouter = createTRPCRouter({
             rejectedMatches: true,
             acceptedMatches: true,
             profile: true,
+            images: {
+              take: 1,
+              where: {
+                index: 0,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
