@@ -94,10 +94,11 @@ export function TipsPage() {
             </p>
             <button
               className="rounded-lg border border-gray-700 p-3 text-xl font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
-              onClick={() => {
-                navigator.clipboard.writeText(
+              onClick={async () => {
+                await navigator.clipboard.writeText(
                   `${window.location.origin}${window.location.pathname}?from=share`,
                 );
+                alert("링크를 복사했어요!");
               }}
             >
               링크 복사
