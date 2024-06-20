@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BasicMember, MemberImage } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { assert } from "@ieum/utils";
+import { assert, isEmptyStringOrNil } from "@ieum/utils";
 import { nanoid } from "nanoid";
 
 import { ImageInput } from "~/components/ImageInput";
@@ -46,6 +46,7 @@ export function ImagesField({ memberId }: Props) {
               <div key={image.id} className="flex flex-col gap-2">
                 <ImagePreview bucketPath={image.bucketPath} />
                 <ImageIndexField image={image} />
+                <ImageCustomIndexField image={image} />
                 <button
                   className="rounded bg-red-500 py-1 text-white"
                   onClick={async () => {
@@ -111,8 +112,9 @@ function ImageIndexField({ image }: { image: MemberImage }) {
     api.basicMemberImageRouter.updateIndex.useMutation();
 
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="flex flex-row items-end gap-2">
       <TextInput
+        label="순서"
         style={{ width: "80px" }}
         type="number"
         value={value}
@@ -126,6 +128,42 @@ function ImageIndexField({ image }: { image: MemberImage }) {
           await updateImageIndex({
             id: image.id,
             index: value,
+          });
+        }}
+        disabled={isPending}
+      >
+        수정
+      </button>
+    </div>
+  );
+}
+
+function ImageCustomIndexField({ image }: { image: MemberImage }) {
+  const [value, setValue] = useState(image.customWidth);
+  const { mutateAsync: updateImageWidth, isPending } =
+    api.basicMemberImageRouter.updateCustomWidth.useMutation();
+
+  return (
+    <div className="flex flex-row items-end gap-2">
+      <TextInput
+        label="너비"
+        style={{ width: "80px" }}
+        type="number"
+        value={value ?? ""}
+        onChange={({ target: { value } }) => {
+          if (isEmptyStringOrNil(value)) {
+            setValue(null);
+          }
+
+          setValue(Number(value));
+        }}
+      />
+      <button
+        className="rounded bg-blue-500 px-2 py-1 text-white disabled:cursor-not-allowed disabled:opacity-50"
+        onClick={async () => {
+          await updateImageWidth({
+            id: image.id,
+            width: value,
           });
         }}
         disabled={isPending}

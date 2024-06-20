@@ -125,11 +125,12 @@ function ImageSection({
   return (
     <AccordionSection title="제 모습은요">
       <div className="flex flex-col gap-4">
-        {images.map(({ id, bucketPath }) => {
+        {images.map(({ id, bucketPath, customWidth }) => {
           return (
             <ImageField
               key={id}
               bucketPath={bucketPath}
+              width={customWidth ?? undefined}
               watermarkText={watermarkText}
             />
           );
@@ -142,17 +143,21 @@ function ImageSection({
 function ImageField({
   bucketPath,
   watermarkText,
+  width,
 }: {
   bucketPath: string;
+  width?: number;
   watermarkText?: string;
 }) {
+  const _width = width ?? 440;
+
   const {
     data: { publicUrl },
   } = supabase.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath, {
       transform: {
-        width: 600,
+        width: _width,
         resize: "contain",
       },
     });
@@ -163,9 +168,8 @@ function ImageField({
       <img
         src={publicUrl}
         alt="프로필 이미지"
-        width={480}
-        height={600}
-        className="rounded-lg"
+        width={_width}
+        className="m-auto rounded-lg"
       />
     </div>
   );
