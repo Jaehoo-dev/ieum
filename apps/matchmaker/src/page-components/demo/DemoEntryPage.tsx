@@ -37,7 +37,7 @@ export function DemoEntryPage() {
         <div className="flex flex-row gap-2">
           <Link
             href="/demo/match?my-gender=male"
-            className="block w-full rounded-full bg-blue-500 p-3 text-center text-xl font-medium text-white hover:bg-blue-600"
+            className="block w-full rounded-lg bg-blue-500 p-3 text-center text-xl font-medium text-white hover:bg-blue-600"
             onClick={() => {
               void sendMessage("체험 - 남성 선택");
             }}
@@ -46,7 +46,7 @@ export function DemoEntryPage() {
           </Link>
           <Link
             href="/demo/match?my-gender=female"
-            className="block w-full rounded-full bg-pink-500 p-3 text-center text-xl font-medium text-white hover:bg-pink-600"
+            className="block w-full rounded-lg bg-pink-500 p-3 text-center text-xl font-medium text-white hover:bg-pink-600"
             onClick={() => {
               void sendMessage("체험 - 여성 선택");
             }}
