@@ -54,6 +54,23 @@ export const basicMemberImageRouter = createTRPCRouter({
         },
       });
     }),
+  updateCustomWidth: protectedAdminProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        width: z.number().nullable(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.memberImage.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          customWidth: input.width,
+        },
+      });
+    }),
   findByMemberId: protectedAdminProcedure
     .input(
       z.object({
