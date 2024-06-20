@@ -16,6 +16,7 @@
     "@ieum/firebase": "*",
     "@ieum/matchmaker-trpc-server": "*",
     "@ieum/prisma": "*",
+    "@ieum/profile": "*",
     "@ieum/slack": "*",
     "@ieum/supabase": "*",
     "@ieum/utils": "*",

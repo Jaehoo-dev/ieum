@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 
-import { Chevron } from "../Chevron";
+import { Chevron } from "./Chevron";
 
 interface Props {
   initiallyOpened?: boolean;
