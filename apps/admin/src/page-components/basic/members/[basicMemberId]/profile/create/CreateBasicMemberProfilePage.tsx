@@ -233,6 +233,7 @@ function Resolved() {
               return isEmptyStringOrNil(value) ? null : value;
             },
           })}
+          rows={4}
         />
         <TextareaInput
           label="이성상"
@@ -241,6 +242,7 @@ function Resolved() {
               return isEmptyStringOrNil(value) ? null : value;
             },
           })}
+          rows={4}
         />
         <div className="flex flex-row gap-4">
           {member.images.map((image) => {

@@ -203,6 +203,7 @@ function Resolved() {
               return isEmptyStringOrNil(value) ? null : value;
             },
           })}
+          rows={6}
         />
         <TextareaInput
           label="이성상"
