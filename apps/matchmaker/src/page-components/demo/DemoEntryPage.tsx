@@ -67,7 +67,7 @@ export function DemoEntryPage() {
 }
 
 DemoEntryPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="매칭 체험">{page}</Layout>;
+  return <Layout title="상대방 프로필 예시">{page}</Layout>;
 };
 
 DemoEntryPage.auth = false;
