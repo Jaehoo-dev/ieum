@@ -58,6 +58,9 @@ export function DemoEntryPage() {
         <Link
           href="/tips?from=demo-entry"
           className="text-center text-lg text-gray-600 underline hover:text-gray-800"
+          onClick={() => {
+            void sendMessage("체험 - 소개팅 꿀팁 보러 가기 클릭");
+          }}
         >
           소개팅 꿀팁 보러 가기
         </Link>
