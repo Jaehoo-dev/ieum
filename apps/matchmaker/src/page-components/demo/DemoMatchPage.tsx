@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import type { ReactElement } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { HOMEPAGE_URL } from "@ieum/constants";
 import { Profile } from "@ieum/profile";
 import { isEmptyStringOrNil } from "@ieum/utils";
 
@@ -61,14 +63,12 @@ function Buttons() {
         >
           거절
         </button>
-        <button
-          className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
-          onClick={async () => {
-            alert("가입하시고 이상형을 소개받으세요!");
-          }}
+        <Link
+          className="flex-1 rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
+          href={HOMEPAGE_URL}
         >
-          수락
-        </button>
+          소개받으러 가기
+        </Link>
       </div>
     </div>
   );
