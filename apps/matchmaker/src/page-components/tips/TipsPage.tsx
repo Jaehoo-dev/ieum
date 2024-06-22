@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { MATCHMAKER_URL } from "@ieum/constants";
+import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
@@ -91,34 +91,24 @@ export function TipsPage() {
           />
         </div>
         <Spacing size={48} />
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
-            <p className="text-center text-gray-700">
-              소개팅 준비하는 친구한테 공유하세요!
-            </p>
-            <button
-              className="rounded-lg border border-gray-700 p-3 text-xl font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
-              onClick={async () => {
-                await navigator.clipboard.writeText(
-                  `${window.location.origin}${window.location.pathname}?from=share`,
-                );
-                alert("링크를 복사했어요!");
-              }}
-            >
-              링크 복사
-            </button>
-          </div>
-          <div className="flex flex-col gap-1">
-            <p className="text-center text-gray-700">
-              이음 소개팅이 궁금하다면?
-            </p>
-            <Link
-              href="/demo?from=tips"
-              className="rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
-            >
-              매칭 구경하기
-            </Link>
-          </div>
+        <div className="flex flex-col gap-4">
+          <button
+            className="rounded-lg border border-gray-700 p-3 text-xl font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
+            onClick={async () => {
+              await navigator.clipboard.writeText(
+                `${window.location.origin}${window.location.pathname}?from=share`,
+              );
+              alert("링크를 복사했어요!");
+            }}
+          >
+            친구한테 공유하기
+          </button>
+          <Link
+            href={HOMEPAGE_URL}
+            className="rounded-lg bg-primary-600 p-3 text-center text-xl font-semibold text-white hover:bg-primary-700"
+          >
+            나도 소개받기
+          </Link>
         </div>
       </div>
     </>
