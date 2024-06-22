@@ -12,6 +12,7 @@ export default {
         "primary-300": "#ffebd9",
         "primary-400": "#ffcfb7",
         "primary-500": "#ff8271",
+        "primary-600": "#ff725c",
         "primary-700": "#ff6f5e",
         "primary-900": "#ff3d00",
       },
