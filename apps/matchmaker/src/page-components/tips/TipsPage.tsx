@@ -60,6 +60,10 @@ export function TipsPage() {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 인적사항 편",
                 href: "https://m.blog.naver.com/ieum-love/223484378089",
               },
+              {
+                title: "매칭 수락률 높은 프로필 작성 방법 - 자기소개 편",
+                href: "https://m.blog.naver.com/ieum-love/223487620440",
+              },
             ]}
           />
           <Section
