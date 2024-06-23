@@ -1,6 +1,5 @@
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import type { BasicMatch } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
@@ -18,13 +17,6 @@ export function MyMatchesPage() {
   return (
     <Suspense fallback={null}>
       <div className="flex w-full flex-col gap-4">
-        <Link
-          href="/my-profile"
-          className="text-xl font-medium text-primary-500 hover:text-primary-700 hover:underline"
-        >
-          내 프로필 보기
-        </Link>
-        <hr className="w-full" />
         <Description />
         <hr className="w-full" />
         <Resolved />
@@ -35,13 +27,19 @@ export function MyMatchesPage() {
 
 function Description() {
   return (
-    <div className="flex w-full flex-col gap-2">
-      <h2 className="text-xl font-semibold text-gray-800">안내</h2>
-      <div className="flex flex-col gap-2 text-gray-800">
-        <p>🟡 응답 대기 중</p>
-        <p>🔴 본인 또는 상대방이 거절</p>
-        <p>🟢 소개 성사</p>
-      </div>
+    <div className="flex flex-col gap-2 text-gray-700">
+      <span className="flex flex-row items-center gap-2">
+        <p>🟡</p>
+        <p>응답 대기 중</p>
+      </span>
+      <span className="flex flex-row items-center gap-2">
+        <p>🔴</p>
+        <p>본인 또는 상대방이 거절</p>
+      </span>
+      <span className="flex flex-row items-center gap-2">
+        <p>🟢</p>
+        <p>소개 성사</p>
+      </span>
     </div>
   );
 }
