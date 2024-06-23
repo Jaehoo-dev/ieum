@@ -80,7 +80,7 @@ export function TipsPage() {
             title="기타"
             posts={[
               {
-                title: "결정사 가격 정리 (듀오, 가연, 바로연)",
+                title: "2024년 결정사 가격 정리 (듀오, 가연, 바로연)",
                 href: "https://m.blog.naver.com/ieum-love/223474470406",
               },
               {
