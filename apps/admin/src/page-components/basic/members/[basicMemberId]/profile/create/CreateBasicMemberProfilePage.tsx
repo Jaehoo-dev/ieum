@@ -98,6 +98,8 @@ function Resolved() {
           });
 
           alert("프로필 생성 완료");
+
+          router.replace(`/basic/members/${basicMemberId}/profile/update`);
         })}
       >
         <div className="grid grid-cols-3 gap-2">
