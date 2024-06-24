@@ -67,7 +67,7 @@ export function BasicMembersSearchPage() {
             검색
           </button>
         </form>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full flex-col items-center gap-4">
           {members != null && members.length > 0
             ? members.map((member) => {
                 return (
