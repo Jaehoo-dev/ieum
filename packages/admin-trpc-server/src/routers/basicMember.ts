@@ -306,7 +306,11 @@ export const basicMemberRouter = createTRPCRouter({
           id,
         },
         include: {
-          images: true,
+          images: {
+            orderBy: {
+              index: "asc",
+            },
+          },
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
