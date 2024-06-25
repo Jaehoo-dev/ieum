@@ -8,8 +8,8 @@ import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
-const 제목_기본값 = "이음(구 내편소) 매칭 안내";
-const 내용_기본값 = `안녕하세요! 이음(구 내편소) 호스트입니다. 매칭 제안드려요 :)
+const 제목_기본값 = "이음 매칭 안내";
+const 내용_기본값 = `안녕하세요! 이음 호스트입니다. 매칭 제안드려요 :)
 
 아래 사이트에서 상대방 프로필을 확인하시고 *24시간 안에* 수락 여부를 결정해주세요.
 ${MATCHMAKER_URL}
