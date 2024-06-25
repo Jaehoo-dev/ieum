@@ -531,18 +531,20 @@ export const basicMemberRouter = createTRPCRouter({
                     : undefined,
               },
               {
-                mbti: nonNegotiableConditionsSet.has(
-                  BasicCondition.PREFERRED_MBTIS,
-                )
-                  ? { in: preferredMbtis }
-                  : undefined,
+                mbti:
+                  nonNegotiableConditionsSet.has(
+                    BasicCondition.PREFERRED_MBTIS,
+                  ) && preferredMbtis.length > 0
+                    ? { in: preferredMbtis }
+                    : undefined,
               },
               {
-                mbti: nonNegotiableConditionsSet.has(
-                  BasicCondition.NON_PREFERRED_MBTIS,
-                )
-                  ? { notIn: nonPreferredMbtis }
-                  : undefined,
+                mbti:
+                  nonNegotiableConditionsSet.has(
+                    BasicCondition.NON_PREFERRED_MBTIS,
+                  ) && nonPreferredMbtis.length > 0
+                    ? { notIn: nonPreferredMbtis }
+                    : undefined,
               },
               {
                 isSmoker:
@@ -552,18 +554,20 @@ export const basicMemberRouter = createTRPCRouter({
                     : undefined,
               },
               {
-                religion: nonNegotiableConditionsSet.has(
-                  BasicCondition.PREFERRED_RELIGIONS,
-                )
-                  ? { in: preferredReligions }
-                  : undefined,
+                religion:
+                  nonNegotiableConditionsSet.has(
+                    BasicCondition.PREFERRED_RELIGIONS,
+                  ) && preferredReligions.length > 0
+                    ? { in: preferredReligions }
+                    : undefined,
               },
               {
-                religion: nonNegotiableConditionsSet.has(
-                  BasicCondition.NON_PREFERRED_RELIGIONS,
-                )
-                  ? { notIn: nonPreferredReligions }
-                  : undefined,
+                religion:
+                  nonNegotiableConditionsSet.has(
+                    BasicCondition.NON_PREFERRED_RELIGIONS,
+                  ) && nonPreferredReligions.length > 0
+                    ? { notIn: nonPreferredReligions }
+                    : undefined,
               },
               {
                 annualIncome:
