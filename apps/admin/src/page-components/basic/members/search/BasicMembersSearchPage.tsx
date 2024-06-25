@@ -24,6 +24,12 @@ export function BasicMembersSearchPage() {
     { enabled: !isEmptyStringOrNil(searchValue) },
   );
   const utils = api.useUtils();
+  const { mutateAsync: activate, isPending: isActivating } =
+    api.basicMemberRouter.activate.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberRouter.invalidate();
+      },
+    });
   const { mutateAsync: inactivate, isPending: isInactivating } =
     api.basicMemberRouter.inactivate.useMutation({
       onSuccess: () => {
@@ -79,6 +85,15 @@ export function BasicMembersSearchPage() {
                       <span>
                         {`회원 상태: ${getStatusLabel(member.status)}`}
                       </span>
+                      <button
+                        className="rounded-md bg-blue-500 px-4 py-2 text-white"
+                        onClick={async () => {
+                          await activate({ id: member.id });
+                        }}
+                        disabled={isInAction}
+                      >
+                        Activate
+                      </button>
                       <button
                         className="rounded-md bg-gray-500 px-4 py-2 text-white"
                         onClick={async () => {
