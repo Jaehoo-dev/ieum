@@ -774,6 +774,18 @@ export const basicMemberRouter = createTRPCRouter({
         });
       });
     }),
+  activate: protectedAdminProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input: { id } }) => {
+      return ctx.prisma.basicMember.update({
+        where: {
+          id,
+        },
+        data: {
+          status: MemberStatus.ACTIVE,
+        },
+      });
+    }),
   inactivate: protectedAdminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input: { id } }) => {
