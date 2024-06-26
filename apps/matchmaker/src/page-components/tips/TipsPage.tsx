@@ -80,6 +80,10 @@ export function TipsPage() {
             title="기타"
             posts={[
               {
+                title: "자만추 힘들고 소개팅 끊겼을 때 이성 만나는 방법 3가지",
+                href: "https://m.blog.naver.com/ieum-love/223492312491",
+              },
+              {
                 title: "2024년 결정사 가격 정리 (듀오, 가연, 바로연)",
                 href: "https://m.blog.naver.com/ieum-love/223474470406",
               },
