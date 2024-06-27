@@ -217,6 +217,8 @@ model BasicMember {
   selfIntroduction        String?
   images                  MemberImage[]
 
+  idealType BasicMemberIdealType?
+
   idealMinAgeBirthYear         Int?
   idealMaxAgeBirthYear         Int?
   idealRegions                 Region[]
@@ -284,6 +286,48 @@ model BasicMember {
   @@index([hasCar])
   @@index([hasPet])
   @@index([status])
+}
+
+model BasicMemberIdealType {
+  member   BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId Int         @id
+
+  minAgeBirthYear         Int?
+  maxAgeBirthYear         Int?
+  regions                 Region[]
+  customRegion            String?
+  minHeight               Int?
+  maxHeight               Int?
+  bodyShapes              BodyShape[]
+  fashionStyles           FashionStyle[]
+  eyelids                 Eyelid[]
+  facialBodyPart          String?
+  educationLevel          EducationLevel?
+  schoolLevel             String?
+  occupationStatuses      OccupationStatus[]
+  nonPreferredWorkplace   String?
+  nonPreferredJob         String?
+  preferredMbtis          MBTI[]
+  nonPreferredMbtis       MBTI[]
+  isSmokerOk              Boolean
+  drinkingFrequency       DrinkingFrequency?
+  customDrinkingFrequency String?
+  preferredReligions      Religion[]
+  nonPreferredReligions   Religion[]
+  minAnnualIncome         AnnualIncome?
+  minAssetsValue          AssetsValue?
+  hobby                   String?
+  booksReadPerYear        BooksReadPerYear?
+  characteristics         String?
+  lifePhilosophy          String?
+  isTattooOk              Boolean
+  exercisePerWeek         ExercisePerWeek?
+  shouldHaveCar           Boolean
+  isGamingOk              Boolean
+  isPetOk                 Boolean
+  idealTypeDescription    String?
+
+  dealBreakers BasicCondition[]
 }
 
 model MemberImage {

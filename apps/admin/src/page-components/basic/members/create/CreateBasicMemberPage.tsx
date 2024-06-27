@@ -12,7 +12,6 @@ import {
 
 import { ImageInput } from "~/components/ImageInput";
 import { Layout } from "~/components/Layout";
-import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
