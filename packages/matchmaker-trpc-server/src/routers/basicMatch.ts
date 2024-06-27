@@ -403,15 +403,27 @@ export const basicMatchRouter = createTRPCRouter({
         },
         include: {
           pendingBy: {
-            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: { profile: true },
           },
           rejectedBy: {
-            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: { profile: true },
           },
           acceptedBy: {
-            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: { profile: true },
           },
         },
