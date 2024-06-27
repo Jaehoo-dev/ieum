@@ -1,5 +1,5 @@
 import { auth, FirebaseAuthError } from "@ieum/firebase-admin";
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMemberIdealType } from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
@@ -26,8 +26,7 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
-import { supabase } from "@ieum/supabase";
-import { krToGlobal } from "@ieum/utils";
+import { assert, krToGlobal } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
@@ -151,6 +150,45 @@ export const basicMemberRouter = createTRPCRouter({
               }),
             },
           },
+          idealType: {
+            create: {
+              minAgeBirthYear: rest.idealMinAgeBirthYear,
+              maxAgeBirthYear: rest.idealMaxAgeBirthYear,
+              regions: rest.idealRegions,
+              customRegion: rest.idealCustomRegion,
+              minHeight: rest.idealMinHeight,
+              maxHeight: rest.idealMaxHeight,
+              bodyShapes: rest.idealBodyShapes,
+              fashionStyles: rest.idealFashionStyles,
+              eyelids: rest.idealEyelids,
+              facialBodyPart: rest.idealFacialBodyPart,
+              educationLevel: rest.idealEducationLevel,
+              schoolLevel: rest.idealSchoolLevel,
+              occupationStatuses: rest.idealOccupationStatuses,
+              nonPreferredWorkplace: rest.idealNonPreferredWorkplace,
+              nonPreferredJob: rest.idealNonPreferredJob,
+              preferredMbtis: rest.idealPreferredMbtis,
+              nonPreferredMbtis: rest.idealNonPreferredMbtis,
+              isSmokerOk: rest.idealIsSmokerOk,
+              drinkingFrequency: rest.idealDrinkingFrequency,
+              customDrinkingFrequency: rest.idealCustomDrinkingFrequency,
+              preferredReligions: rest.idealPreferredReligions,
+              nonPreferredReligions: rest.idealNonPreferredReligions,
+              minAnnualIncome: rest.idealMinAnnualIncome,
+              minAssetsValue: rest.idealMinAssetsValue,
+              hobby: rest.idealHobby,
+              booksReadPerYear: rest.idealBooksReadPerYear,
+              characteristics: rest.idealCharacteristics,
+              lifePhilosophy: rest.idealLifePhilosophy,
+              isTattooOk: rest.idealIsTattooOk,
+              exercisePerWeek: rest.idealExercisePerWeek,
+              shouldHaveCar: rest.idealShouldHaveCar,
+              isGamingOk: rest.idealIsGamingOk,
+              isPetOk: rest.idealIsPetOk,
+              idealTypeDescription: rest.idealTypeDescription,
+              dealBreakers: rest.nonNegotiableConditions,
+            },
+          },
         },
       });
     }),
@@ -254,7 +292,48 @@ export const basicMemberRouter = createTRPCRouter({
         where: {
           id,
         },
-        data,
+        data: {
+          ...data,
+          idealType: {
+            update: {
+              minAgeBirthYear: data.idealMinAgeBirthYear,
+              maxAgeBirthYear: data.idealMaxAgeBirthYear,
+              regions: data.idealRegions,
+              customRegion: data.idealCustomRegion,
+              minHeight: data.idealMinHeight,
+              maxHeight: data.idealMaxHeight,
+              bodyShapes: data.idealBodyShapes,
+              fashionStyles: data.idealFashionStyles,
+              eyelids: data.idealEyelids,
+              facialBodyPart: data.idealFacialBodyPart,
+              educationLevel: data.idealEducationLevel,
+              schoolLevel: data.idealSchoolLevel,
+              occupationStatuses: data.idealOccupationStatuses,
+              nonPreferredWorkplace: data.idealNonPreferredWorkplace,
+              nonPreferredJob: data.idealNonPreferredJob,
+              preferredMbtis: data.idealPreferredMbtis,
+              nonPreferredMbtis: data.idealNonPreferredMbtis,
+              isSmokerOk: data.idealIsSmokerOk,
+              drinkingFrequency: data.idealDrinkingFrequency,
+              customDrinkingFrequency: data.idealCustomDrinkingFrequency,
+              preferredReligions: data.idealPreferredReligions,
+              nonPreferredReligions: data.idealNonPreferredReligions,
+              minAnnualIncome: data.idealMinAnnualIncome,
+              minAssetsValue: data.idealMinAssetsValue,
+              hobby: data.idealHobby,
+              booksReadPerYear: data.idealBooksReadPerYear,
+              characteristics: data.idealCharacteristics,
+              lifePhilosophy: data.idealLifePhilosophy,
+              isTattooOk: data.idealIsTattooOk,
+              exercisePerWeek: data.idealExercisePerWeek,
+              shouldHaveCar: data.idealShouldHaveCar,
+              isGamingOk: data.idealIsGamingOk,
+              isPetOk: data.idealIsPetOk,
+              idealTypeDescription: data.idealTypeDescription,
+              dealBreakers: data.nonNegotiableConditions,
+            },
+          },
+        },
       });
     }),
   infiniteFindByGender: protectedAdminProcedure
@@ -273,6 +352,7 @@ export const basicMemberRouter = createTRPCRouter({
           status: MemberStatus.ACTIVE,
         },
         include: {
+          idealType: true,
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
@@ -304,6 +384,7 @@ export const basicMemberRouter = createTRPCRouter({
           id,
         },
         include: {
+          idealType: true,
           images: {
             orderBy: {
               index: "asc",
@@ -324,6 +405,7 @@ export const basicMemberRouter = createTRPCRouter({
           name,
         },
         include: {
+          idealType: true,
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
@@ -348,10 +430,13 @@ export const basicMemberRouter = createTRPCRouter({
           status: MemberStatus.ACTIVE,
         },
         include: {
+          idealType: true,
           blacklisting: true,
           blacklistedBy: true,
         },
       });
+
+      assert(self.idealType != null, "idealType is null");
 
       const blacklist = Array.from(
         new Set([
@@ -371,7 +456,7 @@ export const basicMemberRouter = createTRPCRouter({
           id: {
             notIn: blacklist,
           },
-          AND: createConditionANDClause(self),
+          AND: createConditionANDClause(self.idealType),
           pendingMatches: {
             every: {
               pendingBy: { none: { id: self.id } },
@@ -395,6 +480,7 @@ export const basicMemberRouter = createTRPCRouter({
           },
         },
         include: {
+          idealType: true,
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
@@ -473,6 +559,7 @@ export const basicMemberRouter = createTRPCRouter({
             status: MemberStatus.ACTIVE,
           },
           include: {
+            idealType: true,
             blacklisting: true,
             blacklistedBy: true,
           },
@@ -487,7 +574,7 @@ export const basicMemberRouter = createTRPCRouter({
             }),
           ]),
         );
-        const nonNegotiableConditionsSet = new Set(nonNegotiableConditions);
+        const dealBreakersSet = new Set(nonNegotiableConditions);
 
         return ctx.prisma.basicMember.findMany({
           where: {
@@ -498,13 +585,13 @@ export const basicMemberRouter = createTRPCRouter({
             },
             AND: [
               {
-                birthYear: nonNegotiableConditionsSet.has(BasicCondition.AGE)
+                birthYear: dealBreakersSet.has(BasicCondition.AGE)
                   ? {
                       lte: minAgeBirthYear ?? undefined,
                       gte: maxAgeBirthYear ?? undefined,
                     }
                   : undefined,
-                height: nonNegotiableConditionsSet.has(BasicCondition.HEIGHT)
+                height: dealBreakersSet.has(BasicCondition.HEIGHT)
                   ? {
                       gte: minHeight ?? undefined,
                       lte: maxHeight ?? undefined,
@@ -512,7 +599,7 @@ export const basicMemberRouter = createTRPCRouter({
                   : undefined,
                 educationLevel:
                   minEducationLevel != null &&
-                  nonNegotiableConditionsSet.has(BasicCondition.EDUCATION_LEVEL)
+                  dealBreakersSet.has(BasicCondition.EDUCATION_LEVEL)
                     ? {
                         in: orderedEducationLevels.slice(
                           orderedEducationLevels.indexOf(minEducationLevel),
@@ -520,9 +607,8 @@ export const basicMemberRouter = createTRPCRouter({
                       }
                     : undefined,
                 occupationStatus:
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.OCCUPATION_STATUS,
-                  ) && occupationStatuses.length > 0
+                  dealBreakersSet.has(BasicCondition.OCCUPATION_STATUS) &&
+                  occupationStatuses.length > 0
                     ? {
                         in: occupationStatuses,
                       }
@@ -530,49 +616,43 @@ export const basicMemberRouter = createTRPCRouter({
               },
               {
                 mbti:
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.PREFERRED_MBTIS,
-                  ) && preferredMbtis.length > 0
+                  dealBreakersSet.has(BasicCondition.PREFERRED_MBTIS) &&
+                  preferredMbtis.length > 0
                     ? { in: preferredMbtis }
                     : undefined,
               },
               {
                 mbti:
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.NON_PREFERRED_MBTIS,
-                  ) && nonPreferredMbtis.length > 0
+                  dealBreakersSet.has(BasicCondition.NON_PREFERRED_MBTIS) &&
+                  nonPreferredMbtis.length > 0
                     ? { notIn: nonPreferredMbtis }
                     : undefined,
               },
               {
                 isSmoker:
-                  nonNegotiableConditionsSet.has(BasicCondition.IS_SMOKER_OK) &&
+                  dealBreakersSet.has(BasicCondition.IS_SMOKER_OK) &&
                   !isSmokerOk
                     ? false
                     : undefined,
               },
               {
                 religion:
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.PREFERRED_RELIGIONS,
-                  ) && preferredReligions.length > 0
+                  dealBreakersSet.has(BasicCondition.PREFERRED_RELIGIONS) &&
+                  preferredReligions.length > 0
                     ? { in: preferredReligions }
                     : undefined,
               },
               {
                 religion:
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.NON_PREFERRED_RELIGIONS,
-                  ) && nonPreferredReligions.length > 0
+                  dealBreakersSet.has(BasicCondition.NON_PREFERRED_RELIGIONS) &&
+                  nonPreferredReligions.length > 0
                     ? { notIn: nonPreferredReligions }
                     : undefined,
               },
               {
                 annualIncome:
                   minAnnualIncome != null &&
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.MIN_ANNUAL_INCOME,
-                  )
+                  dealBreakersSet.has(BasicCondition.MIN_ANNUAL_INCOME)
                     ? {
                         in: orderedAnnualIncomes.slice(
                           orderedAnnualIncomes.indexOf(minAnnualIncome),
@@ -581,9 +661,7 @@ export const basicMemberRouter = createTRPCRouter({
                     : undefined,
                 assetsValue:
                   minAssetsValue != null &&
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.MIN_ASSETS_VALUE,
-                  )
+                  dealBreakersSet.has(BasicCondition.MIN_ASSETS_VALUE)
                     ? {
                         in: orderedAssetsValues.slice(
                           orderedAssetsValues.indexOf(minAssetsValue),
@@ -592,9 +670,7 @@ export const basicMemberRouter = createTRPCRouter({
                     : undefined,
                 booksReadPerYear:
                   minBooksReadPerYear != null &&
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.BOOKS_READ_PER_YEAR,
-                  )
+                  dealBreakersSet.has(BasicCondition.BOOKS_READ_PER_YEAR)
                     ? {
                         in: orderedBooksReadPerYears.slice(
                           orderedBooksReadPerYears.indexOf(minBooksReadPerYear),
@@ -602,28 +678,22 @@ export const basicMemberRouter = createTRPCRouter({
                       }
                     : undefined,
                 hasTattoo:
-                  nonNegotiableConditionsSet.has(BasicCondition.IS_TATTOO_OK) &&
+                  dealBreakersSet.has(BasicCondition.IS_TATTOO_OK) &&
                   !isTattooOk
                     ? false
                     : undefined,
                 exercisePerWeek:
                   exercisePerWeek != null &&
-                  nonNegotiableConditionsSet.has(
-                    BasicCondition.EXERCISE_PER_WEEK,
-                  )
+                  dealBreakersSet.has(BasicCondition.EXERCISE_PER_WEEK)
                     ? { in: orderedExercisePerWeeks.slice(1) }
                     : undefined,
-                hasCar: nonNegotiableConditionsSet.has(
-                  BasicCondition.SHOULD_HAVE_CAR,
-                )
+                hasCar: dealBreakersSet.has(BasicCondition.SHOULD_HAVE_CAR)
                   ? shouldHaveCar ?? undefined
                   : undefined,
-                doesGame: nonNegotiableConditionsSet.has(
-                  BasicCondition.IS_GAMING_OK,
-                )
+                doesGame: dealBreakersSet.has(BasicCondition.IS_GAMING_OK)
                   ? isGamingOk ?? undefined
                   : undefined,
-                hasPet: nonNegotiableConditionsSet.has(BasicCondition.IS_PET_OK)
+                hasPet: dealBreakersSet.has(BasicCondition.IS_PET_OK)
                   ? isPetOk ?? undefined
                   : undefined,
               },
@@ -651,6 +721,7 @@ export const basicMemberRouter = createTRPCRouter({
             },
           },
           include: {
+            idealType: true,
             pendingMatches: true,
             rejectedMatches: true,
             acceptedMatches: true,
@@ -905,6 +976,7 @@ export const basicMemberRouter = createTRPCRouter({
           gender,
         },
         include: {
+          idealType: true,
           pendingMatches: true,
           rejectedMatches: true,
           acceptedMatches: true,
@@ -922,32 +994,32 @@ export const basicMemberRouter = createTRPCRouter({
     }),
 });
 
-function createConditionANDClause(member: BasicMember) {
-  return member.nonNegotiableConditions.map((condition) => {
+function createConditionANDClause(idealType: BasicMemberIdealType) {
+  return idealType.dealBreakers.map((condition) => {
     return match(condition)
       .with("AGE", () => {
         return {
           birthYear: {
-            gte: member.idealMaxAgeBirthYear ?? undefined,
-            lte: member.idealMinAgeBirthYear ?? undefined,
+            gte: idealType.maxAgeBirthYear ?? undefined,
+            lte: idealType.minAgeBirthYear ?? undefined,
           },
         };
       })
       .with("HEIGHT", () => {
         return {
           height: {
-            gte: member.idealMinHeight ?? undefined,
-            lte: member.idealMaxHeight ?? undefined,
+            gte: idealType.minHeight ?? undefined,
+            lte: idealType.maxHeight ?? undefined,
           },
         };
       })
       .with("EDUCATION_LEVEL", () => {
         return {
           educationLevel:
-            member.idealEducationLevel != null
+            idealType.educationLevel != null
               ? {
                   in: orderedEducationLevels.slice(
-                    orderedEducationLevels.indexOf(member.idealEducationLevel),
+                    orderedEducationLevels.indexOf(idealType.educationLevel),
                   ),
                 }
               : undefined,
@@ -956,40 +1028,40 @@ function createConditionANDClause(member: BasicMember) {
       .with("OCCUPATION_STATUS", () => {
         return {
           occupationStatus: {
-            in: member.idealOccupationStatuses,
+            in: idealType.occupationStatuses,
           },
         };
       })
       .with("PREFERRED_MBTIS", () => {
         return {
           mbti: {
-            in: member.idealPreferredMbtis,
+            in: idealType.preferredMbtis,
           },
         };
       })
       .with("NON_PREFERRED_MBTIS", () => {
         return {
           mbti: {
-            notIn: member.idealNonPreferredMbtis,
+            notIn: idealType.nonPreferredMbtis,
           },
         };
       })
       .with("IS_SMOKER_OK", () => {
         return {
-          isSmoker: !member.idealIsSmokerOk ? false : undefined,
+          isSmoker: !idealType.isSmokerOk ? false : undefined,
         };
       })
       .with("PREFERRED_RELIGIONS", () => {
         return {
           religion: {
-            in: member.idealPreferredReligions,
+            in: idealType.preferredReligions,
           },
         };
       })
       .with("NON_PREFERRED_RELIGIONS", () => {
         return {
           religion: {
-            notIn: member.idealNonPreferredReligions,
+            notIn: idealType.nonPreferredReligions,
           },
         };
       })
@@ -997,9 +1069,9 @@ function createConditionANDClause(member: BasicMember) {
         return {
           annualIncome: {
             in:
-              member.idealMinAnnualIncome != null
+              idealType.minAnnualIncome != null
                 ? orderedAnnualIncomes.slice(
-                    orderedAnnualIncomes.indexOf(member.idealMinAnnualIncome),
+                    orderedAnnualIncomes.indexOf(idealType.minAnnualIncome),
                   )
                 : undefined,
           },
@@ -1009,9 +1081,9 @@ function createConditionANDClause(member: BasicMember) {
         return {
           assetsValue: {
             in:
-              member.idealMinAssetsValue != null
+              idealType.minAssetsValue != null
                 ? orderedAssetsValues.slice(
-                    orderedAssetsValues.indexOf(member.idealMinAssetsValue),
+                    orderedAssetsValues.indexOf(idealType.minAssetsValue),
                   )
                 : undefined,
           },
@@ -1020,11 +1092,11 @@ function createConditionANDClause(member: BasicMember) {
       .with("BOOKS_READ_PER_YEAR", () => {
         return {
           booksReadPerYear:
-            member.idealBooksReadPerYear != null
+            idealType.booksReadPerYear != null
               ? {
                   in: orderedBooksReadPerYears.slice(
                     orderedBooksReadPerYears.indexOf(
-                      member.idealBooksReadPerYear,
+                      idealType.booksReadPerYear,
                     ),
                   ),
                 }
@@ -1033,31 +1105,31 @@ function createConditionANDClause(member: BasicMember) {
       })
       .with("IS_TATTOO_OK", () => {
         return {
-          hasTattoo: !member.idealIsTattooOk ? false : undefined,
+          hasTattoo: !idealType.isTattooOk ? false : undefined,
         };
       })
       .with("EXERCISE_PER_WEEK", () => {
         return {
           exercisePerWeek:
-            member.idealExercisePerWeek != null &&
-            member.idealExercisePerWeek !== "NONE"
+            idealType.exercisePerWeek != null &&
+            idealType.exercisePerWeek !== "NONE"
               ? { in: orderedExercisePerWeeks.slice(1) }
               : undefined,
         };
       })
       .with("SHOULD_HAVE_CAR", () => {
         return {
-          hasCar: member.idealShouldHaveCar,
+          hasCar: idealType.shouldHaveCar,
         };
       })
       .with("IS_GAMING_OK", () => {
         return {
-          doesGame: member.idealIsGamingOk,
+          doesGame: idealType.isGamingOk,
         };
       })
       .with("IS_PET_OK", () => {
         return {
-          hasPet: member.idealIsPetOk,
+          hasPet: idealType.isPetOk,
         };
       })
       .otherwise(() => {

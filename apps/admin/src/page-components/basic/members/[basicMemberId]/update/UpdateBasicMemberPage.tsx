@@ -5,7 +5,6 @@ import { calculateBmi } from "@ieum/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { TextInput } from "~/components/TextInput";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
 import { NonNegotiableConditionsField } from "~/page-components/basic/components/form/NonNegotiableConditionField";

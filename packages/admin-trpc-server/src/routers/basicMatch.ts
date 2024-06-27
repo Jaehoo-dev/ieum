@@ -67,6 +67,7 @@ export const basicMatchRouter = createTRPCRouter({
           },
           rejectedBy: {
             include: {
+              idealType: true,
               pendingMatches: true,
               rejectedMatches: true,
               acceptedMatches: true,
@@ -80,6 +81,7 @@ export const basicMatchRouter = createTRPCRouter({
           },
           acceptedBy: {
             include: {
+              idealType: true,
               pendingMatches: true,
               rejectedMatches: true,
               acceptedMatches: true,
@@ -166,6 +168,7 @@ export const basicMatchRouter = createTRPCRouter({
           include: {
             pendingBy: {
               include: {
+                idealType: true,
                 pendingMatches: true,
                 rejectedMatches: true,
                 acceptedMatches: true,
@@ -179,6 +182,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             rejectedBy: {
               include: {
+                idealType: true,
                 pendingMatches: true,
                 rejectedMatches: true,
                 acceptedMatches: true,
@@ -192,6 +196,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             acceptedBy: {
               include: {
+                idealType: true,
                 pendingMatches: true,
                 rejectedMatches: true,
                 acceptedMatches: true,
