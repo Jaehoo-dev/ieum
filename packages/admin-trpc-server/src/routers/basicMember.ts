@@ -134,7 +134,6 @@ export const basicMemberRouter = createTRPCRouter({
         idealTypeDescription: z.string().nullable(),
         nonNegotiableConditions: z.array(z.nativeEnum(BasicCondition)),
         memo: z.string().nullable(),
-        vouchersLeft: z.number(),
         imageBucketPaths: z.array(z.string()),
       }),
     )
@@ -247,7 +246,6 @@ export const basicMemberRouter = createTRPCRouter({
           idealTypeDescription: z.string().nullable(),
           nonNegotiableConditions: z.array(z.nativeEnum(BasicCondition)),
           memo: z.string().nullable(),
-          vouchersLeft: z.number(),
         }),
       }),
     )

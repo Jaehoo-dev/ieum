@@ -55,13 +55,6 @@ export function CreateBasicMemberPage() {
             <div className="flex flex-col gap-16">
               <IdealTypeFields />
               <NonNegotiableConditionsField />
-              <TextInput
-                label="만남권 개수"
-                {...methods.register("vouchersLeft", {
-                  required: true,
-                  valueAsNumber: true,
-                })}
-              />
             </div>
           </div>
           <MemoField />
