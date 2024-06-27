@@ -256,8 +256,6 @@ model BasicMember {
 
   memo String?
 
-  vouchersLeft Int @default(0)
-
   pendingMatches  BasicMatch[] @relation(name: "pendingMatchMember")
   rejectedMatches BasicMatch[] @relation(name: "rejectedMatchMember")
   acceptedMatches BasicMatch[] @relation(name: "acceptedMatchMember")

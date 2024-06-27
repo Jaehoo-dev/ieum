@@ -109,6 +109,5 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
   nonNegotiableConditions: [],
 
   memo: null,
-  vouchersLeft: 0,
   status: MemberStatus.ACTIVE,
 };
