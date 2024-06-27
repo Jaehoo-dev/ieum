@@ -151,8 +151,10 @@ function ImageCustomIndexField({ image }: { image: MemberImage }) {
         type="number"
         value={value ?? ""}
         onChange={({ target: { value } }) => {
-          if (isEmptyStringOrNil(value)) {
+          if (isEmptyStringOrNil(value) || Number(value) <= 0) {
             setValue(null);
+
+            return;
           }
 
           setValue(Number(value));
