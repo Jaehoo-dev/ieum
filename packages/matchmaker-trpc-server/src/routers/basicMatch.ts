@@ -150,7 +150,11 @@ export const basicMatchRouter = createTRPCRouter({
         },
         include: {
           pendingBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: {
               profile: {
                 include: {
@@ -168,7 +172,11 @@ export const basicMatchRouter = createTRPCRouter({
             },
           },
           rejectedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             include: {
               profile: {
                 include: {
@@ -277,13 +285,25 @@ export const basicMatchRouter = createTRPCRouter({
         },
         include: {
           pendingBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
           },
           rejectedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
           },
           acceptedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
           },
         },
       });
@@ -383,15 +403,15 @@ export const basicMatchRouter = createTRPCRouter({
         },
         include: {
           pendingBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
             include: { profile: true },
           },
           rejectedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
             include: { profile: true },
           },
           acceptedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: { status: MemberStatus.ACTIVE || MemberStatus.INACTIVE },
             include: { profile: true },
           },
         },
