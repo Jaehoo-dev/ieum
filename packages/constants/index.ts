@@ -90,6 +90,7 @@ export const 베이직_조건_라벨: Record<BasicCondition, string> = {
   [BasicCondition.EDUCATION_LEVEL]: "학력",
   [BasicCondition.SCHOOL_LEVEL]: "학벌",
   [BasicCondition.OCCUPATION_STATUS]: "신분",
+  [BasicCondition.NON_PREFERRED_WORKPLACE_SCHOOL]: "기피 작장/학교",
   [BasicCondition.NON_PREFERRED_JOB]: "기피 직무",
   [BasicCondition.PREFERRED_MBTIS]: "선호 MBTI",
   [BasicCondition.NON_PREFERRED_MBTIS]: "기피 MBTI",

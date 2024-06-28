@@ -12,6 +12,12 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/modifiers": "^7.0.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@ieum/constants": "*",
     "@ieum/firebase": "*",
     "@ieum/matchmaker-trpc-server": "*",
@@ -20,6 +26,8 @@
     "@ieum/slack": "*",
     "@ieum/supabase": "*",
     "@ieum/utils": "*",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^5.25.0",
     "@tanstack/react-query-devtools": "^5.25.0",
