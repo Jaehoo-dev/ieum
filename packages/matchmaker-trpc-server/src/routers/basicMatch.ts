@@ -16,7 +16,12 @@ export const basicMatchRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMember.findUniqueOrThrow({
-        where: { id: memberId, status: MemberStatus.ACTIVE },
+        where: {
+          id: memberId,
+          status: {
+            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+          },
+        },
         select: {
           pendingMatches: {
             where: {
@@ -41,7 +46,9 @@ export const basicMatchRouter = createTRPCRouter({
       const member = await ctx.prisma.basicMember.findUniqueOrThrow({
         where: {
           id: memberId,
-          status: MemberStatus.ACTIVE,
+          status: {
+            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+          },
         },
         select: {
           rejectedMatches: {
@@ -51,17 +58,23 @@ export const basicMatchRouter = createTRPCRouter({
               },
               pendingBy: {
                 every: {
-                  status: MemberStatus.ACTIVE,
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
                 },
               },
               rejectedBy: {
                 every: {
-                  status: MemberStatus.ACTIVE,
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
                 },
               },
               acceptedBy: {
                 every: {
-                  status: MemberStatus.ACTIVE,
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
                 },
               },
               updatedAt: {
@@ -80,12 +93,16 @@ export const basicMatchRouter = createTRPCRouter({
               },
               pendingBy: {
                 every: {
-                  status: MemberStatus.ACTIVE,
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
                 },
               },
               rejectedBy: {
                 every: {
-                  status: MemberStatus.ACTIVE,
+                  status: {
+                    in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+                  },
                 },
               },
               acceptedBy: {
@@ -122,15 +139,27 @@ export const basicMatchRouter = createTRPCRouter({
         },
         include: {
           pendingBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             select: { id: true },
           },
           rejectedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             select: { id: true },
           },
           acceptedBy: {
-            where: { status: MemberStatus.ACTIVE },
+            where: {
+              status: {
+                in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              },
+            },
             select: { id: true },
           },
         },
