@@ -1,13 +1,22 @@
-import { ReactElement, Suspense, useState } from "react";
+import {
+  forwardRef,
+  HTMLAttributes,
+  ReactElement,
+  Suspense,
+  useState,
+} from "react";
 import {
   closestCorners,
   DndContext,
+  DraggableAttributes,
+  DragOverlay,
   PointerSensor,
   TouchSensor,
   useDroppable,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
@@ -80,15 +89,17 @@ function Resolved() {
         return utils.basicMemberIdealTypeRouter.invalidate();
       },
     });
+  const [activeId, setActiveId] = useState<BasicCondition | null>(null);
 
   return (
     <DndContext
       collisionDetection={closestCorners}
       modifiers={[restrictToVerticalAxis]}
       sensors={sensors}
-      onDragOver={(event) => {
-        const { active, over } = event;
-
+      onDragStart={({ active }) => {
+        setActiveId(active.id as BasicCondition);
+      }}
+      onDragOver={({ active, over }) => {
         if (over == null) {
           return;
         }
@@ -109,7 +120,8 @@ function Resolved() {
 
         if (
           active.data.current?.sortable.containerId === "nonDealBreakers" &&
-          over.data.current?.sortable.containerId === "dealBreakers"
+          (over.data.current?.sortable.containerId === "dealBreakers" ||
+            over.id === "dealBreakers")
         ) {
           setNonDealBreakers((nonDealBreakers) => {
             return nonDealBreakers.filter((nonDealBreaker) => {
@@ -121,8 +133,8 @@ function Resolved() {
           });
         }
       }}
-      onDragEnd={(event) => {
-        const { active, over } = event;
+      onDragEnd={({ active, over }) => {
+        setActiveId(null);
 
         if (over == null || active.id === over.id) {
           return;
@@ -156,25 +168,38 @@ function Resolved() {
             {mode === "READ" ? (
               <EditButton onClick={() => setMode("EDIT")} />
             ) : (
-              <DoneButton
-                onClick={async () => {
-                  if (dealBreakers.length > 5) {
-                    alert("필수 조건은 최대 5개까지 선택할 수 있습니다.");
+              <div className="flex flex-row items-center justify-end gap-2">
+                <CancelButton
+                  onClick={() => {
+                    setDealBreakers(idealType.dealBreakers);
+                    setNonDealBreakers(
+                      Object.values(BasicCondition).filter((condition) => {
+                        return !idealType.dealBreakers.includes(condition);
+                      }),
+                    );
+                    setMode("READ");
+                  }}
+                />
+                <DoneButton
+                  onClick={async () => {
+                    if (dealBreakers.length > 5) {
+                      alert("필수 조건은 최대 5개까지 선택할 수 있습니다.");
 
-                    return;
-                  }
+                      return;
+                    }
 
-                  await updateDealBreakers({
-                    memberId: member.id,
-                    dealBreakers,
-                  });
+                    await updateDealBreakers({
+                      memberId: member.id,
+                      dealBreakers,
+                    });
 
-                  setMode("READ");
-                }}
-              />
+                    setMode("READ");
+                  }}
+                />
+              </div>
             )}
           </div>
-          <Container
+          <DroppableContainer
             id="dealBreakers"
             conditions={dealBreakers}
             idealType={idealType}
@@ -183,13 +208,24 @@ function Resolved() {
           />
         </div>
         <div className="border-t border-gray-600" />
-        <Container
+        <DroppableContainer
           id="nonDealBreakers"
           conditions={nonDealBreakers}
           idealType={idealType}
           mode={mode}
           dragEnabled={dealBreakers.length < 5}
         />
+        <DragOverlay>
+          {activeId != null ? (
+            <DataField
+              condition={activeId}
+              idealType={idealType}
+              dragEnabled={true}
+              dealBreaker={dealBreakers.includes(activeId)}
+              style={{ opacity: 0.5 }}
+            />
+          ) : null}
+        </DragOverlay>
       </div>
     </DndContext>
   );
@@ -206,6 +242,17 @@ function EditButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+function CancelButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      className="rounded-md border border-gray-300 bg-gray-100 px-6 py-1 text-gray-700"
+      onClick={onClick}
+    >
+      취소
+    </button>
+  );
+}
+
 function DoneButton({ onClick }: { onClick: () => void }) {
   return (
     <button
@@ -217,7 +264,7 @@ function DoneButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function Container({
+function DroppableContainer({
   id,
   conditions,
   idealType,
@@ -239,23 +286,48 @@ function Container({
       strategy={verticalListSortingStrategy}
     >
       <div className="flex flex-col gap-2" ref={setNodeRef}>
-        {conditions.map((condition) => {
-          return (
-            <DataField
-              key={condition}
-              condition={condition}
-              idealType={idealType}
-              dragEnabled={
-                mode === "EDIT" &&
-                !dealBreakerForbiddenConditions.includes(condition) &&
-                dragEnabled
-              }
-              dealBreaker={id === "dealBreakers"}
-            />
-          );
-        })}
+        {conditions.length > 0 ? (
+          conditions.map((condition) => {
+            return (
+              <SortableDataField
+                key={condition}
+                condition={condition}
+                idealType={idealType}
+                dragEnabled={
+                  mode === "EDIT" &&
+                  !dealBreakerForbiddenConditions.includes(condition) &&
+                  dragEnabled
+                }
+                dealBreaker={id === "dealBreakers"}
+              />
+            );
+          })
+        ) : (
+          <EmptyField />
+        )}
       </div>
     </SortableContext>
+  );
+}
+
+function EmptyField() {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: "EMPTY", disabled: true });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      className="flex flex-row items-center justify-center rounded-md border border-dotted border-gray-400 px-4 py-2"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
+      <p className="text-gray-500">조건을 끌어다 놓으세요</p>
+    </div>
   );
 }
 
@@ -264,46 +336,73 @@ const dealBreakerForbiddenConditions: BasicCondition[] = [
   BasicCondition.MIN_ASSETS_VALUE,
 ];
 
-function DataField({
-  condition,
-  idealType,
-  dragEnabled,
-  dealBreaker,
-}: {
-  condition: BasicCondition;
-  idealType: BasicMemberIdealType;
-  dragEnabled: boolean;
-  dealBreaker: boolean;
-}) {
-  const isDealBreaker = dealBreaker || 기본_필수_조건들.has(condition);
-  const { label, value } = createFieldData(idealType, condition);
+function SortableDataField(props: DataFieldProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: condition, disabled: !dragEnabled });
+    useSortable({ id: props.condition, disabled: !props.dragEnabled });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
   return (
-    <div
-      className={`flex flex-row items-center justify-between rounded-md border ${
-        isDealBreaker ? "bg-primary-100 border-primary-500" : "border-gray-400"
-      } px-4 py-2`}
+    <DataField
       ref={setNodeRef}
       style={style}
-    >
-      <p className="text-gray-800">{`${label}: ${value}`}</p>
-      {dragEnabled ? (
-        <DragHandleIcon
-          className="cursor-grab touch-none text-gray-500 outline-none"
-          style={{ width: "20px" }}
-          {...listeners}
-          {...attributes}
-        />
-      ) : null}
-    </div>
+      listeners={listeners}
+      attributes={attributes}
+      {...props}
+    />
   );
 }
+
+interface DataFieldProps extends HTMLAttributes<HTMLDivElement> {
+  condition: BasicCondition;
+  idealType: BasicMemberIdealType;
+  dragEnabled: boolean;
+  dealBreaker: boolean;
+  listeners?: SyntheticListenerMap;
+  attributes?: DraggableAttributes;
+}
+
+const DataField = forwardRef<HTMLDivElement, DataFieldProps>(
+  (
+    {
+      condition,
+      idealType,
+      dealBreaker,
+      dragEnabled,
+      listeners,
+      attributes,
+      ...props
+    },
+    ref,
+  ) => {
+    const isDealBreaker = dealBreaker || 기본_필수_조건들.has(condition);
+    const { label, value } = createFieldData(idealType, condition);
+
+    return (
+      <div
+        className={`flex flex-row items-center justify-between rounded-md border ${
+          isDealBreaker
+            ? "border-primary-500 bg-primary-100"
+            : "border-gray-400"
+        } px-4 py-2`}
+        ref={ref}
+        {...props}
+      >
+        <p className="text-gray-800">{`${label}: ${value}`}</p>
+        {dragEnabled ? (
+          <DragHandleIcon
+            className="cursor-grab touch-none text-gray-500 outline-none"
+            style={{ width: "20px" }}
+            {...listeners}
+            {...attributes}
+          />
+        ) : null}
+      </div>
+    );
+  },
+);
 
 function createFieldData(
   idealType: BasicMemberIdealType,
