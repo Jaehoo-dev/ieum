@@ -183,11 +183,11 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
         })}
       >
         <label className="flex w-full flex-col">
-          <span className="text-xl text-gray-700">인증번호</span>
+          <span className="text-gray-700 md:text-lg">인증번호</span>
           <input
             className={`rounded-lg border ${
               errors.verificationCode ? "border-red-500" : "border-gray-300"
-            } px-4 py-3 text-xl text-gray-700`}
+            } px-4 py-2 text-lg text-gray-700 md:py-3 md:text-xl`}
             type="text"
             placeholder="123456"
             {...register("verificationCode", {
@@ -238,7 +238,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
         </div>
         <button
           id="sign-in-button"
-          className="w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
+          className="mt-1 w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300 md:p-3 md:text-xl"
           disabled={isSubmitting}
         >
           {isSubmitting ? "인증중.." : "인증하기"}
@@ -246,7 +246,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
       </form>
       <div className="mt-6 text-center">
         <button
-          className="cursor-pointer text-lg font-light text-gray-500 underline hover:text-gray-700"
+          className="cursor-pointer font-light text-gray-500 underline hover:text-gray-700"
           onClick={onReset}
         >
           이전 단계로
