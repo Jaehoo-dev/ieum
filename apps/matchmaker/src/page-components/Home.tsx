@@ -83,7 +83,7 @@ function Registered() {
     <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
       <Link
         href="/my-matches"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-semibold text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage(`${member?.name} - 매칭 목록 보기 클릭`);
         }}
