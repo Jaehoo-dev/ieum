@@ -44,7 +44,7 @@ export function Home() {
             className="h-full w-full object-cover object-center"
           />
         </div>
-        <div className="mt-12 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
+        <div className="mt-6 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
             <EventBanner />
             <Spacing size={24} />
@@ -84,24 +84,33 @@ function Registered() {
 
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-4">
-      <button
-        className="w-full rounded-lg bg-gray-400 p-3 text-xl font-medium text-white hover:bg-gray-500"
-        onClick={() => {
-          void sendMessage(`${member?.name} - 내 프로필 보기 클릭`);
-          void router.push("/my-profile");
-        }}
-      >
-        내 프로필 보기
-      </button>
-      <button
-        className="w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700"
+      <Link
+        href="/my-matches"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-3 text-center text-xl font-medium text-white hover:border-primary-700 hover:bg-primary-700"
         onClick={() => {
           void sendMessage(`${member?.name} - 매칭 목록 보기 클릭`);
-          void router.push("/my-matches");
         }}
       >
         매칭 목록 보기
-      </button>
+      </Link>
+      <Link
+        href="/my-profile"
+        className="w-full rounded-lg border border-gray-600 p-3 text-center text-xl font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800"
+        onClick={() => {
+          void sendMessage(`${member?.name} - 내 프로필 보기 클릭`);
+        }}
+      >
+        내 프로필 보기
+      </Link>
+      <Link
+        href="/my-ideal-type"
+        className="w-full rounded-lg border border-gray-600 p-3 text-center text-xl font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800"
+        onClick={() => {
+          void sendMessage(`${member?.name} - 내 이상형 조건 클릭`);
+        }}
+      >
+        내 이상형 조건 (베타)
+      </Link>
       <HomepageTipsTabLink rel="noopener" />
       <button
         className="font-light text-gray-500 underline hover:text-gray-700"
