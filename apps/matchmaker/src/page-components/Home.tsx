@@ -80,7 +80,7 @@ function Registered() {
   }, [member?.name, sendMessage]);
 
   return (
-    <div className="mt-3 flex w-full flex-col items-center gap-4 pb-10">
+    <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
       <Link
         href="/my-matches"
         className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
