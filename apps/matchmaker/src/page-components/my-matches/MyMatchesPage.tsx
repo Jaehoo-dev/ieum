@@ -163,11 +163,11 @@ function MatchCard({
 
 function Empty() {
   return (
-    <div className="flex w-full flex-col items-center">
-      <p className="text-2xl font-medium text-primary-500">
+    <div className="mt-2 flex w-full flex-col items-center">
+      <p className="text-xl font-medium text-primary-500">
         이상형을 찾고 있어요 💘
       </p>
-      <p className="text-2xl font-medium text-primary-500">
+      <p className="text-xl font-medium text-primary-500">
         잠시만 기다려주세요 🙏
       </p>
     </div>
