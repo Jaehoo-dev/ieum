@@ -97,7 +97,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
         })}
       >
         <label className="flex flex-col" htmlFor="phoneNumber">
-          <span className="text-xl text-gray-700">전화번호</span>
+          <span className="text-gray-700 md:text-lg">전화번호</span>
           <Controller
             control={control}
             name="phoneNumber"
@@ -107,7 +107,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
                   id="phoneNumber"
                   className={`rounded-lg border ${
                     error ? "border-red-500" : "border-gray-300"
-                  } px-4 py-3 text-xl text-gray-700`}
+                  } px-4 py-2 text-lg text-gray-700 md:py-3 md:text-xl`}
                   type="text"
                   placeholder="010-0000-0000"
                   value={value}
@@ -128,7 +128,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
         </label>
         <button
           id="sign-in-button"
-          className="mt-3 w-full rounded-lg bg-primary-500 p-3 text-xl font-medium text-white hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300"
+          className="mt-3 w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300 md:p-3 md:text-xl"
           disabled={isSubmitting || errors.phoneNumber != null}
         >
           {isSubmitting ? "전송중.." : "인증번호 전송"}
