@@ -11,7 +11,7 @@ export function HomepageTipsTabLink({ target, rel, onClick, ...props }: Props) {
   return (
     <Link
       href="/tips"
-      className="text-lg text-gray-500 underline hover:text-gray-800"
+      className="text-gray-500 underline hover:text-gray-800 md:text-lg"
       target={target ?? "_blank"}
       rel={rel ?? "noopener noreferrer"}
       onClick={(event) => {

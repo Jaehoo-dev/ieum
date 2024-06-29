@@ -46,7 +46,7 @@ export function Home() {
         <div className="mt-6 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
             <EventBanner />
-            <h1 className="mb-2 mt-6 text-4xl font-semibold text-primary-500 md:text-5xl">
+            <h1 className="mb-2 mt-6 text-3xl font-semibold text-primary-500 md:text-4xl">
               이음
             </h1>
             {loggedIn ? (
@@ -83,7 +83,7 @@ function Registered() {
     <div className="mt-3 flex w-full flex-col items-center gap-4 pb-10">
       <Link
         href="/my-matches"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-3 text-center text-xl font-medium text-white hover:border-primary-700 hover:bg-primary-700"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage(`${member?.name} - 매칭 목록 보기 클릭`);
         }}
@@ -92,7 +92,7 @@ function Registered() {
       </Link>
       <Link
         href="/my-profile"
-        className="w-full rounded-lg border border-gray-600 p-3 text-center text-xl font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800"
+        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage(`${member?.name} - 내 프로필 보기 클릭`);
         }}
@@ -101,7 +101,7 @@ function Registered() {
       </Link>
       <Link
         href="/my-ideal-type"
-        className="w-full rounded-lg border border-gray-600 p-3 text-center text-xl font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800"
+        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage(`${member?.name} - 내 이상형 조건 클릭`);
         }}
@@ -110,7 +110,7 @@ function Registered() {
       </Link>
       <HomepageTipsTabLink rel="noopener" />
       <button
-        className="font-light text-gray-500 underline hover:text-gray-700"
+        className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
           void sendMessage(`${member?.name} - 로그아웃 클릭`);
           void signOut();
