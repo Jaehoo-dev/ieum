@@ -161,10 +161,16 @@ function Resolved() {
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <div className="flex flex-row items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-800">
-              필수 조건 (최대 5개)
-            </h2>
+          <p className="text-gray-500">
+            ※ 조건 변경은 호스트에게 요청해 주세요.
+          </p>
+          <div className="flex flex-row items-start justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">
+                포기 못하는 조건
+              </h2>
+              <p className="text-sm font-semibold text-gray-800">(최대 5개)</p>
+            </div>
             {mode === "READ" ? (
               <EditButton onClick={() => setMode("EDIT")} />
             ) : (
@@ -183,7 +189,9 @@ function Resolved() {
                 <DoneButton
                   onClick={async () => {
                     if (dealBreakers.length > 5) {
-                      alert("필수 조건은 최대 5개까지 선택할 수 있습니다.");
+                      alert(
+                        "'포기 못하는 조건'은 최대 5개까지 선택할 수 있습니다.",
+                      );
 
                       return;
                     }
@@ -234,7 +242,7 @@ function Resolved() {
 function EditButton({ onClick }: { onClick: () => void }) {
   return (
     <button
-      className="rounded-md border border-gray-300 bg-gray-100 px-6 py-1 text-gray-700"
+      className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={onClick}
     >
       수정
@@ -245,7 +253,7 @@ function EditButton({ onClick }: { onClick: () => void }) {
 function CancelButton({ onClick }: { onClick: () => void }) {
   return (
     <button
-      className="rounded-md border border-gray-300 bg-gray-100 px-6 py-1 text-gray-700"
+      className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={onClick}
     >
       취소
@@ -256,7 +264,7 @@ function CancelButton({ onClick }: { onClick: () => void }) {
 function DoneButton({ onClick }: { onClick: () => void }) {
   return (
     <button
-      className="rounded-md border border-primary-700 bg-primary-500 px-6 py-1 text-white"
+      className="rounded-md border border-primary-700 bg-primary-500 px-5 py-1 text-white"
       onClick={onClick}
     >
       완료
@@ -653,7 +661,7 @@ function createFieldData(
 }
 
 MyIdealTypePage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="내 이상형 조건">{page}</Layout>;
+  return <Layout title="내 이상형 조건 (베타)">{page}</Layout>;
 };
 const 학력_라벨: Record<EducationLevel, string> = {
   [EducationLevel.ELEMENTARY_SCHOOL_GRADUATE]: "초등학교 졸업 이상",
