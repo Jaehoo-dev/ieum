@@ -7,7 +7,6 @@ import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 import { EventBanner } from "~/components/EventBanner";
 import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { MemberAuth } from "~/components/MemberAuth";
-import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 
@@ -47,8 +46,7 @@ export function Home() {
         <div className="mt-6 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
             <EventBanner />
-            <Spacing size={24} />
-            <h1 className="mb-2 text-4xl font-semibold text-primary-500 md:text-5xl">
+            <h1 className="mb-2 mt-6 text-4xl font-semibold text-primary-500 md:text-5xl">
               이음
             </h1>
             {loggedIn ? (
