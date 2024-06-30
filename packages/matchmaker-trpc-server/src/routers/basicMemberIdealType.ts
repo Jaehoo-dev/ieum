@@ -17,21 +17,24 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
         },
       });
     }),
-  updateDealBreakers: publicProcedure
+  updatePriorities: publicProcedure
     .input(
       z.object({
         memberId: z.number(),
-        dealBreakers: z.array(z.nativeEnum(BasicCondition)),
+        priorities: z.object({
+          dealBreakers: z.array(z.nativeEnum(BasicCondition)),
+          highPriorities: z.array(z.nativeEnum(BasicCondition)),
+          mediumPriorities: z.array(z.nativeEnum(BasicCondition)),
+          lowPriorities: z.array(z.nativeEnum(BasicCondition)),
+        }),
       }),
     )
-    .mutation(({ ctx, input: { memberId, dealBreakers } }) => {
+    .mutation(({ ctx, input: { memberId, priorities } }) => {
       return ctx.prisma.basicMemberIdealType.update({
         where: {
           memberId,
         },
-        data: {
-          dealBreakers,
-        },
+        data: priorities,
       });
     }),
 });

@@ -7,7 +7,6 @@ import { Layout } from "~/components/Layout";
 import { BasicMemberWithJoined } from "~/domains/basic/types";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
-import { NonNegotiableConditionsField } from "~/page-components/basic/components/form/NonNegotiableConditionField";
 import { SelfFields } from "~/page-components/basic/components/form/SelfFields";
 import { api } from "~/utils/api";
 import { BasicMemberForm } from "../../BasicMemberForm";
@@ -59,10 +58,7 @@ function Resolved() {
         >
           <div className="grid grid-cols-2 gap-12">
             <SelfFields />
-            <div className="flex flex-col gap-16">
-              <IdealTypeFields />
-              <NonNegotiableConditionsField />
-            </div>
+            <IdealTypeFields />
           </div>
           <MemoField />
           <ImagesField memberId={member.id} />
@@ -133,9 +129,6 @@ function memberToForm({ idealType, ...member }: BasicMemberWithJoined) {
       nonPreferredReligions: idealType.nonPreferredReligions.map((religion) => {
         return { value: religion };
       }),
-      dealBreakers: idealType.dealBreakers.map((condition) => {
-        return { value: condition };
-      }),
     },
   };
 }
@@ -167,7 +160,6 @@ function formToPayload({ self, idealType }: BasicMemberUpdateForm) {
       nonPreferredReligions: idealType.nonPreferredReligions.map(
         (religion) => religion.value,
       ),
-      dealBreakers: idealType.dealBreakers.map((condition) => condition.value),
     },
   };
 }

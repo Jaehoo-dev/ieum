@@ -290,35 +290,10 @@ model BasicMemberIdealType {
   isPetOk                 Boolean
   idealTypeDescription    String?
 
-  // agePriority         Int
-  // regionPriority      Int
-  // heightPriority      Int
-  // bodyShapePriority   Int
-  // eyelidPriority      Int
-  // facialBodyPartPriority Int
-  // educationLevelPriority Int
-  // schoolLevelPriority Int
-  // occupationStatusPriority Int
-  // nonPreferredWorkplacePriority Int
-  // nonPreferredJobPriority Int
-  // preferredMbtisPriority Int
-  // nonPreferredMbtisPriority Int
-  // isSmokerOkPriority Int
-  // drinkingFrequencyPriority Int
-  // preferredReligionsPriority Int
-  // nonPreferredReligionsPriority Int
-  // minAnnualIncomePriority Int
-  // minAssetsValuePriority Int
-  // hobbyPriority Int
-  // booksReadPerYearPriority Int
-  // characteristicsPriority Int
-  // isTattooOkPriority Int
-  // exercisePerWeekPriority Int
-  // shouldHaveCarPriority Int
-  // isGamingOkPriority Int
-  // isPetOkPriority Int
-
-  dealBreakers BasicCondition[]
+  dealBreakers     BasicCondition[]
+  highPriorities   BasicCondition[]
+  mediumPriorities BasicCondition[]
+  lowPriorities    BasicCondition[]
 }
 
 model MemberImage {

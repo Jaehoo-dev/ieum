@@ -136,7 +136,6 @@ export const basicMemberRouter = createTRPCRouter({
           isGamingOk: z.boolean(),
           isPetOk: z.boolean(),
           idealTypeDescription: z.string().nullable(),
-          dealBreakers: z.array(z.nativeEnum(BasicCondition)),
         }),
       }),
     )
