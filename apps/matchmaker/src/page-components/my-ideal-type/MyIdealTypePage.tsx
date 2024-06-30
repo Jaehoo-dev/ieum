@@ -202,7 +202,7 @@ function Resolved() {
           const dragStartContainerSetter =
             setterByContainerId[dragStartContainerId!];
           dragStartContainerSetter((prev) => {
-            return [...prev, active.id as BasicCondition];
+            return [active.id as BasicCondition, ...prev];
           });
 
           setActiveId(null);
