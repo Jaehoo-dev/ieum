@@ -1,7 +1,6 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
 import { EventBanner } from "~/components/EventBanner";

@@ -8,7 +8,7 @@ import {
   학력_라벨,
 } from "@ieum/constants";
 import { assert, isEmptyStringOrNil } from "@ieum/utils";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Layout } from "~/components/Layout";
