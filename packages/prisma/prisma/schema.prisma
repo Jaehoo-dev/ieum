@@ -219,43 +219,6 @@ model BasicMember {
 
   idealType BasicMemberIdealType?
 
-  idealMinAgeBirthYear         Int?
-  idealMaxAgeBirthYear         Int?
-  idealRegions                 Region[]
-  idealCustomRegion            String?
-  idealMinHeight               Int?
-  idealMaxHeight               Int?
-  idealBodyShapes              BodyShape[]
-  idealFashionStyles           FashionStyle[]
-  idealEyelids                 Eyelid[]
-  idealFacialBodyPart          String?
-  idealEducationLevel          EducationLevel?
-  idealSchoolLevel             String?
-  idealOccupationStatuses      OccupationStatus[]
-  idealNonPreferredWorkplace   String?
-  idealNonPreferredJob         String?
-  idealPreferredMbtis          MBTI[]
-  idealNonPreferredMbtis       MBTI[]
-  idealIsSmokerOk              Boolean
-  idealDrinkingFrequency       DrinkingFrequency?
-  idealCustomDrinkingFrequency String?
-  idealPreferredReligions      Religion[]
-  idealNonPreferredReligions   Religion[]
-  idealMinAnnualIncome         AnnualIncome?
-  idealMinAssetsValue          AssetsValue?
-  idealHobby                   String?
-  idealBooksReadPerYear        BooksReadPerYear?
-  idealCharacteristics         String?
-  idealLifePhilosophy          String?
-  idealIsTattooOk              Boolean
-  idealExercisePerWeek         ExercisePerWeek?
-  idealShouldHaveCar           Boolean
-  idealIsGamingOk              Boolean
-  idealIsPetOk                 Boolean
-  idealTypeDescription         String?
-
-  nonNegotiableConditions BasicCondition[]
-
   memo String?
 
   pendingMatches  BasicMatch[] @relation(name: "pendingMatchMember")
@@ -326,6 +289,34 @@ model BasicMemberIdealType {
   isGamingOk              Boolean
   isPetOk                 Boolean
   idealTypeDescription    String?
+
+  // agePriority         Int
+  // regionPriority      Int
+  // heightPriority      Int
+  // bodyShapePriority   Int
+  // eyelidPriority      Int
+  // facialBodyPartPriority Int
+  // educationLevelPriority Int
+  // schoolLevelPriority Int
+  // occupationStatusPriority Int
+  // nonPreferredWorkplacePriority Int
+  // nonPreferredJobPriority Int
+  // preferredMbtisPriority Int
+  // nonPreferredMbtisPriority Int
+  // isSmokerOkPriority Int
+  // drinkingFrequencyPriority Int
+  // preferredReligionsPriority Int
+  // nonPreferredReligionsPriority Int
+  // minAnnualIncomePriority Int
+  // minAssetsValuePriority Int
+  // hobbyPriority Int
+  // booksReadPerYearPriority Int
+  // characteristicsPriority Int
+  // isTattooOkPriority Int
+  // exercisePerWeekPriority Int
+  // shouldHaveCarPriority Int
+  // isGamingOkPriority Int
+  // isPetOkPriority Int
 
   dealBreakers BasicCondition[]
 }

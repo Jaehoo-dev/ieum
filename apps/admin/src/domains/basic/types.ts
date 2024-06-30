@@ -1,11 +1,13 @@
 import type {
   BasicMatch,
   BasicMember,
+  BasicMemberIdealType,
   BasicMemberProfile,
   MemberImage,
 } from "@ieum/prisma";
 
 export type BasicMemberWithJoined = BasicMember & {
+  idealType: BasicMemberIdealType | null;
   pendingMatches: BasicMatch[];
   rejectedMatches: BasicMatch[];
   acceptedMatches: BasicMatch[];

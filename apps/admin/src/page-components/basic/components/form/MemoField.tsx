@@ -14,9 +14,9 @@ export function MemoField() {
       메모
       <textarea
         className={`rounded border border-gray-300 ${
-          errors.memo ? "border-2 border-red-500" : ""
+          errors.self?.memo ? "border-2 border-red-500" : ""
         }`}
-        {...register("memo", {
+        {...register("self.memo", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },

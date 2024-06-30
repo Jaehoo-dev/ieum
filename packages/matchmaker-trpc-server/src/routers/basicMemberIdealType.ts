@@ -25,23 +25,13 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input: { memberId, dealBreakers } }) => {
-      return ctx.prisma.$transaction([
-        ctx.prisma.basicMemberIdealType.update({
-          where: {
-            memberId,
-          },
-          data: {
-            dealBreakers,
-          },
-        }),
-        ctx.prisma.basicMember.update({
-          where: {
-            id: memberId,
-          },
-          data: {
-            nonNegotiableConditions: dealBreakers,
-          },
-        }),
-      ]);
+      return ctx.prisma.basicMemberIdealType.update({
+        where: {
+          memberId,
+        },
+        data: {
+          dealBreakers,
+        },
+      });
     }),
 });

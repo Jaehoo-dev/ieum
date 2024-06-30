@@ -2,6 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { BasicMatch } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
 
 import type { BasicMemberWithJoined } from "~/domains/basic/types";
 import { Avatar } from "../Avatar";
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export function BasicMemberCard({ member, defaultMode }: Props) {
+  assert(member.idealType != null, "idealType is required");
+
   const [folded, setFolded] = useState(false);
   const [mode, setMode] = useState<Mode>(defaultMode ?? "SIMPLE");
 
@@ -127,7 +130,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
               <SimpleSelfFields member={member} />
             )}
             <div className="min-h-fit border-l border-gray-200" />
-            <IdealTypeFields member={member} />
+            <IdealTypeFields idealType={member.idealType} />
           </div>
           {member.memo != null ? <div>{`메모: ${member.memo}`}</div> : null}
         </div>

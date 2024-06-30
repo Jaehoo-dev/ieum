@@ -92,7 +92,7 @@ function ImageField() {
   const [imageFile, setImageFile] = useState<File>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "imageBucketPaths",
+    name: "self.imageBucketPaths",
   });
 
   return (
@@ -146,35 +146,36 @@ function ImageField() {
   );
 }
 
-function formToPayload(form: BasicMemberForm) {
+function formToPayload({ self, idealType }: BasicMemberForm) {
   return {
-    ...form,
-    bmi:
-      form.weight == null
-        ? null
-        : Number(calculateBmi(form.height, form.weight).toFixed(2)),
-    fashionStyles: form.fashionStyles.map((style) => style.value),
-    idealRegions: form.idealRegions.map((region) => region.value),
-    idealBodyShapes: form.idealBodyShapes.map((shape) => shape.value),
-    idealFashionStyles: form.idealFashionStyles.map((style) => style.value),
-    idealEyelids: form.idealEyelids.map((eyelid) => eyelid.value),
-    idealOccupationStatuses: form.idealOccupationStatuses.map(
-      (status) => status.value,
-    ),
-    idealPreferredMbtis: form.idealPreferredMbtis.map((mbti) => mbti.value),
-    idealNonPreferredMbtis: form.idealNonPreferredMbtis.map(
-      (mbti) => mbti.value,
-    ),
-    idealPreferredReligions: form.idealPreferredReligions.map(
-      (religion) => religion.value,
-    ),
-    idealNonPreferredReligions: form.idealNonPreferredReligions.map(
-      (religion) => religion.value,
-    ),
-    nonNegotiableConditions: form.nonNegotiableConditions.map(
-      (condition) => condition.value,
-    ),
-    imageBucketPaths: form.imageBucketPaths.map((path) => path.value),
+    self: {
+      ...self,
+      bmi:
+        self.weight == null
+          ? null
+          : Number(calculateBmi(self.height, self.weight).toFixed(2)),
+      fashionStyles: self.fashionStyles.map((style) => style.value),
+      imageBucketPaths: self.imageBucketPaths.map((path) => path.value),
+    },
+    idealType: {
+      ...idealType,
+      regions: idealType.regions.map((region) => region.value),
+      bodyShapes: idealType.bodyShapes.map((shape) => shape.value),
+      fashionStyles: idealType.fashionStyles.map((style) => style.value),
+      eyelids: idealType.eyelids.map((eyelid) => eyelid.value),
+      occupationStatuses: idealType.occupationStatuses.map(
+        (status) => status.value,
+      ),
+      preferredMbtis: idealType.preferredMbtis.map((mbti) => mbti.value),
+      nonPreferredMbtis: idealType.nonPreferredMbtis.map((mbti) => mbti.value),
+      preferredReligions: idealType.preferredReligions.map(
+        (religion) => religion.value,
+      ),
+      nonPreferredReligions: idealType.nonPreferredReligions.map(
+        (religion) => religion.value,
+      ),
+      dealBreakers: idealType.dealBreakers.map((condition) => condition.value),
+    },
   };
 }
 

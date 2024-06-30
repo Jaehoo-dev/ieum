@@ -1,6 +1,7 @@
 import type {
   BasicCondition,
   BasicMember,
+  BasicMemberIdealType,
   BodyShape,
   Eyelid,
   FashionStyle,
@@ -10,34 +11,37 @@ import type {
   Religion,
 } from "@ieum/prisma";
 
-export interface BasicMemberForm
-  extends Omit<
+export type BasicMemberForm = {
+  self: Omit<
     BasicMember,
-    | "id"
+    "id" | "fashionStyles" | "createdAt" | "updatedAt"
+  > & {
+    fashionStyles: { value: FashionStyle }[];
+    imageBucketPaths: { value: string }[];
+  };
+  idealType: Omit<
+    BasicMemberIdealType,
+    | "memberId"
+    | "regions"
+    | "bodyShapes"
     | "fashionStyles"
-    | "idealRegions"
-    | "idealBodyShapes"
-    | "idealFashionStyles"
-    | "idealEyelids"
-    | "idealOccupationStatuses"
-    | "idealPreferredMbtis"
-    | "idealNonPreferredMbtis"
-    | "idealPreferredReligions"
-    | "idealNonPreferredReligions"
-    | "nonNegotiableConditions"
-    | "createdAt"
-    | "updatedAt"
-  > {
-  fashionStyles: { value: FashionStyle }[];
-  idealRegions: { value: Region }[];
-  idealBodyShapes: { value: BodyShape }[];
-  idealFashionStyles: { value: FashionStyle }[];
-  idealEyelids: { value: Eyelid }[];
-  idealOccupationStatuses: { value: OccupationStatus }[];
-  idealPreferredMbtis: { value: MBTI }[];
-  idealNonPreferredMbtis: { value: MBTI }[];
-  idealPreferredReligions: { value: Religion }[];
-  idealNonPreferredReligions: { value: Religion }[];
-  nonNegotiableConditions: { value: BasicCondition }[];
-  imageBucketPaths: { value: string }[];
-}
+    | "eyelids"
+    | "occupationStatuses"
+    | "preferredMbtis"
+    | "nonPreferredMbtis"
+    | "preferredReligions"
+    | "nonPreferredReligions"
+    | "dealBreakers"
+  > & {
+    regions: { value: Region }[];
+    bodyShapes: { value: BodyShape }[];
+    fashionStyles: { value: FashionStyle }[];
+    eyelids: { value: Eyelid }[];
+    occupationStatuses: { value: OccupationStatus }[];
+    preferredMbtis: { value: MBTI }[];
+    nonPreferredMbtis: { value: MBTI }[];
+    preferredReligions: { value: Religion }[];
+    nonPreferredReligions: { value: Religion }[];
+    dealBreakers: { value: BasicCondition }[];
+  };
+};

@@ -51,15 +51,15 @@ export function SelfFields() {
       <h1 className="text-xl font-bold">본인</h1>
       <TextInput
         label="이름"
-        error={errors.name != null}
-        {...register("name", {
+        error={errors.self?.name != null}
+        {...register("self.name", {
           required: true,
         })}
       />
       <TextInput
         label="전화번호"
-        error={errors.phoneNumber != null}
-        {...register("phoneNumber", {
+        error={errors.self?.phoneNumber != null}
+        {...register("self.phoneNumber", {
           required: true,
           validate: (value) => {
             return (
@@ -72,12 +72,12 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="gender"
+        name="self.gender"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="성별"
-              error={errors.gender != null}
+              error={errors.self?.gender != null}
               value={value}
               onChange={onChange}
             >
@@ -94,8 +94,8 @@ export function SelfFields() {
       />
       <TextInput
         label="출생연도"
-        error={errors.birthYear != null}
-        {...register("birthYear", {
+        error={errors.self?.birthYear != null}
+        {...register("self.birthYear", {
           required: true,
           valueAsNumber: true,
           validate: (value) => {
@@ -105,15 +105,15 @@ export function SelfFields() {
       />
       <TextInput
         label="거주지"
-        error={errors.residence != null}
-        {...register("residence", {
+        error={errors.self?.residence != null}
+        {...register("self.residence", {
           required: true,
         })}
       />
       <TextInput
         label="키"
-        error={errors.height != null}
-        {...register("height", {
+        error={errors.self?.height != null}
+        {...register("self.height", {
           required: true,
           valueAsNumber: true,
           validate: (value) => {
@@ -123,12 +123,12 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="bodyShape"
+        name="self.bodyShape"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="체형"
-              error={errors.bodyShape != null}
+              error={errors.self?.bodyShape != null}
               value={value}
               onChange={onChange}
             >
@@ -145,8 +145,8 @@ export function SelfFields() {
       />
       <TextInput
         label="몸무게"
-        error={errors.weight != null}
-        {...register("weight", {
+        error={errors.self?.weight != null}
+        {...register("self.weight", {
           setValueAs: (value: string | null) => {
             if (isEmptyStringOrNil(value)) {
               return null;
@@ -163,18 +163,18 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="eyelid"
+        name="self.eyelid"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="쌍꺼풀"
-              error={errors.eyelid != null}
+              error={errors.self?.eyelid != null}
               value={value}
               onChange={(event) => {
                 const option = event.target.value as Eyelid;
 
                 if (option !== "OTHER") {
-                  setValue("customEyelid", null);
+                  setValue("self.customEyelid", null);
                 }
 
                 onChange(option);
@@ -191,10 +191,10 @@ export function SelfFields() {
           );
         }}
       />
-      {watch("eyelid") === "OTHER" ? (
+      {watch("self.eyelid") === "OTHER" ? (
         <TextInput
-          error={errors.customEyelid != null}
-          {...register("customEyelid", {
+          error={errors.self?.customEyelid != null}
+          {...register("self.customEyelid", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },
@@ -203,19 +203,19 @@ export function SelfFields() {
       ) : null}
       <TextInput
         label="얼굴/신체 자신 있는 부위"
-        error={errors.confidentFacialBodyPart != null}
-        {...register("confidentFacialBodyPart", {
+        error={errors.self?.confidentFacialBodyPart != null}
+        {...register("self.confidentFacialBodyPart", {
           required: true,
         })}
       />
       <Controller
         control={control}
-        name="educationLevel"
+        name="self.educationLevel"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="학력"
-              error={errors.educationLevel != null}
+              error={errors.self?.educationLevel != null}
               value={value}
               onChange={onChange}
             >
@@ -235,8 +235,8 @@ export function SelfFields() {
       />
       <TextInput
         label="졸업한 대학교"
-        error={errors.graduatedUniversity != null}
-        {...register("graduatedUniversity", {
+        error={errors.self?.graduatedUniversity != null}
+        {...register("self.graduatedUniversity", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -244,12 +244,12 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="occupationStatus"
+        name="self.occupationStatus"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="신분"
-              error={errors.occupationStatus != null}
+              error={errors.self?.occupationStatus != null}
               value={value}
               onChange={onChange}
             >
@@ -269,8 +269,8 @@ export function SelfFields() {
       />
       <TextInput
         label="직장"
-        error={errors.workplace != null}
-        {...register("workplace", {
+        error={errors.self?.workplace != null}
+        {...register("self.workplace", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -278,8 +278,8 @@ export function SelfFields() {
       />
       <TextInput
         label="직무"
-        error={errors.job != null}
-        {...register("job", {
+        error={errors.self?.job != null}
+        {...register("self.job", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -287,8 +287,8 @@ export function SelfFields() {
       />
       <TextInput
         label="재학 학교"
-        error={errors.currentSchool != null}
-        {...register("currentSchool", {
+        error={errors.self?.currentSchool != null}
+        {...register("self.currentSchool", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -296,7 +296,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="mbti"
+        name="self.mbti"
         rules={{
           validate: (value: string | null) => {
             return value == null || isMbti(value);
@@ -306,7 +306,7 @@ export function SelfFields() {
           return (
             <TextInput
               label="MBTI"
-              error={errors.mbti != null}
+              error={errors.self?.mbti != null}
               value={value ?? ""}
               onChange={({ target: { value } }) => {
                 isEmptyStringOrNil(value)
@@ -319,15 +319,15 @@ export function SelfFields() {
       />
       <div>
         흡연
-        <Checkbox label="함" {...register("isSmoker")} />
+        <Checkbox label="함" {...register("self.isSmoker")} />
       </div>
       <div>
         음주
-        <Checkbox label="함" {...register("isDrinker")} />
+        <Checkbox label="함" {...register("self.isDrinker")} />
       </div>
       <TextInput
         label="술을 얼마나 자주, 얼만큼 마시는지"
-        {...register("alcoholConsumption", {
+        {...register("self.alcoholConsumption", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -335,7 +335,7 @@ export function SelfFields() {
       />
       <TextInput
         label="주량"
-        {...register("alcoholTolerance", {
+        {...register("self.alcoholTolerance", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -343,7 +343,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="religion"
+        name="self.religion"
         rules={{
           required: true,
         }}
@@ -363,7 +363,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="annualIncome"
+        name="self.annualIncome"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
@@ -399,7 +399,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="assetsValue"
+        name="self.assetsValue"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
@@ -432,16 +432,16 @@ export function SelfFields() {
       />
       <TextInput
         label="자산 관리 방법"
-        {...register("assetManagementApproach", {
+        {...register("self.assetManagementApproach", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
         })}
       />
-      <TextInput label="취미/관심사" {...register("hobby")} />
+      <TextInput label="취미/관심사" {...register("self.hobby")} />
       <Controller
         control={control}
-        name="booksReadPerYear"
+        name="self.booksReadPerYear"
         render={({ field: { onChange, value } }) => {
           return (
             <Select label="독서량" value={value} onChange={onChange}>
@@ -461,7 +461,7 @@ export function SelfFields() {
       />
       <TextInput
         label="책 취향"
-        {...register("bookTaste", {
+        {...register("self.bookTaste", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -469,7 +469,7 @@ export function SelfFields() {
       />
       <TextInput
         label="형제관계"
-        {...register("siblings", {
+        {...register("self.siblings", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -477,7 +477,7 @@ export function SelfFields() {
       />
       <TextInput
         label="특징"
-        {...register("characteristics", {
+        {...register("self.characteristics", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -485,7 +485,7 @@ export function SelfFields() {
       />
       <TextInput
         label="10년 뒤 모습"
-        {...register("tenYearFuture", {
+        {...register("self.tenYearFuture", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -493,7 +493,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="plannedNumberOfChildren"
+        name="self.plannedNumberOfChildren"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
@@ -519,7 +519,7 @@ export function SelfFields() {
       />
       <TextInput
         label="인생관"
-        {...register("lifePhilosophy", {
+        {...register("self.lifePhilosophy", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -527,7 +527,7 @@ export function SelfFields() {
       />
       <TextInput
         label="직업관"
-        {...register("workPhilosophy", {
+        {...register("self.workPhilosophy", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -535,11 +535,11 @@ export function SelfFields() {
       />
       <div>
         문신
-        <Checkbox label="함" {...register("hasTattoo")} />
+        <Checkbox label="함" {...register("self.hasTattoo")} />
       </div>
       <Controller
         control={control}
-        name="exercisePerWeek"
+        name="self.exercisePerWeek"
         render={({ field: { onChange, value } }) => {
           return (
             <Select label="주간 운동량" value={value} onChange={onChange}>
@@ -559,7 +559,7 @@ export function SelfFields() {
       />
       <TextInput
         label="운동 종류"
-        {...register("exerciseType", {
+        {...register("self.exerciseType", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -567,15 +567,15 @@ export function SelfFields() {
       />
       <div>
         자차
-        <Checkbox label="있음" {...register("hasCar")} />
+        <Checkbox label="있음" {...register("self.hasCar")} />
       </div>
       <div>
         게임
-        <Checkbox label="함" {...register("doesGame")} />
+        <Checkbox label="함" {...register("self.doesGame")} />
       </div>
       <TextInput
         label="게임 종류"
-        {...register("gameType", {
+        {...register("self.gameType", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -583,7 +583,7 @@ export function SelfFields() {
       />
       <TextInput
         label="데이트 스타일"
-        {...register("datingStyle", {
+        {...register("self.datingStyle", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -591,7 +591,7 @@ export function SelfFields() {
       />
       <Controller
         control={control}
-        name="contactFrequency"
+        name="self.contactFrequency"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
@@ -601,7 +601,7 @@ export function SelfFields() {
                 const option = event.target.value as ContactFrequency;
 
                 if (option !== "OTHER") {
-                  setValue("customContactFrequency", null);
+                  setValue("self.customContactFrequency", null);
                 }
 
                 onChange(option);
@@ -621,10 +621,10 @@ export function SelfFields() {
           );
         }}
       />
-      {watch("contactFrequency") === "OTHER" ? (
+      {watch("self.contactFrequency") === "OTHER" ? (
         <TextInput
-          error={errors.customContactFrequency != null}
-          {...register("customContactFrequency", {
+          error={errors.self?.customContactFrequency != null}
+          {...register("self.customContactFrequency", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },
@@ -633,7 +633,7 @@ export function SelfFields() {
       ) : null}
       <Controller
         control={control}
-        name="contactMethod"
+        name="self.contactMethod"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
@@ -643,7 +643,7 @@ export function SelfFields() {
                 const option = e.target.value as ContactMethod;
 
                 if (option !== "OTHER") {
-                  setValue("customContactMethod", null);
+                  setValue("self.customContactMethod", null);
                 }
 
                 onChange(option);
@@ -660,10 +660,10 @@ export function SelfFields() {
           );
         }}
       />
-      {watch("contactMethod") === "OTHER" ? (
+      {watch("self.contactMethod") === "OTHER" ? (
         <TextInput
-          error={errors.customContactMethod != null}
-          {...register("customContactMethod", {
+          error={errors.self?.customContactMethod != null}
+          {...register("self.customContactMethod", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },
@@ -672,11 +672,11 @@ export function SelfFields() {
       ) : null}
       <div>
         반려동물
-        <Checkbox label="키움" {...register("hasPet")} />
+        <Checkbox label="키움" {...register("self.hasPet")} />
       </div>
       <TextareaInput
         label="나는 이런 사람이에요"
-        {...register("selfIntroduction", {
+        {...register("self.selfIntroduction", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },

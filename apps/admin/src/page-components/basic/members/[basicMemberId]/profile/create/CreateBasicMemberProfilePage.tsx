@@ -42,6 +42,9 @@ function Resolved() {
   const [member] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,
   });
+
+  assert(member.idealType != null, "idealType is required");
+
   const { mutateAsync: createProfile, isPending: isCreatingProfile } =
     api.basicMemberRouter.createProfile.useMutation({
       onSuccess: () => {
@@ -81,7 +84,7 @@ function Resolved() {
         isSmoker: member.isSmoker ? "예" : "아니요",
         religion: 종교_라벨[member.religion],
         selfIntroduction: member.selfIntroduction,
-        idealTypeDescription: member.idealTypeDescription,
+        idealTypeDescription: member.idealType.idealTypeDescription,
       },
     },
   });

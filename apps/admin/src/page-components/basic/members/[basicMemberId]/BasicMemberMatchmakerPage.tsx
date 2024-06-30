@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
@@ -11,7 +11,7 @@ import {
   주간_운동량_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMember, BasicMemberIdealType } from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
@@ -30,7 +30,7 @@ import {
   orderedExercisePerWeeks,
   Religion,
 } from "@ieum/prisma";
-import { isEmptyStringOrNil } from "@ieum/utils";
+import { assert, isEmptyStringOrNil } from "@ieum/utils";
 import {
   Controller,
   FormProvider,
@@ -72,23 +72,30 @@ interface CustomCanditatesSearchForm {
 }
 
 export function BasicMemberMatchmakerPage() {
+  return (
+    <Suspense fallback={null}>
+      <Resolved />
+    </Suspense>
+  );
+}
+
+function Resolved() {
   const [searchMode, setSearchMode] = useState<"DEFAULT" | "CUSTOM">("DEFAULT");
   const utils = api.useUtils();
   const router = useRouter();
   const basicMemberId = Number(router.query.basicMemberId);
-  const { data: basicMember } = api.basicMemberRouter.findById.useQuery(
-    { id: basicMemberId },
-    {
-      enabled: !isNaN(basicMemberId),
-    },
-  );
-  const { data: defaultMatchCandidates = [] } =
-    api.basicMemberRouter.findMatchCandidates.useQuery(
-      { id: basicMemberId },
-      { enabled: searchMode === "DEFAULT" && !isNaN(basicMemberId) },
-    );
+  const [basicMember] = api.basicMemberRouter.findById.useSuspenseQuery({
+    id: basicMemberId,
+  });
+  const [defaultMatchCandidates] =
+    api.basicMemberRouter.findMatchCandidates.useSuspenseQuery({
+      id: basicMemberId,
+    });
+
+  assert(basicMember.idealType != null, "idealType is required");
+
   const methods = useForm({
-    values: createCustomCandidatesSearchFormValues(basicMember),
+    values: createCustomCandidatesSearchFormValues(basicMember.idealType),
   });
   const [customSearchQueryParams, setCustomSearchQueryParams] = useState(
     formToValues(methods.getValues()),
@@ -141,16 +148,20 @@ export function BasicMemberMatchmakerPage() {
 
     if (searchMode === "CUSTOM") {
       return customMatchCandidates.filter((member) => {
+        assert(member.idealType != null, "idealType is required");
+
         return satisfiesNonNegotiableConditions({
-          self: member,
+          selfIdealType: member.idealType,
           target: basicMember,
         });
       });
     }
 
     return defaultMatchCandidates.filter((member) => {
+      assert(member.idealType != null, "idealType is required");
+
       return satisfiesNonNegotiableConditions({
-        self: member,
+        selfIdealType: member.idealType,
         target: basicMember,
       });
     });
@@ -781,72 +792,90 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
 const 상관없음 = "상관없음";
 
 function satisfiesNonNegotiableConditions({
-  self,
+  selfIdealType,
   target,
 }: {
-  self: BasicMember;
+  selfIdealType: BasicMemberIdealType;
   target: BasicMember;
 }) {
-  const conditions = self.nonNegotiableConditions;
+  const {
+    dealBreakers,
+    minAgeBirthYear,
+    maxAgeBirthYear,
+    minHeight,
+    maxHeight,
+    educationLevel,
+    occupationStatuses,
+    preferredMbtis,
+    nonPreferredMbtis,
+    isSmokerOk,
+    preferredReligions,
+    nonPreferredReligions,
+    minAnnualIncome,
+    minAssetsValue,
+    booksReadPerYear,
+    isTattooOk,
+    exercisePerWeek,
+    shouldHaveCar,
+    isGamingOk,
+    isPetOk,
+  } = selfIdealType;
 
-  for (const condition of conditions) {
-    const satisfiesCondition = match(condition)
+  for (const dealBreaker of dealBreakers) {
+    const satisfiesCondition = match(dealBreaker)
       .with("AGE", () => {
         return (
-          (self.idealMinAgeBirthYear == null ||
-            target.birthYear <= self.idealMinAgeBirthYear) &&
-          (self.idealMaxAgeBirthYear == null ||
-            target.birthYear >= self.idealMaxAgeBirthYear)
+          (minAgeBirthYear == null || target.birthYear <= minAgeBirthYear) &&
+          (maxAgeBirthYear == null || target.birthYear >= maxAgeBirthYear)
         );
       })
       .with("HEIGHT", () => {
         return (
-          (self.idealMinHeight == null ||
-            target.height >= self.idealMinHeight) &&
-          (self.idealMaxHeight == null || target.height <= self.idealMaxHeight)
+          (minHeight == null || target.height >= minHeight) &&
+          (maxHeight == null || target.height <= maxHeight)
         );
       })
       .with("EDUCATION_LEVEL", () => {
-        if (self.idealEducationLevel == null) {
+        if (educationLevel == null) {
           return true;
         }
 
         return orderedEducationLevels
-          .slice(orderedEducationLevels.indexOf(self.idealEducationLevel))
+          .slice(orderedEducationLevels.indexOf(educationLevel))
           .includes(target.educationLevel);
       })
       .with("OCCUPATION_STATUS", () => {
-        return self.idealOccupationStatuses.includes(target.occupationStatus);
+        return occupationStatuses.includes(target.occupationStatus);
       })
       .with("PREFERRED_MBTIS", () => {
         if (target.mbti == null) {
           return true;
         }
 
-        return self.idealPreferredMbtis.includes(target.mbti);
+        return preferredMbtis.includes(target.mbti);
       })
       .with("NON_PREFERRED_MBTIS", () => {
         if (target.mbti == null) {
           return true;
         }
 
-        return !self.idealNonPreferredMbtis.includes(target.mbti);
+        return !nonPreferredMbtis.includes(target.mbti);
       })
       .with("IS_SMOKER_OK", () => {
-        if (self.idealIsSmokerOk) {
+        if (isSmokerOk) {
           return true;
         }
 
         return !target.isSmoker;
       })
       .with("PREFERRED_RELIGIONS", () => {
-        return self.idealPreferredReligions.includes(target.religion);
+        return preferredReligions.includes(target.religion);
       })
       .with("NON_PREFERRED_RELIGIONS", () => {
-        return !self.idealNonPreferredReligions.includes(target.religion);
+        return !nonPreferredReligions.includes(target.religion);
       })
       .with("MIN_ANNUAL_INCOME", () => {
-        if (self.idealMinAnnualIncome == null) {
+        if (minAnnualIncome == null) {
           return true;
         }
 
@@ -855,11 +884,11 @@ function satisfiesNonNegotiableConditions({
         }
 
         return orderedAnnualIncomes
-          .slice(orderedAnnualIncomes.indexOf(self.idealMinAnnualIncome))
+          .slice(orderedAnnualIncomes.indexOf(minAnnualIncome))
           .includes(target.annualIncome);
       })
       .with("MIN_ASSETS_VALUE", () => {
-        if (self.idealMinAssetsValue == null) {
+        if (minAssetsValue == null) {
           return true;
         }
 
@@ -868,50 +897,50 @@ function satisfiesNonNegotiableConditions({
         }
 
         return orderedAssetsValues
-          .slice(orderedAssetsValues.indexOf(self.idealMinAssetsValue))
+          .slice(orderedAssetsValues.indexOf(minAssetsValue))
           .includes(target.assetsValue);
       })
       .with("BOOKS_READ_PER_YEAR", () => {
-        if (self.idealBooksReadPerYear == null) {
+        if (booksReadPerYear == null) {
           return true;
         }
 
         return orderedBooksReadPerYears
-          .slice(orderedBooksReadPerYears.indexOf(self.idealBooksReadPerYear))
+          .slice(orderedBooksReadPerYears.indexOf(booksReadPerYear))
           .includes(target.booksReadPerYear);
       })
       .with("IS_TATTOO_OK", () => {
-        if (self.idealIsTattooOk) {
+        if (isTattooOk) {
           return true;
         }
 
         return !target.hasTattoo;
       })
       .with("EXERCISE_PER_WEEK", () => {
-        if (self.idealExercisePerWeek == null) {
+        if (exercisePerWeek == null) {
           return true;
         }
 
         return orderedExercisePerWeeks
-          .slice(orderedExercisePerWeeks.indexOf(self.idealExercisePerWeek))
+          .slice(orderedExercisePerWeeks.indexOf(exercisePerWeek))
           .includes(target.exercisePerWeek);
       })
       .with("SHOULD_HAVE_CAR", () => {
-        if (!self.idealShouldHaveCar) {
+        if (!shouldHaveCar) {
           return true;
         }
 
         return target.hasCar;
       })
       .with("IS_GAMING_OK", () => {
-        if (self.idealIsGamingOk) {
+        if (isGamingOk) {
           return true;
         }
 
         return !target.doesGame;
       })
       .with("IS_PET_OK", () => {
-        if (self.idealIsPetOk) {
+        if (isPetOk) {
           return true;
         }
 
@@ -928,64 +957,62 @@ function satisfiesNonNegotiableConditions({
 }
 
 function createCustomCandidatesSearchFormValues(
-  member: BasicMember | undefined,
+  idealType: BasicMemberIdealType,
 ): CustomCanditatesSearchForm {
-  if (member == null) {
-    return {
-      minAgeBirthYear: null,
-      maxAgeBirthYear: null,
-      minHeight: null,
-      maxHeight: null,
-      minEducationLevel: null,
-      occupationStatuses: [],
-      preferredMbtis: [],
-      nonPreferredMbtis: [],
-      isSmokerOk: false,
-      preferredReligions: [],
-      nonPreferredReligions: [],
-      minAnnualIncome: null,
-      minAssetsValue: null,
-      minBooksReadPerYear: null,
-      isTattooOk: false,
-      exercisePerWeek: null,
-      shouldHaveCar: false,
-      isGamingOk: true,
-      isPetOk: true,
-      nonNegotiableConditions: [],
-    };
-  }
+  const {
+    minAgeBirthYear,
+    maxAgeBirthYear,
+    minHeight,
+    maxHeight,
+    educationLevel,
+    occupationStatuses,
+    preferredMbtis,
+    nonPreferredMbtis,
+    isSmokerOk,
+    preferredReligions,
+    nonPreferredReligions,
+    minAnnualIncome,
+    minAssetsValue,
+    booksReadPerYear,
+    isTattooOk,
+    exercisePerWeek,
+    shouldHaveCar,
+    isGamingOk,
+    isPetOk,
+    dealBreakers,
+  } = idealType;
 
   return {
-    minAgeBirthYear: member.idealMinAgeBirthYear,
-    maxAgeBirthYear: member.idealMaxAgeBirthYear,
-    minHeight: member.idealMinHeight,
-    maxHeight: member.idealMaxHeight,
-    minEducationLevel: member.idealEducationLevel,
-    occupationStatuses: member.idealOccupationStatuses.map((value) => {
+    minAgeBirthYear,
+    maxAgeBirthYear,
+    minHeight,
+    maxHeight,
+    minEducationLevel: educationLevel,
+    occupationStatuses: occupationStatuses.map((value) => {
       return { value };
     }),
-    preferredMbtis: member.idealPreferredMbtis.map((value) => {
+    preferredMbtis: preferredMbtis.map((value) => {
       return { value };
     }),
-    nonPreferredMbtis: member.idealNonPreferredMbtis.map((value) => {
+    nonPreferredMbtis: nonPreferredMbtis.map((value) => {
       return { value };
     }),
-    isSmokerOk: member.idealIsSmokerOk,
-    preferredReligions: member.idealPreferredReligions.map((value) => {
+    isSmokerOk,
+    preferredReligions: preferredReligions.map((value) => {
       return { value };
     }),
-    nonPreferredReligions: member.idealNonPreferredReligions.map((value) => {
+    nonPreferredReligions: nonPreferredReligions.map((value) => {
       return { value };
     }),
-    minAnnualIncome: member.idealMinAnnualIncome,
-    minAssetsValue: member.idealMinAssetsValue,
-    minBooksReadPerYear: member.idealBooksReadPerYear,
-    isTattooOk: member.idealIsTattooOk,
-    exercisePerWeek: member.idealExercisePerWeek,
-    shouldHaveCar: member.idealShouldHaveCar,
-    isGamingOk: member.idealIsGamingOk,
-    isPetOk: member.idealIsPetOk,
-    nonNegotiableConditions: member.nonNegotiableConditions.map((value) => {
+    minAnnualIncome,
+    minAssetsValue,
+    minBooksReadPerYear: booksReadPerYear,
+    isTattooOk,
+    exercisePerWeek,
+    shouldHaveCar,
+    isGamingOk,
+    isPetOk,
+    nonNegotiableConditions: dealBreakers.map((value) => {
       return { value };
     }),
   };

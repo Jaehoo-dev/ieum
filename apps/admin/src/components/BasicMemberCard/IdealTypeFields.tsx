@@ -12,174 +12,158 @@ import {
   체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMemberIdealType } from "@ieum/prisma";
 
 interface Props {
-  member: BasicMember;
+  idealType: BasicMemberIdealType;
 }
 
-export function IdealTypeFields({ member }: Props) {
+export function IdealTypeFields({ idealType }: Props) {
   const {
-    idealMinAgeBirthYear,
-    idealMaxAgeBirthYear,
-    idealRegions,
-    idealCustomRegion,
-    idealMinHeight,
-    idealMaxHeight,
-    idealBodyShapes,
-    idealEyelids,
-    idealFacialBodyPart,
-    idealEducationLevel,
-    idealSchoolLevel,
-    idealOccupationStatuses,
-    idealNonPreferredWorkplace,
-    idealNonPreferredJob,
-    idealPreferredMbtis,
-    idealNonPreferredMbtis,
-    idealIsSmokerOk,
-    idealDrinkingFrequency,
-    idealPreferredReligions,
-    idealNonPreferredReligions,
-    idealMinAnnualIncome,
-    idealMinAssetsValue,
-    idealHobby,
-    idealBooksReadPerYear,
-    idealCharacteristics,
-    idealLifePhilosophy,
-    idealIsTattooOk,
-    idealExercisePerWeek,
-    idealShouldHaveCar,
-    idealIsGamingOk,
-    idealIsPetOk,
-    nonNegotiableConditions,
+    minAgeBirthYear,
+    maxAgeBirthYear,
+    regions,
+    customRegion,
+    minHeight,
+    maxHeight,
+    bodyShapes,
+    eyelids,
+    facialBodyPart,
+    educationLevel,
+    schoolLevel,
+    occupationStatuses,
+    nonPreferredWorkplace,
+    nonPreferredJob,
+    preferredMbtis,
+    nonPreferredMbtis,
+    isSmokerOk,
+    drinkingFrequency,
+    preferredReligions,
+    nonPreferredReligions,
+    minAnnualIncome,
+    minAssetsValue,
+    hobby,
+    booksReadPerYear,
+    characteristics,
+    lifePhilosophy,
+    isTattooOk,
+    exercisePerWeek,
+    shouldHaveCar,
+    isGamingOk,
+    isPetOk,
+    dealBreakers,
     idealTypeDescription,
-  } = member;
+  } = idealType;
 
   return (
     <div className="flex w-1/2 flex-col gap-1">
-      {idealMinAgeBirthYear != null || idealMaxAgeBirthYear != null ? (
-        <Field
-          label="나이"
-          nonNegotiable={nonNegotiableConditions.includes("AGE")}
-        >
-          {idealMinAgeBirthYear} ~ {idealMaxAgeBirthYear}
+      {minAgeBirthYear != null || maxAgeBirthYear != null ? (
+        <Field label="나이" nonNegotiable={dealBreakers.includes("AGE")}>
+          {minAgeBirthYear} ~ {maxAgeBirthYear}
         </Field>
       ) : null}
-      {idealRegions.length > 0 || idealCustomRegion != null ? (
-        <Field
-          label="지역"
-          nonNegotiable={nonNegotiableConditions.includes("REGION")}
-        >
-          {`${idealRegions
+      {regions.length > 0 || customRegion != null ? (
+        <Field label="지역" nonNegotiable={dealBreakers.includes("REGION")}>
+          {`${regions
             .map((region) => {
               return 지역_라벨[region];
             })
-            .join(", ")}${
-            idealCustomRegion != null ? `, ${idealCustomRegion}` : ""
-          }`}
+            .join(", ")}${customRegion != null ? `, ${customRegion}` : ""}`}
         </Field>
       ) : null}
-      {idealMinHeight != null || idealMaxHeight != null ? (
-        <Field
-          label="키"
-          nonNegotiable={nonNegotiableConditions.includes("HEIGHT")}
-        >
-          {idealMinHeight} ~ {idealMaxHeight}
+      {minHeight != null || maxHeight != null ? (
+        <Field label="키" nonNegotiable={dealBreakers.includes("HEIGHT")}>
+          {minHeight} ~ {maxHeight}
         </Field>
       ) : null}
-      {idealBodyShapes.length > 0 ? (
+      {bodyShapes.length > 0 ? (
         <Field
           label="체형"
-          nonNegotiable={nonNegotiableConditions.includes("BODY_SHAPES")}
+          nonNegotiable={dealBreakers.includes("BODY_SHAPES")}
         >
-          {idealBodyShapes
+          {bodyShapes
             .map((bodyShape) => {
               return 체형_라벨[bodyShape];
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealEyelids.length > 0 ? (
-        <Field
-          label="쌍꺼풀"
-          nonNegotiable={nonNegotiableConditions.includes("EYELID")}
-        >
-          {idealEyelids
+      {eyelids.length > 0 ? (
+        <Field label="쌍꺼풀" nonNegotiable={dealBreakers.includes("EYELID")}>
+          {eyelids
             .map((eyelid) => {
               return 쌍꺼풀_라벨[eyelid];
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealFacialBodyPart != null ? (
+      {facialBodyPart != null ? (
         <Field
           label="얼굴/신체 특징"
-          nonNegotiable={nonNegotiableConditions.includes("FACIAL_BODY_PART")}
+          nonNegotiable={dealBreakers.includes("FACIAL_BODY_PART")}
         >
-          {idealFacialBodyPart}
+          {facialBodyPart}
         </Field>
       ) : null}
-      {idealEducationLevel != null ? (
+      {educationLevel != null ? (
         <Field
           label="최소 학력"
-          nonNegotiable={nonNegotiableConditions.includes("EDUCATION_LEVEL")}
+          nonNegotiable={dealBreakers.includes("EDUCATION_LEVEL")}
         >
-          {학력_라벨[idealEducationLevel]}
+          {학력_라벨[educationLevel]}
         </Field>
       ) : null}
-      {idealSchoolLevel != null ? (
+      {schoolLevel != null ? (
         <Field
           label="최소 학벌"
-          nonNegotiable={nonNegotiableConditions.includes("SCHOOL_LEVEL")}
+          nonNegotiable={dealBreakers.includes("SCHOOL_LEVEL")}
         >
-          {idealSchoolLevel}
+          {schoolLevel}
         </Field>
       ) : null}
-      {idealOccupationStatuses.length > 0 ? (
+      {occupationStatuses.length > 0 ? (
         <Field
           label="신분"
-          nonNegotiable={nonNegotiableConditions.includes("OCCUPATION_STATUS")}
+          nonNegotiable={dealBreakers.includes("OCCUPATION_STATUS")}
         >
-          {idealOccupationStatuses
+          {occupationStatuses
             .map((status) => {
               return 신분_라벨[status];
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealNonPreferredWorkplace != null ? (
+      {nonPreferredWorkplace != null ? (
         <Field label="기피 직장/학교" nonNegotiable={true}>
-          {idealNonPreferredWorkplace}
+          {nonPreferredWorkplace}
         </Field>
       ) : null}
-      {idealNonPreferredJob != null ? (
+      {nonPreferredJob != null ? (
         <Field
           label="기피 직무"
-          nonNegotiable={nonNegotiableConditions.includes("NON_PREFERRED_JOB")}
+          nonNegotiable={dealBreakers.includes("NON_PREFERRED_JOB")}
         >
-          {idealNonPreferredJob}
+          {nonPreferredJob}
         </Field>
       ) : null}
-      {idealPreferredMbtis.length > 0 ? (
+      {preferredMbtis.length > 0 ? (
         <Field
           label="선호 MBTI"
-          nonNegotiable={nonNegotiableConditions.includes("PREFERRED_MBTIS")}
+          nonNegotiable={dealBreakers.includes("PREFERRED_MBTIS")}
         >
-          {idealPreferredMbtis
+          {preferredMbtis
             .map((mbti) => {
               return mbti;
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealNonPreferredMbtis.length > 0 ? (
+      {nonPreferredMbtis.length > 0 ? (
         <Field
           label="기피 MBTI"
-          nonNegotiable={nonNegotiableConditions.includes(
-            "NON_PREFERRED_MBTIS",
-          )}
+          nonNegotiable={dealBreakers.includes("NON_PREFERRED_MBTIS")}
         >
-          {idealNonPreferredMbtis
+          {nonPreferredMbtis
             .map((mbti) => {
               return mbti;
             })
@@ -188,122 +172,116 @@ export function IdealTypeFields({ member }: Props) {
       ) : null}
       <Field
         label="흡연 허용"
-        nonNegotiable={nonNegotiableConditions.includes("IS_SMOKER_OK")}
+        nonNegotiable={dealBreakers.includes("IS_SMOKER_OK")}
       >
-        {idealIsSmokerOk ? "예" : "아니요"}
+        {isSmokerOk ? "예" : "아니요"}
       </Field>
-      {idealDrinkingFrequency != null ? (
+      {drinkingFrequency != null ? (
         <Field
           label="음주 빈도"
-          nonNegotiable={nonNegotiableConditions.includes("DRINKING_FREQUENCY")}
+          nonNegotiable={dealBreakers.includes("DRINKING_FREQUENCY")}
         >
-          {음주량_라벨[idealDrinkingFrequency]}
+          {음주량_라벨[drinkingFrequency]}
         </Field>
       ) : null}
-      {idealPreferredReligions.length > 0 ? (
+      {preferredReligions.length > 0 ? (
         <Field
           label="선호 종교"
-          nonNegotiable={nonNegotiableConditions.includes(
-            "PREFERRED_RELIGIONS",
-          )}
+          nonNegotiable={dealBreakers.includes("PREFERRED_RELIGIONS")}
         >
-          {idealPreferredReligions
+          {preferredReligions
             .map((religion) => {
               return 종교_라벨[religion];
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealNonPreferredReligions.length > 0 ? (
+      {nonPreferredReligions.length > 0 ? (
         <Field
           label="기피 종교"
-          nonNegotiable={nonNegotiableConditions.includes(
-            "NON_PREFERRED_RELIGIONS",
-          )}
+          nonNegotiable={dealBreakers.includes("NON_PREFERRED_RELIGIONS")}
         >
-          {idealNonPreferredReligions
+          {nonPreferredReligions
             .map((religion) => {
               return 종교_라벨[religion];
             })
             .join(", ")}
         </Field>
       ) : null}
-      {idealMinAnnualIncome != null ? (
+      {minAnnualIncome != null ? (
         <Field
           label="최소 연봉"
-          nonNegotiable={nonNegotiableConditions.includes("MIN_ANNUAL_INCOME")}
+          nonNegotiable={dealBreakers.includes("MIN_ANNUAL_INCOME")}
         >
-          {연간_벌이_라벨[idealMinAnnualIncome]}
+          {연간_벌이_라벨[minAnnualIncome]}
         </Field>
       ) : null}
-      {idealMinAssetsValue != null ? (
+      {minAssetsValue != null ? (
         <Field
           label="최소 자산"
-          nonNegotiable={nonNegotiableConditions.includes("MIN_ASSETS_VALUE")}
+          nonNegotiable={dealBreakers.includes("MIN_ASSETS_VALUE")}
         >
-          {자산_라벨[idealMinAssetsValue]}
+          {자산_라벨[minAssetsValue]}
         </Field>
       ) : null}
-      {idealHobby != null ? (
+      {hobby != null ? (
         <Field
           label="취미/관심사"
-          nonNegotiable={nonNegotiableConditions.includes("HOBBY")}
+          nonNegotiable={dealBreakers.includes("HOBBY")}
         >
-          {idealHobby}
+          {hobby}
         </Field>
       ) : null}
-      {idealBooksReadPerYear != null ? (
+      {booksReadPerYear != null ? (
         <Field
           label="독서량"
-          nonNegotiable={nonNegotiableConditions.includes(
-            "BOOKS_READ_PER_YEAR",
-          )}
+          nonNegotiable={dealBreakers.includes("BOOKS_READ_PER_YEAR")}
         >
-          {독서량_라벨[idealBooksReadPerYear]}
+          {독서량_라벨[booksReadPerYear]}
         </Field>
       ) : null}
-      {idealCharacteristics != null ? (
+      {characteristics != null ? (
         <Field
           label="특징"
-          nonNegotiable={nonNegotiableConditions.includes("CHARACTERISTICS")}
+          nonNegotiable={dealBreakers.includes("CHARACTERISTICS")}
         >
-          {idealCharacteristics}
+          {characteristics}
         </Field>
       ) : null}
-      {idealLifePhilosophy != null ? (
-        <Field label="인생관">{idealLifePhilosophy}</Field>
+      {lifePhilosophy != null ? (
+        <Field label="인생관">{lifePhilosophy}</Field>
       ) : null}
       <Field
         label="문신 허용"
-        nonNegotiable={nonNegotiableConditions.includes("IS_TATTOO_OK")}
+        nonNegotiable={dealBreakers.includes("IS_TATTOO_OK")}
       >
-        {idealIsTattooOk ? "예" : "아니요"}
+        {isTattooOk ? "예" : "아니요"}
       </Field>
-      {idealExercisePerWeek != null ? (
+      {exercisePerWeek != null ? (
         <Field
           label="운동"
-          nonNegotiable={nonNegotiableConditions.includes("EXERCISE_PER_WEEK")}
+          nonNegotiable={dealBreakers.includes("EXERCISE_PER_WEEK")}
         >
-          {주간_운동량_라벨[idealExercisePerWeek]}
+          {주간_운동량_라벨[exercisePerWeek]}
         </Field>
       ) : null}
       <Field
         label="자차 기대"
-        nonNegotiable={nonNegotiableConditions.includes("SHOULD_HAVE_CAR")}
+        nonNegotiable={dealBreakers.includes("SHOULD_HAVE_CAR")}
       >
-        {idealShouldHaveCar ? "예" : "아니요"}
+        {shouldHaveCar ? "예" : "아니요"}
       </Field>
       <Field
         label="게임 허용"
-        nonNegotiable={nonNegotiableConditions.includes("IS_GAMING_OK")}
+        nonNegotiable={dealBreakers.includes("IS_GAMING_OK")}
       >
-        {idealIsGamingOk ? "예" : "아니요"}
+        {isGamingOk ? "예" : "아니요"}
       </Field>
       <Field
         label="반려동물 허용"
-        nonNegotiable={nonNegotiableConditions.includes("IS_PET_OK")}
+        nonNegotiable={dealBreakers.includes("IS_PET_OK")}
       >
-        {idealIsPetOk ? "예" : "아니요"}
+        {isPetOk ? "예" : "아니요"}
       </Field>
       {idealTypeDescription != null ? (
         <Field label="이성상">{idealTypeDescription}</Field>
