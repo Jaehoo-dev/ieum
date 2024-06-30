@@ -54,6 +54,7 @@ export const basicMatchRouter = createTRPCRouter({
         include: {
           pendingBy: {
             include: {
+              idealType: true,
               pendingMatches: true,
               rejectedMatches: true,
               acceptedMatches: true,
