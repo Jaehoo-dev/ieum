@@ -15,7 +15,6 @@ import { Layout } from "~/components/Layout";
 import { api } from "~/utils/api";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
-import { NonNegotiableConditionsField } from "../../components/form/NonNegotiableConditionField";
 import { SelfFields } from "../../components/form/SelfFields";
 import { ImagePreview } from "../../components/ImagePreview";
 import { BasicMemberForm } from "../BasicMemberForm";
@@ -51,10 +50,7 @@ export function CreateBasicMemberPage() {
         >
           <div className="grid grid-cols-2 gap-12">
             <SelfFields />
-            <div className="flex flex-col gap-16">
-              <IdealTypeFields />
-              <NonNegotiableConditionsField />
-            </div>
+            <IdealTypeFields />
           </div>
           <MemoField />
           <ImageField />
@@ -174,7 +170,6 @@ function formToPayload({ self, idealType }: BasicMemberForm) {
       nonPreferredReligions: idealType.nonPreferredReligions.map(
         (religion) => religion.value,
       ),
-      dealBreakers: idealType.dealBreakers.map((condition) => condition.value),
     },
   };
 }

@@ -31,7 +31,6 @@ export type BasicMemberForm = {
     | "nonPreferredMbtis"
     | "preferredReligions"
     | "nonPreferredReligions"
-    | "dealBreakers"
   > & {
     regions: { value: Region }[];
     bodyShapes: { value: BodyShape }[];
@@ -42,6 +41,5 @@ export type BasicMemberForm = {
     nonPreferredMbtis: { value: MBTI }[];
     preferredReligions: { value: Religion }[];
     nonPreferredReligions: { value: Religion }[];
-    dealBreakers: { value: BasicCondition }[];
   };
 };

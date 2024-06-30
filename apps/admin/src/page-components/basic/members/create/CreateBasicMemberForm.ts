@@ -111,5 +111,8 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     isPetOk: true,
     idealTypeDescription: null,
     dealBreakers: [],
+    highPriorities: [],
+    mediumPriorities: [],
+    lowPriorities: [],
   },
 };

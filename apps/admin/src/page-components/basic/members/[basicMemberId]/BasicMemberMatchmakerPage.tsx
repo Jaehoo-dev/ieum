@@ -351,14 +351,6 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
     control,
     name: "nonPreferredReligions",
   });
-  const {
-    fields: nonNegotiableConditionFields,
-    append: appendNonNegotiableCondition,
-    remove: removeNonNegotiableCondition,
-  } = useFieldArray({
-    control,
-    name: "nonNegotiableConditions",
-  });
 
   return (
     <form
@@ -741,33 +733,6 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         <div>
           반려동물
           <Checkbox label="괜찮음" {...register("isPetOk")} />
-        </div>
-      </div>
-      <div>
-        필수 조건
-        <div className="grid grid-cols-5 gap-1">
-          {Object.values(BasicCondition).map((condition) => {
-            return (
-              <Checkbox
-                key={condition}
-                label={베이직_조건_라벨[condition]}
-                checked={nonNegotiableConditionFields.some((field) => {
-                  return field.value === condition;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendNonNegotiableCondition({ value: condition });
-                  } else {
-                    removeNonNegotiableCondition(
-                      nonNegotiableConditionFields.findIndex(
-                        (field) => field.value === condition,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
         </div>
       </div>
       <div className="mt-2 flex w-full gap-2">

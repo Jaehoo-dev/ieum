@@ -66,6 +66,16 @@ const 기본_필수_조건들 = new Set<BasicCondition>([
 
 type Mode = "READ" | "EDIT";
 
+const 우선순위 = {
+  필수: "DEAL_BREAKER",
+  높음: "HIGH",
+  중간: "MEDIUM",
+  낮음: "LOW",
+  미지정: "NONE",
+} as const;
+
+type 우선순위 = (typeof 우선순위)[keyof typeof 우선순위];
+
 function Resolved() {
   const { member } = useMemberAuthContext();
 
@@ -76,21 +86,69 @@ function Resolved() {
       id: member.id,
     });
   const [dealBreakers, setDealBreakers] = useState(idealType.dealBreakers);
-  const [nonDealBreakers, setNonDealBreakers] = useState(
+  const [highPriorities, setHighPriorities] = useState(
+    idealType.highPriorities,
+  );
+  const [mediumPriorities, setMediumPriorities] = useState(
+    idealType.mediumPriorities,
+  );
+  const [lowPriorities, setLowPriorities] = useState(idealType.lowPriorities);
+  const [noPriorities, setNoPriorities] = useState(
     Object.values(BasicCondition).filter((condition) => {
-      return !dealBreakers.includes(condition);
+      return (
+        !dealBreakers.includes(condition) &&
+        !highPriorities.includes(condition) &&
+        !mediumPriorities.includes(condition) &&
+        !lowPriorities.includes(condition)
+      );
     }),
   );
   const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
   const [mode, setMode] = useState<Mode>("READ");
   const utils = api.useUtils();
-  const { mutateAsync: updateDealBreakers } =
-    api.basicMemberIdealTypeRouter.updateDealBreakers.useMutation({
+  const { mutateAsync: updatePriorities } =
+    api.basicMemberIdealTypeRouter.updatePriorities.useMutation({
       onSuccess: () => {
         return utils.basicMemberIdealTypeRouter.invalidate();
       },
     });
   const [activeId, setActiveId] = useState<BasicCondition | null>(null);
+  const [dragStartContainerId, setDragStartContainerId] =
+    useState<우선순위 | null>(null);
+  const setterByContainerId = {
+    [우선순위.필수]: setDealBreakers,
+    [우선순위.높음]: setHighPriorities,
+    [우선순위.중간]: setMediumPriorities,
+    [우선순위.낮음]: setLowPriorities,
+    [우선순위.미지정]: setNoPriorities,
+  } as const;
+  const sections = [
+    {
+      label: "절대 포기 못하는 조건 (최대 5개)",
+      containerId: 우선순위.필수,
+      conditions: dealBreakers,
+    },
+    {
+      label: "우선순위 - 높음",
+      containerId: 우선순위.높음,
+      conditions: highPriorities,
+    },
+    {
+      label: "우선순위 - 중간",
+      containerId: 우선순위.중간,
+      conditions: mediumPriorities,
+    },
+    {
+      label: "우선순위 - 낮음",
+      containerId: 우선순위.낮음,
+      conditions: lowPriorities,
+    },
+    {
+      label: "미지정",
+      containerId: 우선순위.미지정,
+      conditions: noPriorities,
+    },
+  ];
 
   return (
     <DndContext
@@ -99,79 +157,84 @@ function Resolved() {
       sensors={sensors}
       onDragStart={({ active }) => {
         setActiveId(active.id as BasicCondition);
+        setDragStartContainerId(
+          active.data.current?.sortable.containerId as 우선순위,
+        );
       }}
       onDragOver={({ active, over }) => {
-        if (over == null) {
+        if (
+          over == null ||
+          active.data.current?.sortable.containerId ===
+            over.data.current?.sortable.containerId
+        ) {
           return;
         }
 
-        if (
-          active.data.current?.sortable.containerId === "dealBreakers" &&
-          over.data.current?.sortable.containerId === "nonDealBreakers"
-        ) {
-          setDealBreakers((dealBreakers) => {
-            return dealBreakers.filter((dealBreaker) => {
-              return dealBreaker !== active.id;
-            });
-          });
-          setNonDealBreakers((nonDealBreakers) => {
-            return [...nonDealBreakers, active.id as BasicCondition];
-          });
-        }
+        const activeContainerId: 우선순위 =
+          active.data.current?.sortable.containerId;
+        const overContainerId: 우선순위 =
+          over.data.current?.sortable.containerId ?? over.id;
 
-        if (
-          active.data.current?.sortable.containerId === "nonDealBreakers" &&
-          (over.data.current?.sortable.containerId === "dealBreakers" ||
-            over.id === "dealBreakers")
-        ) {
-          setNonDealBreakers((nonDealBreakers) => {
-            return nonDealBreakers.filter((nonDealBreaker) => {
-              return nonDealBreaker !== active.id;
-            });
+        const activeSetter = setterByContainerId[activeContainerId];
+        const overSetter = setterByContainerId[overContainerId];
+
+        activeSetter((prev) => {
+          return prev.filter((condition) => {
+            return condition !== active.id;
           });
-          setDealBreakers((dealBreakers) => {
-            return [...dealBreakers, active.id as BasicCondition];
-          });
-        }
+        });
+        overSetter((prev) => {
+          return [...prev, active.id as BasicCondition];
+        });
       }}
       onDragEnd={({ active, over }) => {
+        const overContainerId: 우선순위 =
+          over?.data.current?.sortable.containerId ?? over?.id;
+
+        const overSetter = setterByContainerId[overContainerId];
+
+        if (overContainerId === 우선순위.필수 && dealBreakers.length > 5) {
+          overSetter((prev) => {
+            return prev.filter((condition) => {
+              return condition !== active.id;
+            });
+          });
+          const dragStartContainerSetter =
+            setterByContainerId[dragStartContainerId!];
+          dragStartContainerSetter((prev) => {
+            return [...prev, active.id as BasicCondition];
+          });
+
+          setActiveId(null);
+          setDragStartContainerId(null);
+
+          return;
+        }
+
         setActiveId(null);
+        setDragStartContainerId(null);
 
         if (over == null || active.id === over.id) {
           return;
         }
 
-        if (active.data.current?.sortable.containerId === "dealBreakers") {
-          setDealBreakers((prev) => {
-            const oldIndex = prev.indexOf(active.id as BasicCondition);
-            const newIndex = prev.indexOf(over.id as BasicCondition);
+        overSetter((prev) => {
+          const oldIndex = prev.indexOf(active.id as BasicCondition);
+          const newIndex = prev.indexOf(over.id as BasicCondition);
 
-            return arrayMove(prev, oldIndex, newIndex);
-          });
-        }
-
-        if (active.data.current?.sortable.containerId === "nonDealBreakers") {
-          setNonDealBreakers((prev) => {
-            const oldIndex = prev.indexOf(active.id as BasicCondition);
-            const newIndex = prev.indexOf(over.id as BasicCondition);
-
-            return arrayMove(prev, oldIndex, newIndex);
-          });
-        }
+          return arrayMove(prev, oldIndex, newIndex);
+        });
       }}
     >
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
-          <p className="text-gray-500">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-gray-500">
             ※ 조건 변경은 호스트에게 요청해 주세요.
           </p>
-          <div className="flex flex-row items-start justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-gray-800">
-                포기 못하는 조건
-              </h2>
-              <p className="text-sm font-semibold text-gray-800">(최대 5개)</p>
-            </div>
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-800">
+              조건 우선순위
+            </h2>
             {mode === "READ" ? (
               <EditButton onClick={() => setMode("EDIT")} />
             ) : (
@@ -179,7 +242,7 @@ function Resolved() {
                 <CancelButton
                   onClick={() => {
                     setDealBreakers(idealType.dealBreakers);
-                    setNonDealBreakers(
+                    setNoPriorities(
                       Object.values(BasicCondition).filter((condition) => {
                         return !idealType.dealBreakers.includes(condition);
                       }),
@@ -197,9 +260,14 @@ function Resolved() {
                       return;
                     }
 
-                    await updateDealBreakers({
+                    await updatePriorities({
                       memberId: member.id,
-                      dealBreakers,
+                      priorities: {
+                        dealBreakers,
+                        highPriorities,
+                        mediumPriorities,
+                        lowPriorities,
+                      },
                     });
 
                     setMode("READ");
@@ -208,29 +276,30 @@ function Resolved() {
               </div>
             )}
           </div>
-          <DroppableContainer
-            id="dealBreakers"
-            conditions={dealBreakers}
-            idealType={idealType}
-            mode={mode}
-            dragEnabled={true}
-          />
         </div>
-        <div className="border-t border-gray-600" />
-        <DroppableContainer
-          id="nonDealBreakers"
-          conditions={nonDealBreakers}
-          idealType={idealType}
-          mode={mode}
-          dragEnabled={dealBreakers.length < 5}
-        />
+        {sections.map((section) => {
+          return (
+            <div className="flex flex-col gap-4">
+              <div className="border-t border-gray-600" />
+              <div className="flex flex-col gap-2">
+                <h3 className="font-semibold text-gray-800">{section.label}</h3>
+                <DroppableContainer
+                  id={section.containerId}
+                  conditions={section.conditions}
+                  idealType={idealType}
+                  mode={mode}
+                />
+              </div>
+            </div>
+          );
+        })}
         <DragOverlay>
           {activeId != null ? (
             <DataField
               condition={activeId}
               idealType={idealType}
               dragEnabled={true}
-              dealBreaker={dealBreakers.includes(activeId)}
+              highlight={dealBreakers.includes(activeId)}
               style={{ opacity: 0.5 }}
             />
           ) : null}
@@ -293,13 +362,11 @@ function DroppableContainer({
   conditions,
   idealType,
   mode,
-  dragEnabled,
 }: {
-  id: string;
+  id: 우선순위;
   conditions: BasicCondition[];
   idealType: BasicMemberIdealType;
   mode: Mode;
-  dragEnabled: boolean;
 }) {
   const { setNodeRef } = useDroppable({ id });
 
@@ -317,14 +384,8 @@ function DroppableContainer({
                 key={condition}
                 condition={condition}
                 idealType={idealType}
-                dragEnabled={
-                  mode === "EDIT" &&
-                  (!dealBreakerForbiddenConditions.includes(condition) ||
-                    (dealBreakerForbiddenConditions.includes(condition) &&
-                      id === "dealBreakers")) &&
-                  dragEnabled
-                }
-                dealBreaker={id === "dealBreakers"}
+                dragEnabled={mode === "EDIT"}
+                highlight={id === 우선순위.필수}
               />
             );
           })
@@ -385,7 +446,7 @@ interface DataFieldProps extends HTMLAttributes<HTMLDivElement> {
   condition: BasicCondition;
   idealType: BasicMemberIdealType;
   dragEnabled: boolean;
-  dealBreaker: boolean;
+  highlight: boolean;
   listeners?: SyntheticListenerMap;
   attributes?: DraggableAttributes;
 }
@@ -395,7 +456,7 @@ const DataField = forwardRef<HTMLDivElement, DataFieldProps>(
     {
       condition,
       idealType,
-      dealBreaker,
+      highlight: dealBreaker,
       dragEnabled,
       listeners,
       attributes,
