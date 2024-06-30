@@ -11,7 +11,7 @@ export function NonNegotiableConditionsField() {
   } = useFormContext<BasicMemberForm>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "nonNegotiableConditions",
+    name: "idealType.dealBreakers",
   });
 
   return (
@@ -23,7 +23,7 @@ export function NonNegotiableConditionsField() {
             <label key={condition} className="flex gap-2">
               <input
                 className={`rounded border border-gray-300 ${
-                  errors.nonNegotiableConditions
+                  errors.idealType?.dealBreakers
                     ? "border-2 border-red-500"
                     : ""
                 }`}

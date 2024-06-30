@@ -49,7 +49,7 @@ export function IdealTypeFields() {
     remove: removeIdealRegion,
   } = useFieldArray({
     control,
-    name: "idealRegions",
+    name: "idealType.regions",
   });
   const {
     fields: preferredBodyShapeFields,
@@ -57,7 +57,7 @@ export function IdealTypeFields() {
     remove: removePreferredBodyShape,
   } = useFieldArray({
     control,
-    name: "idealBodyShapes",
+    name: "idealType.bodyShapes",
   });
   const {
     fields: idealEyelidFields,
@@ -65,7 +65,7 @@ export function IdealTypeFields() {
     remove: removeIdealEyelid,
   } = useFieldArray({
     control,
-    name: "idealEyelids",
+    name: "idealType.eyelids",
   });
   const {
     fields: idealOccupationStatusFields,
@@ -73,7 +73,7 @@ export function IdealTypeFields() {
     remove: removeIdealOccupationStatus,
   } = useFieldArray({
     control,
-    name: "idealOccupationStatuses",
+    name: "idealType.occupationStatuses",
   });
   const {
     fields: preferredMbtisFields,
@@ -81,7 +81,7 @@ export function IdealTypeFields() {
     remove: removePreferredMbtis,
   } = useFieldArray({
     control,
-    name: "idealPreferredMbtis",
+    name: "idealType.preferredMbtis",
   });
   const {
     fields: nonPreferredMbtisFields,
@@ -89,7 +89,7 @@ export function IdealTypeFields() {
     remove: removeNonPreferredMbtis,
   } = useFieldArray({
     control,
-    name: "idealNonPreferredMbtis",
+    name: "idealType.nonPreferredMbtis",
   });
   const {
     fields: preferredReligionFields,
@@ -97,7 +97,7 @@ export function IdealTypeFields() {
     remove: removePreferredReligion,
   } = useFieldArray({
     control,
-    name: "idealPreferredReligions",
+    name: "idealType.preferredReligions",
   });
   const {
     fields: nonPreferredReligionFields,
@@ -105,7 +105,7 @@ export function IdealTypeFields() {
     remove: removeNonPreferredReligion,
   } = useFieldArray({
     control,
-    name: "idealNonPreferredReligions",
+    name: "idealType.nonPreferredReligions",
   });
 
   return (
@@ -113,8 +113,8 @@ export function IdealTypeFields() {
       <h1 className="text-xl font-bold">이상형</h1>
       <TextInput
         label="최소 나이 출생연도"
-        error={errors.idealMinAgeBirthYear != null}
-        {...register("idealMinAgeBirthYear", {
+        error={errors.idealType?.minAgeBirthYear != null}
+        {...register("idealType.minAgeBirthYear", {
           setValueAs: (value: string | null) => {
             if (isEmptyStringOrNil(value)) {
               return null;
@@ -125,7 +125,7 @@ export function IdealTypeFields() {
             return isNaN(valueAsNumber) ? null : valueAsNumber;
           },
           validate: (value) => {
-            const idealMaxAgeBirthYear = getValues("idealMaxAgeBirthYear");
+            const idealMaxAgeBirthYear = getValues("idealType.maxAgeBirthYear");
 
             return (
               value == null ||
@@ -138,8 +138,8 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="최대 나이 출생연도"
-        error={errors.idealMaxAgeBirthYear != null}
-        {...register("idealMaxAgeBirthYear", {
+        error={errors.idealType?.maxAgeBirthYear != null}
+        {...register("idealType.maxAgeBirthYear", {
           setValueAs: (value: string | null) => {
             if (isEmptyStringOrNil(value)) {
               return null;
@@ -150,7 +150,7 @@ export function IdealTypeFields() {
             return isNaN(valueAsNumber) ? null : valueAsNumber;
           },
           validate: (value) => {
-            const idealMinAgeBirthYear = getValues("idealMinAgeBirthYear");
+            const idealMinAgeBirthYear = getValues("idealType.minAgeBirthYear");
 
             return (
               value == null ||
@@ -169,7 +169,7 @@ export function IdealTypeFields() {
               <label key={region} className="flex gap-2">
                 <input
                   className={`rounded border border-gray-300 ${
-                    errors.idealRegions ? "border-2 border-red-500" : ""
+                    errors.idealType?.regions ? "border-2 border-red-500" : ""
                   }`}
                   type="checkbox"
                   checked={idealRegionFields.some((field) => {
@@ -180,7 +180,7 @@ export function IdealTypeFields() {
                       appendIdealRegion({ value: region });
                     } else {
                       if (region !== "OTHER") {
-                        setValue("idealCustomRegion", null);
+                        setValue("idealType.customRegion", null);
                       }
 
                       removeIdealRegion(
@@ -196,12 +196,12 @@ export function IdealTypeFields() {
             );
           })}
         </div>
-        {watch("idealRegions").some(({ value }) => {
+        {watch("idealType.regions").some(({ value }) => {
           return value === "OTHER";
         }) ? (
           <TextInput
-            error={errors.idealCustomRegion != null}
-            {...register("idealCustomRegion", {
+            error={errors.idealType?.customRegion != null}
+            {...register("idealType.customRegion", {
               setValueAs: (value: string) => {
                 return value === "" ? null : value;
               },
@@ -211,8 +211,8 @@ export function IdealTypeFields() {
       </div>
       <TextInput
         label="최소 키"
-        error={errors.idealMinHeight != null}
-        {...register("idealMinHeight", {
+        error={errors.idealType?.minHeight != null}
+        {...register("idealType.minHeight", {
           setValueAs: (value: string | null) => {
             if (isEmptyStringOrNil(value)) {
               return null;
@@ -223,7 +223,7 @@ export function IdealTypeFields() {
             return isNaN(valueAsNumber) ? null : valueAsNumber;
           },
           validate: (value) => {
-            const idealMaxHeight = getValues("idealMaxHeight");
+            const idealMaxHeight = getValues("idealType.maxHeight");
 
             return (
               value == null ||
@@ -236,8 +236,8 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="최대 키"
-        error={errors.idealMaxHeight != null}
-        {...register("idealMaxHeight", {
+        error={errors.idealType?.maxHeight != null}
+        {...register("idealType.maxHeight", {
           setValueAs: (value: string | null) => {
             if (isEmptyStringOrNil(value)) {
               return null;
@@ -248,7 +248,7 @@ export function IdealTypeFields() {
             return isNaN(valueAsNumber) ? null : valueAsNumber;
           },
           validate: (value) => {
-            const idealMinHeight = getValues("idealMinHeight");
+            const idealMinHeight = getValues("idealType.minHeight");
 
             return (
               value == null ||
@@ -267,7 +267,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={bodyShape}
                 label={체형_라벨[bodyShape]}
-                error={errors.idealBodyShapes != null}
+                error={errors.idealType?.bodyShapes != null}
                 checked={preferredBodyShapeFields.some((field) => {
                   return field.value === bodyShape;
                 })}
@@ -295,7 +295,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={eyelidType}
                 label={쌍꺼풀_라벨[eyelidType]}
-                error={errors.idealEyelids != null}
+                error={errors.idealType?.eyelids != null}
                 checked={idealEyelidFields.some((field) => {
                   return field.value === eyelidType;
                 })}
@@ -317,7 +317,7 @@ export function IdealTypeFields() {
       </div>
       <TextInput
         label="선호하는 얼굴/신체 특징"
-        {...register("idealFacialBodyPart", {
+        {...register("idealType.facialBodyPart", {
           setValueAs: (value: string) => {
             return value === "" ? null : value;
           },
@@ -325,12 +325,12 @@ export function IdealTypeFields() {
       />
       <Controller
         control={control}
-        name="idealEducationLevel"
+        name="idealType.educationLevel"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="선호하는 최소 학력 수준"
-              error={errors.idealEducationLevel != null}
+              error={errors.idealType?.educationLevel != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 onChange(value === 상관없음 ? null : value);
@@ -353,7 +353,7 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="선호하는 학벌"
-        {...register("idealSchoolLevel", {
+        {...register("idealType.schoolLevel", {
           setValueAs: (value: string) => {
             return value === "" ? null : value;
           },
@@ -367,7 +367,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={occupationStatus}
                 label={신분_라벨[occupationStatus]}
-                error={errors.idealOccupationStatuses != null}
+                error={errors.idealType?.occupationStatuses != null}
                 checked={idealOccupationStatusFields.some((field) => {
                   return field.value === occupationStatus;
                 })}
@@ -389,7 +389,7 @@ export function IdealTypeFields() {
       </div>
       <TextInput
         label="기피 직장/학교"
-        {...register("idealNonPreferredWorkplace", {
+        {...register("idealType.nonPreferredWorkplace", {
           setValueAs: (value: string) => {
             return value === "" ? null : value;
           },
@@ -397,7 +397,7 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="기피 직무"
-        {...register("idealNonPreferredJob", {
+        {...register("idealType.nonPreferredJob", {
           setValueAs: (value: string) => {
             return value === "" ? null : value;
           },
@@ -411,7 +411,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={mbti}
                 label={mbti}
-                error={errors.idealPreferredMbtis != null}
+                error={errors.idealType?.preferredMbtis != null}
                 checked={preferredMbtisFields.some((field) => {
                   return field.value === mbti;
                 })}
@@ -439,7 +439,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={mbti}
                 label={mbti}
-                error={errors.idealNonPreferredMbtis != null}
+                error={errors.idealType?.nonPreferredMbtis != null}
                 checked={nonPreferredMbtisFields.some((field) => {
                   return field.value === mbti;
                 })}
@@ -463,25 +463,25 @@ export function IdealTypeFields() {
         <span>흡연</span>
         <Checkbox
           label="괘찮음"
-          error={errors.idealIsSmokerOk != null}
-          checked={watch("idealIsSmokerOk")}
+          error={errors.idealType?.isSmokerOk != null}
+          checked={watch("idealType.isSmokerOk")}
           onChange={(e) => {
-            setValue("idealIsSmokerOk", e.target.checked);
+            setValue("idealType.isSmokerOk", e.target.checked);
           }}
         />
       </div>
       <Controller
         control={control}
-        name="idealDrinkingFrequency"
+        name="idealType.drinkingFrequency"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="선호하는 음주량"
-              error={errors.idealDrinkingFrequency != null}
+              error={errors.idealType?.drinkingFrequency != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 if (value !== DrinkingFrequency.OTHER) {
-                  setValue("idealCustomDrinkingFrequency", null);
+                  setValue("idealType.customDrinkingFrequency", null);
                 }
 
                 onChange(value === 상관없음 ? null : value);
@@ -507,9 +507,9 @@ export function IdealTypeFields() {
           );
         }}
       />
-      {watch("idealDrinkingFrequency") === DrinkingFrequency.OTHER ? (
+      {watch("idealType.drinkingFrequency") === DrinkingFrequency.OTHER ? (
         <TextInput
-          {...register("idealCustomDrinkingFrequency", {
+          {...register("idealType.customDrinkingFrequency", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },
@@ -524,7 +524,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={religion}
                 label={종교_라벨[religion]}
-                error={errors.idealPreferredReligions != null}
+                error={errors.idealType?.preferredReligions != null}
                 checked={preferredReligionFields.some((field) => {
                   return field.value === religion;
                 })}
@@ -552,7 +552,7 @@ export function IdealTypeFields() {
               <Checkbox
                 key={religion}
                 label={종교_라벨[religion]}
-                error={errors.idealNonPreferredReligions != null}
+                error={errors.idealType?.nonPreferredReligions != null}
                 checked={nonPreferredReligionFields.some((field) => {
                   return field.value === religion;
                 })}
@@ -574,12 +574,12 @@ export function IdealTypeFields() {
       </div>
       <Controller
         control={control}
-        name="idealMinAnnualIncome"
+        name="idealType.minAnnualIncome"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="최소 연간 벌이 수준"
-              error={errors.idealMinAnnualIncome != null}
+              error={errors.idealType?.minAnnualIncome != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 onChange(value === 상관없음 ? null : value);
@@ -604,12 +604,12 @@ export function IdealTypeFields() {
       />
       <Controller
         control={control}
-        name="idealMinAssetsValue"
+        name="idealType.minAssetsValue"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="최소 자산 수준"
-              error={errors.idealMinAssetsValue != null}
+              error={errors.idealType?.minAssetsValue != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 onChange(value === 상관없음 ? null : value);
@@ -634,7 +634,7 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="취미/관심사"
-        {...register("idealHobby", {
+        {...register("idealType.hobby", {
           setValueAs: (value: string) => {
             return value === "" ? null : value;
           },
@@ -642,12 +642,12 @@ export function IdealTypeFields() {
       />
       <Controller
         control={control}
-        name="idealBooksReadPerYear"
+        name="idealType.booksReadPerYear"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="최소 독서량"
-              error={errors.idealBooksReadPerYear != null}
+              error={errors.idealType?.booksReadPerYear != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 onChange(value === 상관없음 ? null : value);
@@ -675,7 +675,7 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="특징"
-        {...register("idealCharacteristics", {
+        {...register("idealType.characteristics", {
           setValueAs: (value: string) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -683,7 +683,7 @@ export function IdealTypeFields() {
       />
       <TextInput
         label="인생관"
-        {...register("idealLifePhilosophy", {
+        {...register("idealType.lifePhilosophy", {
           setValueAs: (value: string) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -691,16 +691,16 @@ export function IdealTypeFields() {
       />
       <div>
         문신
-        <Checkbox label="괜찮음" {...register("idealIsTattooOk")} />
+        <Checkbox label="괜찮음" {...register("idealType.isTattooOk")} />
       </div>
       <Controller
         control={control}
-        name="idealExercisePerWeek"
+        name="idealType.exercisePerWeek"
         render={({ field: { onChange, value } }) => {
           return (
             <Select
               label="운동량"
-              error={errors.idealExercisePerWeek != null}
+              error={errors.idealType?.exercisePerWeek != null}
               value={value ?? 상관없음}
               onChange={({ target: { value } }) => {
                 onChange(value === 상관없음 ? null : value);
@@ -728,19 +728,19 @@ export function IdealTypeFields() {
       />
       <div>
         자차
-        <Checkbox label="보유" {...register("idealShouldHaveCar")} />
+        <Checkbox label="보유" {...register("idealType.shouldHaveCar")} />
       </div>
       <div>
         게임
-        <Checkbox label="괜찮음" {...register("idealIsGamingOk")} />
+        <Checkbox label="괜찮음" {...register("idealType.isGamingOk")} />
       </div>
       <div>
         반려동물
-        <Checkbox label="괜찮음" {...register("idealIsPetOk")} />
+        <Checkbox label="괜찮음" {...register("idealType.isPetOk")} />
       </div>
       <TextareaInput
         label="만나고 싶은 이성상"
-        {...register("idealTypeDescription", {
+        {...register("idealType.idealTypeDescription", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },

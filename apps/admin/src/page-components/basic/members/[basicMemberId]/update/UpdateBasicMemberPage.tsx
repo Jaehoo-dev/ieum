@@ -1,10 +1,10 @@
 import { ReactElement, Suspense, useState } from "react";
 import { useRouter } from "next/router";
-import { BasicMember } from "@ieum/prisma";
-import { calculateBmi } from "@ieum/utils";
+import { assert, calculateBmi } from "@ieum/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
+import { BasicMemberWithJoined } from "~/domains/basic/types";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
 import { NonNegotiableConditionsField } from "~/page-components/basic/components/form/NonNegotiableConditionField";
@@ -13,8 +13,10 @@ import { api } from "~/utils/api";
 import { BasicMemberForm } from "../../BasicMemberForm";
 import { ImagesField } from "./components/ImagesField";
 
-interface BasicMemberUpdateForm
-  extends Omit<BasicMemberForm, "imageBucketPaths"> {}
+interface BasicMemberUpdateForm {
+  self: Omit<BasicMemberForm["self"], "imageBucketPaths">;
+  idealType: BasicMemberForm["idealType"];
+}
 
 export function UpdateBasicMemberPage() {
   return (
@@ -93,75 +95,80 @@ function Resolved() {
   );
 }
 
-function memberToForm(member: BasicMember) {
+function memberToForm({ idealType, ...member }: BasicMemberWithJoined) {
+  assert(idealType != null, "idealType must not be null");
+
   return {
-    ...member,
-    fashionStyles: member.fashionStyles.map((style) => {
-      return { value: style };
-    }),
-    idealRegions: member.idealRegions.map((region) => {
-      return { value: region };
-    }),
-    idealBodyShapes: member.idealBodyShapes.map((shape) => {
-      return { value: shape };
-    }),
-    idealFashionStyles: member.idealFashionStyles.map((style) => {
-      return { value: style };
-    }),
-    idealEyelids: member.idealEyelids.map((eyelid) => {
-      return { value: eyelid };
-    }),
-    idealOccupationStatuses: member.idealOccupationStatuses.map((status) => {
-      return { value: status };
-    }),
-    idealPreferredMbtis: member.idealPreferredMbtis.map((mbti) => {
-      return { value: mbti };
-    }),
-    idealNonPreferredMbtis: member.idealNonPreferredMbtis.map((mbti) => {
-      return { value: mbti };
-    }),
-    idealPreferredReligions: member.idealPreferredReligions.map((religion) => {
-      return { value: religion };
-    }),
-    idealNonPreferredReligions: member.idealNonPreferredReligions.map(
-      (religion) => {
+    self: {
+      ...member,
+      fashionStyles: member.fashionStyles.map((style) => {
+        return { value: style };
+      }),
+    },
+    idealType: {
+      regions: idealType.regions.map((region) => {
+        return { value: region };
+      }),
+      idealBodyShapes: idealType.bodyShapes.map((shape) => {
+        return { value: shape };
+      }),
+      fashionStyles: idealType.fashionStyles.map((style) => {
+        return { value: style };
+      }),
+      eyelids: idealType.eyelids.map((eyelid) => {
+        return { value: eyelid };
+      }),
+      occupationStatuses: idealType.occupationStatuses.map((status) => {
+        return { value: status };
+      }),
+      preferredMbtis: idealType.preferredMbtis.map((mbti) => {
+        return { value: mbti };
+      }),
+      nonPreferredMbtis: idealType.nonPreferredMbtis.map((mbti) => {
+        return { value: mbti };
+      }),
+      preferredReligions: idealType.preferredReligions.map((religion) => {
         return { value: religion };
-      },
-    ),
-    nonNegotiableConditions: member.nonNegotiableConditions.map((condition) => {
-      return { value: condition };
-    }),
+      }),
+      nonPreferredReligions: idealType.nonPreferredReligions.map((religion) => {
+        return { value: religion };
+      }),
+      dealBreakers: idealType.dealBreakers.map((condition) => {
+        return { value: condition };
+      }),
+    },
   };
 }
 
-function formToPayload(form: BasicMemberUpdateForm) {
+function formToPayload({ self, idealType }: BasicMemberUpdateForm) {
   return {
-    ...form,
-    bmi:
-      form.weight == null
-        ? null
-        : Number(calculateBmi(form.height, form.weight).toFixed(2)),
-    fashionStyles: form.fashionStyles.map((style) => style.value),
-    idealRegions: form.idealRegions.map((region) => region.value),
-    idealBodyShapes: form.idealBodyShapes.map((shape) => shape.value),
-    idealFashionStyles: form.idealFashionStyles.map((style) => style.value),
-    idealEyelids: form.idealEyelids.map((eyelid) => eyelid.value),
-    idealOccupationStatuses: form.idealOccupationStatuses.map(
-      (status) => status.value,
-    ),
-    idealPreferredMbtis: form.idealPreferredMbtis.map((mbti) => mbti.value),
-    idealNonPreferredMbtis: form.idealNonPreferredMbtis.map(
-      (mbti) => mbti.value,
-    ),
-    idealPreferredReligions: form.idealPreferredReligions.map(
-      (religion) => religion.value,
-    ),
-    idealNonPreferredReligions: form.idealNonPreferredReligions.map(
-      (religion) => religion.value,
-    ),
-    nonNegotiableConditions: form.nonNegotiableConditions.map(
-      (condition) => condition.value,
-    ),
+    self: {
+      ...self,
+      bmi:
+        self.weight == null
+          ? null
+          : Number(calculateBmi(self.height, self.weight).toFixed(2)),
+      fashionStyles: self.fashionStyles.map((style) => style.value),
+    },
+    idealType: {
+      ...idealType,
+      regions: idealType.regions.map((region) => region.value),
+      bodyShapes: idealType.bodyShapes.map((shape) => shape.value),
+      fashionStyles: idealType.fashionStyles.map((style) => style.value),
+      eyelids: idealType.eyelids.map((eyelid) => eyelid.value),
+      occupationStatuses: idealType.occupationStatuses.map(
+        (status) => status.value,
+      ),
+      preferredMbtis: idealType.preferredMbtis.map((mbti) => mbti.value),
+      nonPreferredMbtis: idealType.nonPreferredMbtis.map((mbti) => mbti.value),
+      preferredReligions: idealType.preferredReligions.map(
+        (religion) => religion.value,
+      ),
+      nonPreferredReligions: idealType.nonPreferredReligions.map(
+        (religion) => religion.value,
+      ),
+      dealBreakers: idealType.dealBreakers.map((condition) => condition.value),
+    },
   };
 }
 
