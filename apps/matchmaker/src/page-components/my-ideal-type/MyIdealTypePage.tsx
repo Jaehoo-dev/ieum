@@ -352,7 +352,7 @@ function EmptyField() {
       {...attributes}
       {...listeners}
     >
-      <p className="text-gray-500">조건을 끌어다 놓으세요</p>
+      <p className="text-gray-500">조건을 끌어 놓으세요</p>
     </div>
   );
 }
