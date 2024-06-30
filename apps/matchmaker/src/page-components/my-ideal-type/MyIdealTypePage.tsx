@@ -310,14 +310,15 @@ function Resolved() {
 }
 
 function EditButton({ onClick }: { onClick: () => void }) {
+  const { member } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
   return (
     <button
       className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={() => {
+        void sendMessage(`${member?.name} - 포기 못하는 조건 - 수정 클릭`);
         onClick();
-        void sendMessage("포기 못하는 조건 - 수정 클릭");
       }}
     >
       수정
@@ -326,14 +327,15 @@ function EditButton({ onClick }: { onClick: () => void }) {
 }
 
 function CancelButton({ onClick }: { onClick: () => void }) {
+  const { member } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
   return (
     <button
       className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={() => {
+        void sendMessage(`${member?.name} - 포기 못하는 조건 - 취소 클릭`);
         onClick();
-        void sendMessage("포기 못하는 조건 - 취소 클릭");
       }}
     >
       취소
@@ -342,14 +344,15 @@ function CancelButton({ onClick }: { onClick: () => void }) {
 }
 
 function DoneButton({ onClick }: { onClick: () => void }) {
+  const { member } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
   return (
     <button
       className="rounded-md border border-primary-700 bg-primary-500 px-5 py-1 text-white"
       onClick={() => {
+        void sendMessage(`${member?.name} - 포기 못하는 조건 - 완료 클릭`);
         onClick();
-        void sendMessage("포기 못하는 조건 - 완료 클릭");
       }}
     >
       완료
