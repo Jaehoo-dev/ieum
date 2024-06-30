@@ -319,7 +319,9 @@ function DroppableContainer({
                 idealType={idealType}
                 dragEnabled={
                   mode === "EDIT" &&
-                  !dealBreakerForbiddenConditions.includes(condition) &&
+                  (!dealBreakerForbiddenConditions.includes(condition) ||
+                    (dealBreakerForbiddenConditions.includes(condition) &&
+                      id === "dealBreakers")) &&
                   dragEnabled
                 }
                 dealBreaker={id === "dealBreakers"}
