@@ -199,7 +199,19 @@ function Resolved() {
 
         const overSetter = setterByContainerId[overContainerId];
 
-        if (overContainerId === 우선순위.필수 && dealBreakers.length > 5) {
+        const 필수조건_초과인가 = dealBreakers.length > 5;
+        const 필수조건_불가항목인가 = dealBreakerForbiddenConditions.includes(
+          active.id as BasicCondition,
+        );
+
+        if (
+          overContainerId === 우선순위.필수 &&
+          (필수조건_초과인가 || 필수조건_불가항목인가)
+        ) {
+          if (필수조건_불가항목인가) {
+            alert("선택 항목은 포기 못하는 조건으로 설정할 수 없습니다.");
+          }
+
           overSetter((prev) => {
             return prev.filter((condition) => {
               return condition !== active.id;
