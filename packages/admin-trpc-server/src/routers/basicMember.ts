@@ -479,7 +479,7 @@ export const basicMemberRouter = createTRPCRouter({
           isGamingOk: z.boolean(),
           isPetOk: z.boolean(),
         }),
-        nonNegotiableConditions: z.array(z.nativeEnum(BasicCondition)),
+        dealBreakers: z.array(z.nativeEnum(BasicCondition)),
       }),
     )
     .query(
@@ -508,7 +508,7 @@ export const basicMemberRouter = createTRPCRouter({
             isGamingOk,
             isPetOk,
           },
-          nonNegotiableConditions,
+          dealBreakers,
         },
       }) => {
         const self = await ctx.prisma.basicMember.findUniqueOrThrow({
@@ -531,7 +531,7 @@ export const basicMemberRouter = createTRPCRouter({
             }),
           ]),
         );
-        const dealBreakersSet = new Set(nonNegotiableConditions);
+        const dealBreakersSet = new Set(dealBreakers);
 
         return ctx.prisma.basicMember.findMany({
           where: {
