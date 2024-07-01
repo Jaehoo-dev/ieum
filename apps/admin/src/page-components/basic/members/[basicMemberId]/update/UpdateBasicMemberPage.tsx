@@ -102,10 +102,11 @@ function memberToForm({ idealType, ...member }: BasicMemberWithJoined) {
       }),
     },
     idealType: {
+      ...idealType,
       regions: idealType.regions.map((region) => {
         return { value: region };
       }),
-      idealBodyShapes: idealType.bodyShapes.map((shape) => {
+      bodyShapes: idealType.bodyShapes.map((shape) => {
         return { value: shape };
       }),
       fashionStyles: idealType.fashionStyles.map((style) => {
