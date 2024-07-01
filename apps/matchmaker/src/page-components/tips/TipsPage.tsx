@@ -126,6 +126,8 @@ function Section({
   title: string;
   posts: Array<{ title: string; href: string }>;
 }) {
+  const { sendMessage } = useSlackNotibot();
+
   return (
     <section className="flex flex-col gap-2">
       <h2 className="text-2xl font-semibold text-gray-700">{title}</h2>
@@ -142,6 +144,11 @@ function Section({
                 href={post.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  sendMessage(
+                    `소개팅 꿀팁 모음 페이지 - ${post.title} 링크 클릭`,
+                  );
+                }}
               >
                 {post.title}
               </Link>
