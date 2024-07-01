@@ -58,14 +58,25 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
                   프로필 생성
                 </Link>
               ) : (
-                <Link
-                  href={`/basic/members/${member.id}/profile`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-blue-600 hover:underline"
-                >
-                  프로필 보기
-                </Link>
+                <div className="flex flex-row gap-1">
+                  <Link
+                    href={`/basic/members/${member.id}/profile/update`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-blue-600 hover:underline"
+                  >
+                    프로필 수정
+                  </Link>
+                  <span>|</span>
+                  <Link
+                    href={`/basic/members/${member.id}/profile`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-blue-600 hover:underline"
+                  >
+                    보기
+                  </Link>
+                </div>
               )}
             </div>
           </div>
