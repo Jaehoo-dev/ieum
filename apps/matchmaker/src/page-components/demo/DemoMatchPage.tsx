@@ -32,7 +32,11 @@ export function DemoMatchPage() {
       <Warning />
       <Spacing size={16} />
       {profile != null ? (
-        <Profile profile={profile} watermarkText="체험중" />
+        <Profile
+          profile={profile}
+          watermarkText="체험중"
+          defaultOpened={true}
+        />
       ) : null}
       <>
         <Spacing size={108} />

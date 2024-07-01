@@ -8,9 +8,14 @@ import { BasicMemberProfileWithImages } from "./types";
 interface Props {
   profile: BasicMemberProfileWithImages;
   watermarkText?: string;
+  defaultOpened?: boolean;
 }
 
-export function Profile({ profile, watermarkText }: Props) {
+export function Profile({
+  profile,
+  watermarkText,
+  defaultOpened = false,
+}: Props) {
   const {
     selfIntroduction,
     idealTypeDescription,
@@ -24,21 +29,28 @@ export function Profile({ profile, watermarkText }: Props) {
       ) : null}
       <PersonalInformationSection
         profile={profile}
-        initiallyOpened={selfIntroduction == null}
+        defaultOpened={selfIntroduction == null || defaultOpened}
       />
       {idealTypeDescription != null ? (
-        <IdealTypeDescriptionSection content={idealTypeDescription} />
+        <IdealTypeDescriptionSection
+          content={idealTypeDescription}
+          defaultOpened={defaultOpened}
+        />
       ) : null}
-      <ImageSection images={images} watermarkText={watermarkText} />
+      <ImageSection
+        images={images}
+        watermarkText={watermarkText}
+        defaultOpened={defaultOpened}
+      />
     </div>
   );
 }
 
 function PersonalInformationSection({
-  initiallyOpened,
+  defaultOpened,
   profile,
 }: {
-  initiallyOpened: boolean;
+  defaultOpened: boolean;
   profile: BasicMemberProfileWithImages;
 }) {
   const {
@@ -61,7 +73,7 @@ function PersonalInformationSection({
   return (
     <AccordionSection
       title="저는 이런 사람이에요"
-      initiallyOpened={initiallyOpened}
+      defaultOpened={defaultOpened}
     >
       <div className="flex flex-col gap-0.5">
         <DataField label="나이" value={`${birthYear}년생`} />
@@ -95,7 +107,7 @@ function PersonalInformationSection({
 
 function SelfIntroductionSection({ content }: { content: string }) {
   return (
-    <AccordionSection title="안녕하세요" initiallyOpened={true}>
+    <AccordionSection title="안녕하세요" defaultOpened={true}>
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
@@ -103,9 +115,18 @@ function SelfIntroductionSection({ content }: { content: string }) {
   );
 }
 
-function IdealTypeDescriptionSection({ content }: { content: string }) {
+function IdealTypeDescriptionSection({
+  content,
+  defaultOpened = false,
+}: {
+  content: string;
+  defaultOpened?: boolean;
+}) {
   return (
-    <AccordionSection title="이런 분을 만나고 싶어요">
+    <AccordionSection
+      title="이런 분을 만나고 싶어요"
+      defaultOpened={defaultOpened}
+    >
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
@@ -116,12 +137,14 @@ function IdealTypeDescriptionSection({ content }: { content: string }) {
 function ImageSection({
   images,
   watermarkText,
+  defaultOpened = false,
 }: {
   images: MemberImage[];
   watermarkText?: string;
+  defaultOpened?: boolean;
 }) {
   return (
-    <AccordionSection title="제 모습은요">
+    <AccordionSection title="제 모습은요" defaultOpened={defaultOpened}>
       <div className="flex flex-col gap-4">
         {images.map(({ id, bucketPath, customWidth }) => {
           return (
