@@ -35,7 +35,11 @@ function Resolved() {
 
   return (
     <div className="flex w-full flex-col">
-      <Profile profile={profile} watermarkText="미리보기" />
+      <Profile
+        profile={profile}
+        watermarkText="미리보기"
+        defaultOpened={true}
+      />
       <Spacing size={108} />
       <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t border-gray-200 bg-white p-4 pt-2 md:px-6">
         <span className="text-center text-sm text-gray-600">
