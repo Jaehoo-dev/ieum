@@ -68,7 +68,7 @@ interface CustomCanditatesSearchForm {
   shouldHaveCar: boolean;
   isGamingOk: boolean;
   isPetOk: boolean;
-  nonNegotiableConditions: { value: BasicCondition }[];
+  dealBreakers: { value: BasicCondition }[];
 }
 
 export function BasicMemberMatchmakerPage() {
@@ -114,8 +114,7 @@ function Resolved() {
       {
         memberId: basicMemberId,
         conditions: customSearchQueryParams.conditions,
-        nonNegotiableConditions:
-          customSearchQueryParams.nonNegotiableConditions,
+        dealBreakers: customSearchQueryParams.dealBreakers,
       },
       {
         enabled: searchMode === "CUSTOM" && basicMember != null,
@@ -350,6 +349,14 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
   } = useFieldArray({
     control,
     name: "nonPreferredReligions",
+  });
+  const {
+    fields: dealBreakerFields,
+    append: appendDealBreaker,
+    remove: removeDealBreaker,
+  } = useFieldArray({
+    control,
+    name: "dealBreakers",
   });
 
   return (
@@ -735,6 +742,33 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
           <Checkbox label="괜찮음" {...register("isPetOk")} />
         </div>
       </div>
+      <div>
+        필수 조건
+        <div className="grid grid-cols-5 gap-1">
+          {Object.values(BasicCondition).map((condition) => {
+            return (
+              <Checkbox
+                key={condition}
+                label={베이직_조건_라벨[condition]}
+                checked={dealBreakerFields.some((field) => {
+                  return field.value === condition;
+                })}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    appendDealBreaker({ value: condition });
+                  } else {
+                    removeDealBreaker(
+                      dealBreakerFields.findIndex(
+                        (field) => field.value === condition,
+                      ),
+                    );
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
       <div className="mt-2 flex w-full gap-2">
         <button
           className="w-32 rounded-lg bg-gray-300 px-4 py-2"
@@ -977,7 +1011,7 @@ function createCustomCandidatesSearchFormValues(
     shouldHaveCar,
     isGamingOk,
     isPetOk,
-    nonNegotiableConditions: dealBreakers.map((value) => {
+    dealBreakers: dealBreakers.map((value) => {
       return { value };
     }),
   };
@@ -1008,9 +1042,7 @@ function formToValues(form: CustomCanditatesSearchForm) {
       isGamingOk: form.isGamingOk,
       isPetOk: form.isPetOk,
     },
-    nonNegotiableConditions: form.nonNegotiableConditions.map(
-      ({ value }) => value,
-    ),
+    dealBreakers: form.dealBreakers.map(({ value }) => value),
   };
 }
 
