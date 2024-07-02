@@ -41,7 +41,7 @@ export function TipsPage() {
             posts={[
               {
                 title: "중요! 소개팅 사진 고르는 방법",
-                href: "https://m.blog.naver.com/ieum-love/223459288593",
+                href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%B1%EC%82%AC%EB%90%98%EB%A0%A4%EB%A9%B4-%EC%9D%B4%EB%9F%B0-%EC%82%AC%EC%A7%84-%EC%93%B0%EC%84%B8%EC%9A%94-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9A%B4%EC%98%81%EC%9E%90%EC%9D%98-%EC%86%8C%EA%B0%9C%ED%8C%85-%EA%BF%80%ED%8C%81-1%ED%8E%B8",
               },
               {
                 title:
