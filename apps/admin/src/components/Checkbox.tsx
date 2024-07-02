@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
-import type { InputHTMLAttributes, Ref } from "react";
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 import { nanoid } from "nanoid/non-secure";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string | ReactNode;
   error?: boolean;
 }
 

@@ -190,37 +190,31 @@ function Resolved() {
             ) : null}
             <span>{" 님 매칭"}</span>
           </h1>
-          <div
-            className="flex w-full justify-center gap-10"
-            style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
-          >
+          <div className="flex w-full justify-center gap-6">
             <div className="flex w-5/12 max-w-3xl flex-col items-end gap-4">
               <h2 className="text-2xl font-semibold">본인</h2>
-              <div className="flex w-full max-w-4xl flex-col gap-2">
-                <Checkbox
-                  label="커스텀 검색"
-                  checked={searchMode === "CUSTOM"}
-                  onChange={(e) => {
-                    setSearchMode(e.target.checked ? "CUSTOM" : "DEFAULT");
-                  }}
-                />
-                {searchMode === "CUSTOM" ? (
-                  <FormProvider {...methods}>
-                    <CustomSearchForm
-                      onReset={() => {
-                        methods.reset();
-                      }}
-                      onSubmit={(fields) => {
-                        setCustomSearchQueryParams(formToValues(fields));
-                      }}
-                    />
-                  </FormProvider>
-                ) : null}
-              </div>
-              <div className="w-full border-b border-gray-200" />
-              {basicMember == null ? null : (
-                <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
-              )}
+              <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Checkbox
+                label={<p className="text-2xl font-semibold">커스텀 검색</p>}
+                checked={searchMode === "CUSTOM"}
+                onChange={(e) => {
+                  setSearchMode(e.target.checked ? "CUSTOM" : "DEFAULT");
+                }}
+              />
+              {searchMode === "CUSTOM" ? (
+                <FormProvider {...methods}>
+                  <CustomSearchForm
+                    onReset={() => {
+                      methods.reset();
+                    }}
+                    onSubmit={(fields) => {
+                      setCustomSearchQueryParams(formToValues(fields));
+                    }}
+                  />
+                </FormProvider>
+              ) : null}
             </div>
             <div className="flex w-5/12 flex-col items-start gap-4">
               <div className="flex items-center gap-4">
@@ -744,7 +738,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
       </div>
       <div>
         필수 조건
-        <div className="grid grid-cols-5 gap-1">
+        <div className="grid grid-cols-4 gap-1">
           {Object.values(BasicCondition).map((condition) => {
             return (
               <Checkbox
