@@ -90,7 +90,7 @@ function Resolved() {
   });
 
   return (
-    <div className="grid grid-cols-2 gap-12">
+    <div className="flex flex-row gap-12">
       <BasicMemberCard member={member} defaultMode="DETAILED" />
       <form
         className="flex flex-col gap-3"
