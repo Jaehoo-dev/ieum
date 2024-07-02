@@ -46,7 +46,7 @@ export function TipsPage() {
               {
                 title:
                   "[데이터 분석] 소개팅에서 남녀가 중요하게 생각하는 조건 TOP 5",
-                href: "https://m.blog.naver.com/ieum-love/223464787723",
+                href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85%EC%97%90%EC%84%9C-%E3%85%87%E3%85%87%ED%95%9C-%EB%A9%B4%EC%9D%84-%EB%B6%80%EA%B0%81%ED%95%B4%EC%95%BC-%EC%8A%B9%EC%82%B0%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9A%B4%EC%98%81%EC%9E%90%EC%9D%98-%EC%86%8C%EA%B0%9C%ED%8C%85-%EA%BF%80%ED%8C%81-2%ED%8E%B8",
               },
               {
                 title: "소개팅 잘 받는 방법 - 지인 편",
