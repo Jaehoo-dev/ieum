@@ -89,7 +89,7 @@ export function TipsPage() {
               },
               {
                 title: "선재앓이로 분석하는 인기 많은 남자 특징",
-                href: "https://m.blog.naver.com/ieum-love/223470528169",
+                href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9A%B4%EC%98%81%EC%9E%90%EC%9D%98-%EC%84%A0%EC%9E%AC%EC%95%93%EC%9D%B4-%EB%B6%84%EC%84%9D-feat-%EB%B3%80%EC%9A%B0%EC%84%9D",
               },
             ]}
           />
