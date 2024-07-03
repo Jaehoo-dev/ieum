@@ -81,7 +81,7 @@ export function TipsPage() {
             posts={[
               {
                 title: "자만추 힘들고 소개팅 끊겼을 때 이성 만나는 방법 3가지",
-                href: "https://m.blog.naver.com/ieum-love/223492312491",
+                href: "https://ieum-love.tistory.com/entry/%EC%9E%90%EB%A7%8C%EC%B6%94-%ED%9E%98%EB%93%A4%EA%B3%A0-%EC%86%8C%EA%B0%9C%ED%8C%85-%EB%81%8A%EA%B2%BC%EC%9D%84-%EB%95%8C-%EC%9D%B4%EC%84%B1-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%B0%A9%EB%B2%95-3%EA%B0%80%EC%A7%80",
               },
               {
                 title: "2024년 결정사 가격 정리 (듀오, 가연, 바로연)",
