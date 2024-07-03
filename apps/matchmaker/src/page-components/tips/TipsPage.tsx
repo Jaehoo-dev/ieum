@@ -54,7 +54,7 @@ export function TipsPage() {
               },
               {
                 title: "소개팅 잘 받는 방법 - 업체 편",
-                href: "https://m.blog.naver.com/ieum-love/223482036559",
+                href: "https://ieum-love.tistory.com/entry/%EC%9D%B4%EC%84%B1-%EC%86%8C%EA%B0%9C-%EC%9E%98-%EB%B0%9B%EB%8A%94-%EB%B0%A9%EB%B2%95-%EC%97%85%EC%B2%B4-%ED%8E%B8-feat-%EA%B2%B0%EC%A0%95%EC%82%AC-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4",
               },
               {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 인적사항 편",
