@@ -62,7 +62,7 @@ export function TipsPage() {
               },
               {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 자기소개 편",
-                href: "https://m.blog.naver.com/ieum-love/223487620440",
+                href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%9E%90%EA%B8%B0%EC%86%8C%EA%B0%9C-%EB%AA%A8%EB%B2%94%EB%8B%B5%EC%95%88-feat-%EB%8D%B0%EC%9D%B4%ED%8C%85%EC%95%B1-%EA%B2%B0%EC%A0%95%EC%82%AC",
               },
             ]}
           />
