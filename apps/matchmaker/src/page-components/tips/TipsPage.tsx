@@ -50,7 +50,7 @@ export function TipsPage() {
               },
               {
                 title: "소개팅 잘 받는 방법 - 지인 편",
-                href: "https://m.blog.naver.com/ieum-love/223476695454",
+                href: "https://ieum-love.tistory.com/entry/%EC%9D%B4%EC%84%B1-%EC%86%8C%EA%B0%9C%EB%A5%BC-%EC%9E%98-%EB%B0%9B%EC%9C%BC%EB%A0%A4%EB%A9%B4-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%9E%98-%EB%B0%9B%EB%8A%94-%EB%B0%A9%EB%B2%95-%EC%A7%80%EC%9D%B8-%ED%8E%B8-%EC%86%8C%EA%B0%9C%ED%8C%85-%EA%BF%80%ED%8C%81",
               },
               {
                 title: "소개팅 잘 받는 방법 - 업체 편",
