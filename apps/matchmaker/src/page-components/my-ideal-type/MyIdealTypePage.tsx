@@ -544,12 +544,16 @@ function createFieldData(
       };
     })
     .with(BasicCondition.HEIGHT, () => {
+      const { minHeight, maxHeight } = idealType;
+
       return {
         label: "키",
         value:
-          idealType.minHeight != null && idealType.maxHeight != null
-            ? `${idealType.minHeight}cm ~ ${idealType.maxHeight}cm`
-            : "상관없음",
+          minHeight == null && maxHeight == null
+            ? "상관없음"
+            : `${minHeight != null ? `${minHeight}cm ` : ""}~${
+                maxHeight != null ? ` ${maxHeight}cm` : ""
+              }`,
       };
     })
     .with(BasicCondition.BODY_SHAPES, () => {
