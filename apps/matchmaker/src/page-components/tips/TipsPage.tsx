@@ -58,7 +58,7 @@ export function TipsPage() {
               },
               {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 인적사항 편",
-                href: "https://m.blog.naver.com/ieum-love/223484378089",
+                href: "https://ieum-love.tistory.com/entry/%EB%A7%A4%EC%B9%AD-%EC%84%B1%EA%B3%B5%ED%95%98%EB%8A%94-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%ED%94%84%EB%A1%9C%ED%95%84-%EC%9E%91%EC%84%B1-%EB%B0%A9%EB%B2%95-%EC%9D%B8%EC%A0%81%EC%82%AC%ED%95%AD-%ED%8E%B8",
               },
               {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 자기소개 편",
