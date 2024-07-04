@@ -221,6 +221,8 @@ model BasicMember {
 
   memo String?
 
+  lastMatchedAt DateTime @default(now())
+
   pendingMatches  BasicMatch[] @relation(name: "pendingMatchMember")
   rejectedMatches BasicMatch[] @relation(name: "rejectedMatchMember")
   acceptedMatches BasicMatch[] @relation(name: "acceptedMatchMember")
@@ -249,6 +251,7 @@ model BasicMember {
   @@index([hasCar])
   @@index([hasPet])
   @@index([status])
+  @@index([lastMatchedAt])
 }
 
 model BasicMemberIdealType {
