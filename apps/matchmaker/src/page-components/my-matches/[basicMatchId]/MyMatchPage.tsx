@@ -135,6 +135,13 @@ function Buttons({
           className="flex-1 rounded-lg bg-gray-500 p-3 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={async () => {
             onRejectClick();
+
+            const confirmed = window.confirm("거절하시겠습니까?");
+
+            if (!confirmed) {
+              return;
+            }
+
             await reject({
               memberId,
               matchId,
@@ -150,6 +157,13 @@ function Buttons({
           className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
           onClick={async () => {
             onAcceptClick();
+
+            const confirmed = window.confirm("수락하시겠습니까?");
+
+            if (!confirmed) {
+              return;
+            }
+
             await accept({
               memberId,
               matchId,
