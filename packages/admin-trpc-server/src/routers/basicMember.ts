@@ -31,6 +31,7 @@ import { match } from "ts-pattern";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
+import { getSimilarityScore } from "../utils/getSimilarityScore";
 
 export const basicMemberRouter = createTRPCRouter({
   getAllByGender: protectedAdminProcedure
@@ -407,7 +408,7 @@ export const basicMemberRouter = createTRPCRouter({
         ]),
       );
 
-      return ctx.prisma.basicMember.findMany({
+      const candidates = await ctx.prisma.basicMember.findMany({
         where: {
           status: MemberStatus.ACTIVE,
           gender: self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
@@ -452,6 +453,26 @@ export const basicMemberRouter = createTRPCRouter({
         orderBy: {
           createdAt: "desc",
         },
+      });
+
+      const { highPriorities, mediumPriorities, lowPriorities } =
+        self.idealType;
+
+      if (
+        highPriorities.length === 0 &&
+        mediumPriorities.length === 0 &&
+        lowPriorities.length === 0
+      ) {
+        return candidates;
+      }
+
+      return candidates.sort((a, b) => {
+        assert(self.idealType != null, "idealType is null");
+
+        const aIdealTypeSimilarity = getSimilarityScore(self.idealType, a);
+        const bIdealTypeSimilarity = getSimilarityScore(self.idealType, b);
+
+        return bIdealTypeSimilarity - aIdealTypeSimilarity;
       });
     }),
   findCustomMatchCandidates: protectedAdminProcedure
@@ -983,6 +1004,10 @@ function createConditionANDClause(idealType: BasicMemberIdealType) {
         };
       })
       .with("OCCUPATION_STATUS", () => {
+        if (idealType.occupationStatuses.length === 0) {
+          return {};
+        }
+
         return {
           occupationStatus: {
             in: idealType.occupationStatuses,
@@ -1089,8 +1114,21 @@ function createConditionANDClause(idealType: BasicMemberIdealType) {
           hasPet: idealType.isPetOk,
         };
       })
-      .otherwise(() => {
-        return {};
-      });
+      .with(
+        "BODY_SHAPES",
+        "CHARACTERISTICS",
+        "DRINKING_FREQUENCY",
+        "EYELID",
+        "FACIAL_BODY_PART",
+        "HOBBY",
+        "NON_PREFERRED_WORKPLACE_SCHOOL",
+        "NON_PREFERRED_JOB",
+        "REGION",
+        "SCHOOL_LEVEL",
+        () => {
+          return {};
+        },
+      )
+      .exhaustive();
   });
 }
