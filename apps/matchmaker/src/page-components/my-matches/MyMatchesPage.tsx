@@ -80,6 +80,7 @@ function Resolved() {
                 <MatchCard
                   key={match.id}
                   match={match}
+                  showLabel={false}
                   onClick={() => {
                     void sendMessage(
                       `${formatUniqueMemberName(member)} - ${
@@ -112,6 +113,7 @@ function Resolved() {
                   <MatchCard
                     key={match.id}
                     match={match}
+                    showLabel={true}
                     onClick={() => {
                       void sendMessage(
                         `${formatUniqueMemberName(member)} - ${
@@ -136,10 +138,12 @@ function Resolved() {
 
 function MatchCard({
   match,
+  showLabel,
   onClick,
   disabled = false,
 }: {
   match: BasicMatch;
+  showLabel: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }) {
@@ -162,7 +166,9 @@ function MatchCard({
         <p className="text-xl text-gray-600">
           {`⏰ ${calculateLeftHours(match)}시간 남음`}
         </p>
-        <p className="text-xl">{`🚦 ${getStatusLabel(match)}`}</p>
+        {showLabel ? (
+          <p className="text-xl">{`🚦 ${getStatusLabel(match)}`}</p>
+        ) : null}
       </div>
     </button>
   );
