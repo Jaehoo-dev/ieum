@@ -258,19 +258,34 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       assert(
-        match.pendingBy[0]?.profile != null &&
+        match.pendingBy.length === 2 &&
+          match.pendingBy[0]?.profile != null &&
           match.pendingBy[1]?.profile != null,
         "Match must have 2 pending members with profiles.",
       );
 
-      return ctx.prisma.basicMatch.update({
-        where: {
-          id,
-        },
-        data: {
-          status: MatchStatus.PENDING,
-        },
-      });
+      return ctx.prisma.$transaction([
+        ctx.prisma.basicMember.updateMany({
+          where: {
+            id: {
+              in: match.pendingBy.map((member) => {
+                return member.id;
+              }),
+            },
+          },
+          data: {
+            lastMatchedAt: new Date(),
+          },
+        }),
+        ctx.prisma.basicMatch.update({
+          where: {
+            id,
+          },
+          data: {
+            status: MatchStatus.PENDING,
+          },
+        }),
+      ]);
     }),
   rejectBy: protectedAdminProcedure
     .input(
