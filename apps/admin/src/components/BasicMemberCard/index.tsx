@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { BasicMatch } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
+import { differenceInCalendarDays } from "date-fns";
 
 import type { BasicMemberWithJoined } from "~/domains/basic/types";
 import { Avatar } from "../Avatar";
@@ -132,7 +133,10 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
       } / 완료 ${
         matchesCountByStatus[MatchStatus.REJECTED] +
         matchesCountByStatus[MatchStatus.BROKEN_UP]
-      }`}</span>
+      } / ${differenceInCalendarDays(
+        new Date(),
+        member.lastMatchedAt,
+      )}일 전`}</span>
       {folded ? null : (
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">

@@ -8,8 +8,9 @@ import { Select } from "~/components/Select";
 import { api } from "~/utils/api";
 
 const 정렬 = {
-  최신순: "desc",
-  오래된순: "asc",
+  생성_최신순: "desc",
+  생성_오래된_순: "asc",
+  제안_오래된_순: "lastMatchedAt",
 } as const;
 
 type 정렬 = (typeof 정렬)[keyof typeof 정렬];
@@ -18,7 +19,7 @@ export function BasicMembersPage() {
   const router = useRouter();
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
-  const sortQuery = (router.query.sort ?? 정렬.최신순) as 정렬;
+  const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
 
   return (
     <div className="mt-6 flex min-h-screen flex-col items-center gap-6 py-2">
@@ -58,7 +59,7 @@ function Filter({
   const router = useRouter();
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
-  const sortQuery = (router.query.sort ?? 정렬.최신순) as 정렬;
+  const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
 
   return (
     <div className="flex flex-row justify-center gap-2">
@@ -79,10 +80,11 @@ function Filter({
         onChange={({ target: { value } }) => {
           onSortChange(value as 정렬);
         }}
-        style={{ width: "120px" }}
+        style={{ width: "140px" }}
       >
-        <option value={정렬.최신순}>최신순</option>
-        <option value={정렬.오래된순}>오래된순</option>
+        <option value={정렬.생성_최신순}>생성 최신순</option>
+        <option value={정렬.생성_오래된_순}>생성 오래된 순</option>
+        <option value={정렬.제안_오래된_순}>제안 오래된 순</option>
       </Select>
     </div>
   );
