@@ -10,6 +10,7 @@ import { Warning } from "~/components/Warning";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyMatchPage() {
   return (
@@ -44,7 +45,9 @@ function Resolved() {
 
   useEffect(() => {
     void sendMessage(
-      `${member.name} - ${match.id} 매칭 페이지 진입 / ${profile.id} 프로필 조회`,
+      `${formatUniqueMemberName(member)} - ${match.id} 매칭 페이지 진입 / ${
+        profile.id
+      } 프로필 조회`,
     );
   }, [match.id, member.name, profile.id, sendMessage]);
 
@@ -54,7 +57,9 @@ function Resolved() {
     }
 
     void sendMessage(
-      `${member.name} - ${match.id} 매칭 페이지 진입 -> redirect to /my-matches`,
+      `${formatUniqueMemberName(member)} - ${
+        match.id
+      } 매칭 페이지 진입 -> redirect to /my-matches`,
     );
 
     router.replace("/my-matches");
@@ -77,10 +82,14 @@ function Resolved() {
         <Buttons
           memberId={member.id}
           onRejectClick={() => {
-            void sendMessage(`${member.name} - ${match.id} 매칭 거절 클릭`);
+            void sendMessage(
+              `${formatUniqueMemberName(member)} - ${match.id} 매칭 거절 클릭`,
+            );
           }}
           onAcceptClick={() => {
-            void sendMessage(`${member.name} - ${match.id} 매칭 수락 클릭`);
+            void sendMessage(
+              `${formatUniqueMemberName(member)} - ${match.id} 매칭 수락 클릭`,
+            );
           }}
         />
       ) : null}

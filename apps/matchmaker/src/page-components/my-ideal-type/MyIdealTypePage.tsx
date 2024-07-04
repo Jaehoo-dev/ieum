@@ -52,6 +52,7 @@ import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyIdealTypePage() {
   return (
@@ -153,7 +154,9 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(`${member.name} - 내 이상형 조건 페이지 진입`);
+    void sendMessage(
+      `${formatUniqueMemberName(member)} - 내 이상형 조건 페이지 진입`,
+    );
   }, []);
 
   return (
@@ -335,7 +338,11 @@ function EditButton({ onClick }: { onClick: () => void }) {
     <button
       className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={() => {
-        void sendMessage(`${member?.name} - 내 이상형 조건 - 수정 클릭`);
+        assert(member != null, "member should be defined");
+
+        void sendMessage(
+          `${formatUniqueMemberName(member)}- 내 이상형 조건 - 수정 클릭`,
+        );
         onClick();
       }}
     >
@@ -352,7 +359,11 @@ function CancelButton({ onClick }: { onClick: () => void }) {
     <button
       className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
       onClick={() => {
-        void sendMessage(`${member?.name} - 내 이상형 조건 - 취소 클릭`);
+        assert(member != null, "member should be defined");
+
+        void sendMessage(
+          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 취소 클릭`,
+        );
         onClick();
       }}
     >
@@ -369,7 +380,11 @@ function DoneButton({ onClick }: { onClick: () => void }) {
     <button
       className="rounded-md border border-primary-700 bg-primary-500 px-5 py-1 text-white"
       onClick={() => {
-        void sendMessage(`${member?.name} - 내 이상형 조건 - 완료 클릭`);
+        assert(member != null, "member should be defined");
+
+        void sendMessage(
+          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 완료 클릭`,
+        );
         onClick();
       }}
     >

@@ -2,12 +2,14 @@ import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
+import { assert } from "@ieum/utils";
 
 import { EventBanner } from "~/components/EventBanner";
 import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function Home() {
   const { loggedIn } = useMemberAuthContext();
@@ -74,9 +76,11 @@ function Registered() {
   const { member, signOut } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
+  assert(member != null, "member should be defined");
+
   useEffect(() => {
-    void sendMessage(`${member?.name} - 홈 진입`);
-  }, [member?.name, sendMessage]);
+    void sendMessage(`${formatUniqueMemberName(member)} - 홈 진입`);
+  }, [member]);
 
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
@@ -84,7 +88,9 @@ function Registered() {
         href="/my-matches"
         className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-semibold text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(`${member?.name} - 매칭 목록 보기 클릭`);
+          void sendMessage(
+            `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
+          );
         }}
       >
         매칭 목록 보기
@@ -93,7 +99,9 @@ function Registered() {
         href="/my-profile"
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(`${member?.name} - 내 프로필 보기 클릭`);
+          void sendMessage(
+            `${formatUniqueMemberName(member)} - 내 프로필 보기 클릭`,
+          );
         }}
       >
         내 프로필 보기
@@ -102,7 +110,9 @@ function Registered() {
         href="/my-ideal-type"
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(`${member?.name} - 내 이상형 조건 클릭`);
+          void sendMessage(
+            `${formatUniqueMemberName(member)} - 내 이상형 조건 클릭`,
+          );
         }}
       >
         내 이상형 조건 (베타)
@@ -111,7 +121,7 @@ function Registered() {
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
-          void sendMessage(`${member?.name} - 로그아웃 클릭`);
+          void sendMessage(`${formatUniqueMemberName(member)} - 로그아웃 클릭`);
           void signOut();
         }}
       >

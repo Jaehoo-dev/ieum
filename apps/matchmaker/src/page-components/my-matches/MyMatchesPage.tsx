@@ -13,6 +13,7 @@ import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyMatchesPage() {
   return (
@@ -54,7 +55,9 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(`${member.name} - 매칭 목록 페이지 진입`);
+    void sendMessage(
+      `${formatUniqueMemberName(member)} - 매칭 목록 페이지 진입`,
+    );
   }, [member.name, sendMessage]);
 
   const [activeMatches] =
@@ -79,7 +82,9 @@ function Resolved() {
                   match={match}
                   onClick={() => {
                     void sendMessage(
-                      `${member.name} - ${match.id} 매칭 카드 클릭`,
+                      `${formatUniqueMemberName(member)} - ${
+                        match.id
+                      } 매칭 카드 클릭`,
                     );
                   }}
                 />
@@ -109,7 +114,9 @@ function Resolved() {
                     match={match}
                     onClick={() => {
                       void sendMessage(
-                        `${member.name} - ${match.id} 매칭 카드 클릭`,
+                        `${formatUniqueMemberName(member)} - ${
+                          match.id
+                        } 매칭 카드 클릭`,
                       );
                     }}
                     disabled={match.status !== MatchStatus.ACCEPTED}

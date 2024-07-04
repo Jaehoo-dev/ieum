@@ -7,6 +7,7 @@ import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyProfilePage() {
   return (
@@ -24,7 +25,9 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(`${member.name} - 내 프로필 페이지 진입`);
+    void sendMessage(
+      `${formatUniqueMemberName(member)} - 내 프로필 페이지 진입`,
+    );
   }, [member.name, sendMessage]);
 
   const [profile] = api.basicMemberRouter.getProfileById.useSuspenseQuery({
