@@ -263,6 +263,9 @@ export const basicMemberRouter = createTRPCRouter({
             isPetOk: z.boolean(),
             idealTypeDescription: z.string().nullable(),
             dealBreakers: z.array(z.nativeEnum(BasicCondition)),
+            highPriorities: z.array(z.nativeEnum(BasicCondition)),
+            mediumPriorities: z.array(z.nativeEnum(BasicCondition)),
+            lowPriorities: z.array(z.nativeEnum(BasicCondition)),
           }),
         }),
       }),
@@ -482,7 +485,7 @@ export const basicMemberRouter = createTRPCRouter({
     .input(
       z.object({
         memberId: z.number(),
-        conditions: z.object({
+        data: z.object({
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
           minHeight: z.number().nullable(),
@@ -502,8 +505,11 @@ export const basicMemberRouter = createTRPCRouter({
           shouldHaveCar: z.boolean(),
           isGamingOk: z.boolean(),
           isPetOk: z.boolean(),
+          dealBreakers: z.array(z.nativeEnum(BasicCondition)),
+          highPriorities: z.array(z.nativeEnum(BasicCondition)),
+          mediumPriorities: z.array(z.nativeEnum(BasicCondition)),
+          lowPriorities: z.array(z.nativeEnum(BasicCondition)),
         }),
-        dealBreakers: z.array(z.nativeEnum(BasicCondition)),
       }),
     )
     .query(
@@ -511,7 +517,7 @@ export const basicMemberRouter = createTRPCRouter({
         ctx,
         input: {
           memberId,
-          conditions: {
+          data: {
             minAgeBirthYear,
             maxAgeBirthYear,
             minHeight,
@@ -531,8 +537,11 @@ export const basicMemberRouter = createTRPCRouter({
             shouldHaveCar,
             isGamingOk,
             isPetOk,
+            dealBreakers,
+            highPriorities,
+            mediumPriorities,
+            lowPriorities,
           },
-          dealBreakers,
         },
       }) => {
         const self = await ctx.prisma.basicMember.findUniqueOrThrow({
@@ -541,6 +550,7 @@ export const basicMemberRouter = createTRPCRouter({
             status: MemberStatus.ACTIVE,
           },
           include: {
+            idealType: true,
             blacklisting: true,
             blacklistedBy: true,
           },
@@ -557,7 +567,7 @@ export const basicMemberRouter = createTRPCRouter({
         );
         const dealBreakersSet = new Set(dealBreakers);
 
-        return ctx.prisma.basicMember.findMany({
+        const candidates = await ctx.prisma.basicMember.findMany({
           where: {
             status: MemberStatus.ACTIVE,
             gender: self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
@@ -716,6 +726,23 @@ export const basicMemberRouter = createTRPCRouter({
           orderBy: {
             createdAt: "desc",
           },
+        });
+
+        if (
+          highPriorities.length === 0 &&
+          mediumPriorities.length === 0 &&
+          lowPriorities.length === 0
+        ) {
+          return candidates;
+        }
+
+        return candidates.sort((a, b) => {
+          assert(self.idealType != null, "idealType is null");
+
+          const aIdealTypeSimilarity = getSimilarityScore(self.idealType, a);
+          const bIdealTypeSimilarity = getSimilarityScore(self.idealType, b);
+
+          return bIdealTypeSimilarity - aIdealTypeSimilarity;
         });
       },
     ),

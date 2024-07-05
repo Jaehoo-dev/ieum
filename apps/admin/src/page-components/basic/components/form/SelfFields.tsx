@@ -48,7 +48,7 @@ export function SelfFields() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h1 className="text-xl font-bold">본인</h1>
+      <h2 className="text-xl font-bold">본인</h2>
       <TextInput
         label="이름"
         error={errors.self?.name != null}

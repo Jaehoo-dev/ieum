@@ -174,7 +174,8 @@ function Resolved() {
         if (
           over == null ||
           active.data.current?.sortable.containerId ===
-            over.data.current?.sortable.containerId
+            over.data.current?.sortable.containerId ||
+          active.id === over.id
         ) {
           return;
         }
@@ -443,7 +444,7 @@ function EmptyField() {
 
   return (
     <div
-      className="flex flex-row items-center justify-center rounded-md border border-dotted border-gray-400 px-4 py-2"
+      className="flex flex-row items-center justify-center rounded-md border border-dashed border-gray-400 px-4 py-2"
       ref={setNodeRef}
       style={style}
       {...attributes}

@@ -13,7 +13,7 @@ import {
 import { ImageInput } from "~/components/ImageInput";
 import { Layout } from "~/components/Layout";
 import { api } from "~/utils/api";
-import { DealBreakersField } from "../../components/form/DealBreakersField";
+import { ConditionPrioritiesField } from "../../components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
 import { SelfFields } from "../../components/form/SelfFields";
@@ -53,7 +53,7 @@ export function CreateBasicMemberPage() {
             <SelfFields />
             <div className="flex flex-col gap-16">
               <IdealTypeFields />
-              <DealBreakersField />
+              <ConditionPrioritiesField />
             </div>
           </div>
           <MemoField />
