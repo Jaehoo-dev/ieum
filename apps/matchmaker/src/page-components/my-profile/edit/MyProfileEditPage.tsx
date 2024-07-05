@@ -70,6 +70,10 @@ function Resolved() {
       className="mb-24 flex flex-col gap-6"
       onSubmit={handleSubmit(
         async ({ selfIntroduction, idealTypeDescription }) => {
+          sendMessage(
+            `${formatUniqueMemberName(member)} - 내 프로필 수정 저장 클릭`,
+          );
+
           const confirmed = confirm("수정사항을 저장하시겠습니까?");
 
           if (!confirmed) {
