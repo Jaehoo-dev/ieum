@@ -1,6 +1,6 @@
 import {
+  ComponentPropsWithRef,
   forwardRef,
-  HTMLAttributes,
   ReactElement,
   Suspense,
   useEffect,
@@ -478,7 +478,7 @@ function SortableDataField(props: DataFieldProps) {
   );
 }
 
-interface DataFieldProps extends HTMLAttributes<HTMLDivElement> {
+interface DataFieldProps extends ComponentPropsWithRef<"div"> {
   condition: BasicCondition;
   idealType: BasicMemberIdealType;
   dragEnabled: boolean;

@@ -1,3 +1,4 @@
+import { ComponentPropsWithoutRef } from "react";
 import type { MemberImage } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
@@ -5,7 +6,7 @@ import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
 import { BasicMemberProfileWithImages } from "./types";
 
-interface Props {
+interface Props extends ComponentPropsWithoutRef<"div"> {
   profile: BasicMemberProfileWithImages;
   watermarkText?: string;
   defaultOpened?: boolean;
@@ -15,6 +16,7 @@ export function Profile({
   profile,
   watermarkText,
   defaultOpened = false,
+  ...props
 }: Props) {
   const {
     selfIntroduction,
@@ -23,7 +25,7 @@ export function Profile({
   } = profile;
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-4" {...props}>
       {selfIntroduction != null ? (
         <SelfIntroductionSection content={selfIntroduction} />
       ) : null}

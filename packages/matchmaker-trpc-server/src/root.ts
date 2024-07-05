@@ -1,12 +1,14 @@
 import { basicMatchRouter } from "./routers/basicMatch";
 import { basicMemberRouter } from "./routers/basicMember";
 import { basicMemberIdealTypeRouter } from "./routers/basicMemberIdealType";
+import { basicMemberProfileRouter } from "./routers/basicMemberProfile";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   basicMemberRouter,
   basicMatchRouter,
   basicMemberIdealTypeRouter,
+  basicMemberProfileRouter,
 });
 
 // export type definition of API

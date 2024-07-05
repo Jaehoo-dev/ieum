@@ -14,7 +14,7 @@ import type {
 export type BasicMemberForm = {
   self: Omit<
     BasicMember,
-    "id" | "fashionStyles" | "createdAt" | "updatedAt"
+    "id" | "fashionStyles" | "createdAt" | "updatedAt" | "lastMatchedAt"
   > & {
     fashionStyles: { value: FashionStyle }[];
     imageBucketPaths: { value: string }[];
