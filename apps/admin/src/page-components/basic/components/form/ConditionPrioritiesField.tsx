@@ -155,12 +155,7 @@ export function ConditionPrioritiesField() {
       <h3 className="text-lg font-bold">이상형 조건 우선순위</h3>
       <DndContext
         onDragOver={({ active, over }) => {
-          if (
-            over == null ||
-            active.id === over.id ||
-            active.data.current?.sortable.containerId ===
-              over.data.current?.sortable.containerId
-          ) {
+          if (over == null) {
             return;
           }
 
