@@ -834,12 +834,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         우선순위
         <DndContext
           onDragOver={({ active, over }) => {
-            if (
-              over == null ||
-              active.id === over.id ||
-              active.data.current?.sortable.containerId ===
-                over.data.current?.sortable.containerId
-            ) {
+            if (over == null) {
               return;
             }
 

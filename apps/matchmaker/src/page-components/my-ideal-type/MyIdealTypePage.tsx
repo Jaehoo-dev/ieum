@@ -171,12 +171,7 @@ function Resolved() {
         );
       }}
       onDragOver={({ active, over }) => {
-        if (
-          over == null ||
-          active.data.current?.sortable.containerId ===
-            over.data.current?.sortable.containerId ||
-          active.id === over.id
-        ) {
+        if (over == null) {
           return;
         }
 
