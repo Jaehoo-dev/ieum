@@ -15,10 +15,11 @@ import { api } from "~/utils/api";
 export function DemoMatchPage() {
   const router = useRouter();
   const genderQuery = router.query["my-gender"] as string;
-  const { data: profile } = api.basicMemberRouter.getDemoProfile.useQuery(
-    { selfGender: genderQuery },
-    { enabled: !isEmptyStringOrNil(genderQuery) },
-  );
+  const { data: profile } =
+    api.basicMemberProfileRouter.getDemoProfile.useQuery(
+      { selfGender: genderQuery },
+      { enabled: !isEmptyStringOrNil(genderQuery) },
+    );
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {

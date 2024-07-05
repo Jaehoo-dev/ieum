@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
+import { useRouter } from "next/router";
 import { Profile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
 
@@ -30,14 +31,47 @@ function Resolved() {
     );
   }, [member.name, sendMessage]);
 
-  const [profile] = api.basicMemberRouter.getProfileById.useSuspenseQuery({
-    id: member.id,
-  });
+  const [profile] =
+    api.basicMemberProfileRouter.getProfileByMemberId.useSuspenseQuery({
+      memberId: member.id,
+    });
 
   return profile != null ? (
-    <Profile profile={profile} watermarkText="이음" />
+    <>
+      <Profile
+        profile={profile}
+        watermarkText="이음"
+        style={{ marginBottom: "84px" }}
+      />
+      <EditButton />
+    </>
   ) : (
     <Empty />
+  );
+}
+
+function EditButton() {
+  const { member } = useMemberAuthContext();
+
+  assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const router = useRouter();
+  const { sendMessage } = useSlackNotibot();
+
+  return (
+    <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
+      <div className="w-full max-w-lg px-2">
+        <button
+          className="w-full rounded-lg bg-gray-200 p-3 text-xl font-medium text-gray-600 hover:bg-gray-300"
+          onClick={() => {
+            sendMessage(`${formatUniqueMemberName(member)} - 프로필 수정 클릭`);
+            router.push("/my-profile/edit");
+          }}
+        >
+          수정
+        </button>
+      </div>
+    </div>
   );
 }
 
