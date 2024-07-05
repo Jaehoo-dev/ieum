@@ -32,6 +32,9 @@ export type BasicMemberForm = {
     | "preferredReligions"
     | "nonPreferredReligions"
     | "dealBreakers"
+    | "highPriorities"
+    | "mediumPriorities"
+    | "lowPriorities"
   > & {
     regions: { value: Region }[];
     bodyShapes: { value: BodyShape }[];
@@ -43,5 +46,8 @@ export type BasicMemberForm = {
     preferredReligions: { value: Religion }[];
     nonPreferredReligions: { value: Religion }[];
     dealBreakers: { value: BasicCondition }[];
+    highPriorities: { value: BasicCondition }[];
+    mediumPriorities: { value: BasicCondition }[];
+    lowPriorities: { value: BasicCondition }[];
   };
 };

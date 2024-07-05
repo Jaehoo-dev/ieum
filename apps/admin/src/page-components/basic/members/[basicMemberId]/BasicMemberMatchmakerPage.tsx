@@ -1,6 +1,9 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
+import { DndContext, useDroppable } from "@dnd-kit/core";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   독서량_라벨,
   베이직_조건_라벨,
@@ -69,6 +72,9 @@ interface CustomCanditatesSearchForm {
   isGamingOk: boolean;
   isPetOk: boolean;
   dealBreakers: { value: BasicCondition }[];
+  highPriorities: { value: BasicCondition }[];
+  mediumPriorities: { value: BasicCondition }[];
+  lowPriorities: { value: BasicCondition }[];
 }
 
 export function BasicMemberMatchmakerPage() {
@@ -113,8 +119,7 @@ function Resolved() {
     api.basicMemberRouter.findCustomMatchCandidates.useQuery(
       {
         memberId: basicMemberId,
-        conditions: customSearchQueryParams.conditions,
-        dealBreakers: customSearchQueryParams.dealBreakers,
+        data: customSearchQueryParams,
       },
       {
         enabled: searchMode === "CUSTOM" && basicMember != null,
@@ -352,6 +357,95 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
     control,
     name: "dealBreakers",
   });
+  const {
+    fields: highPriorityFields,
+    append: appendHighPriority,
+    remove: removeHighPriority,
+  } = useFieldArray({
+    control,
+    name: "highPriorities",
+  });
+  const {
+    fields: mediumPriorityFields,
+    append: appendMediumPriority,
+    remove: removeMediumPriority,
+  } = useFieldArray({
+    control,
+    name: "mediumPriorities",
+  });
+  const {
+    fields: lowPriorityFields,
+    append: appendLowPriority,
+    remove: removeLowPriority,
+  } = useFieldArray({
+    control,
+    name: "lowPriorities",
+  });
+  const [noPriorities, setNoPriorities] = useState(
+    Object.values(BasicCondition).filter((condition) => {
+      return (
+        !dealBreakerFields.some((field) => field.value === condition) &&
+        !highPriorityFields.some((field) => field.value === condition) &&
+        !mediumPriorityFields.some((field) => field.value === condition) &&
+        !lowPriorityFields.some((field) => field.value === condition)
+      );
+    }),
+  );
+
+  function appendToContainer(condition: BasicCondition, containerId: 우선순위) {
+    switch (containerId) {
+      case 우선순위.필수:
+        appendDealBreaker({ value: condition });
+        break;
+      case 우선순위.높음:
+        appendHighPriority({ value: condition });
+        break;
+      case 우선순위.중간:
+        appendMediumPriority({ value: condition });
+        break;
+      case 우선순위.낮음:
+        appendLowPriority({ value: condition });
+        break;
+      case 우선순위.미지정:
+        setNoPriorities((prev) => [...prev, condition]);
+        break;
+      default:
+        throw new Error("Invalid containerId");
+    }
+  }
+
+  function removeFromContainer(
+    condition: BasicCondition,
+    containerId: 우선순위,
+  ) {
+    switch (containerId) {
+      case 우선순위.필수:
+        removeDealBreaker(
+          dealBreakerFields.findIndex((field) => field.value === condition),
+        );
+        break;
+      case 우선순위.높음:
+        removeHighPriority(
+          highPriorityFields.findIndex((field) => field.value === condition),
+        );
+        break;
+      case 우선순위.중간:
+        removeMediumPriority(
+          mediumPriorityFields.findIndex((field) => field.value === condition),
+        );
+        break;
+      case 우선순위.낮음:
+        removeLowPriority(
+          lowPriorityFields.findIndex((field) => field.value === condition),
+        );
+        break;
+      case 우선순위.미지정:
+        setNoPriorities((prev) => prev.filter((c) => c !== condition));
+        break;
+      default:
+        throw new Error("Invalid containerId");
+    }
+  }
 
   return (
     <form
@@ -737,31 +831,66 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         </div>
       </div>
       <div>
-        필수 조건
-        <div className="grid grid-cols-4 gap-1">
-          {Object.values(BasicCondition).map((condition) => {
-            return (
-              <Checkbox
-                key={condition}
-                label={베이직_조건_라벨[condition]}
-                checked={dealBreakerFields.some((field) => {
-                  return field.value === condition;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendDealBreaker({ value: condition });
-                  } else {
-                    removeDealBreaker(
-                      dealBreakerFields.findIndex(
-                        (field) => field.value === condition,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
+        우선순위
+        <DndContext
+          onDragOver={({ active, over }) => {
+            if (
+              over == null ||
+              active.id === over.id ||
+              active.data.current?.sortable.containerId ===
+                over.data.current?.sortable.containerId
+            ) {
+              return;
+            }
+
+            const activeContainerId: 우선순위 =
+              active.data.current?.sortable.containerId;
+            const overContainerId: 우선순위 =
+              over.data.current?.sortable.containerId ?? over.id;
+
+            removeFromContainer(active.id as BasicCondition, activeContainerId);
+            appendToContainer(active.id as BasicCondition, overContainerId);
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            {[
+              {
+                id: 우선순위.필수,
+                label: "필수",
+                conditions: dealBreakerFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.높음,
+                label: "높음",
+                conditions: highPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.중간,
+                label: "중",
+                conditions: mediumPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.낮음,
+                label: "하",
+                conditions: lowPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.미지정,
+                label: "미지정",
+                conditions: noPriorities,
+              },
+            ].map((section) => {
+              return (
+                <PrioritySection
+                  key={section.id}
+                  id={section.id}
+                  label={section.label}
+                  conditions={section.conditions}
+                />
+              );
+            })}
+          </div>
+        </DndContext>
       </div>
       <div className="mt-2 flex w-full gap-2">
         <button
@@ -779,6 +908,99 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         </button>
       </div>
     </form>
+  );
+}
+
+const 우선순위 = {
+  필수: "DEAL_BREAKER",
+  높음: "HIGH",
+  중간: "MEDIUM",
+  낮음: "LOW",
+  미지정: "NONE",
+} as const;
+
+type 우선순위 = (typeof 우선순위)[keyof typeof 우선순위];
+
+function PrioritySection({
+  id,
+  label,
+  conditions,
+}: {
+  id: 우선순위;
+  label: string;
+  conditions: BasicCondition[];
+}) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span>{label}</span>
+      <DroppablePriorityContainer id={id} conditions={conditions} />
+    </div>
+  );
+}
+
+function DroppablePriorityContainer({
+  id,
+  conditions,
+}: {
+  id: 우선순위;
+  conditions: BasicCondition[];
+}) {
+  const { setNodeRef } = useDroppable({ id });
+
+  return (
+    <SortableContext id={id} items={conditions}>
+      {conditions.length > 0 ? (
+        <div className="grid grid-cols-3 gap-2" ref={setNodeRef}>
+          {conditions.map((condition) => {
+            return <SortableItem key={condition} condition={condition} />;
+          })}
+        </div>
+      ) : (
+        <Empty id={id} />
+      )}
+    </SortableContext>
+  );
+}
+
+function SortableItem({ condition }: { condition: BasicCondition }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: condition });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      className="cursor-grab rounded border border-gray-300 px-2 py-1"
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+    >
+      {베이직_조건_라벨[condition]}
+    </div>
+  );
+}
+
+function Empty({ id }: { id: 우선순위 }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: `${id}-EMPTY`, disabled: true });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      className="flex flex-row items-center justify-center rounded-md border border-dashed border-gray-400 px-2 py-1"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
+      <p className="text-gray-500">조건을 끌어 놓으세요</p>
+    </div>
   );
 }
 
@@ -973,6 +1195,9 @@ function createCustomCandidatesSearchFormValues(
     isGamingOk,
     isPetOk,
     dealBreakers,
+    highPriorities,
+    mediumPriorities,
+    lowPriorities,
   } = idealType;
 
   return {
@@ -1008,35 +1233,43 @@ function createCustomCandidatesSearchFormValues(
     dealBreakers: dealBreakers.map((value) => {
       return { value };
     }),
+    highPriorities: highPriorities.map((value) => {
+      return { value };
+    }),
+    mediumPriorities: mediumPriorities.map((value) => {
+      return { value };
+    }),
+    lowPriorities: lowPriorities.map((value) => {
+      return { value };
+    }),
   };
 }
 
 function formToValues(form: CustomCanditatesSearchForm) {
   return {
-    conditions: {
-      minAgeBirthYear: form.minAgeBirthYear,
-      maxAgeBirthYear: form.maxAgeBirthYear,
-      minHeight: form.minHeight,
-      maxHeight: form.maxHeight,
-      minEducationLevel: form.minEducationLevel,
-      occupationStatuses: form.occupationStatuses.map(({ value }) => value),
-      preferredMbtis: form.preferredMbtis.map(({ value }) => value),
-      nonPreferredMbtis: form.nonPreferredMbtis.map(({ value }) => value),
-      isSmokerOk: form.isSmokerOk,
-      preferredReligions: form.preferredReligions.map(({ value }) => value),
-      nonPreferredReligions: form.nonPreferredReligions.map(
-        ({ value }) => value,
-      ),
-      minAnnualIncome: form.minAnnualIncome,
-      minAssetsValue: form.minAssetsValue,
-      minBooksReadPerYear: form.minBooksReadPerYear,
-      isTattooOk: form.isTattooOk,
-      exercisePerWeek: form.exercisePerWeek,
-      shouldHaveCar: form.shouldHaveCar,
-      isGamingOk: form.isGamingOk,
-      isPetOk: form.isPetOk,
-    },
+    minAgeBirthYear: form.minAgeBirthYear,
+    maxAgeBirthYear: form.maxAgeBirthYear,
+    minHeight: form.minHeight,
+    maxHeight: form.maxHeight,
+    minEducationLevel: form.minEducationLevel,
+    occupationStatuses: form.occupationStatuses.map(({ value }) => value),
+    preferredMbtis: form.preferredMbtis.map(({ value }) => value),
+    nonPreferredMbtis: form.nonPreferredMbtis.map(({ value }) => value),
+    isSmokerOk: form.isSmokerOk,
+    preferredReligions: form.preferredReligions.map(({ value }) => value),
+    nonPreferredReligions: form.nonPreferredReligions.map(({ value }) => value),
+    minAnnualIncome: form.minAnnualIncome,
+    minAssetsValue: form.minAssetsValue,
+    minBooksReadPerYear: form.minBooksReadPerYear,
+    isTattooOk: form.isTattooOk,
+    exercisePerWeek: form.exercisePerWeek,
+    shouldHaveCar: form.shouldHaveCar,
+    isGamingOk: form.isGamingOk,
+    isPetOk: form.isPetOk,
     dealBreakers: form.dealBreakers.map(({ value }) => value),
+    highPriorities: form.highPriorities.map(({ value }) => value),
+    mediumPriorities: form.mediumPriorities.map(({ value }) => value),
+    lowPriorities: form.lowPriorities.map(({ value }) => value),
   };
 }
 

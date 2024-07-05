@@ -110,7 +110,7 @@ export function IdealTypeFields() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h1 className="text-xl font-bold">이상형</h1>
+      <h2 className="text-xl font-bold">이상형</h2>
       <TextInput
         label="최소 나이 출생연도"
         error={errors.idealType?.minAgeBirthYear != null}

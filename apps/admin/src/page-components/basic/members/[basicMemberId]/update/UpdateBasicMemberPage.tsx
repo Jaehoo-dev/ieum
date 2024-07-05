@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
 import { BasicMemberWithJoined } from "~/domains/basic/types";
-import { DealBreakersField } from "~/page-components/basic/components/form/DealBreakersField";
+import { ConditionPrioritiesField } from "~/page-components/basic/components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
 import { SelfFields } from "~/page-components/basic/components/form/SelfFields";
@@ -61,7 +61,7 @@ function Resolved() {
             <SelfFields />
             <div className="flex flex-col gap-16">
               <IdealTypeFields />
-              <DealBreakersField />
+              <ConditionPrioritiesField />
             </div>
           </div>
           <MemoField />
@@ -137,6 +137,15 @@ function memberToForm({ idealType, ...member }: BasicMemberWithJoined) {
       dealBreakers: idealType.dealBreakers.map((condition) => {
         return { value: condition };
       }),
+      highPriorities: idealType.highPriorities.map((condition) => {
+        return { value: condition };
+      }),
+      mediumPriorities: idealType.mediumPriorities.map((condition) => {
+        return { value: condition };
+      }),
+      lowPriorities: idealType.lowPriorities.map((condition) => {
+        return { value: condition };
+      }),
     },
   };
 }
@@ -169,6 +178,15 @@ function formToPayload({ self, idealType }: BasicMemberUpdateForm) {
         (religion) => religion.value,
       ),
       dealBreakers: idealType.dealBreakers.map((condition) => condition.value),
+      highPriorities: idealType.highPriorities.map(
+        (condition) => condition.value,
+      ),
+      mediumPriorities: idealType.mediumPriorities.map(
+        (condition) => condition.value,
+      ),
+      lowPriorities: idealType.lowPriorities.map(
+        (condition) => condition.value,
+      ),
     },
   };
 }
