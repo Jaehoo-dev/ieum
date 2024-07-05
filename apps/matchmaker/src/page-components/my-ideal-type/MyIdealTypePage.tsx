@@ -296,7 +296,7 @@ function Resolved() {
         </div>
         {sections.map((section) => {
           return (
-            <div className="flex flex-col gap-4">
+            <div key={section.containerId} className="flex flex-col gap-4">
               <div className="border-t border-gray-600" />
               <div className="flex flex-col gap-2">
                 <h3 className="font-semibold text-gray-800">{section.label}</h3>
