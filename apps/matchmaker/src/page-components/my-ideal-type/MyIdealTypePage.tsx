@@ -46,6 +46,7 @@ import {
 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
+import { keepPreviousData } from "@tanstack/react-query";
 import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
@@ -77,6 +78,14 @@ const 우선순위 = {
 } as const;
 
 type 우선순위 = (typeof 우선순위)[keyof typeof 우선순위];
+
+const 매칭지수_라벨 = {
+  HIGH: "상",
+  MID_HIGH: "중상",
+  MID: "중",
+  MID_LOW: "중하",
+  LOW: "하",
+} as const;
 
 function Resolved() {
   const { member } = useMemberAuthContext();
@@ -111,7 +120,10 @@ function Resolved() {
   const { mutateAsync: updatePriorities } =
     api.basicMemberIdealTypeRouter.updatePriorities.useMutation({
       onSuccess: () => {
-        return utils.basicMemberIdealTypeRouter.invalidate();
+        return Promise.all([
+          utils.basicMemberIdealTypeRouter.invalidate(),
+          utils.basicMatchIndexRouter.invalidate(),
+        ]);
       },
     });
   const [activeId, setActiveId] = useState<BasicCondition | null>(null);
@@ -125,11 +137,6 @@ function Resolved() {
     [우선순위.미지정]: setNoPriorities,
   } as const;
   const sections = [
-    {
-      label: "절대 포기 못하는 조건 (최대 5개)",
-      containerId: 우선순위.필수,
-      conditions: dealBreakers,
-    },
     {
       label: "우선순위 - 높음",
       containerId: 우선순위.높음,
@@ -152,6 +159,18 @@ function Resolved() {
     },
   ];
   const { sendMessage } = useSlackNotibot();
+  const { data: 매칭지수 } = api.basicMatchIndexRouter.getMatchIndex.useQuery(
+    {
+      memberId: member.id,
+      customIdealType: {
+        ...idealType,
+        dealBreakers,
+      },
+    },
+    {
+      placeholderData: keepPreviousData,
+    },
+  );
 
   useEffect(() => {
     void sendMessage(
@@ -255,43 +274,49 @@ function Resolved() {
             {mode === "READ" ? (
               <EditButton onClick={() => setMode("EDIT")} />
             ) : (
-              <div className="flex flex-row items-center justify-end gap-2">
-                <CancelButton
-                  onClick={() => {
-                    setDealBreakers(idealType.dealBreakers);
-                    setNoPriorities(
-                      Object.values(BasicCondition).filter((condition) => {
-                        return !idealType.dealBreakers.includes(condition);
-                      }),
+              <DoneButton
+                onClick={async () => {
+                  if (dealBreakers.length > 5) {
+                    alert(
+                      "'포기 못하는 조건'은 최대 5개까지 선택할 수 있습니다.",
                     );
-                    setMode("READ");
-                  }}
-                />
-                <DoneButton
-                  onClick={async () => {
-                    if (dealBreakers.length > 5) {
-                      alert(
-                        "'포기 못하는 조건'은 최대 5개까지 선택할 수 있습니다.",
-                      );
 
-                      return;
-                    }
+                    return;
+                  }
 
-                    await updatePriorities({
-                      memberId: member.id,
-                      priorities: {
-                        dealBreakers,
-                        highPriorities,
-                        mediumPriorities,
-                        lowPriorities,
-                      },
-                    });
+                  await updatePriorities({
+                    memberId: member.id,
+                    priorities: {
+                      dealBreakers,
+                      highPriorities,
+                      mediumPriorities,
+                      lowPriorities,
+                    },
+                  });
 
-                    setMode("READ");
-                  }}
-                />
-              </div>
+                  setMode("READ");
+                }}
+              />
             )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="border-t border-gray-600" />
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
+              <span className="text-gray-700">{`(베타) 매칭 지수: ${
+                매칭지수 == null ? "-" : 매칭지수_라벨[매칭지수]
+              }`}</span>
+              <h3 className="font-semibold text-gray-800">
+                절대 포기 못하는 조건 (최대 5개)
+              </h3>
+            </div>
+            <DroppableContainer
+              id={우선순위.필수}
+              conditions={dealBreakers}
+              idealType={idealType}
+              mode={mode}
+            />
           </div>
         </div>
         {sections.map((section) => {
@@ -343,27 +368,6 @@ function EditButton({ onClick }: { onClick: () => void }) {
       }}
     >
       수정
-    </button>
-  );
-}
-
-function CancelButton({ onClick }: { onClick: () => void }) {
-  const { member } = useMemberAuthContext();
-  const { sendMessage } = useSlackNotibot();
-
-  return (
-    <button
-      className="rounded-md border border-gray-300 bg-gray-100 px-5 py-1 text-gray-800"
-      onClick={() => {
-        assert(member != null, "member should be defined");
-
-        void sendMessage(
-          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 취소 클릭`,
-        );
-        onClick();
-      }}
-    >
-      취소
     </button>
   );
 }
@@ -776,7 +780,7 @@ function createFieldData(
 }
 
 MyIdealTypePage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="내 이상형 조건 (베타)">{page}</Layout>;
+  return <Layout title="내 이상형 조건">{page}</Layout>;
 };
 const 학력_라벨: Record<EducationLevel, string> = {
   [EducationLevel.ELEMENTARY_SCHOOL_GRADUATE]: "초등학교 졸업 이상",

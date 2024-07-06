@@ -10,7 +10,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.16.1"
+    "@prisma/client": "^5.16.1",
+    "ts-pattern": "^5.2.0"
   },
   "devDependencies": {
     "prisma": "^5.16.1"
