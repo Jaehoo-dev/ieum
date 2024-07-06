@@ -4,7 +4,6 @@ import Link from "next/link";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 
-import { EventBanner } from "~/components/EventBanner";
 import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { MemberAuth } from "~/components/MemberAuth";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -46,7 +45,6 @@ export function Home() {
         </div>
         <div className="mt-6 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
-            <EventBanner />
             <h1 className="mb-2 mt-6 text-3xl font-semibold text-primary-500 md:text-4xl">
               이음
             </h1>
@@ -84,6 +82,17 @@ function Registered() {
 
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
+      <Link
+        href="/referral"
+        className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
+        onClick={() => {
+          void sendMessage(
+            `${formatUniqueMemberName(member)} - 만남권 할인 이벤트 클릭`,
+          );
+        }}
+      >
+        만남권 할인 이벤트
+      </Link>
       <Link
         href="/my-matches"
         className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-semibold text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"

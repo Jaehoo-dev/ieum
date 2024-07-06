@@ -43,6 +43,7 @@ export function Sidebar({ open, onClose }: Props) {
               onClick={onClose}
             />
             <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
+            <MenuItem label="추천인 코드" href="/referral" onClick={onClose} />
           </ul>
         </div>
       </aside>

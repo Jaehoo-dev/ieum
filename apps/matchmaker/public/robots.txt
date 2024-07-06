@@ -3,3 +3,4 @@ Allow: /
 Disallow: /my-profile/
 Disallow: /my-ideal-type/
 Disallow: /my-matches/
+Disallow: /referral/
