@@ -126,7 +126,7 @@ function Registered() {
       >
         내 이상형 조건
       </Link>
-      <HomepageTipsTabLink rel="noopener" />
+      <HomepageTipsTabLink rel="noopener" style={{ marginTop: "4px" }} />
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
