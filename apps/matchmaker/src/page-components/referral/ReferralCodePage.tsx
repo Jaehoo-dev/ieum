@@ -46,8 +46,9 @@ function Resolved() {
   return (
     <div
       className="flex w-full cursor-pointer flex-row items-center justify-between p-4"
-      onClick={() => {
-        navigator.clipboard.writeText(referralCode);
+      onClick={async () => {
+        sendMessage(`${formatUniqueMemberName(member)} - 추천인 코드 복사`);
+        await navigator.clipboard.writeText(referralCode);
         alert("추천인 코드를 복사했습니다.");
       }}
     >
