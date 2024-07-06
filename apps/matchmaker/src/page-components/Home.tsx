@@ -43,9 +43,9 @@ export function Home() {
             className="h-full w-full object-cover object-center"
           />
         </div>
-        <div className="mt-6 flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
+        <div className="flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center">
-            <h1 className="mb-2 mt-6 text-3xl font-semibold text-primary-500 md:text-4xl">
+            <h1 className="mb-2 mt-4 text-3xl font-semibold text-primary-500 md:text-4xl">
               이음
             </h1>
             {loggedIn ? (
