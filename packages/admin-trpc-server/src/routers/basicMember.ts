@@ -30,6 +30,7 @@ import { assert, krToGlobal } from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
+import { generateReferralCode } from "../utils/generateReferralCode";
 import { getSimilarityScore } from "../utils/getSimilarityScore";
 
 export const basicMemberRouter = createTRPCRouter({
@@ -163,6 +164,7 @@ export const basicMemberRouter = createTRPCRouter({
             idealType: {
               create: idealType,
             },
+            referralCode: generateReferralCode(),
           },
         });
       },

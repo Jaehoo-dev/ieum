@@ -236,7 +236,10 @@ model BasicMember {
   status  MemberStatus        @default(ACTIVE)
   profile BasicMemberProfile?
 
+  referralCode String
+
   @@unique([phoneNumber])
+  @@unique([referralCode])
   @@index([name])
   @@index([gender])
   @@index([birthYear])
