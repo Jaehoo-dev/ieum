@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -40,16 +42,11 @@ export function Sidebar({ open, onClose }: Props) {
               href="/my-ideal-type"
               onClick={onClose}
             />
-            <MenuItem label="소개팅 꿀팁" href="/tips" onClick={onClose} />
+            <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
           </ul>
         </div>
       </aside>
-      {open ? (
-        <div
-          className="fixed inset-0 z-10 bg-black opacity-50"
-          onClick={onClose}
-        />
-      ) : null}
+      {open ? <Overlay onClick={onClose} /> : null}
     </>
   );
 }
@@ -63,6 +60,7 @@ interface MenuItemProps {
 function MenuItem({ label, href, onClick }: MenuItemProps) {
   const router = useRouter();
   const isActive = router.pathname === href;
+  const { sendMessage } = useSlackNotibot();
 
   return (
     <li>
@@ -71,10 +69,19 @@ function MenuItem({ label, href, onClick }: MenuItemProps) {
         className={`block rounded-lg px-4 py-2 text-lg text-gray-700 hover:bg-gray-200 ${
           isActive ? "bg-primary-200" : ""
         }`}
-        onClick={onClick}
+        onClick={() => {
+          sendMessage(`메뉴 - ${label} 클릭`);
+          onClick?.();
+        }}
       >
         {label}
       </Link>
     </li>
+  );
+}
+
+function Overlay({ onClick }: { onClick: () => void }) {
+  return (
+    <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={onClick} />
   );
 }
