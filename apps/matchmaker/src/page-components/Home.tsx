@@ -115,7 +115,7 @@ function Registered() {
           );
         }}
       >
-        내 이상형 조건 (베타)
+        내 이상형 조건
       </Link>
       <HomepageTipsTabLink rel="noopener" />
       <button
