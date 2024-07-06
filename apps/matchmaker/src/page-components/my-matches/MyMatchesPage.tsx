@@ -7,7 +7,6 @@ import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
-import { EventBanner } from "~/components/EventBanner";
 import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -18,7 +17,6 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 export function MyMatchesPage() {
   return (
     <div className="flex w-full flex-col gap-4">
-      <EventBanner />
       <Description />
       <hr className="w-full" />
       <Suspense fallback={null}>
