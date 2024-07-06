@@ -1,6 +1,9 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Head from "next/head";
 import { isEmptyStringOrNil } from "@ieum/utils";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+
+import { Sidebar } from "./Sidebar";
 
 interface Props {
   children: ReactNode;
@@ -26,11 +29,36 @@ interface HeaderProps {
 }
 
 function Header({ title }: HeaderProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  function toggleSidebar() {
+    setIsSidebarOpen((prev) => !prev);
+  }
+
   return (
-    <header className="shadow-xs fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
-      <h1 className="text-2xl font-semibold text-gray-700 md:text-3xl">
-        {title}
-      </h1>
-    </header>
+    <>
+      <header className="shadow-xs fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
+        <div className="relative flex w-full max-w-lg items-center justify-center">
+          <Hamburger onClick={toggleSidebar} />
+          <h1 className="text-2xl font-semibold text-gray-700 md:text-3xl">
+            {title}
+          </h1>
+        </div>
+      </header>
+      <Sidebar
+        open={isSidebarOpen}
+        onClose={() => {
+          setIsSidebarOpen(false);
+        }}
+      />
+    </>
+  );
+}
+
+function Hamburger({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="absolute left-4" onClick={onClick} aria-label="메뉴">
+      <MenuRoundedIcon className="text-gray-700" />
+    </button>
   );
 }
