@@ -94,7 +94,7 @@ function Resolved() {
 
   const [idealType] =
     api.basicMemberIdealTypeRouter.getIdealTypeById.useSuspenseQuery({
-      id: member.id,
+      id: 249,
     });
   const [dealBreakers, setDealBreakers] = useState(idealType.dealBreakers);
   const [highPriorities, setHighPriorities] = useState(
@@ -161,7 +161,7 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
   const { data: 매칭지수 } = api.basicMatchIndexRouter.getMatchIndex.useQuery(
     {
-      memberId: member.id,
+      memberId: 249,
       customIdealType: {
         ...idealType,
         dealBreakers,
@@ -285,7 +285,7 @@ function Resolved() {
                   }
 
                   await updatePriorities({
-                    memberId: member.id,
+                    memberId: 249,
                     priorities: {
                       dealBreakers,
                       highPriorities,
@@ -533,12 +533,16 @@ function createFieldData(
 ) {
   return match(condition)
     .with(BasicCondition.AGE, () => {
+      const { minAgeBirthYear, maxAgeBirthYear } = idealType;
+
       return {
         label: "나이",
         value:
-          idealType.minAgeBirthYear != null && idealType.maxAgeBirthYear != null
-            ? `${idealType.minAgeBirthYear}년생 ~ ${idealType.maxAgeBirthYear}년생`
-            : "상관없음",
+          minAgeBirthYear == null && maxAgeBirthYear == null
+            ? "상관없음"
+            : `${minAgeBirthYear != null ? `${minAgeBirthYear}년생 ` : ""}~${
+                maxAgeBirthYear != null ? ` ${maxAgeBirthYear}년생` : ""
+              }`,
       };
     })
     .with(BasicCondition.REGION, () => {
