@@ -94,7 +94,7 @@ function Resolved() {
 
   const [idealType] =
     api.basicMemberIdealTypeRouter.getIdealTypeById.useSuspenseQuery({
-      id: 249,
+      id: member.id,
     });
   const [dealBreakers, setDealBreakers] = useState(idealType.dealBreakers);
   const [highPriorities, setHighPriorities] = useState(
@@ -161,7 +161,7 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
   const { data: 매칭지수 } = api.basicMatchIndexRouter.getMatchIndex.useQuery(
     {
-      memberId: 249,
+      memberId: member.id,
       customIdealType: {
         ...idealType,
         dealBreakers,
@@ -285,7 +285,7 @@ function Resolved() {
                   }
 
                   await updatePriorities({
-                    memberId: 249,
+                    memberId: member.id,
                     priorities: {
                       dealBreakers,
                       highPriorities,
