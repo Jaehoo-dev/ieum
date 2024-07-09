@@ -89,6 +89,8 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
                 <Link
                   href={`/basic/members/${member.id}/matchmaker`}
                   className="text-blue-600 hover:underline"
+                  target="_blank"
+                  rel="noreferrer noopener"
                 >
                   매치
                 </Link>
