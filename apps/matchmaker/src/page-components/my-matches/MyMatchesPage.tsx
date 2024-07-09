@@ -10,7 +10,7 @@ import { match as matchPattern } from "ts-pattern";
 import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
+import { Member, useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
@@ -78,6 +78,7 @@ function Resolved() {
                 <MatchCard
                   key={match.id}
                   match={match}
+                  selfMember={member}
                   showLabel={false}
                   onClick={() => {
                     void sendMessage(
@@ -111,6 +112,7 @@ function Resolved() {
                   <MatchCard
                     key={match.id}
                     match={match}
+                    selfMember={member}
                     showLabel={true}
                     onClick={() => {
                       void sendMessage(
@@ -136,16 +138,28 @@ function Resolved() {
 
 function MatchCard({
   match,
+  selfMember,
   showLabel,
   onClick,
   disabled = false,
 }: {
   match: BasicMatch;
+  selfMember: Member;
   showLabel: boolean;
   onClick?: () => void;
   disabled?: boolean;
 }) {
   const router = useRouter();
+  const { data: displayStatus } =
+    api.basicMatchRouter.getDisplayStatus.useQuery(
+      {
+        matchId: match.id,
+        memberId: selfMember.id,
+      },
+      {
+        enabled: showLabel,
+      },
+    );
 
   return (
     <button
@@ -164,8 +178,8 @@ function MatchCard({
         <p className="text-xl text-gray-600">
           {`⏰ ${calculateLeftHours(match)}시간 남음`}
         </p>
-        {showLabel ? (
-          <p className="text-xl">{`🚦 ${getStatusLabel(match)}`}</p>
+        {showLabel && displayStatus != null ? (
+          <p className="text-xl">{`🚦 ${getStatusLabel(displayStatus)}`}</p>
         ) : null}
       </div>
     </button>
@@ -185,8 +199,8 @@ function Empty() {
   );
 }
 
-function getStatusLabel(match: BasicMatch) {
-  return matchPattern(match.status)
+function getStatusLabel(status: MatchStatus) {
+  return matchPattern(status)
     .with(MatchStatus.PENDING, () => "🟡")
     .with(MatchStatus.REJECTED, () => "🔴")
     .with(MatchStatus.ACCEPTED, () => "🟢")

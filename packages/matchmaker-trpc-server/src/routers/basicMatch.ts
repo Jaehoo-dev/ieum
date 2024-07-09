@@ -8,6 +8,39 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const basicMatchRouter = createTRPCRouter({
+  getDisplayStatus: publicProcedure
+    .input(
+      z.object({
+        matchId: z.number(),
+        memberId: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input: { matchId, memberId } }) => {
+      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+        where: {
+          id: matchId,
+        },
+        include: {
+          acceptedBy: true,
+          pendingBy: true,
+          rejectedBy: true,
+        },
+      });
+
+      const isRejectedByMember = match.rejectedBy.some((member) => {
+        return member.id === memberId;
+      });
+
+      if (isRejectedByMember) {
+        return MatchStatus.REJECTED;
+      }
+
+      if (match.acceptedBy.length === 2) {
+        return MatchStatus.ACCEPTED;
+      }
+
+      return MatchStatus.PENDING;
+    }),
   findActiveMatchesByMemberId: publicProcedure
     .input(
       z.object({
