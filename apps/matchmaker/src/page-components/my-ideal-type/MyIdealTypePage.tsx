@@ -304,7 +304,7 @@ function Resolved() {
           <div className="border-t border-gray-600" />
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
-              <span className="text-gray-700">{`(베타) 매칭 지수: ${
+              <span className="text-gray-700">{`매칭 지수: ${
                 매칭지수 == null ? "-" : 매칭지수_라벨[매칭지수]
               }`}</span>
               <h3 className="font-semibold text-gray-800">
@@ -784,7 +784,7 @@ function createFieldData(
 }
 
 MyIdealTypePage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="내 이상형 조건">{page}</Layout>;
+  return <Layout title="내 이상형 조건 (베타)">{page}</Layout>;
 };
 const 학력_라벨: Record<EducationLevel, string> = {
   [EducationLevel.ELEMENTARY_SCHOOL_GRADUATE]: "초등학교 졸업 이상",
