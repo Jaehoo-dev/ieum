@@ -38,7 +38,7 @@ export function Sidebar({ open, onClose }: Props) {
             <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem
-              label="내 이상형 조건"
+              label="내 이상형 조건 (베타)"
               href="/my-ideal-type"
               onClick={onClose}
             />
