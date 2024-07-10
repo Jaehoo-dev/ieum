@@ -40,9 +40,7 @@ function Header({ title }: HeaderProps) {
       <header className="shadow-xs fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
         <div className="relative flex w-full max-w-lg items-center justify-center">
           <Hamburger onClick={toggleSidebar} />
-          <h1 className="text-2xl font-semibold text-gray-700 md:text-3xl">
-            {title}
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-700">{title}</h1>
         </div>
       </header>
       <Sidebar
