@@ -134,7 +134,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           {isSubmitting ? "전송중.." : "인증번호 전송"}
         </button>
       </form>
-      <HomepageTipsTabLink rel="noopener" />
+      <HomepageTipsTabLink />
     </div>
   );
 }
