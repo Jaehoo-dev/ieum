@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { api } from "~/utils/api";
 
@@ -22,15 +23,18 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <MemberAuthProvider>
-      {Component.auth === false ? (
-        <Component {...pageProps} />
-      ) : (
-        <AuthGuard>
+    <>
+      <MemberAuthProvider>
+        {Component.auth === false ? (
           <Component {...pageProps} />
-        </AuthGuard>
-      )}
-    </MemberAuthProvider>,
+        ) : (
+          <AuthGuard>
+            <Component {...pageProps} />
+          </AuthGuard>
+        )}
+      </MemberAuthProvider>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
+    </>,
   );
 };
 
