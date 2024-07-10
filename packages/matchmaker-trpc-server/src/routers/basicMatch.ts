@@ -35,11 +35,7 @@ export const basicMatchRouter = createTRPCRouter({
         return MatchStatus.REJECTED;
       }
 
-      if (match.acceptedBy.length === 2) {
-        return MatchStatus.ACCEPTED;
-      }
-
-      return MatchStatus.PENDING;
+      return match.status;
     }),
   findActiveMatchesByMemberId: publicProcedure
     .input(
