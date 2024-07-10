@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import type { BasicMatch } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
@@ -21,6 +22,7 @@ interface Props {
 export function BasicMemberCard({ member, defaultMode }: Props) {
   assert(member.idealType != null, "idealType is required");
 
+  const router = useRouter();
   const [folded, setFolded] = useState(false);
   const [mode, setMode] = useState<Mode>(defaultMode ?? "SIMPLE");
 
@@ -36,7 +38,13 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             {member.images[0] != null ? (
-              <Avatar image={member.images[0]} style={{ marginRight: "4px" }} />
+              <Avatar
+                image={member.images[0]}
+                style={{ marginRight: "4px", cursor: "pointer" }}
+                onClick={() => {
+                  router.push(`/basic/members/${member.id}/update`);
+                }}
+              />
             ) : null}
             <div className="flex flex-col">
               <Link
