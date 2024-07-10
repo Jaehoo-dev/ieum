@@ -126,7 +126,7 @@ function Registered() {
       >
         내 이상형 조건
       </Link>
-      <HomepageTipsTabLink rel="noopener" style={{ marginTop: "4px" }} />
+      <HomepageTipsTabLink style={{ marginTop: "4px" }} />
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
@@ -155,7 +155,7 @@ function Unregistered() {
       >
         알아보기
       </Link>
-      <HomepageTipsTabLink rel="noopener" />
+      <HomepageTipsTabLink />
     </div>
   );
 }
