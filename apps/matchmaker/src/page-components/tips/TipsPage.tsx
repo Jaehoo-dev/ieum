@@ -76,7 +76,7 @@ export function TipsPage() {
             ]}
           />
           <Section
-            title="첫 만남"
+            title="만남"
             posts={[
               {
                 title:
