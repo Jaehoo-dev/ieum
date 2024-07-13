@@ -178,12 +178,7 @@ function ImageField({
     data: { publicUrl },
   } = supabase.storage
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
-    .getPublicUrl(bucketPath, {
-      transform: {
-        width: _width,
-        resize: "contain",
-      },
-    });
+    .getPublicUrl(bucketPath);
 
   return (
     <div className="relative max-w-xl">
