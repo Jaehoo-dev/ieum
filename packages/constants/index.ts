@@ -7,6 +7,7 @@ import {
   BooksReadPerYear,
   ContactFrequency,
   ContactMethod,
+  CuisineType,
   DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
@@ -246,4 +247,12 @@ export const 구_라벨: Record<SeoulDistrict, string> = {
   [SeoulDistrict.JONGNO]: "종로구",
   [SeoulDistrict.JUNG]: "중구",
   [SeoulDistrict.JUNGNANG]: "중랑구",
+} as const;
+
+export const 음식종류_라벨: Record<CuisineType, string> = {
+  [CuisineType.WESTERN]: "양식",
+  [CuisineType.JAPANESE]: "일식",
+  [CuisineType.CHINESE]: "중식",
+  [CuisineType.KOREAN]: "한식",
+  [CuisineType.OTHER]: "기타",
 } as const;

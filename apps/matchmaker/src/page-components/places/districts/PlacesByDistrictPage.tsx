@@ -1,52 +1,69 @@
-import { ReactElement, useEffect } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { HOMEPAGE_URL, MATCHMAKER_URL, 구_라벨 } from "@ieum/constants";
-import { Place, SeoulDistrict } from "@ieum/prisma";
+import {
+  HOMEPAGE_URL,
+  MATCHMAKER_URL,
+  구_라벨,
+  음식종류_라벨,
+} from "@ieum/constants";
+import { CuisineType, Place } from "@ieum/prisma";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 interface Props {
-  places: Record<SeoulDistrict, Place[]>;
+  district: Place["district"];
+  places: Place[];
 }
 
-export function PlacesPage({ places }: Props) {
+export function PlacesByDistrictPage({ district, places }: Props) {
+  const 구 = 구_라벨[district];
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
     void sendMessage(
-      `소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      `${구} 소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
     );
   }, [sendMessage]);
 
+  const placesByCuisineType = places.reduce(
+    (acc, place) => {
+      if (acc[place.cuisineType] == null) {
+        acc[place.cuisineType] = [];
+      }
+
+      acc[place.cuisineType].push(place);
+
+      return acc;
+    },
+    {} as Record<Place["cuisineType"], Place[]>,
+  );
+
   return (
-    <>
+    <Layout title={`${구} 소개팅 장소 추천`} menu={false}>
       <Head>
-        <meta
-          name="description"
-          content="소개팅 서비스 운영자가 추천하는 소개팅 장소 모음"
-        />
+        <meta name="description" content={`${구} 소개팅 장소 추천 모음`} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="소개팅 장소 추천 | 이음" />
+        <meta property="og:title" content={`${구} 소개팅 장소 추천 | 이음`} />
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
         <meta
           property="og:description"
-          content="소개팅 서비스 운영자가 추천하는 소개팅 장소 모음"
+          content={`${구} 소개팅 장소 추천 모음`}
         />
         <meta property="og:locale" content="ko_KR" />
         <meta
           property="keywords"
-          content="소개팅,소개팅 장소,소개팅 장소 추천,강남 소개팅 장소,맛집"
+          content={`소개팅,${구} 소개팅 장소,${구} 소개팅 장소 추천,${구} 소개팅 장소,${구} 소개팅 맛집 추천,${구} 맛집`}
         />
       </Head>
       <div>
         <div className="mb-24 flex flex-col gap-10">
-          {Object.entries(places).map(([district, places]) => {
+          {Object.entries(placesByCuisineType).map(([cuisineType, places]) => {
             return (
-              <section key={district} className="flex flex-col gap-2">
+              <section key={cuisineType} className="flex flex-col gap-2">
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  {구_라벨[district as SeoulDistrict]}
+                  {음식종류_라벨[cuisineType as CuisineType]}
                 </h2>
                 <ul className="flex flex-col gap-2">
                   {places.map((place) => {
@@ -60,7 +77,7 @@ export function PlacesPage({ places }: Props) {
                           rel="noopener noreferrer"
                           onClick={() => {
                             sendMessage(
-                              `소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
+                              `${구} 소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
                             );
                           }}
                         >
@@ -87,16 +104,8 @@ export function PlacesPage({ places }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
 
-PlacesPage.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout title="소개팅 장소 추천" menu={false}>
-      {page}
-    </Layout>
-  );
-};
-
-PlacesPage.auth = false;
+PlacesByDistrictPage.auth = false;
