@@ -39,7 +39,7 @@ export function TipsPage() {
         />
       </Head>
       <div className="p-2">
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8">
           <Section
             title="소개팅 잡기"
             posts={[
@@ -107,25 +107,29 @@ export function TipsPage() {
             ]}
           />
         </div>
-        <Spacing size={48} />
-        <div className="flex flex-col gap-4">
-          <button
-            className="rounded-lg border border-gray-700 p-3 text-xl font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
-            onClick={async () => {
-              await navigator.clipboard.writeText(
-                `${window.location.origin}${window.location.pathname}?from=share`,
-              );
-              alert("링크를 복사했어요!");
-            }}
-          >
-            친구한테 공유하기
-          </button>
-          <Link
-            href={HOMEPAGE_URL}
-            className="rounded-lg bg-primary-600 p-3 text-center text-xl font-semibold text-white hover:bg-primary-700"
-          >
-            나도 소개받기
-          </Link>
+        <Spacing size={92} />
+        <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
+          <div className="w-full max-w-lg px-2">
+            <div className="flex flex-row gap-2">
+              <button
+                className="flex flex-1 items-center justify-center rounded-lg border border-gray-700 p-3 text-lg font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
+                onClick={async () => {
+                  await navigator.clipboard.writeText(
+                    `${window.location.origin}${window.location.pathname}?from=share`,
+                  );
+                  alert("링크를 복사했어요!");
+                }}
+              >
+                친구한테 공유하기
+              </button>
+              <Link
+                href={HOMEPAGE_URL}
+                className="flex flex-1 items-center justify-center rounded-lg bg-primary-600 p-3 text-lg font-medium text-white hover:bg-primary-700"
+              >
+                나도 소개받기
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </>

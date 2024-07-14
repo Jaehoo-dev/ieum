@@ -42,8 +42,14 @@ export function Sidebar({ open, onClose }: Props) {
               href="/my-ideal-type"
               onClick={onClose}
             />
-            <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
             <MenuItem label="추천인 코드" href="/referral" onClick={onClose} />
+            <hr />
+            <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
+            <MenuItem
+              label="소개팅 장소 추천 (알파)"
+              href="/places"
+              onClick={onClose}
+            />
           </ul>
         </div>
       </aside>
@@ -67,7 +73,7 @@ function MenuItem({ label, href, onClick }: MenuItemProps) {
     <li>
       <Link
         href={href}
-        className={`block rounded-lg px-4 py-2 text-lg text-gray-700 hover:bg-gray-200 ${
+        className={`block rounded-lg px-4 py-2 text-lg font-medium text-gray-700 hover:bg-gray-200 ${
           isActive ? "bg-primary-200" : ""
         }`}
         onClick={() => {

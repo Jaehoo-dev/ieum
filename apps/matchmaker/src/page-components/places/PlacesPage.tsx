@@ -41,7 +41,7 @@ export function PlacesPage({ places }: Props) {
         />
       </Head>
       <div>
-        <div className="mb-24 flex flex-col gap-10">
+        <div className="mb-24 flex flex-col gap-8">
           {Object.entries(places).map(([district, places]) => {
             return (
               <section key={district} className="flex flex-col gap-2">
@@ -102,7 +102,7 @@ export function PlacesPage({ places }: Props) {
 
 PlacesPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout title="소개팅 장소 추천" menu={false}>
+    <Layout title="소개팅 장소 추천 (알파)" menu={false}>
       {page}
     </Layout>
   );
