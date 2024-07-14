@@ -41,7 +41,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
   );
 
   return (
-    <Layout title={`${구} 소개팅 장소 추천`} menu={false}>
+    <Layout title={`${구} 소개팅 장소 추천`}>
       <Head>
         <meta name="description" content={`${구} 소개팅 장소 추천 모음`} />
         <meta property="og:type" content="website" />
@@ -57,12 +57,12 @@ export function PlacesByDistrictPage({ district, places }: Props) {
           content={`소개팅,${구} 소개팅 장소,${구} 소개팅 장소 추천,${구} 소개팅 장소,${구} 소개팅 맛집 추천,${구} 맛집`}
         />
       </Head>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 px-2">
         <div className="mb-24 flex flex-col gap-8">
           {Object.entries(placesByCuisineType).map(([cuisineType, places]) => {
             return (
               <section key={cuisineType} className="flex flex-col gap-2">
-                <h2 className="text-2xl font-semibold text-gray-800">
+                <h2 className="text-xl font-semibold text-gray-800">
                   {음식종류_라벨[cuisineType as CuisineType]}
                 </h2>
                 <ul className="flex flex-col gap-2">
@@ -71,7 +71,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
                       <li key={place.id} className="flex flex-row gap-2">
                         <span>&#8729;</span>
                         <Link
-                          className="text-lg text-[#0000EE] underline visited:text-[#551A8B]"
+                          className="text-[#0000EE] underline visited:text-[#551A8B]"
                           href={place.blogUrl}
                           target="_blank"
                           rel="noopener noreferrer"

@@ -40,19 +40,19 @@ export function PlacesPage({ places }: Props) {
           content="소개팅,소개팅 장소,소개팅 장소 추천,강남 소개팅 장소,맛집"
         />
       </Head>
-      <div>
+      <div className="px-2">
         <div className="mb-24 flex flex-col gap-8">
           {Object.entries(places).map(([district, places]) => {
             return (
               <section key={district} className="flex flex-col gap-2">
                 <div className="flex flex-row items-center gap-2">
-                  <h2 className="text-2xl font-semibold text-gray-800">
+                  <h2 className="text-xl font-semibold text-gray-800">
                     {구_라벨[district as SeoulDistrict]}
                   </h2>
                   <Link
                     href={`/places/districts/${district.toLowerCase()}`}
                     role="button"
-                    className="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-800"
+                    className="rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-800"
                   >
                     음식 종류별로 보기
                   </Link>
@@ -63,7 +63,7 @@ export function PlacesPage({ places }: Props) {
                       <li key={place.id} className="flex flex-row gap-2">
                         <span>&#8729;</span>
                         <Link
-                          className="text-lg text-[#0000EE] underline visited:text-[#551A8B]"
+                          className="text-[#0000EE] underline visited:text-[#551A8B]"
                           href={place.blogUrl}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -101,11 +101,7 @@ export function PlacesPage({ places }: Props) {
 }
 
 PlacesPage.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout title="소개팅 장소 추천 (알파)" menu={false}>
-      {page}
-    </Layout>
-  );
+  return <Layout title="소개팅 장소 추천 (알파)">{page}</Layout>;
 };
 
 PlacesPage.auth = false;

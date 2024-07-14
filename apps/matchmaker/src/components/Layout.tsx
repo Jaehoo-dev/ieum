@@ -8,17 +8,16 @@ import { Sidebar } from "./Sidebar";
 interface Props {
   children: ReactNode;
   title: string;
-  menu?: boolean;
 }
 
-export function Layout({ children, title, menu = true }: Props) {
+export function Layout({ children, title }: Props) {
   return (
     <>
       <Head>
         <title>{isEmptyStringOrNil(title) ? "이음" : `${title} | 이음`}</title>
       </Head>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
-        <Header title={title} menu={menu} />
+        <Header title={title} />
         <main className="mt-14 w-full p-6">{children}</main>
       </div>
     </>
@@ -26,11 +25,10 @@ export function Layout({ children, title, menu = true }: Props) {
 }
 
 interface HeaderProps {
-  menu: boolean;
   title: string;
 }
 
-function Header({ menu, title }: HeaderProps) {
+function Header({ title }: HeaderProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function toggleSidebar() {
@@ -41,8 +39,8 @@ function Header({ menu, title }: HeaderProps) {
     <>
       <header className="shadow-xs fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
         <div className="relative flex w-full max-w-lg items-center justify-center">
-          {menu ? <Hamburger onClick={toggleSidebar} /> : null}
-          <h1 className="text-2xl font-semibold text-gray-700">{title}</h1>
+          <Hamburger onClick={toggleSidebar} />
+          <h1 className="text-xl font-semibold text-gray-700">{title}</h1>
         </div>
       </header>
       <Sidebar
