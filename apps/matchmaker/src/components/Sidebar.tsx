@@ -10,8 +10,6 @@ interface Props {
 }
 
 export function Sidebar({ open, onClose }: Props) {
-  const router = useRouter();
-
   return (
     <>
       <aside
@@ -21,15 +19,13 @@ export function Sidebar({ open, onClose }: Props) {
       >
         <div className="p-4">
           <div className="flex items-center justify-between">
-            <h2
+            <Link
+              href="/"
               role="button"
               className="text-xl font-semibold text-gray-800"
-              onClick={() => {
-                router.push("/");
-              }}
             >
               이음
-            </h2>
+            </Link>
             <button onClick={onClose}>
               <CloseRoundedIcon className="text-gray-700" />
             </button>

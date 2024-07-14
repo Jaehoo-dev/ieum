@@ -38,7 +38,7 @@ export function TipsPage() {
           content="소개팅,소개팅 꿀팁,소개팅 연락,소개팅 대화 주제,소개팅 사진,소개팅 카톡"
         />
       </Head>
-      <div className="p-2">
+      <div className="px-2">
         <div className="flex flex-col gap-8">
           <Section
             title="소개팅 잡기"
@@ -147,7 +147,7 @@ function Section({
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
+      <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
       <ul className="flex flex-col gap-2">
         {posts.map((post) => {
           return (
@@ -157,7 +157,7 @@ function Section({
             >
               <span>&#8729;</span>
               <Link
-                className="text-lg text-[#0000EE] underline visited:text-[#551A8B]"
+                className="text-[#0000EE] underline visited:text-[#551A8B]"
                 href={post.href}
                 target="_blank"
                 rel="noopener noreferrer"
