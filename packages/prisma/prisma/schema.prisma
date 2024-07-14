@@ -512,3 +512,50 @@ enum BasicCondition {
   IS_GAMING_OK
   IS_PET_OK
 }
+
+model Place {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  blogUrl     String
+  district    SeoulDistrict
+  cuisineType CuisineType
+
+  @@index([district])
+}
+
+enum SeoulDistrict {
+  GANGNAM
+  GANGDONG
+  GANGBUK
+  GANGSEO
+  GWANAK
+  GWANGJIN
+  GURO
+  GEUMCHEON
+  NOWON
+  DOBONG
+  DONGDAEMUN
+  DONGJAK
+  MAPO
+  SEODAEMUN
+  SEOCHO
+  SEONGDONG
+  SEONGBUK
+  SONGPA
+  YANGCHEON
+  YEONGDEUNGPO
+  YONGSAN
+  EUNPYEONG
+  JONGNO
+  JUNG
+  JUNGNANG
+}
+
+enum CuisineType {
+  KOREAN
+  CHINESE
+  JAPANESE
+  WESTERN
+  OTHER
+}

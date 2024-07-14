@@ -33,6 +33,10 @@ export function TipsPage() {
           content="소개팅 서비스 운영자가 알려주는 소개팅 꿀팁 모음"
         />
         <meta property="og:locale" content="ko_KR" />
+        <meta
+          property="keywords"
+          content="소개팅,소개팅 꿀팁,소개팅 연락,소개팅 대화 주제,소개팅 사진,소개팅 카톡"
+        />
       </Head>
       <div className="p-2">
         <div className="flex flex-col gap-10">

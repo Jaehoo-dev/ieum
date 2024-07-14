@@ -17,6 +17,7 @@ import {
   OccupationStatus,
   PlannedNumberOfChildren,
   Religion,
+  SeoulDistrict,
 } from "@ieum/prisma";
 
 export const 성별_라벨: Record<Gender, string> = {
@@ -218,3 +219,31 @@ export const 음주량_라벨: Record<DrinkingFrequency, string> = {
 
 export const HOMEPAGE_URL = "https://ieum.love";
 export const MATCHMAKER_URL = "https://match.ieum.love";
+
+export const 구_라벨: Record<SeoulDistrict, string> = {
+  [SeoulDistrict.GANGNAM]: "강남구",
+  [SeoulDistrict.GANGDONG]: "강동구",
+  [SeoulDistrict.GANGBUK]: "강북구",
+  [SeoulDistrict.GANGSEO]: "강서구",
+  [SeoulDistrict.GWANAK]: "관악구",
+  [SeoulDistrict.GWANGJIN]: "광진구",
+  [SeoulDistrict.GURO]: "구로구",
+  [SeoulDistrict.GEUMCHEON]: "금천구",
+  [SeoulDistrict.NOWON]: "노원구",
+  [SeoulDistrict.DOBONG]: "도봉구",
+  [SeoulDistrict.DONGDAEMUN]: "동대문구",
+  [SeoulDistrict.DONGJAK]: "동작구",
+  [SeoulDistrict.MAPO]: "마포구",
+  [SeoulDistrict.SEODAEMUN]: "서대문구",
+  [SeoulDistrict.SEOCHO]: "서초구",
+  [SeoulDistrict.SEONGDONG]: "성동구",
+  [SeoulDistrict.SEONGBUK]: "성북구",
+  [SeoulDistrict.SONGPA]: "송파구",
+  [SeoulDistrict.YANGCHEON]: "양천구",
+  [SeoulDistrict.YEONGDEUNGPO]: "영등포구",
+  [SeoulDistrict.YONGSAN]: "용산구",
+  [SeoulDistrict.EUNPYEONG]: "은평구",
+  [SeoulDistrict.JONGNO]: "종로구",
+  [SeoulDistrict.JUNG]: "중구",
+  [SeoulDistrict.JUNGNANG]: "중랑구",
+} as const;
