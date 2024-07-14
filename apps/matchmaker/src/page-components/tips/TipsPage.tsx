@@ -112,7 +112,7 @@ export function TipsPage() {
           <div className="w-full max-w-lg px-2">
             <div className="flex flex-row gap-2">
               <button
-                className="flex flex-1 items-center justify-center rounded-lg border border-gray-700 p-3 text-lg font-medium text-gray-700 hover:border-gray-900 hover:text-gray-900"
+                className="flex flex-1 items-center justify-center rounded-lg border border-gray-600 p-3 text-lg font-medium text-gray-700 hover:border-gray-800 hover:text-gray-800"
                 onClick={async () => {
                   await navigator.clipboard.writeText(
                     `${window.location.origin}${window.location.pathname}?from=share`,
@@ -120,11 +120,11 @@ export function TipsPage() {
                   alert("링크를 복사했어요!");
                 }}
               >
-                친구한테 공유하기
+                친구한테 공유
               </button>
               <Link
                 href={HOMEPAGE_URL}
-                className="flex flex-1 items-center justify-center rounded-lg bg-primary-600 p-3 text-lg font-medium text-white hover:bg-primary-700"
+                className="flex flex-1 items-center justify-center rounded-lg bg-primary-500 p-3 text-lg font-medium text-white hover:bg-primary-700"
               >
                 나도 소개받기
               </Link>
