@@ -45,9 +45,18 @@ export function PlacesPage({ places }: Props) {
           {Object.entries(places).map(([district, places]) => {
             return (
               <section key={district} className="flex flex-col gap-2">
-                <h2 className="text-2xl font-semibold text-gray-800">
-                  {구_라벨[district as SeoulDistrict]}
-                </h2>
+                <div className="flex flex-row items-center gap-2">
+                  <h2 className="text-2xl font-semibold text-gray-800">
+                    {구_라벨[district as SeoulDistrict]}
+                  </h2>
+                  <Link
+                    href={`/places/districts/${district.toLowerCase()}`}
+                    role="button"
+                    className="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-800"
+                  >
+                    음식 종류별로 보기
+                  </Link>
+                </div>
                 <ul className="flex flex-col gap-2">
                   {places.map((place) => {
                     return (
@@ -77,7 +86,7 @@ export function PlacesPage({ places }: Props) {
         <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
             <Link
-              className="block w-full rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
+              className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
               href={HOMEPAGE_URL}
               target="_blank"
               rel="noreferrer noopener"

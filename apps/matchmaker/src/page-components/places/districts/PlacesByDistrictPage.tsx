@@ -57,7 +57,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
           content={`소개팅,${구} 소개팅 장소,${구} 소개팅 장소 추천,${구} 소개팅 장소,${구} 소개팅 맛집 추천,${구} 맛집`}
         />
       </Head>
-      <div>
+      <div className="flex flex-col gap-6">
         <div className="mb-24 flex flex-col gap-10">
           {Object.entries(placesByCuisineType).map(([cuisineType, places]) => {
             return (
@@ -93,14 +93,22 @@ export function PlacesByDistrictPage({ district, places }: Props) {
         </div>
         <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
-            <Link
-              className="block w-full rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
-              href={HOMEPAGE_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              이상형 소개받으러 가기
-            </Link>
+            <div className="flex flex-row gap-2">
+              <Link
+                className="block w-full rounded-lg bg-gray-200 p-3 text-center text-lg font-medium text-gray-700 hover:bg-gray-300"
+                href="/places"
+              >
+                모든 지역 보기
+              </Link>
+              <Link
+                className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
+                href={HOMEPAGE_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                이상형 소개받기
+              </Link>
+            </div>
           </div>
         </div>
       </div>
