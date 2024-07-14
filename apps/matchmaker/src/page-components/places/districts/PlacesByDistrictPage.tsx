@@ -58,7 +58,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
         />
       </Head>
       <div className="flex flex-col gap-6">
-        <div className="mb-24 flex flex-col gap-10">
+        <div className="mb-24 flex flex-col gap-8">
           {Object.entries(placesByCuisineType).map(([cuisineType, places]) => {
             return (
               <section key={cuisineType} className="flex flex-col gap-2">
