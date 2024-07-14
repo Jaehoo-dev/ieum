@@ -11,7 +11,7 @@ interface Props {
   places: Record<SeoulDistrict, Place[]>;
 }
 
-export function PlacesEntryPage({ places }: Props) {
+export function PlacesPage({ places }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function PlacesEntryPage({ places }: Props) {
   );
 }
 
-PlacesEntryPage.getLayout = function getLayout(page: ReactElement) {
+PlacesPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout title="소개팅 장소 추천" menu={false}>
       {page}
@@ -99,4 +99,4 @@ PlacesEntryPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-PlacesEntryPage.auth = false;
+PlacesPage.auth = false;

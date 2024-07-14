@@ -1,6 +1,6 @@
 import { prisma, SeoulDistrict } from "@ieum/prisma";
 
-export { PlacesEntryPage as default } from "~/page-components/places/PlacesEntryPage";
+export { PlacesPage as default } from "~/page-components/places/PlacesPage";
 
 export async function getStaticProps() {
   const places = await prisma.place.findMany();
