@@ -39,4 +39,18 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.referralCode;
     }),
+  getDiscountCouponCount: publicProcedure
+    .input(z.object({ memberId: z.number() }))
+    .query(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          discountCouponCount: true,
+        },
+      });
+
+      return member.discountCouponCount;
+    }),
 });

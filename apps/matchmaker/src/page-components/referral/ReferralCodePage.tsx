@@ -1,7 +1,7 @@
 import { ReactElement, Suspense, useEffect } from "react";
 import { assert } from "@ieum/utils";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
+import DiscountRoundedIcon from "@mui/icons-material/DiscountRounded";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -11,17 +11,23 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function ReferralCodePage() {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1">
-        <h2 className="text-xl font-medium text-gray-800">내 추천인 코드</h2>
-        <div className="rounded-lg border border-primary-500">
-          <Suspense fallback={<Skeleton />}>
-            <Resolved />
-          </Suspense>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-medium text-gray-800">내 추천인 코드</h2>
+          <div className="rounded-lg border border-primary-500">
+            <Suspense fallback={<Skeleton />}>
+              <Resolved />
+            </Suspense>
+          </div>
         </div>
+        <Suspense>
+          <DescriptionResolved />
+        </Suspense>
       </div>
+      <hr />
       <Suspense>
-        <DescriptionResolved />
+        <DiscountCouponCountResolved />
       </Suspense>
     </div>
   );
@@ -87,9 +93,47 @@ function DescriptionResolved() {
       <div>
         <p>추천인 코드를 공유해 보세요!</p>
         <p>
-          {`${member.name} 님의 추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 만남권 50% 할인권을 드립니다.`}
+          {`${member.name} 님의 추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 만남권 50% 할인 쿠폰을 드려요.`}
         </p>
       </div>
+    </div>
+  );
+}
+
+function DiscountCouponCountResolved() {
+  const { member } = useMemberAuthContext();
+
+  assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const [couponCount] =
+    api.basicMemberRouter.getDiscountCouponCount.useSuspenseQuery({
+      memberId: member.id,
+    });
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-row items-center justify-between">
+        <h2 className="text-xl font-medium text-gray-800">내 쿠폰</h2>
+        <span className="text-gray-500">{couponCount}개</span>
+      </div>
+      {Array.from({ length: couponCount }).map((_, index) => {
+        return (
+          <div key={index} className="flex flex-row items-center gap-3">
+            <DiscountRoundedIcon
+              className="text-primary-500"
+              fontSize="small"
+            />
+            <div>
+              <p className="font-semibold text-gray-700">
+                만남권 50% 할인 쿠폰
+              </p>
+              <p className="text-sm text-gray-500">
+                소개 성사 시 자동으로 적용해 드려요
+              </p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

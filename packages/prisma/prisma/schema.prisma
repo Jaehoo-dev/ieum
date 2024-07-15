@@ -236,7 +236,8 @@ model BasicMember {
   status  MemberStatus        @default(ACTIVE)
   profile BasicMemberProfile?
 
-  referralCode String
+  referralCode        String
+  discountCouponCount Int    @default(0)
 
   @@unique([phoneNumber])
   @@unique([referralCode])
