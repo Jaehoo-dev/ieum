@@ -20,6 +20,7 @@ export type BasicMemberForm = {
     | "updatedAt"
     | "lastMatchedAt"
     | "referralCode"
+    | "discountCouponCount"
   > & {
     fashionStyles: { value: FashionStyle }[];
     imageBucketPaths: { value: string }[];
