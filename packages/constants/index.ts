@@ -8,6 +8,7 @@ import {
   ContactFrequency,
   ContactMethod,
   CuisineType,
+  CustomRegion,
   DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
@@ -247,6 +248,11 @@ export const 구_라벨: Record<SeoulDistrict, string> = {
   [SeoulDistrict.JONGNO]: "종로구",
   [SeoulDistrict.JUNG]: "중구",
   [SeoulDistrict.JUNGNANG]: "중랑구",
+} as const;
+
+export const 커스텀_지역_라벨: Record<CustomRegion, string> = {
+  [CustomRegion.GANGNAM]: "강남",
+  [CustomRegion.GANGNAM_STATION]: "강남역",
 } as const;
 
 export const 음식종류_라벨: Record<CuisineType, string> = {
