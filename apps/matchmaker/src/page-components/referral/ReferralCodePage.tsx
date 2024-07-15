@@ -1,4 +1,6 @@
 import { ReactElement, Suspense, useEffect } from "react";
+import Link from "next/link";
+import { HOMEPAGE_URL } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import DiscountRoundedIcon from "@mui/icons-material/DiscountRounded";
@@ -51,14 +53,14 @@ function Resolved() {
 
   return (
     <div
-      className="flex w-full cursor-pointer flex-row items-center justify-between p-4"
+      className="flex w-full cursor-pointer flex-row items-center justify-between px-4 py-3"
       onClick={async () => {
         sendMessage(`${formatUniqueMemberName(member)} - 추천인 코드 복사`);
         await navigator.clipboard.writeText(referralCode);
         alert("추천인 코드를 복사했습니다.");
       }}
     >
-      <p className="text-xl font-semibold text-gray-800">{referralCode}</p>
+      <p className="text-lg font-semibold text-gray-800">{referralCode}</p>
       <Copy />
     </div>
   );
@@ -67,7 +69,7 @@ function Resolved() {
 function Skeleton() {
   return (
     <div className="flex w-full cursor-not-allowed flex-row items-center justify-between p-4">
-      <p className="text-xl font-semibold text-gray-800">...</p>
+      <p className="text-lg font-semibold text-gray-800">...</p>
       <Copy />
     </div>
   );
@@ -76,7 +78,7 @@ function Skeleton() {
 function Copy() {
   return (
     <span className="flex flex-row items-center gap-1 text-gray-600">
-      <ContentCopyRoundedIcon />
+      <ContentCopyRoundedIcon fontSize="small" />
       <p>복사</p>
     </span>
   );
@@ -91,9 +93,20 @@ function DescriptionResolved() {
     <div className="flex w-full items-start gap-1.5 text-sm text-gray-600">
       <p>※</p>
       <div>
-        <p>추천인 코드를 공유해 보세요!</p>
         <p>
-          {`${member.name} 님의 추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 만남권 50% 할인 쿠폰을 드려요.`}
+          {"추천인 코드를 "}
+          <Link
+            className="underline"
+            href={HOMEPAGE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            서비스 소개 링크
+          </Link>
+          {"와 함께 공유해보세요!"}
+        </p>
+        <p>
+          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 만남권 50% 할인 쿠폰을 드려요.`}
         </p>
       </div>
     </div>
