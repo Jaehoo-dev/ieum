@@ -1,14 +1,11 @@
-import type {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-} from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { Place, prisma, SeoulDistrict } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
 export { PlacesByDistrictPage as default } from "~/page-components/places/districts/PlacesByDistrictPage";
 
 export const getStaticPaths = (async () => {
+  // TODO: 구 모두 채우면 Enum 사용
   const places = await prisma.place.findMany({
     select: {
       district: true,
@@ -60,5 +57,6 @@ export const getStaticProps = (async ({ params }) => {
     },
   };
 }) satisfies GetStaticProps<{
+  district: Place["district"];
   places: Place[];
 }>;

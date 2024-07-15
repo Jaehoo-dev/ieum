@@ -515,12 +515,13 @@ enum BasicCondition {
 }
 
 model Place {
-  id          String        @id @default(cuid())
-  name        String
-  description String?
-  blogUrl     String
-  district    SeoulDistrict
-  cuisineType CuisineType
+  id            String         @id @default(cuid())
+  name          String
+  description   String?
+  blogUrl       String
+  district      SeoulDistrict
+  customRegions CustomRegion[]
+  cuisineType   CuisineType
 
   @@index([district])
 }
@@ -551,6 +552,11 @@ enum SeoulDistrict {
   JONGNO
   JUNG
   JUNGNANG
+}
+
+enum CustomRegion {
+  GANGNAM // 강남
+  GANGNAM_STATION // 강남역
 }
 
 enum CuisineType {
