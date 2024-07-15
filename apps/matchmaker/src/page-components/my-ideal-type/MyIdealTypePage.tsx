@@ -10,6 +10,7 @@ import {
   closestCorners,
   DndContext,
   DraggableAttributes,
+  DragOverEvent,
   DragOverlay,
   PointerSensor,
   TouchSensor,
@@ -178,6 +179,57 @@ function Resolved() {
     );
   }, []);
 
+  const handleDragEnd = ({ active, over }: DragOverEvent) => {
+    const overContainerId: 우선순위 =
+      over?.data.current?.sortable.containerId ?? over?.id;
+
+    const overSetter = setterByContainerId[overContainerId];
+
+    const 필수조건_초과인가 = dealBreakers.length > 5;
+    const 필수조건_불가항목인가 = dealBreakerForbiddenConditions.includes(
+      active.id as BasicCondition,
+    );
+
+    if (
+      overContainerId === 우선순위.필수 &&
+      (필수조건_초과인가 || 필수조건_불가항목인가)
+    ) {
+      if (필수조건_불가항목인가) {
+        alert("선택 항목은 '포기 못하는 조건'으로 설정할 수 없습니다.");
+      }
+
+      overSetter((prev) => {
+        return prev.filter((condition) => {
+          return condition !== active.id;
+        });
+      });
+      const dragStartContainerSetter =
+        setterByContainerId[dragStartContainerId!];
+      dragStartContainerSetter((prev) => {
+        return [active.id as BasicCondition, ...prev];
+      });
+
+      setActiveId(null);
+      setDragStartContainerId(null);
+
+      return;
+    }
+
+    setActiveId(null);
+    setDragStartContainerId(null);
+
+    if (over == null || active.id === over.id) {
+      return;
+    }
+
+    overSetter((prev) => {
+      const oldIndex = prev.indexOf(active.id as BasicCondition);
+      const newIndex = prev.indexOf(over.id as BasicCondition);
+
+      return arrayMove(prev, oldIndex, newIndex);
+    });
+  };
+
   return (
     <DndContext
       collisionDetection={closestCorners}
@@ -189,6 +241,7 @@ function Resolved() {
           active.data.current?.sortable.containerId as 우선순위,
         );
       }}
+      onDragCancel={handleDragEnd}
       onDragOver={({ active, over }) => {
         if (over == null) {
           return;
@@ -211,56 +264,7 @@ function Resolved() {
           return [...prev, active.id as BasicCondition];
         });
       }}
-      onDragEnd={({ active, over }) => {
-        const overContainerId: 우선순위 =
-          over?.data.current?.sortable.containerId ?? over?.id;
-
-        const overSetter = setterByContainerId[overContainerId];
-
-        const 필수조건_초과인가 = dealBreakers.length > 5;
-        const 필수조건_불가항목인가 = dealBreakerForbiddenConditions.includes(
-          active.id as BasicCondition,
-        );
-
-        if (
-          overContainerId === 우선순위.필수 &&
-          (필수조건_초과인가 || 필수조건_불가항목인가)
-        ) {
-          if (필수조건_불가항목인가) {
-            alert("선택 항목은 '포기 못하는 조건'으로 설정할 수 없습니다.");
-          }
-
-          overSetter((prev) => {
-            return prev.filter((condition) => {
-              return condition !== active.id;
-            });
-          });
-          const dragStartContainerSetter =
-            setterByContainerId[dragStartContainerId!];
-          dragStartContainerSetter((prev) => {
-            return [active.id as BasicCondition, ...prev];
-          });
-
-          setActiveId(null);
-          setDragStartContainerId(null);
-
-          return;
-        }
-
-        setActiveId(null);
-        setDragStartContainerId(null);
-
-        if (over == null || active.id === over.id) {
-          return;
-        }
-
-        overSetter((prev) => {
-          const oldIndex = prev.indexOf(active.id as BasicCondition);
-          const newIndex = prev.indexOf(over.id as BasicCondition);
-
-          return arrayMove(prev, oldIndex, newIndex);
-        });
-      }}
+      onDragEnd={handleDragEnd}
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
