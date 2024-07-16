@@ -1,3 +1,4 @@
+import { 하루_초 } from "@ieum/matchmaker-trpc-server/src/constants";
 import { prisma, SeoulDistrict } from "@ieum/prisma";
 
 export { PlacesPage as default } from "~/page-components/places/PlacesPage";
@@ -24,5 +25,6 @@ export async function getStaticProps() {
     props: {
       places: placesByDistrict,
     },
+    revalidate: 하루_초,
   };
 }

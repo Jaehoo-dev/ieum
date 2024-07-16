@@ -1,4 +1,5 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
+import { 하루_초 } from "@ieum/matchmaker-trpc-server/src/constants";
 import { Place, prisma, SeoulDistrict } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
@@ -55,6 +56,7 @@ export const getStaticProps = (async ({ params }) => {
       district,
       places,
     },
+    revalidate: 하루_초,
   };
 }) satisfies GetStaticProps<{
   district: Place["district"];
