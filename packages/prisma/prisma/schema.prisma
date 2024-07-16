@@ -554,6 +554,7 @@ enum SeoulDistrict {
   JUNGNANG
 }
 
+// NOTE: 새 값 추가하면 '커스텀_지역_라벨'도 추가해야 함
 enum CustomRegion {
   GANGNAM // 강남
   GANGNAM_STATION // 강남역
