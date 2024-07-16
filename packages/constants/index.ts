@@ -253,6 +253,7 @@ export const 구_라벨: Record<SeoulDistrict, string> = {
 export const 커스텀_지역_라벨: Record<CustomRegion, string> = {
   [CustomRegion.GANGNAM]: "강남",
   [CustomRegion.GANGNAM_STATION]: "강남역",
+  [CustomRegion.JAMSIL]: "잠실",
 } as const;
 
 export const 음식종류_라벨: Record<CuisineType, string> = {
