@@ -557,6 +557,7 @@ enum SeoulDistrict {
 enum CustomRegion {
   GANGNAM // 강남
   GANGNAM_STATION // 강남역
+  JAMSIL // 잠실
 }
 
 enum CuisineType {
