@@ -1,5 +1,6 @@
 import { ReactElement, Suspense } from "react";
 import { MemberStatus } from "@ieum/prisma";
+import { SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
@@ -68,7 +69,7 @@ function Inactive() {
               sendMessage(
                 `${formatUniqueMemberName(
                   member,
-                )} - 휴면 해제 클릭 <@U06LZ57FHPA>`,
+                )} - 휴면 해제 클릭 ${SLACK_USER_ID_MENTION}`,
               );
               await activate({ memberId: member.id });
               alert("휴면 해제했습니다");

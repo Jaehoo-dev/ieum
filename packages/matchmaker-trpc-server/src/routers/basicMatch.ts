@@ -1,5 +1,8 @@
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
-import { sendMessageToMatchResultChannel } from "@ieum/slack";
+import {
+  sendMessageToMatchResultChannel,
+  SLACK_USER_ID_MENTION,
+} from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
@@ -557,7 +560,7 @@ export const basicMatchRouter = createTRPCRouter({
         void sendMessageToMatchResultChannel(
           `[제안 ${hasOtherAccepted ? "성공" : "실패"}] ${members[0].name} - ${
             members[1].name
-          }${hasOtherAccepted ? " 🙌 <@U06LZ57FHPA>" : ""}`,
+          }${hasOtherAccepted ? ` 🙌 ${SLACK_USER_ID_MENTION}` : ""}`,
         );
       }
 
