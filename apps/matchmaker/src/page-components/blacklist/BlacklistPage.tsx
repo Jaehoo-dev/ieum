@@ -1,4 +1,5 @@
 import { ReactElement, Suspense } from "react";
+import Head from "next/head";
 import {
   assert,
   formatPhoneNumberInput,
@@ -32,59 +33,66 @@ export function BlacklistPage() {
   );
 
   return (
-    <div className="flex flex-col gap-12">
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={handleSubmit(async ({ phoneNumber }) => {
-          await add({
-            memberId: member.id,
-            phoneNumber: krHyphenToKr(phoneNumber),
-          });
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <div className="flex flex-col gap-12">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(async ({ phoneNumber }) => {
+            await add({
+              memberId: member.id,
+              phoneNumber: krHyphenToKr(phoneNumber),
+            });
 
-          reset();
-        })}
-      >
-        <h2 className="text-lg font-semibold text-gray-700">블랙리스트 추가</h2>
-        <label className="flex flex-col gap-1">
-          <span className="text-sm text-gray-700">전화번호</span>
-          <div className="flex flex-row gap-2">
-            <Controller
-              control={control}
-              name="phoneNumber"
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
-                <input
-                  className={`flex-1 rounded-lg border border-gray-300 px-3 py-2 outline-primary-500 ${
-                    error ? "border-red-500" : "border-gray-300"
-                  }`}
-                  placeholder="010-0000-0000"
-                  value={value}
-                  onChange={({ target: { value } }) => {
-                    onChange(formatPhoneNumberInput(value));
-                  }}
-                />
-              )}
-              rules={{
-                required: "전화번호를 입력해주세요",
-                pattern: {
-                  value: /^010-\d{4}-\d{4}$/,
-                  message: "올바른 전화번호를 입력해주세요",
-                },
-              }}
-            />
-            <button className="rounded-lg bg-primary-500 px-5 py-2 font-medium text-white hover:bg-primary-700">
-              등록
-            </button>
-          </div>
-        </label>
-        <Description />
-      </form>
-      <Suspense>
-        <Resolved />
-      </Suspense>
-    </div>
+            reset();
+          })}
+        >
+          <h2 className="text-lg font-semibold text-gray-700">
+            블랙리스트 추가
+          </h2>
+          <label className="flex flex-col gap-1">
+            <span className="text-sm text-gray-700">전화번호</span>
+            <div className="flex flex-row gap-2">
+              <Controller
+                control={control}
+                name="phoneNumber"
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <input
+                    className={`flex-1 rounded-lg border border-gray-300 px-3 py-2 outline-primary-500 ${
+                      error ? "border-red-500" : "border-gray-300"
+                    }`}
+                    placeholder="010-0000-0000"
+                    value={value}
+                    onChange={({ target: { value } }) => {
+                      onChange(formatPhoneNumberInput(value));
+                    }}
+                  />
+                )}
+                rules={{
+                  required: "전화번호를 입력해주세요",
+                  pattern: {
+                    value: /^010-\d{4}-\d{4}$/,
+                    message: "올바른 전화번호를 입력해주세요",
+                  },
+                }}
+              />
+              <button className="rounded-lg bg-primary-500 px-5 py-2 font-medium text-white hover:bg-primary-700">
+                등록
+              </button>
+            </div>
+          </label>
+          <Description />
+        </form>
+        <Suspense>
+          <Resolved />
+        </Suspense>
+      </div>
+    </>
   );
 }
 

@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import Head from "next/head";
 import {
   closestCorners,
   DndContext,
@@ -58,9 +59,14 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyIdealTypePage() {
   return (
-    <Suspense fallback={null}>
-      <Resolved />
-    </Suspense>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense fallback={null}>
+        <Resolved />
+      </Suspense>
+    </>
   );
 }
 
