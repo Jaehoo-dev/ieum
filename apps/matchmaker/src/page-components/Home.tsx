@@ -1,13 +1,16 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
+import { MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
 import { MemberAuth } from "~/components/MemberAuth";
 import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
+import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function Home() {
@@ -72,13 +75,24 @@ function LoggedIn() {
 
 function Registered() {
   const { member, signOut } = useMemberAuthContext();
-  const { sendMessage } = useSlackNotibot();
 
   assert(member != null, "member should be defined");
+
+  const [status] = api.basicMemberRouter.getStatus.useSuspenseQuery({
+    memberId: member.id,
+  });
+  const { sendMessage } = useSlackNotibot();
+  const router = useRouter();
 
   useEffect(() => {
     void sendMessage(`${formatUniqueMemberName(member)} - 홈 진입`);
   }, [member]);
+
+  useEffect(() => {
+    if (status === MemberStatus.INACTIVE) {
+      router.push("/my-status");
+    }
+  }, []);
 
   return (
     <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
