@@ -557,7 +557,7 @@ export const basicMatchRouter = createTRPCRouter({
         void sendMessageToMatchResultChannel(
           `[제안 ${hasOtherAccepted ? "성공" : "실패"}] ${members[0].name} - ${
             members[1].name
-          }${hasOtherAccepted ? " 🙌" : ""}`,
+          }${hasOtherAccepted ? " 🙌 <@U06LZ57FHPA>" : ""}`,
         );
       }
 
