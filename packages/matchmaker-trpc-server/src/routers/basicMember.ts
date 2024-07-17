@@ -127,4 +127,38 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
+  getStatus: publicProcedure
+    .input(z.object({ memberId: z.number() }))
+    .query(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      assert(
+        member.status === MemberStatus.ACTIVE ||
+          member.status === MemberStatus.INACTIVE,
+        "Invalid member status",
+      );
+
+      return member.status;
+    }),
+  activate: publicProcedure
+    .input(z.object({ memberId: z.number() }))
+    .mutation(async ({ ctx, input: { memberId } }) => {
+      await ctx.prisma.basicMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          status: MemberStatus.ACTIVE,
+        },
+      });
+
+      return true;
+    }),
 });

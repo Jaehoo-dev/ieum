@@ -5,3 +5,4 @@ Disallow: /my-ideal-type/
 Disallow: /my-matches/
 Disallow: /referral/
 Disallow: /blacklist/
+Disallow: /my-status/

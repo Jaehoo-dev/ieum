@@ -31,6 +31,7 @@ export function Sidebar({ open, onClose }: Props) {
             </button>
           </div>
           <ul className="mt-4 space-y-2">
+            <MenuItem label="활성 상태" href="/my-status" onClick={onClose} />
             <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem
