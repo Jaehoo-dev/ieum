@@ -1,4 +1,5 @@
 import { MemberStatus } from "@ieum/prisma";
+import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -52,5 +53,78 @@ export const basicMemberRouter = createTRPCRouter({
       });
 
       return member.discountCouponCount;
+    }),
+  getBlacklist: publicProcedure
+    .input(z.object({ memberId: z.number() }))
+    .query(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          blacklistedPhoneNumbers: true,
+        },
+      });
+
+      return member.blacklistedPhoneNumbers;
+    }),
+  addToBlacklist: publicProcedure
+    .input(
+      z.object({
+        memberId: z.number(),
+        phoneNumber: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input: { memberId, phoneNumber } }) => {
+      assert(
+        isKrPhoneNumberWithoutHyphens(phoneNumber),
+        "Invalid phone number",
+      );
+
+      await ctx.prisma.basicMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          blacklistedPhoneNumbers: {
+            push: phoneNumber,
+          },
+        },
+      });
+
+      return true;
+    }),
+  removeFromBlacklist: publicProcedure
+    .input(
+      z.object({
+        memberId: z.number(),
+        phoneNumber: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input: { memberId, phoneNumber } }) => {
+      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          blacklistedPhoneNumbers: true,
+        },
+      });
+
+      const updatedBlacklistedPhoneNumbers =
+        member.blacklistedPhoneNumbers.filter((_phoneNumber) => {
+          return _phoneNumber !== phoneNumber;
+        });
+
+      await ctx.prisma.basicMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          blacklistedPhoneNumbers: updatedBlacklistedPhoneNumbers,
+        },
+      });
+
+      return true;
     }),
 });

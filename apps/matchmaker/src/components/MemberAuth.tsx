@@ -8,12 +8,12 @@ import {
   signInWithCredential,
   signInWithPhoneNumber,
 } from "@ieum/firebase";
-import { assert, isEmptyStringOrNil, krHyphenToGlobal } from "@ieum/utils";
+import { assert, formatPhoneNumberInput, krHyphenToGlobal } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { HomepageTipsTabLink } from "./HomepageTipsTabLink";
+import { TipsMenuLink } from "./TipsMenuLink";
 
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
@@ -134,7 +134,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           {isSubmitting ? "전송중.." : "인증번호 전송"}
         </button>
       </form>
-      <HomepageTipsTabLink />
+      <TipsMenuLink />
     </div>
   );
 }
@@ -254,25 +254,4 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
       </div>
     </div>
   );
-}
-
-function formatPhoneNumberInput(phoneNumber: string) {
-  return phoneNumber
-    .replace(/[^0-9]/g, "")
-    .slice(0, 11)
-    .replace(
-      /(\d{1,3})(\d{1,4})?(\d{1,4})?/,
-      // @ts-expect-error: p1, p2, p3 can be undefined
-      (_, p1?: string, p2?: string, p3?: string) => {
-        if (!isEmptyStringOrNil(p3)) {
-          return `${p1}-${p2}-${p3}`;
-        }
-
-        if (!isEmptyStringOrNil(p2)) {
-          return `${p1}-${p2}`;
-        }
-
-        return p1;
-      },
-    );
 }

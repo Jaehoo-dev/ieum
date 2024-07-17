@@ -7,8 +7,8 @@ import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 
-import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { Layout } from "~/components/Layout";
+import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { Member, useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
@@ -130,7 +130,7 @@ function Resolved() {
         </>
       ) : null}
       <div className="mt-4 flex justify-center">
-        <HomepageTipsTabLink />
+        <TipsMenuLink />
       </div>
     </div>
   );
