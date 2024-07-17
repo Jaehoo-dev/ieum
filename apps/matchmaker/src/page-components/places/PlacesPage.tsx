@@ -1,8 +1,13 @@
 import { ReactElement, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { HOMEPAGE_URL, MATCHMAKER_URL, 구_라벨 } from "@ieum/constants";
-import { Place, SeoulDistrict } from "@ieum/prisma";
+import {
+  HOMEPAGE_URL,
+  MATCHMAKER_URL,
+  구_라벨,
+  커스텀_지역_라벨,
+} from "@ieum/constants";
+import { CustomRegion, Place, SeoulDistrict } from "@ieum/prisma";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -40,7 +45,7 @@ export function PlacesPage({ places }: Props) {
           content="소개팅,소개팅 장소,소개팅 장소 추천,강남 소개팅 장소,맛집,파인다이닝,이탈리안 레스토랑,소개팅 첫만남 장소,직장인 소개팅 장소"
         />
       </Head>
-      <div className="px-2">
+      <div className="flex flex-col gap-6 px-2">
         <div className="mb-24 flex flex-col gap-8">
           {Object.entries(places).map(([district, places]) => {
             return (
@@ -82,6 +87,8 @@ export function PlacesPage({ places }: Props) {
               </section>
             );
           })}
+          <hr />
+          <CustomRegionTags />
         </div>
         <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
@@ -97,6 +104,31 @@ export function PlacesPage({ places }: Props) {
         </div>
       </div>
     </>
+  );
+}
+
+function CustomRegionTags() {
+  const customRegions = Object.values(CustomRegion);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <h2 className="text-xl font-semibold text-gray-800">태그</h2>
+      <div className="flex flex-wrap gap-1.5">
+        {customRegions.map((region, index) => {
+          return (
+            <Link
+              key={region}
+              href={`/places/custom-regions/${region.toLowerCase()}`}
+              className="text-gray-500"
+            >
+              {`#${커스텀_지역_라벨[region]}${
+                index < customRegions.length - 1 ? "," : ""
+              }`}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
