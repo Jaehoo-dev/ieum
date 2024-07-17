@@ -61,7 +61,7 @@ export function PlacesByCustomRegionPage({ customRegion, places }: Props) {
         <meta property="og:locale" content="ko_KR" />
         <meta
           property="keywords"
-          content={`소개팅,${커스텀_지역} 소개팅 장소,${커스텀_지역} 소개팅 장소 추천,${커스텀_지역} 소개팅 장소,${커스텀_지역} 소개팅 맛집 추천,${커스텀_지역} 맛집`}
+          content={`소개팅,${커스텀_지역} 소개팅 장소,${커스텀_지역} 소개팅 장소 추천,${커스텀_지역} 소개팅 장소,${커스텀_지역} 소개팅 맛집 추천,${커스텀_지역} 맛집${커스텀_지역} 파인 다이닝,${커스텀_지역} 이탈리안 레스토랑,${커스텀_지역} 소개팅 첫만남 장소,${커스텀_지역} 직장인 소개팅 장소`}
         />
       </Head>
       <div className="flex flex-col gap-6 px-2">

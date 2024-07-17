@@ -54,7 +54,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
         <meta property="og:locale" content="ko_KR" />
         <meta
           property="keywords"
-          content={`소개팅,${구} 소개팅 장소,${구} 소개팅 장소 추천,${구} 소개팅 장소,${구} 소개팅 맛집 추천,${구} 맛집`}
+          content={`소개팅,${구} 소개팅 장소,${구} 소개팅 장소 추천,${구} 소개팅 장소,${구} 소개팅 맛집 추천,${구} 맛집,${구} 파인 다이닝,${구} 이탈리안 레스토랑,${구} 소개팅 첫 만남 장소,${구} 직장인 소개팅 장소`}
         />
       </Head>
       <div className="flex flex-col gap-6 px-2">
