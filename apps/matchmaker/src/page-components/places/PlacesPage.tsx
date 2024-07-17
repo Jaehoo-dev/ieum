@@ -37,7 +37,7 @@ export function PlacesPage({ places }: Props) {
         <meta property="og:locale" content="ko_KR" />
         <meta
           property="keywords"
-          content="소개팅,소개팅 장소,소개팅 장소 추천,강남 소개팅 장소,맛집"
+          content="소개팅,소개팅 장소,소개팅 장소 추천,강남 소개팅 장소,맛집,파인다이닝,이탈리안 레스토랑,소개팅 첫만남 장소,직장인 소개팅 장소"
         />
       </Head>
       <div className="px-2">
