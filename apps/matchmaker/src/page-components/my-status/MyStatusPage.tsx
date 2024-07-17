@@ -4,8 +4,10 @@ import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyStatusPage() {
   return (
@@ -50,6 +52,7 @@ function Inactive() {
       return utils.basicMemberRouter.getStatus.invalidate();
     },
   });
+  const { sendMessage } = useSlackNotibot();
 
   return (
     <>
@@ -62,6 +65,11 @@ function Inactive() {
           <button
             className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
             onClick={async () => {
+              sendMessage(
+                `${formatUniqueMemberName(
+                  member,
+                )} - 휴면 해제 클릭 <@U06LZ57FHPA>`,
+              );
               await activate({ memberId: member.id });
               alert("휴면 해제했습니다");
             }}
