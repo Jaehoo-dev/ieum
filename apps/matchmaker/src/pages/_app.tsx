@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { api } from "~/utils/api";
@@ -24,6 +25,13 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return getLayout(
     <>
+      <Head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
+          crossOrigin="anonymous"
+        />
+      </Head>
       <MemberAuthProvider>
         {Component.auth === false ? (
           <Component {...pageProps} />
