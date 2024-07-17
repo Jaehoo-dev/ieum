@@ -26,3 +26,5 @@ export async function sendMessageToMatchResultChannel(text: string) {
     // ignore
   }
 }
+
+export const SLACK_USER_ID_MENTION = "<@U06LZ57FHPA>";
