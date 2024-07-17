@@ -230,6 +230,8 @@ model BasicMember {
   blacklisting  BasicBlacklistItem[] @relation(name: "blacklister")
   blacklistedBy BasicBlacklistItem[] @relation(name: "blacklistTarget")
 
+  blacklistedPhoneNumbers String[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -241,6 +243,7 @@ model BasicMember {
 
   @@unique([phoneNumber])
   @@unique([referralCode])
+  @@index([phoneNumber])
   @@index([name])
   @@index([gender])
   @@index([birthYear])
