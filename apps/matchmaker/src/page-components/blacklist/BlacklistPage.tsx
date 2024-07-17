@@ -32,7 +32,7 @@ export function BlacklistPage() {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-12">
       <form
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(async ({ phoneNumber }) => {
@@ -116,13 +116,15 @@ function Resolved() {
     });
 
   return blacklist.length > 0 ? (
-    <>
-      <hr />
-      <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold text-gray-700">블랙리스트</h2>
-        <div className="flex flex-col gap-4">
-          {blacklist.map((phoneNumber) => (
-            <div key={phoneNumber} className="flex flex-row items-center gap-2">
+    <div className="flex flex-col gap-4">
+      <h2 className="text-lg font-semibold text-gray-700">블랙리스트</h2>
+      <div className="flex flex-col gap-3">
+        {blacklist.map((phoneNumber, index) => (
+          <>
+            <div
+              key={phoneNumber}
+              className="flex flex-row items-center justify-between"
+            >
               <p className="font-medium text-gray-700">
                 {krToKrHyphen(phoneNumber)}
               </p>
@@ -140,10 +142,11 @@ function Resolved() {
                 <DeleteIcon className="text-red-500" fontSize="small" />
               </button>
             </div>
-          ))}
-        </div>
+            {index < blacklist.length - 1 ? <hr /> : null}
+          </>
+        ))}
       </div>
-    </>
+    </div>
   ) : null;
 }
 
