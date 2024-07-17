@@ -422,6 +422,9 @@ export const basicMemberRouter = createTRPCRouter({
           id: {
             notIn: blacklist,
           },
+          phoneNumber: {
+            notIn: self.blacklistedPhoneNumbers,
+          },
           AND: createDealBreakerAndClause(self.idealType),
           pendingMatches: {
             every: {
@@ -574,6 +577,9 @@ export const basicMemberRouter = createTRPCRouter({
             gender: self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
             id: {
               notIn: blacklist,
+            },
+            phoneNumber: {
+              notIn: self.blacklistedPhoneNumbers,
             },
             AND: [
               {
