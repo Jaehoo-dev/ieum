@@ -68,6 +68,11 @@ export function TipsPage() {
                 title: "매칭 수락률 높은 프로필 작성 방법 - 자기소개 편",
                 href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%9E%90%EA%B8%B0%EC%86%8C%EA%B0%9C-%EB%AA%A8%EB%B2%94%EB%8B%B5%EC%95%88-feat-%EB%8D%B0%EC%9D%B4%ED%8C%85%EC%95%B1-%EA%B2%B0%EC%A0%95%EC%82%AC",
               },
+              {
+                title:
+                  "소개팅 성사가 안 된다면? 남녀별 소개 거절 사유 분석 및 대처 방안",
+                href: "https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%B1%EC%82%AC%EA%B0%80-%EC%95%88-%EB%90%9C%EB%8B%A4%EB%A9%B4-%EB%82%A8%EB%85%80%EB%B3%84-%EC%86%8C%EA%B0%9C-%EA%B1%B0%EC%A0%88-%EC%82%AC%EC%9C%A0-%EB%B6%84%EC%84%9D-%EB%B0%8F-%EB%8C%80%EC%B2%98-%EB%B0%A9%EC%95%88-%EC%86%8C%EA%B0%9C%ED%8C%85-%EA%BF%80%ED%8C%81-5%ED%8E%B8",
+              },
             ]}
           />
           <Section
