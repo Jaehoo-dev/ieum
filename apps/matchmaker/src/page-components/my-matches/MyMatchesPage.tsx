@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import type { BasicMatch } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
@@ -16,13 +17,18 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyMatchesPage() {
   return (
-    <div className="flex w-full flex-col gap-4">
-      <Description />
-      <hr className="w-full" />
-      <Suspense fallback={null}>
-        <Resolved />
-      </Suspense>
-    </div>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <div className="flex w-full flex-col gap-4">
+        <Description />
+        <hr className="w-full" />
+        <Suspense fallback={null}>
+          <Resolved />
+        </Suspense>
+      </div>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { ReactElement, Suspense, useEffect } from "react";
+import Head from "next/head";
 import Link from "next/link";
 import { HOMEPAGE_URL } from "@ieum/constants";
 import { assert } from "@ieum/utils";
@@ -13,25 +14,32 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function ReferralCodePage() {
   return (
-    <div className="flex flex-col gap-6">
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-medium text-gray-800">내 추천인 코드</h2>
-          <div className="rounded-lg border border-primary-500">
-            <Suspense fallback={<Skeleton />}>
-              <Resolved />
-            </Suspense>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-xl font-medium text-gray-800">
+              내 추천인 코드
+            </h2>
+            <div className="rounded-lg border border-primary-500">
+              <Suspense fallback={<Skeleton />}>
+                <Resolved />
+              </Suspense>
+            </div>
           </div>
+          <Suspense>
+            <DescriptionResolved />
+          </Suspense>
         </div>
+        <hr />
         <Suspense>
-          <DescriptionResolved />
+          <DiscountCouponCountResolved />
         </Suspense>
       </div>
-      <hr />
-      <Suspense>
-        <DiscountCouponCountResolved />
-      </Suspense>
-    </div>
+    </>
   );
 }
 

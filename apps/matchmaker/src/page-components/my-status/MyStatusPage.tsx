@@ -1,4 +1,5 @@
 import { ReactElement, Suspense } from "react";
+import Head from "next/head";
 import { MemberStatus } from "@ieum/prisma";
 import { SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
@@ -12,9 +13,14 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyStatusPage() {
   return (
-    <Suspense>
-      <Resolved />
-    </Suspense>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense>
+        <Resolved />
+      </Suspense>
+    </>
   );
 }
 

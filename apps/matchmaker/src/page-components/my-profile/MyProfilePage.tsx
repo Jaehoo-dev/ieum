@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Profile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
@@ -12,9 +13,14 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyProfilePage() {
   return (
-    <Suspense fallback={null}>
-      <Resolved />
-    </Suspense>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense fallback={null}>
+        <Resolved />
+      </Suspense>
+    </>
   );
 }
 
