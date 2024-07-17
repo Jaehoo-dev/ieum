@@ -4,8 +4,8 @@ import Link from "next/link";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 
-import { HomepageTipsTabLink } from "~/components/HomepageTipsTabLink";
 import { MemberAuth } from "~/components/MemberAuth";
+import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
@@ -126,7 +126,7 @@ function Registered() {
       >
         내 이상형 조건
       </Link>
-      <HomepageTipsTabLink style={{ marginTop: "4px" }} />
+      <TipsMenuLink style={{ marginTop: "4px" }} />
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
@@ -155,7 +155,7 @@ function Unregistered() {
       >
         알아보기
       </Link>
-      <HomepageTipsTabLink />
+      <TipsMenuLink />
     </div>
   );
 }

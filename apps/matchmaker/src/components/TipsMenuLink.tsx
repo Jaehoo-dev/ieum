@@ -5,7 +5,7 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 type Props = Omit<ComponentProps<typeof Link>, "href">;
 
-export function HomepageTipsTabLink({ target, rel, onClick, ...props }: Props) {
+export function TipsMenuLink({ target, rel, onClick, ...props }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   return (

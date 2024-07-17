@@ -38,6 +38,7 @@ export function Sidebar({ open, onClose }: Props) {
               href="/my-ideal-type"
               onClick={onClose}
             />
+            <MenuItem label="블랙리스트" href="/blacklist" onClick={onClose} />
             <MenuItem label="추천인 코드" href="/referral" onClick={onClose} />
             <hr />
             <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
