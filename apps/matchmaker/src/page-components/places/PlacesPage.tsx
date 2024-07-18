@@ -9,6 +9,7 @@ import {
 } from "@ieum/constants";
 import { CustomRegion, Place, SeoulDistrict } from "@ieum/prisma";
 
+import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -48,7 +49,7 @@ export function PlacesPage({ places }: Props) {
       </Head>
       <div className="flex flex-col gap-6 px-2">
         <div className="mb-24 flex flex-col gap-8">
-          <ResponsiveDisplayAd />
+          <HorizontalInfeedAd />
           {Object.entries(places).map(([district, places]) => {
             return (
               <section key={district} className="flex flex-col gap-2">
