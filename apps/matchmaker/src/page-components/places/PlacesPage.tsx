@@ -9,6 +9,7 @@ import {
 } from "@ieum/constants";
 import { CustomRegion, Place, SeoulDistrict } from "@ieum/prisma";
 
+import { HorizontalAdsense } from "~/components/adsense/HorizontalAdsense";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
@@ -89,6 +90,7 @@ export function PlacesPage({ places }: Props) {
           })}
           <hr />
           <CustomRegionTags />
+          <HorizontalAdsense />
         </div>
         <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
