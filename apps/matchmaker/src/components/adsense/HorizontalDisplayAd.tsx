@@ -1,12 +1,6 @@
 import { useEffect } from "react";
 
-declare global {
-  interface Window {
-    adsbygoogle: any;
-  }
-}
-
-export function HorizontalAdsense() {
+export function HorizontalDisplayAd() {
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
