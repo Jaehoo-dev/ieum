@@ -42,6 +42,7 @@ export function TipsPage() {
       </Head>
       <div className="px-2">
         <div className="flex flex-col gap-8">
+          <HorizontalInfeedAd />
           <Section
             title="소개팅 잡기"
             posts={[
@@ -77,7 +78,6 @@ export function TipsPage() {
               },
             ]}
           />
-          <HorizontalInfeedAd />
           <Section
             title="첫 만남 이전"
             posts={[
@@ -114,6 +114,7 @@ export function TipsPage() {
               },
             ]}
           />
+          <HorizontalDisplayAd />
         </div>
         <Spacing size={92} />
         <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
@@ -139,7 +140,6 @@ export function TipsPage() {
             </div>
           </div>
         </div>
-        <HorizontalDisplayAd />
       </div>
     </>
   );
