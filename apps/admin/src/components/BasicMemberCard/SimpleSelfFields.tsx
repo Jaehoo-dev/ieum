@@ -15,7 +15,7 @@ interface Props {
 
 export function SimpleSelfFields({ member }: Props) {
   return (
-    <div className="flex w-1/2 flex-col gap-1">
+    <div className="flex w-1/2 flex-col gap-0.5">
       <div>출생연도: {member.birthYear}</div>
       <div>거주지: {member.residence}</div>
       <div>키: {member.height}cm</div>

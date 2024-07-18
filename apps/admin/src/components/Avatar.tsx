@@ -17,7 +17,7 @@ export function Avatar({ image, ...props }: Props) {
     <img
       src={publicUrl}
       alt="프로필 사진"
-      className="h-[80px] w-[80px] rounded-full object-cover"
+      className="h-[60px] w-[60px] rounded-full object-cover"
       {...props}
     />
   );
