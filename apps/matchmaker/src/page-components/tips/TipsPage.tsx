@@ -41,8 +41,8 @@ export function TipsPage() {
         />
       </Head>
       <div className="px-2">
+        <HorizontalInfeedAd />
         <div className="flex flex-col gap-8">
-          <HorizontalInfeedAd />
           <Section
             title="소개팅 잡기"
             posts={[
