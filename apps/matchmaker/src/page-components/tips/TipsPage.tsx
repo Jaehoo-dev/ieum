@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
+import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
@@ -40,7 +41,7 @@ export function TipsPage() {
         />
       </Head>
       <div className="px-2">
-        <ResponsiveDisplayAd />
+        <HorizontalInfeedAd />
         <div className="flex flex-col gap-8">
           <Section
             title="소개팅 잡기"
@@ -116,7 +117,7 @@ export function TipsPage() {
           <ResponsiveDisplayAd />
         </div>
         <Spacing size={92} />
-        <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
+        <div className="fixed bottom-0 left-0 z-30 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
             <div className="flex flex-row gap-2">
               <button

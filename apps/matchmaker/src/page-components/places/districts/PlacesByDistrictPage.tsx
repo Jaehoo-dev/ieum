@@ -93,7 +93,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
           })}
           <ResponsiveDisplayAd />
         </div>
-        <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
+        <div className="fixed bottom-0 left-0 z-30 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
             <div className="flex flex-row gap-2">
               <Link
