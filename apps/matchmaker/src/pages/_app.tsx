@@ -8,8 +8,6 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
-import Script from "next/script";
-
 import { AuthGuard } from "~/components/AuthGuard";
 import { MemberAuthProvider } from "~/providers/MemberAuthProvider";
 
@@ -27,11 +25,13 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return getLayout(
     <>
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
-        crossOrigin="anonymous"
-      />
+      <Head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
+          crossOrigin="anonymous"
+        />
+      </Head>
       <MemberAuthProvider>
         {Component.auth === false ? (
           <Component {...pageProps} />
