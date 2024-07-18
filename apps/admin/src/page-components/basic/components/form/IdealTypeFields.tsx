@@ -109,7 +109,7 @@ export function IdealTypeFields() {
   });
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <h2 className="text-xl font-bold">이상형</h2>
       <TextInput
         label="최소 나이 출생연도"
@@ -163,7 +163,7 @@ export function IdealTypeFields() {
       />
       <div>
         지역
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-3 gap-1">
           {Object.values(Region).map((region) => {
             return (
               <label key={region} className="flex gap-2">
@@ -405,7 +405,7 @@ export function IdealTypeFields() {
       />
       <div>
         선호 MBTI
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-1">
           {Object.values(MBTI).map((mbti) => {
             return (
               <Checkbox
@@ -433,7 +433,7 @@ export function IdealTypeFields() {
       </div>
       <div>
         기피 MBTI
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-1">
           {Object.values(MBTI).map((mbti) => {
             return (
               <Checkbox
@@ -518,7 +518,7 @@ export function IdealTypeFields() {
       ) : null}
       <div>
         선호 종교
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex flex-row gap-4">
           {Object.values(Religion).map((religion) => {
             return (
               <Checkbox
@@ -546,7 +546,7 @@ export function IdealTypeFields() {
       </div>
       <div>
         기피 종교
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex flex-row gap-4">
           {Object.values(Religion).map((religion) => {
             return (
               <Checkbox

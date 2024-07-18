@@ -52,8 +52,8 @@ export function BasicMembersSearchPage() {
   const isInAction = isInactivating || isSoftDeleting || isHardDeleting;
 
   return (
-    <div className="mt-6 flex min-h-screen flex-col items-center gap-6 py-2">
-      <h1 className="text-4xl font-semibold">베이직 회원 검색</h1>
+    <div className="flex min-h-screen flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">베이직 회원 검색</h1>
       <div className="flex w-full flex-col items-center gap-8">
         <form
           className="flex items-end gap-2"
@@ -82,9 +82,7 @@ export function BasicMembersSearchPage() {
                     className="flex w-full flex-row justify-center gap-2"
                   >
                     <div className="flex flex-col gap-2">
-                      <span>
-                        {`회원 상태: ${getStatusLabel(member.status)}`}
-                      </span>
+                      <span>{`상태: ${getStatusLabel(member.status)}`}</span>
                       <button
                         className="rounded-md bg-blue-500 px-4 py-2 text-white"
                         onClick={async () => {
@@ -92,7 +90,7 @@ export function BasicMembersSearchPage() {
                         }}
                         disabled={isInAction}
                       >
-                        Activate
+                        활성화
                       </button>
                       <button
                         className="rounded-md bg-gray-500 px-4 py-2 text-white"
@@ -102,7 +100,7 @@ export function BasicMembersSearchPage() {
                         }}
                         disabled={isInAction}
                       >
-                        Inactivate
+                        휴면
                       </button>
                       <button
                         className="rounded-md bg-yellow-500 px-4 py-2 text-white"
@@ -117,7 +115,7 @@ export function BasicMembersSearchPage() {
                         }}
                         disabled={isInAction}
                       >
-                        Soft Delete
+                        탈퇴
                       </button>
                       <button
                         className="rounded-md bg-red-500 px-4 py-2 text-white"
@@ -131,7 +129,7 @@ export function BasicMembersSearchPage() {
                         }}
                         disabled={isInAction}
                       >
-                        Hard Delete
+                        삭제
                       </button>
                     </div>
                     <BasicMemberCard member={member} defaultMode="DETAILED" />

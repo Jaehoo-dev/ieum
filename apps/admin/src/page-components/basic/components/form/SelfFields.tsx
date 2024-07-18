@@ -47,7 +47,7 @@ export function SelfFields() {
   } = useFormContext<BasicMemberForm>();
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <h2 className="text-xl font-bold">본인</h2>
       <TextInput
         label="이름"

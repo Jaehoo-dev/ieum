@@ -29,11 +29,11 @@ export function CreateBasicMemberPage() {
   const { mutateAsync: create } = api.basicMemberRouter.create.useMutation();
 
   return (
-    <div className="flex min-h-screen flex-col items-center gap-6">
-      <h1 className="text-4xl font-semibold">베이직 회원 생성</h1>
+    <div className="flex min-h-screen flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">베이직 회원 생성</h1>
       <FormProvider {...methods}>
         <form
-          className="mt-4 flex flex-col gap-6"
+          className="mt-2 flex flex-col gap-4"
           onSubmit={methods.handleSubmit(async (fields) => {
             if (!done) {
               return;
@@ -49,7 +49,7 @@ export function CreateBasicMemberPage() {
             methods.reset();
           })}
         >
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid grid-cols-2 gap-10">
             <SelfFields />
             <div className="flex flex-col gap-16">
               <IdealTypeFields />
