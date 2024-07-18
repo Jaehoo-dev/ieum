@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
-import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
@@ -41,7 +40,6 @@ export function TipsPage() {
         />
       </Head>
       <div className="px-2">
-        <HorizontalInfeedAd />
         <div className="flex flex-col gap-8">
           <Section
             title="소개팅 잡기"
