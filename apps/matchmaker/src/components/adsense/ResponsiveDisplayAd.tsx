@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function HorizontalDisplayAd() {
+export function ResponsiveDisplayAd() {
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
