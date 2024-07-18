@@ -9,7 +9,6 @@ import {
 } from "@ieum/constants";
 import { CuisineType, CustomRegion, Place } from "@ieum/prisma";
 
-import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -68,7 +67,6 @@ export function PlacesByCustomRegionPage({ customRegion, places }: Props) {
       </Head>
       <div className="flex flex-col gap-6 px-2">
         <div className="mb-24 flex flex-col gap-8">
-          <HorizontalInfeedAd />
           {Object.entries(placesByCuisineType).map(([cuisineType, places]) => {
             return (
               <section key={cuisineType} className="flex flex-col gap-2">
