@@ -14,8 +14,8 @@ import type { ProfileForm } from "../ProfileForm";
 
 export function UpdateBasicMemberProfilePage() {
   return (
-    <div className="flex min-h-screen flex-col items-center gap-6">
-      <h1 className="text-4xl font-semibold">베이직 회원 프로필 수정</h1>
+    <div className="flex min-h-screen flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">베이직 회원 프로필 수정</h1>
       <Suspense>
         <Resolved />
       </Suspense>
