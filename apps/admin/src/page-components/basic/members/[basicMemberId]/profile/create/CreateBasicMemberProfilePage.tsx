@@ -20,8 +20,8 @@ import type { ProfileForm } from "../ProfileForm";
 
 export function CreateBasicMemberProfilePage() {
   return (
-    <div className="flex min-h-screen flex-col items-center gap-6">
-      <h1 className="text-4xl font-semibold">베이직 회원 프로필 생성</h1>
+    <div className="flex min-h-screen flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">베이직 회원 프로필 생성</h1>
       <Suspense>
         <Resolved />
       </Suspense>
