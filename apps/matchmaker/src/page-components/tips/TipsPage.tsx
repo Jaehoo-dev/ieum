@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
-import { HorizontalAdsense } from "~/components/adsense/HorizontalAdsense";
+import { HorizontalDisplayAd } from "~/components/adsense/HorizontalDisplayAd";
+import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -76,6 +77,7 @@ export function TipsPage() {
               },
             ]}
           />
+          <HorizontalInfeedAd />
           <Section
             title="첫 만남 이전"
             posts={[
@@ -137,7 +139,7 @@ export function TipsPage() {
             </div>
           </div>
         </div>
-        <HorizontalAdsense />
+        <HorizontalDisplayAd />
       </div>
     </>
   );
