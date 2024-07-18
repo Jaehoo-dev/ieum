@@ -56,7 +56,7 @@ export function IdealTypeFields({ idealType }: Props) {
   } = idealType;
 
   return (
-    <div className="flex w-1/2 flex-col gap-1">
+    <div className="flex w-1/2 flex-col gap-0.5">
       {minAgeBirthYear != null || maxAgeBirthYear != null ? (
         <Field label="나이" nonNegotiable={dealBreakers.includes("AGE")}>
           {minAgeBirthYear} ~ {maxAgeBirthYear}

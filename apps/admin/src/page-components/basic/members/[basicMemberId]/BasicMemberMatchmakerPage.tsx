@@ -196,7 +196,7 @@ function Resolved() {
             ) : null}
             <span>{" 님 매칭"}</span>
           </h1>
-          <div className="flex w-full justify-center gap-6">
+          <div className="flex w-full justify-center gap-3">
             <div className="flex w-5/12 max-w-3xl flex-col items-end gap-2">
               <h2 className="text-xl font-semibold">본인</h2>
               <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
