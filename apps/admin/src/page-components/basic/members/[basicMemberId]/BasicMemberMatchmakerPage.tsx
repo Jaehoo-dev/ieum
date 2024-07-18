@@ -179,10 +179,10 @@ function Resolved() {
   ]);
 
   return (
-    <div className="mr-44 min-h-screen">
+    <div className="mr-36 min-h-screen">
       <div className="flex w-full">
-        <div className="flex flex-1 flex-col items-center gap-8">
-          <h1 className="text-4xl font-semibold">
+        <div className="flex flex-1 flex-col items-center gap-4">
+          <h1 className="text-2xl font-semibold">
             {basicMember != null ? (
               <span
                 className={`${
@@ -197,13 +197,13 @@ function Resolved() {
             <span>{" 님 매칭"}</span>
           </h1>
           <div className="flex w-full justify-center gap-6">
-            <div className="flex w-5/12 max-w-3xl flex-col items-end gap-4">
-              <h2 className="text-2xl font-semibold">본인</h2>
+            <div className="flex w-5/12 max-w-3xl flex-col items-end gap-2">
+              <h2 className="text-xl font-semibold">본인</h2>
               <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
             </div>
             <div className="flex flex-col gap-2">
               <Checkbox
-                label={<p className="text-2xl font-semibold">커스텀 검색</p>}
+                label={<p className="text-xl font-semibold">커스텀 검색</p>}
                 checked={searchMode === "CUSTOM"}
                 onChange={(e) => {
                   setSearchMode(e.target.checked ? "CUSTOM" : "DEFAULT");
@@ -222,9 +222,9 @@ function Resolved() {
                 </FormProvider>
               ) : null}
             </div>
-            <div className="flex w-5/12 flex-col items-start gap-4">
+            <div className="flex w-5/12 flex-col items-start gap-2">
               <div className="flex items-center gap-4">
-                <h2 className="text-2xl font-semibold">{`상대방 (${list.length}명)`}</h2>
+                <h2 className="text-xl font-semibold">{`상대방 (${list.length}명)`}</h2>
                 <Checkbox
                   label="필수 조건 적용"
                   checked={shouldCrossCheck}
@@ -233,16 +233,16 @@ function Resolved() {
                   }}
                 />
               </div>
-              <div className="flex h-[calc(100vh-200px)] w-full flex-col gap-4 overflow-y-auto pr-4">
+              <div className="flex h-[calc(100vh-120px)] w-full flex-col gap-4 overflow-y-auto pr-3">
                 {list.map((member) => {
                   return (
-                    <div key={member.id} className="flex w-full gap-4">
+                    <div key={member.id} className="flex w-full gap-3">
                       <BasicMemberCard
                         member={member as BasicMemberWithJoined}
                       />
                       <div className="flex flex-col gap-2">
                         <button
-                          className="rounded-lg bg-red-500 px-4 py-2 text-white"
+                          className="rounded-lg bg-red-500 p-2 text-xs font-medium text-white"
                           disabled={isAddingToBlacklist}
                           onClick={async () => {
                             await addToBlacklist({
@@ -254,7 +254,7 @@ function Resolved() {
                           Blacklist
                         </button>
                         <button
-                          className="rounded-lg bg-yellow-500 px-4 py-2 text-white"
+                          className="rounded-lg bg-yellow-500 p-2 text-xs font-medium text-white"
                           disabled={isCreatingMatch}
                           onClick={async () => {
                             await createMatch({
@@ -266,7 +266,7 @@ function Resolved() {
                           Backlog
                         </button>
                         <button
-                          className="rounded-lg bg-green-500 px-4 py-2 text-white"
+                          className="rounded-lg bg-green-500 p-2 text-xs font-medium text-white"
                           disabled={isCreatingMatch}
                           onClick={async () => {
                             await createMatch({
@@ -286,16 +286,16 @@ function Resolved() {
             </div>
           </div>
         </div>
-        <div className="fixed right-4 w-44">
-          <h2 className="text-xl font-semibold">※ 체크리스트</h2>
-          <div>- 지역 확인</div>
-          <div>- 필수 아니어도 나이 확인</div>
-          <div>- 쌍방으로 체형 확인</div>
-          <div>- 같은 직장 확인</div>
-          <div>- 기피 직장/직무 확인</div>
-          <div>- 양쪽 상세 내용 확인</div>
-          <div>- 양쪽 메모 확인</div>
-          <div>- 사진 확인</div>
+        <div className="fixed right-4 w-32 text-sm">
+          <h2 className="text-lg font-semibold">※ 체크리스트</h2>
+          <p>- 지역 확인</p>
+          <p>- 나이 확인</p>
+          <p>- 쌍방으로 체형 확인</p>
+          <p>- 같은 직장 확인</p>
+          <p>- 기피 직장/직무 확인</p>
+          <p>- 양쪽 상세 내용 확인</p>
+          <p>- 양쪽 메모 확인</p>
+          <p>- 사진 확인</p>
         </div>
       </div>
     </div>
@@ -450,9 +450,81 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
 
   return (
     <form
-      className="flex w-full flex-col gap-2"
+      className="flex w-full flex-col gap-2 text-sm"
       onSubmit={handleSubmit(onSubmit)}
     >
+      <div>
+        우선순위
+        <DndContext
+          onDragOver={({ active, over }) => {
+            if (over == null) {
+              return;
+            }
+
+            const activeContainerId: 우선순위 =
+              active.data.current?.sortable.containerId;
+            const overContainerId: 우선순위 =
+              over.data.current?.sortable.containerId ?? over.id;
+
+            removeFromContainer(active.id as BasicCondition, activeContainerId);
+            appendToContainer(active.id as BasicCondition, overContainerId);
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            {[
+              {
+                id: 우선순위.필수,
+                label: "필수",
+                conditions: dealBreakerFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.높음,
+                label: "높음",
+                conditions: highPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.중간,
+                label: "중",
+                conditions: mediumPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.낮음,
+                label: "하",
+                conditions: lowPriorityFields.map((field) => field.value),
+              },
+              {
+                id: 우선순위.미지정,
+                label: "미지정",
+                conditions: noPriorities,
+              },
+            ].map((section) => {
+              return (
+                <PrioritySection
+                  key={section.id}
+                  id={section.id}
+                  label={section.label}
+                  conditions={section.conditions}
+                />
+              );
+            })}
+          </div>
+        </DndContext>
+      </div>
+      <div className="my-2 flex w-full gap-2">
+        <button
+          className="w-32 rounded-lg bg-gray-300 px-4 py-2"
+          type="button"
+          onClick={onReset}
+        >
+          초기화
+        </button>
+        <button
+          className="flex-1 rounded-lg bg-blue-500 px-4 py-2 text-white"
+          type="submit"
+        >
+          후보 검색
+        </button>
+      </div>
       <div className="flex gap-2">
         <TextInput
           label="최소 나이 출생연도"
@@ -545,7 +617,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
       />
       <div>
         신분
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 gap-1">
           {Object.values(OccupationStatus).map((occupationStatus) => {
             return (
               <Checkbox
@@ -636,7 +708,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
       </div>
       <div>
         선호 종교
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-3 gap-1">
           {Object.values(Religion).map((religion) => {
             return (
               <Checkbox
@@ -663,7 +735,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
       </div>
       <div>
         기피 종교
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-3 gap-1">
           {Object.values(Religion).map((religion) => {
             return (
               <Checkbox
@@ -831,78 +903,6 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
           <Checkbox label="괜찮음" {...register("isPetOk")} />
         </div>
       </div>
-      <div>
-        우선순위
-        <DndContext
-          onDragOver={({ active, over }) => {
-            if (over == null) {
-              return;
-            }
-
-            const activeContainerId: 우선순위 =
-              active.data.current?.sortable.containerId;
-            const overContainerId: 우선순위 =
-              over.data.current?.sortable.containerId ?? over.id;
-
-            removeFromContainer(active.id as BasicCondition, activeContainerId);
-            appendToContainer(active.id as BasicCondition, overContainerId);
-          }}
-        >
-          <div className="flex flex-col gap-2">
-            {[
-              {
-                id: 우선순위.필수,
-                label: "필수",
-                conditions: dealBreakerFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.높음,
-                label: "높음",
-                conditions: highPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.중간,
-                label: "중",
-                conditions: mediumPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.낮음,
-                label: "하",
-                conditions: lowPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.미지정,
-                label: "미지정",
-                conditions: noPriorities,
-              },
-            ].map((section) => {
-              return (
-                <PrioritySection
-                  key={section.id}
-                  id={section.id}
-                  label={section.label}
-                  conditions={section.conditions}
-                />
-              );
-            })}
-          </div>
-        </DndContext>
-      </div>
-      <div className="mt-2 flex w-full gap-2">
-        <button
-          className="w-32 rounded-lg bg-gray-300 px-4 py-2"
-          type="button"
-          onClick={onReset}
-        >
-          초기화
-        </button>
-        <button
-          className="flex-1 rounded-lg bg-blue-500 px-4 py-2 text-white"
-          type="submit"
-        >
-          후보 검색
-        </button>
-      </div>
     </form>
   );
 }
@@ -928,7 +928,9 @@ function PrioritySection({
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <span>{label}</span>
+      <span className={`${id === "DEAL_BREAKER" ? "text-red-500" : ""}`}>
+        {label}
+      </span>
       <DroppablePriorityContainer id={id} conditions={conditions} />
     </div>
   );
@@ -946,7 +948,7 @@ function DroppablePriorityContainer({
   return (
     <SortableContext id={id} items={conditions}>
       {conditions.length > 0 ? (
-        <div className="grid grid-cols-3 gap-2" ref={setNodeRef}>
+        <div className="grid grid-cols-3 gap-1" ref={setNodeRef}>
           {conditions.map((condition) => {
             return <SortableItem key={condition} condition={condition} />;
           })}
