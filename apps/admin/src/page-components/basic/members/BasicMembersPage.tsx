@@ -22,8 +22,8 @@ export function BasicMembersPage() {
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
 
   return (
-    <div className="mt-6 flex min-h-screen flex-col items-center gap-6 py-2">
-      <h1 className="text-4xl font-semibold">베이직 회원 목록</h1>
+    <div className="flex min-h-screen flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">베이직 회원 목록</h1>
       <Filter
         onStatusChange={(status) => {
           router.replace({
@@ -133,9 +133,9 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
   const femaleMembers = femaleMemberPages.flatMap(({ members }) => members);
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex w-full justify-center gap-6">
-        <div className="flex w-5/12 flex-col items-center gap-4">
+    <div className="flex flex-col gap-4">
+      <div className="flex w-full justify-center gap-4">
+        <div className="flex w-5/12 flex-col items-center gap-2">
           <h1 className="text-2xl font-semibold">남성</h1>
           {maleMembers.map((member) => {
             return <BasicMemberCard key={member.id} member={member} />;
@@ -153,7 +153,7 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
             <p className="text-lg text-gray-800">끝</p>
           )}
         </div>
-        <div className="flex w-5/12 flex-col items-center gap-4">
+        <div className="flex w-5/12 flex-col items-center gap-2">
           <h1 className="text-2xl font-semibold">여성</h1>
           {femaleMembers.map((member) => {
             return <BasicMemberCard key={member.id} member={member} />;

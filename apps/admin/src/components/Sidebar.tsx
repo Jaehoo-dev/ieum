@@ -6,8 +6,8 @@ export function Sidebar() {
   const router = useRouter();
 
   return (
-    <aside className="fixed bottom-0 left-0 top-0 flex h-screen w-24 flex-col justify-between overflow-auto bg-gray-100 p-3">
-      <div className="flex flex-col gap-4">
+    <aside className="fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col justify-between overflow-auto bg-gray-100 p-3">
+      <div className="flex flex-col gap-3 text-sm">
         <Link href="/messaging" className="text-blue-600 hover:underline">
           메시지
         </Link>
@@ -44,7 +44,7 @@ export function Sidebar() {
         </Link>
       </div>
       <button
-        className="w-full rounded bg-gray-300 py-2 text-sm text-gray-900"
+        className="w-full rounded bg-gray-300 py-2 text-xs text-gray-900"
         onClick={async () => {
           await signOut();
           void router.push("/login");

@@ -58,8 +58,8 @@ export function BasicMatchHistoryPage() {
     api.basicMatchRouter.findAll.useQuery(queryParams);
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center gap-6">
-      <h1 className="text-4xl font-semibold">매칭 이력</h1>
+    <div className="flex min-h-screen w-full flex-col items-center gap-4 py-2">
+      <h1 className="text-2xl font-semibold">매칭 이력</h1>
       <form
         className="flex flex-col gap-2"
         onSubmit={handleSubmit((form) => {
@@ -143,15 +143,15 @@ export function BasicMatchHistoryPage() {
       </form>
       <span>{`${matches.length}개`}</span>
       {matches.length > 0 ? (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           {matches.map((match) => {
             return (
               <div
                 key={match.id}
-                className="flex w-full flex-col items-center gap-4"
+                className="flex w-full flex-col items-center gap-3"
               >
                 <Match match={match} />
-                <div className="w-full border-b border-gray-200"></div>
+                <div className="w-full border-b border-gray-200" />
               </div>
             );
           })}
@@ -201,7 +201,7 @@ function Match({ match }: { match: BasicMatchWithMembers }) {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="flex w-full gap-4">
+      <div className="flex w-full gap-3">
         <div className="flex flex-1 flex-col items-center gap-2">
           {matchMembersSortedByGender[0] != null ? (
             <>
