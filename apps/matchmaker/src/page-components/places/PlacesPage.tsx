@@ -93,7 +93,7 @@ export function PlacesPage({ places }: Props) {
           <CustomRegionTags />
           <ResponsiveDisplayAd />
         </div>
-        <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
+        <div className="fixed bottom-0 left-0 z-30 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
           <div className="w-full max-w-lg px-2">
             <Link
               className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
