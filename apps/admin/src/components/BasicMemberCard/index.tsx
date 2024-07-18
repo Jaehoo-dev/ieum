@@ -33,7 +33,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
   ]);
 
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-2 rounded-lg border border-gray-200 p-4">
+    <div className="flex w-full max-w-3xl flex-col gap-2 rounded-lg border border-gray-200 p-4 text-sm">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
