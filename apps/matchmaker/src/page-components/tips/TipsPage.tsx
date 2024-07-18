@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
+import { HorizontalAdsense } from "~/components/adsense/HorizontalAdsense";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -136,6 +137,7 @@ export function TipsPage() {
             </div>
           </div>
         </div>
+        <HorizontalAdsense />
       </div>
     </>
   );
