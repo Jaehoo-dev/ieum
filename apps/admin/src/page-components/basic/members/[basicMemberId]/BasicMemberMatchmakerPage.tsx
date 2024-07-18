@@ -179,7 +179,7 @@ function Resolved() {
   ]);
 
   return (
-    <div className="mr-36 min-h-screen">
+    <div className="mr-28 min-h-screen">
       <div className="flex w-full">
         <div className="flex flex-1 flex-col items-center gap-4">
           <h1 className="text-2xl font-semibold">
@@ -286,16 +286,16 @@ function Resolved() {
             </div>
           </div>
         </div>
-        <div className="fixed right-4 w-32 text-sm">
-          <h2 className="text-lg font-semibold">※ 체크리스트</h2>
-          <p>- 지역 확인</p>
-          <p>- 나이 확인</p>
-          <p>- 쌍방으로 체형 확인</p>
-          <p>- 같은 직장 확인</p>
-          <p>- 기피 직장/직무 확인</p>
-          <p>- 양쪽 상세 내용 확인</p>
-          <p>- 양쪽 메모 확인</p>
-          <p>- 사진 확인</p>
+        <div className="fixed right-4 top-20 w-24 text-sm">
+          <h2 className="mb-1 font-semibold">※ 체크리스트</h2>
+          <p>- 지역</p>
+          <p>- 나이</p>
+          <p>- 체형</p>
+          <p>- 같은 직장</p>
+          <p>- 기피 직장/직무</p>
+          <p>- 양쪽 상세 내용</p>
+          <p>- 양쪽 메모</p>
+          <p>- 사진</p>
         </div>
       </div>
     </div>
