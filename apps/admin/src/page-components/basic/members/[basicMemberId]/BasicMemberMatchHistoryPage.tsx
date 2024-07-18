@@ -51,7 +51,7 @@ export function BasicMemberMatchHistoryPage() {
         { value: "PREPARING" },
         { value: "PENDING" },
       ],
-      from: subDays(new Date(), 6),
+      from: subDays(new Date(), 13),
       to: new Date(),
     },
   });
@@ -70,9 +70,9 @@ export function BasicMemberMatchHistoryPage() {
   );
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center gap-6">
+    <div className="flex min-h-screen w-full flex-col items-center gap-4 py-2">
       <div className="flex items-center gap-4">
-        <h1 className="text-4xl font-semibold">
+        <h1 className="text-2xl font-semibold">
           {basicMember != null ? (
             <span
               className={`${
@@ -166,7 +166,7 @@ export function BasicMemberMatchHistoryPage() {
           검색
         </button>
       </form>
-      <div className="grid w-full grid-cols-2 gap-4">
+      <div className="grid w-full grid-cols-2 gap-3">
         <div className="flex justify-end">
           {basicMember == null ? (
             "loading"
@@ -174,7 +174,7 @@ export function BasicMemberMatchHistoryPage() {
             <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
           )}
         </div>
-        <div className="flex h-[calc(100vh-300px)] flex-1 flex-col items-center gap-4 overflow-y-auto ">
+        <div className="flex h-[calc(100vh-240px)] flex-1 flex-col items-center gap-3 overflow-y-auto ">
           {matches.map((match) => {
             const [member1, member2] = [
               ...match.pendingBy,
@@ -193,9 +193,9 @@ export function BasicMemberMatchHistoryPage() {
             return (
               <div
                 key={matchedMember.id}
-                className="flex w-full flex-col gap-3"
+                className="flex w-full flex-col gap-1.5"
               >
-                <div className="flex w-full gap-4">
+                <div className="flex w-full gap-3">
                   <BasicMemberCard member={matchedMember} />
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-1">
