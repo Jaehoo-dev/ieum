@@ -25,13 +25,13 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return getLayout(
     <>
-      <Head>
+      {/* <Head>
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
           crossOrigin="anonymous"
         />
-      </Head>
+      </Head> */}
       <MemberAuthProvider>
         {Component.auth === false ? (
           <Component {...pageProps} />
