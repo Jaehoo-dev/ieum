@@ -3,7 +3,7 @@ import "./src/env.mjs";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@ieum/firebase",
