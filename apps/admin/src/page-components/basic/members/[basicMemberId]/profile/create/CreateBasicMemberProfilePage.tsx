@@ -69,7 +69,7 @@ function Resolved() {
         education: `${member.graduatedUniversity} ${
           학력_라벨[member.educationLevel]
         }`,
-        job: "",
+        job: `${member.workplace} ${member.job}`,
         annualIncome:
           member.annualIncome == null
             ? ""
