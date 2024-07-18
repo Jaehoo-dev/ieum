@@ -135,7 +135,7 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex w-full justify-center gap-4">
-        <div className="flex w-5/12 flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <h1 className="text-2xl font-semibold">남성</h1>
           {maleMembers.map((member) => {
             return <BasicMemberCard key={member.id} member={member} />;
@@ -153,7 +153,7 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
             <p className="text-lg text-gray-800">끝</p>
           )}
         </div>
-        <div className="flex w-5/12 flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <h1 className="text-2xl font-semibold">여성</h1>
           {femaleMembers.map((member) => {
             return <BasicMemberCard key={member.id} member={member} />;
