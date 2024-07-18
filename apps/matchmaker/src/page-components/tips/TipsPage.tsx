@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 
-import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
+import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -112,7 +112,7 @@ export function TipsPage() {
               },
             ]}
           />
-          <HorizontalInfeedAd />
+          <ResponsiveDisplayAd />
         </div>
         <Spacing size={92} />
         <div className="fixed bottom-0 left-0 z-30 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
