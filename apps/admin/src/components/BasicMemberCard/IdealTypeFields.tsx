@@ -265,12 +265,14 @@ export function IdealTypeFields({ idealType }: Props) {
           {주간_운동량_라벨[exercisePerWeek]}
         </Field>
       ) : null}
-      <Field
-        label="자차 기대"
-        nonNegotiable={dealBreakers.includes("SHOULD_HAVE_CAR")}
-      >
-        {shouldHaveCar ? "예" : "아니요"}
-      </Field>
+      {shouldHaveCar != null ? (
+        <Field
+          label="자차 기대"
+          nonNegotiable={dealBreakers.includes("SHOULD_HAVE_CAR")}
+        >
+          {shouldHaveCar ? "예" : "아니요"}
+        </Field>
+      ) : null}
       <Field
         label="게임 허용"
         nonNegotiable={dealBreakers.includes("IS_GAMING_OK")}

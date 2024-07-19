@@ -69,7 +69,7 @@ interface CustomCanditatesSearchForm {
   minBooksReadPerYear: BooksReadPerYear | null;
   isTattooOk: boolean;
   exercisePerWeek: ExercisePerWeek | null;
-  shouldHaveCar: boolean;
+  shouldHaveCar: boolean | null;
   isGamingOk: boolean;
   isPetOk: boolean;
   dealBreakers: { value: BasicCondition }[];

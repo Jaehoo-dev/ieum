@@ -106,7 +106,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     lifePhilosophy: null,
     isTattooOk: false,
     exercisePerWeek: null,
-    shouldHaveCar: false,
+    shouldHaveCar: null,
     isGamingOk: true,
     isPetOk: true,
     idealTypeDescription: null,
