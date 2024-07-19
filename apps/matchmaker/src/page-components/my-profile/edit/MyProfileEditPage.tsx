@@ -10,6 +10,18 @@ import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyProfileEditPage() {
+  const { member } = useMemberAuthContext();
+
+  assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    void sendMessage(
+      `${formatUniqueMemberName(member)} - 내 프로필 수정 페이지 진입`,
+    );
+  }, [member.name, sendMessage]);
+
   return (
     <div className="flex flex-col gap-4">
       <Description />
@@ -37,12 +49,6 @@ function Resolved() {
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const { sendMessage } = useSlackNotibot();
-
-  useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - 내 프로필 수정 페이지 진입`,
-    );
-  }, [member.name, sendMessage]);
 
   const [profile] =
     api.basicMemberProfileRouter.getProfileByMemberId.useSuspenseQuery({
