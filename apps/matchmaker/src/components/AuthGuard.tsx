@@ -13,11 +13,15 @@ export function AuthGuard({ children }: Props) {
   const { member, loading, signOut, registered } = useMemberAuthContext();
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
+
     if (!registered) {
       void signOut();
       void router.push("/");
     }
-  }, [registered, router, signOut]);
+  }, [loading, registered, router, signOut]);
 
   if (loading || member == null) {
     return null;
