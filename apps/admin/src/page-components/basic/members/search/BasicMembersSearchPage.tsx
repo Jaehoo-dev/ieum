@@ -11,8 +11,6 @@ import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
 export function BasicMembersSearchPage() {
-  const { mutateAsync: sendMatchNotiMessage } =
-    api.adminMessageRouter.sendMatchNotiMessage.useMutation();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       name: "",
@@ -54,7 +52,7 @@ export function BasicMembersSearchPage() {
   return (
     <div className="flex min-h-screen flex-col items-center gap-4 py-2">
       <h1 className="text-2xl font-semibold">베이직 회원 검색</h1>
-      <div className="flex w-full flex-col items-center gap-8">
+      <div className="flex w-full flex-col items-center gap-6">
         <form
           className="flex items-end gap-2"
           onSubmit={handleSubmit(({ name }) => {
@@ -132,21 +130,7 @@ export function BasicMembersSearchPage() {
                         삭제
                       </button>
                     </div>
-                    <BasicMemberCard member={member} defaultMode="DETAILED" />
-                    {member.status === MemberStatus.ACTIVE ? (
-                      <div>
-                        <button
-                          className="rounded-md bg-blue-500 px-4 py-2 text-white"
-                          onClick={async () => {
-                            await sendMatchNotiMessage({ memberId: member.id });
-
-                            alert("문자를 보냈습니다.");
-                          }}
-                        >
-                          문자 보내기
-                        </button>
-                      </div>
-                    ) : null}
+                    <BasicMemberCard member={member} />
                   </div>
                 );
               })
