@@ -200,9 +200,9 @@ function Match({ match }: { match: BasicMatchWithMembers }) {
     isUpdatePending || isShiftingToPendingPending || isDeletePending;
 
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-2 text-sm">
       <div className="flex w-full gap-3">
-        <div className="flex flex-1 flex-col items-center gap-2">
+        <div className="flex flex-1 flex-col items-center gap-1.5">
           {matchMembersSortedByGender[0] != null ? (
             <>
               <BasicMemberCard member={matchMembersSortedByGender[0]} />
@@ -217,7 +217,7 @@ function Match({ match }: { match: BasicMatchWithMembers }) {
             "회원 정보가 없습니다"
           )}
         </div>
-        <div className="flex flex-1 flex-col items-center gap-2">
+        <div className="flex flex-1 flex-col items-center gap-1.5">
           {matchMembersSortedByGender[1] != null ? (
             <>
               <BasicMemberCard member={matchMembersSortedByGender[1]} />
