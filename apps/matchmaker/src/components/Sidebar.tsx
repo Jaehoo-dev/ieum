@@ -19,7 +19,7 @@ export function Sidebar({ open, onClose }: Props) {
           open ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out`}
       >
-        <div className="p-4">
+        <div className="flex h-full flex-col p-4">
           <div className="flex items-center justify-between">
             <Link
               href="/"
@@ -32,7 +32,10 @@ export function Sidebar({ open, onClose }: Props) {
               <CloseRoundedIcon className="text-gray-700" />
             </button>
           </div>
-          <ul className="mt-4 space-y-2">
+          <ul
+            className="mt-4 space-y-2 overflow-y-auto"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem
