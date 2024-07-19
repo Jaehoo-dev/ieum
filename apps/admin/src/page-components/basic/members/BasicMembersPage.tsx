@@ -71,6 +71,7 @@ function Filter({
         }}
         style={{ width: "120px" }}
       >
+        <option value={MemberStatus.PENDING}>심사중</option>
         <option value={MemberStatus.ACTIVE}>활동중</option>
         <option value={MemberStatus.INACTIVE}>휴면</option>
       </Select>

@@ -34,9 +34,19 @@ function Resolved() {
   });
 
   return match(status)
+    .with(MemberStatus.PENDING, () => <Pending />)
     .with(MemberStatus.ACTIVE, () => <Active />)
     .with(MemberStatus.INACTIVE, () => <Inactive />)
     .exhaustive();
+}
+
+function Pending() {
+  return (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-2xl font-semibold text-gray-700">내 상태</h2>
+      <p className="text-lg text-gray-700">가입 심사 중</p>
+    </div>
+  );
 }
 
 function Active() {

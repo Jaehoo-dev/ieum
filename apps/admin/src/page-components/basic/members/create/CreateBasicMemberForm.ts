@@ -71,9 +71,9 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     hasPet: false,
     selfIntroduction: null,
     imageBucketPaths: [],
-
+    blacklistedPhoneNumbers: [],
     memo: null,
-    status: MemberStatus.ACTIVE,
+    status: MemberStatus.PENDING,
   },
   idealType: {
     minAgeBirthYear: null,

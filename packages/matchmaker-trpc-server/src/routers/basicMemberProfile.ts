@@ -19,7 +19,11 @@ export const basicMemberProfileRouter = createTRPCRouter({
           memberId: input.memberId,
           member: {
             status: {
-              in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+              in: [
+                MemberStatus.PENDING,
+                MemberStatus.ACTIVE,
+                MemberStatus.INACTIVE,
+              ],
             },
           },
         },

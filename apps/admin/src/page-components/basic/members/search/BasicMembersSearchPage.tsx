@@ -148,6 +148,7 @@ export function BasicMembersSearchPage() {
 
 function getStatusLabel(status: MemberStatus) {
   return match(status)
+    .with(MemberStatus.PENDING, () => "심사중")
     .with(MemberStatus.ACTIVE, () => "활동중")
     .with(MemberStatus.INACTIVE, () => "휴면")
     .with(MemberStatus.DELETED, () => "탈퇴")
