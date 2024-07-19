@@ -221,6 +221,7 @@ export const 음주량_라벨: Record<DrinkingFrequency, string> = {
 
 export const HOMEPAGE_URL = "https://ieum.love";
 export const MATCHMAKER_URL = "https://match.ieum.love";
+export const WORLDCUP_URL = "https://worldcup.ieum.love";
 
 export const 구_라벨: Record<SeoulDistrict, string> = {
   [SeoulDistrict.GANGNAM]: "강남구",

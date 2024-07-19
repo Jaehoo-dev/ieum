@@ -1,5 +1,7 @@
+import { ComponentPropsWithoutRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { WORLDCUP_URL } from "@ieum/constants";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -52,6 +54,12 @@ export function Sidebar({ open, onClose }: Props) {
               href="/places"
               onClick={onClose}
             />
+            <MenuItem
+              label="AI 이상형 월드컵"
+              href={WORLDCUP_URL}
+              target="_blank"
+              rel="noreferrer"
+            />
           </ul>
         </div>
       </aside>
@@ -60,13 +68,11 @@ export function Sidebar({ open, onClose }: Props) {
   );
 }
 
-interface MenuItemProps {
+interface MenuItemProps extends ComponentPropsWithoutRef<typeof Link> {
   label: string;
-  href: string;
-  onClick?: () => void;
 }
 
-function MenuItem({ label, href, onClick }: MenuItemProps) {
+function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
   const router = useRouter();
   const isActive = router.pathname === href;
   const { sendMessage } = useSlackNotibot();
@@ -78,10 +84,11 @@ function MenuItem({ label, href, onClick }: MenuItemProps) {
         className={`block rounded-lg px-4 py-2 text-lg font-medium text-gray-700 hover:bg-gray-200 ${
           isActive ? "bg-primary-200" : ""
         }`}
-        onClick={() => {
+        onClick={(e) => {
           sendMessage(`메뉴 - ${label} 클릭`);
-          onClick?.();
+          onClick?.(e);
         }}
+        {...props}
       >
         {label}
       </Link>
