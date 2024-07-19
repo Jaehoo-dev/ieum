@@ -62,7 +62,7 @@ function RespondButtons({ actionMember, match }: RespondButtonsProps) {
   return (
     <div className="flex gap-2">
       <button
-        className="rounded-lg bg-red-500 px-4 py-2 text-white"
+        className="rounded-lg bg-red-500 px-3 py-1.5 text-white"
         onClick={async () => {
           await rejectBy({
             actionMemberId: actionMember.id,
@@ -73,7 +73,7 @@ function RespondButtons({ actionMember, match }: RespondButtonsProps) {
         거절
       </button>
       <button
-        className="rounded-lg bg-green-500 px-4 py-2 text-white"
+        className="rounded-lg bg-green-500 px-3 py-1.5 text-white"
         onClick={async () => {
           await acceptBy({
             actionMemberId: actionMember.id,
