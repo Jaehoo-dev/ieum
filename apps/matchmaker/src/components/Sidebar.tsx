@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { WORLDCUP_URL } from "@ieum/constants";
+import { HOMEPAGE_URL, WORLDCUP_URL } from "@ieum/constants";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -46,6 +46,12 @@ export function Sidebar({ open, onClose }: Props) {
               label="활성 상태 조회"
               href="/my-status"
               onClick={onClose}
+            />
+            <MenuItem
+              label="자주 묻는 질문"
+              href={`${HOMEPAGE_URL}/faq`}
+              target="_blank"
+              rel="noopener noreferrer"
             />
             <hr />
             <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
