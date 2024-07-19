@@ -58,7 +58,7 @@ export function Sidebar({ open, onClose }: Props) {
               label="AI 이상형 월드컵"
               href={WORLDCUP_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
             />
           </ul>
         </div>
