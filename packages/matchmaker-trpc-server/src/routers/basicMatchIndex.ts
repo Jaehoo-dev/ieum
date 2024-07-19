@@ -40,7 +40,7 @@ export const basicMatchIndexRouter = createTRPCRouter({
           booksReadPerYear: z.nativeEnum(BooksReadPerYear).nullable(),
           isTattooOk: z.boolean(),
           exercisePerWeek: z.nativeEnum(ExercisePerWeek).nullable(),
-          shouldHaveCar: z.boolean(),
+          shouldHaveCar: z.boolean().nullable(),
           isGamingOk: z.boolean(),
           isPetOk: z.boolean(),
           dealBreakers: z.array(z.nativeEnum(BasicCondition)),

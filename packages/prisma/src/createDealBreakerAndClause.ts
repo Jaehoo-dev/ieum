@@ -140,7 +140,7 @@ export function createDealBreakerAndClause(
       })
       .with("SHOULD_HAVE_CAR", () => {
         return {
-          hasCar: idealType.shouldHaveCar,
+          hasCar: idealType.shouldHaveCar === true ? true : undefined,
         };
       })
       .with("IS_GAMING_OK", () => {

@@ -57,6 +57,10 @@ import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
+const unusedBasicConditions = new Set<BasicCondition>([
+  BasicCondition.SHOULD_HAVE_CAR,
+]);
+
 export function MyIdealTypePage() {
   return (
     <>
@@ -112,14 +116,18 @@ function Resolved() {
   );
   const [lowPriorities, setLowPriorities] = useState(idealType.lowPriorities);
   const [noPriorities, setNoPriorities] = useState(
-    Object.values(BasicCondition).filter((condition) => {
-      return (
-        !dealBreakers.includes(condition) &&
-        !highPriorities.includes(condition) &&
-        !mediumPriorities.includes(condition) &&
-        !lowPriorities.includes(condition)
-      );
-    }),
+    Object.values(BasicCondition)
+      .filter((condition) => {
+        return !unusedBasicConditions.has(condition);
+      })
+      .filter((condition) => {
+        return (
+          !dealBreakers.includes(condition) &&
+          !highPriorities.includes(condition) &&
+          !mediumPriorities.includes(condition) &&
+          !lowPriorities.includes(condition)
+        );
+      }),
   );
   const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
   const [mode, setMode] = useState<Mode>("READ");
@@ -424,17 +432,21 @@ function DroppableContainer({
     >
       <div className="flex flex-col gap-2" ref={setNodeRef}>
         {conditions.length > 0 ? (
-          conditions.map((condition) => {
-            return (
-              <SortableDataField
-                key={condition}
-                condition={condition}
-                idealType={idealType}
-                dragEnabled={mode === "EDIT"}
-                highlight={id === 우선순위.필수}
-              />
-            );
-          })
+          conditions
+            .filter((condition) => {
+              return !unusedBasicConditions.has(condition);
+            })
+            .map((condition) => {
+              return (
+                <SortableDataField
+                  key={condition}
+                  condition={condition}
+                  idealType={idealType}
+                  dragEnabled={mode === "EDIT"}
+                  highlight={id === 우선순위.필수}
+                />
+              );
+            })
         ) : (
           <EmptyField />
         )}

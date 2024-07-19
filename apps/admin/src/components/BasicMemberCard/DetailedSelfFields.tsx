@@ -77,7 +77,7 @@ export function DetailedSelfFields({ member }: Props) {
       <div>
         운동: {주간_운동량_라벨[member.exercisePerWeek]} {member.exerciseType}
       </div>
-      <div>자차 유무: {member.hasCar ? "예" : "아니요"}</div>
+      <div>자차 유무: {member.hasCar}</div>
       <div>
         게임: {member.doesGame ? "예" : "아니요"} {member.gameType}
       </div>

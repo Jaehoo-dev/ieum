@@ -295,7 +295,7 @@ model BasicMemberIdealType {
   lifePhilosophy          String?
   isTattooOk              Boolean
   exercisePerWeek         ExercisePerWeek?
-  shouldHaveCar           Boolean
+  shouldHaveCar           Boolean?
   isGamingOk              Boolean
   isPetOk                 Boolean
   idealTypeDescription    String?
