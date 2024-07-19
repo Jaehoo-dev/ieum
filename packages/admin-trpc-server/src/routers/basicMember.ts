@@ -393,7 +393,9 @@ export const basicMemberRouter = createTRPCRouter({
       const self = await ctx.prisma.basicMember.findUniqueOrThrow({
         where: {
           id,
-          status: MemberStatus.ACTIVE,
+          status: {
+            in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+          },
         },
         include: {
           idealType: true,
@@ -551,7 +553,9 @@ export const basicMemberRouter = createTRPCRouter({
         const self = await ctx.prisma.basicMember.findUniqueOrThrow({
           where: {
             id: memberId,
-            status: MemberStatus.ACTIVE,
+            status: {
+              in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+            },
           },
           include: {
             idealType: true,

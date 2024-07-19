@@ -16,7 +16,11 @@ export const basicMemberRouter = createTRPCRouter({
         where: {
           phoneNumber,
           status: {
-            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+            in: [
+              MemberStatus.PENDING,
+              MemberStatus.ACTIVE,
+              MemberStatus.INACTIVE,
+            ],
           },
         },
         select: {
@@ -140,7 +144,8 @@ export const basicMemberRouter = createTRPCRouter({
       });
 
       assert(
-        member.status === MemberStatus.ACTIVE ||
+        member.status === MemberStatus.PENDING ||
+          member.status === MemberStatus.ACTIVE ||
           member.status === MemberStatus.INACTIVE,
         "Invalid member status",
       );

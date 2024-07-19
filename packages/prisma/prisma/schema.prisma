@@ -235,7 +235,7 @@ model BasicMember {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  status  MemberStatus        @default(ACTIVE)
+  status  MemberStatus        @default(PENDING)
   profile BasicMemberProfile?
 
   referralCode        String
@@ -316,6 +316,7 @@ model MemberImage {
 }
 
 enum MemberStatus {
+  PENDING
   ACTIVE
   INACTIVE
   DELETED
