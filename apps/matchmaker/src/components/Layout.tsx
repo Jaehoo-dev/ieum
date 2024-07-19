@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react";
 import Head from "next/head";
-import { isEmptyStringOrNil } from "@ieum/utils";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 import { Sidebar } from "./Sidebar";
@@ -14,7 +13,7 @@ export function Layout({ children, title }: Props) {
   return (
     <>
       <Head>
-        <title>{isEmptyStringOrNil(title) ? "이음" : `${title} | 이음`}</title>
+        <title>{`${title} | 이음`}</title>
       </Head>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
         <Header title={title} />
