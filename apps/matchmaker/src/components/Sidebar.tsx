@@ -15,12 +15,12 @@ export function Sidebar({ open, onClose }: Props) {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-72 transform bg-white shadow-md ${
+        className={`fixed left-0 top-0 z-50 h-full w-72 transform bg-white py-4 shadow-md ${
           open ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out`}
       >
-        <div className="flex h-full flex-col p-4">
-          <div className="flex items-center justify-between">
+        <div className="flex h-full flex-col">
+          <div className="flex items-center justify-between px-4">
             <Link
               href="/"
               role="button"
@@ -32,10 +32,7 @@ export function Sidebar({ open, onClose }: Props) {
               <CloseRoundedIcon className="text-gray-700" />
             </button>
           </div>
-          <ul
-            className="mt-4 space-y-2 overflow-y-auto"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
+          <ul className="mt-4 space-y-2 overflow-y-auto px-4">
             <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem
