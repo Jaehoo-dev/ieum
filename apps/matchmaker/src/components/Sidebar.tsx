@@ -15,7 +15,7 @@ export function Sidebar({ open, onClose }: Props) {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 z-40 h-full w-72 transform bg-white shadow-md ${
+        className={`fixed left-0 top-0 z-50 h-full w-72 transform bg-white shadow-md ${
           open ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out`}
       >
@@ -101,6 +101,6 @@ function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
 
 function Overlay({ onClick }: { onClick: () => void }) {
   return (
-    <div className="fixed inset-0 z-10 bg-black opacity-50" onClick={onClick} />
+    <div className="fixed inset-0 z-40 bg-black opacity-50" onClick={onClick} />
   );
 }
