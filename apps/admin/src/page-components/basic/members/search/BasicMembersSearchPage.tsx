@@ -1,5 +1,5 @@
-import { useState } from "react";
 import type { ReactElement } from "react";
+import { useRouter } from "next/router";
 import { MemberStatus } from "@ieum/prisma";
 import { isEmptyStringOrNil } from "@ieum/utils";
 import { useForm } from "react-hook-form";
@@ -11,15 +11,16 @@ import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
 export function BasicMembersSearchPage() {
+  const router = useRouter();
+  const nameQuery = (router.query.name ?? "") as string;
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      name: "",
+      name: nameQuery,
     },
   });
-  const [searchValue, setSearchValue] = useState("");
   const { data: members } = api.basicMemberRouter.searchByName.useQuery(
-    { name: searchValue },
-    { enabled: !isEmptyStringOrNil(searchValue) },
+    { name: nameQuery },
+    { enabled: !isEmptyStringOrNil(nameQuery) },
   );
   const utils = api.useUtils();
   const { mutateAsync: activate, isPending: isActivating } =
@@ -56,7 +57,11 @@ export function BasicMembersSearchPage() {
         <form
           className="flex items-end gap-2"
           onSubmit={handleSubmit(({ name }) => {
-            setSearchValue(name);
+            router.replace({
+              query: {
+                name,
+              },
+            });
           })}
         >
           <TextInput
