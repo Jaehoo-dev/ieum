@@ -727,10 +727,6 @@ export function IdealTypeFields() {
         }}
       />
       <div>
-        자차
-        <Checkbox label="보유" {...register("idealType.shouldHaveCar")} />
-      </div>
-      <div>
         게임
         <Checkbox label="괜찮음" {...register("idealType.isGamingOk")} />
       </div>

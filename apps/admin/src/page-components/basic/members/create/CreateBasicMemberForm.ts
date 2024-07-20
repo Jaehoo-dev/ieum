@@ -71,6 +71,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     hasPet: false,
     selfIntroduction: null,
     imageBucketPaths: [],
+    videoBucketPaths: [],
     blacklistedPhoneNumbers: [],
     memo: null,
     status: MemberStatus.PENDING,

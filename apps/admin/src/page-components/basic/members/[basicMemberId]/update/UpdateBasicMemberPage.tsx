@@ -12,9 +12,10 @@ import { SelfFields } from "~/page-components/basic/components/form/SelfFields";
 import { api } from "~/utils/api";
 import { BasicMemberForm } from "../../BasicMemberForm";
 import { ImagesField } from "./components/ImagesField";
+import { VideosField } from "./components/VideosField";
 
 interface BasicMemberUpdateForm {
-  self: Omit<BasicMemberForm["self"], "imageBucketPaths">;
+  self: Omit<BasicMemberForm["self"], "imageBucketPaths" | "videoBucketPaths">;
   idealType: BasicMemberForm["idealType"];
 }
 
@@ -66,6 +67,7 @@ function Resolved() {
           </div>
           <MemoField />
           <ImagesField memberId={member.id} />
+          <VideosField memberId={member.id} />
           <button
             type="button"
             className="w-full rounded bg-gray-300 py-2"

@@ -12,12 +12,14 @@ import {
 
 import { ImageInput } from "~/components/ImageInput";
 import { Layout } from "~/components/Layout";
+import { VideoInput } from "~/components/VideoInput";
 import { api } from "~/utils/api";
 import { ConditionPrioritiesField } from "../../components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
 import { SelfFields } from "../../components/form/SelfFields";
 import { ImagePreview } from "../../components/ImagePreview";
+import { VideoPreview } from "../../components/VideoPreview";
 import { BasicMemberForm } from "../BasicMemberForm";
 import { createBasicMemberFormDefaultValues } from "./CreateBasicMemberForm";
 
@@ -57,7 +59,8 @@ export function CreateBasicMemberPage() {
             </div>
           </div>
           <MemoField />
-          <ImageField />
+          <ImagesField />
+          <VideosField />
           <button
             type="button"
             className="w-full rounded bg-gray-300 py-2"
@@ -87,7 +90,7 @@ export function CreateBasicMemberPage() {
   );
 }
 
-function ImageField() {
+function ImagesField() {
   const { control } = useFormContext<BasicMemberForm>();
   const [imageFile, setImageFile] = useState<File>();
   const { fields, append, remove } = useFieldArray({
@@ -146,6 +149,65 @@ function ImageField() {
   );
 }
 
+function VideosField() {
+  const { control } = useFormContext<BasicMemberForm>();
+  const [videoFile, setVideoFile] = useState<File>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "self.videoBucketPaths",
+  });
+
+  return (
+    <>
+      <VideoInput
+        label="영상"
+        onChange={(file) => {
+          setVideoFile(file);
+        }}
+        onRegister={async () => {
+          if (videoFile == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+            )
+            .upload(nanoid(), videoFile);
+
+          assert(error == null, error?.message);
+
+          append({ value: data.path });
+        }}
+      />
+      {fields.map((field, index) => {
+        return (
+          <div key={field.id} className="flex gap-2">
+            <VideoPreview bucketPath={field.value} />
+            <button
+              type="button"
+              onClick={async () => {
+                const { error } = await supabase.storage
+                  .from(
+                    process.env
+                      .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+                  )
+                  .remove([field.value]);
+
+                assert(error == null, error?.message);
+
+                remove(index);
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 function formToPayload({ self, idealType }: BasicMemberForm) {
   return {
     self: {
@@ -156,6 +218,7 @@ function formToPayload({ self, idealType }: BasicMemberForm) {
           : Number(calculateBmi(self.height, self.weight).toFixed(2)),
       fashionStyles: self.fashionStyles.map((style) => style.value),
       imageBucketPaths: self.imageBucketPaths.map((path) => path.value),
+      videoBucketPaths: self.videoBucketPaths.map((path) => path.value),
     },
     idealType: {
       ...idealType,

@@ -216,6 +216,7 @@ model BasicMember {
   hasPet                  Boolean
   selfIntroduction        String?
   images                  MemberImage[]
+  videos                  MemberVideo[]
 
   idealType BasicMemberIdealType?
 
@@ -313,6 +314,14 @@ model MemberImage {
   bucketPath  String
   index       Int
   customWidth Int?
+}
+
+model MemberVideo {
+  id         Int         @id @default(autoincrement())
+  member     BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId   Int
+  bucketPath String
+  index      Int
 }
 
 enum MemberStatus {

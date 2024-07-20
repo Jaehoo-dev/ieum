@@ -9,6 +9,7 @@ import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { ImagePreview } from "~/page-components/basic/components/ImagePreview";
+import { VideoPreview } from "~/page-components/basic/components/VideoPreview";
 import { api } from "~/utils/api";
 import type { ProfileForm } from "../ProfileForm";
 
@@ -212,6 +213,13 @@ function Resolved() {
           })}
         />
         <div className="flex flex-row gap-4">
+          {member.videos.map((video) => {
+            return (
+              <div key={video.id}>
+                <VideoPreview bucketPath={video.bucketPath} />
+              </div>
+            );
+          })}
           {member.images.map((image) => {
             return (
               <div key={image.id}>

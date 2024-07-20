@@ -24,6 +24,7 @@ export type BasicMemberForm = {
   > & {
     fashionStyles: { value: FashionStyle }[];
     imageBucketPaths: { value: string }[];
+    videoBucketPaths: { value: string }[];
   };
   idealType: Omit<
     BasicMemberIdealType,

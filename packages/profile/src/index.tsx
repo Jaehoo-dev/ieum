@@ -1,13 +1,13 @@
 import { ComponentPropsWithoutRef } from "react";
-import type { MemberImage } from "@ieum/prisma";
+import type { MemberImage, MemberVideo } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
-import { BasicMemberProfileWithImages } from "./types";
+import { BasicMemberProfileWithMediaSources } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
-  profile: BasicMemberProfileWithImages;
+  profile: BasicMemberProfileWithMediaSources;
   watermarkText?: string;
   defaultOpened?: boolean;
 }
@@ -21,7 +21,7 @@ export function Profile({
   const {
     selfIntroduction,
     idealTypeDescription,
-    member: { images },
+    member: { images, videos },
   } = profile;
 
   return (
@@ -39,7 +39,8 @@ export function Profile({
           defaultOpened={defaultOpened}
         />
       ) : null}
-      <ImageSection
+      <MediaSection
+        videos={videos}
         images={images}
         watermarkText={watermarkText}
         defaultOpened={defaultOpened}
@@ -53,7 +54,7 @@ function PersonalInformationSection({
   profile,
 }: {
   defaultOpened: boolean;
-  profile: BasicMemberProfileWithImages;
+  profile: BasicMemberProfileWithMediaSources;
 }) {
   const {
     birthYear,
@@ -136,11 +137,13 @@ function IdealTypeDescriptionSection({
   );
 }
 
-function ImageSection({
+function MediaSection({
+  videos,
   images,
   watermarkText,
   defaultOpened = false,
 }: {
+  videos: MemberVideo[];
   images: MemberImage[];
   watermarkText?: string;
   defaultOpened?: boolean;
@@ -148,6 +151,15 @@ function ImageSection({
   return (
     <AccordionSection title="제 모습은요" defaultOpened={defaultOpened}>
       <div className="flex flex-col gap-4">
+        {videos.map(({ id, bucketPath }) => {
+          return (
+            <VideoField
+              key={id}
+              bucketPath={bucketPath}
+              watermarkText={watermarkText}
+            />
+          );
+        })}
         {images.map(({ id, bucketPath, customWidth }) => {
           return (
             <ImageField
@@ -188,6 +200,33 @@ function ImageField({
         alt="프로필 이미지"
         width={_width}
         className="m-auto rounded-lg"
+      />
+    </div>
+  );
+}
+
+function VideoField({
+  bucketPath,
+  watermarkText,
+}: {
+  bucketPath: string;
+  watermarkText?: string;
+}) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return (
+    <div className="relative max-w-xl">
+      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
+      <video
+        className="m-auto rounded-lg"
+        src={publicUrl}
+        controls
+        muted
+        loop
       />
     </div>
   );
