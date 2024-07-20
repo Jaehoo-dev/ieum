@@ -27,7 +27,7 @@ export const basicMemberVideoRouter = createTRPCRouter({
   delete: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -40,7 +40,7 @@ export const basicMemberVideoRouter = createTRPCRouter({
   updateIndex: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         index: z.number(),
       }),
     )
