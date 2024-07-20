@@ -226,6 +226,11 @@ export const basicMatchRouter = createTRPCRouter({
                           index: "asc",
                         },
                       },
+                      videos: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
                     },
                   },
                 },

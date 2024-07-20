@@ -38,7 +38,7 @@ export function ImagesField({ memberId }: Props) {
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-1">
         <p className="text-gray-500">
-          ※ 사진은 수정 버튼을 누르지 않아도 바로 반영됨
+          ※ 사진은 최종 수정 버튼을 누르지 않아도 바로 반영됨
         </p>
         <div className="flex flex-row gap-4">
           {images.map((image) => {
@@ -46,7 +46,7 @@ export function ImagesField({ memberId }: Props) {
               <div key={image.id} className="flex flex-col gap-2">
                 <ImagePreview bucketPath={image.bucketPath} />
                 <ImageIndexField image={image} />
-                <ImageCustomIndexField image={image} />
+                <ImageCustomWidthField image={image} />
                 <button
                   className="rounded bg-red-500 py-1 text-white"
                   onClick={async () => {
@@ -138,7 +138,7 @@ function ImageIndexField({ image }: { image: MemberImage }) {
   );
 }
 
-function ImageCustomIndexField({ image }: { image: MemberImage }) {
+function ImageCustomWidthField({ image }: { image: MemberImage }) {
   const [value, setValue] = useState(image.customWidth);
   const { mutateAsync: updateImageWidth, isPending } =
     api.basicMemberImageRouter.updateCustomWidth.useMutation();

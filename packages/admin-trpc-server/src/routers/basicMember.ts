@@ -101,6 +101,7 @@ export const basicMemberRouter = createTRPCRouter({
           selfIntroduction: z.string().nullable(),
           memo: z.string().nullable(),
           imageBucketPaths: z.array(z.string()),
+          videoBucketPaths: z.array(z.string()),
         }),
         idealType: z.object({
           minAgeBirthYear: z.number().nullable(),
@@ -144,7 +145,7 @@ export const basicMemberRouter = createTRPCRouter({
       ({
         ctx,
         input: {
-          self: { imageBucketPaths, ...selfRest },
+          self: { imageBucketPaths, videoBucketPaths, ...selfRest },
           idealType,
         },
       }) => {
@@ -154,6 +155,16 @@ export const basicMemberRouter = createTRPCRouter({
             images: {
               createMany: {
                 data: imageBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
+              },
+            },
+            videos: {
+              createMany: {
+                data: videoBucketPaths.map((bucketPath, index) => {
                   return {
                     bucketPath,
                     index,
@@ -352,6 +363,11 @@ export const basicMemberRouter = createTRPCRouter({
         include: {
           idealType: true,
           images: {
+            orderBy: {
+              index: "asc",
+            },
+          },
+          videos: {
             orderBy: {
               index: "asc",
             },
@@ -977,6 +993,11 @@ export const basicMemberRouter = createTRPCRouter({
           member: {
             select: {
               images: {
+                orderBy: {
+                  index: "asc",
+                },
+              },
+              videos: {
                 orderBy: {
                   index: "asc",
                 },
