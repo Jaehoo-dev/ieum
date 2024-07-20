@@ -26,7 +26,8 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
-import { assert, krToGlobal } from "@ieum/utils";
+import { supabase } from "@ieum/supabase";
+import { assert, hash, krToGlobal } from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
@@ -794,6 +795,32 @@ export const basicMemberRouter = createTRPCRouter({
           include: {
             pendingMatches: true,
             profile: true,
+            images: true,
+            videos: true,
+          },
+        });
+
+        await supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+          )
+          .remove(member.images.map((image) => image.bucketPath));
+
+        await supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+          )
+          .remove(member.videos.map((video) => video.bucketPath));
+
+        await tx.memberImage.deleteMany({
+          where: {
+            memberId: member.id,
+          },
+        });
+
+        await tx.memberVideo.deleteMany({
+          where: {
+            memberId: member.id,
           },
         });
 
@@ -834,6 +861,10 @@ export const basicMemberRouter = createTRPCRouter({
             id,
           },
           data: {
+            phoneNumber: hash(
+              member.phoneNumber,
+              process.env.SOFT_DELETE_SECRET_KEY!,
+            ),
             status: MemberStatus.DELETED,
           },
         });
@@ -852,6 +883,8 @@ export const basicMemberRouter = createTRPCRouter({
             rejectedMatches: true,
             acceptedMatches: true,
             profile: true,
+            images: true,
+            videos: true,
           },
         });
 
@@ -868,6 +901,30 @@ export const basicMemberRouter = createTRPCRouter({
                 return match.id;
               }),
             },
+          },
+        });
+
+        await supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+          )
+          .remove(member.images.map((image) => image.bucketPath));
+
+        await supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+          )
+          .remove(member.videos.map((video) => video.bucketPath));
+
+        await tx.memberImage.deleteMany({
+          where: {
+            memberId: member.id,
+          },
+        });
+
+        await tx.memberVideo.deleteMany({
+          where: {
+            memberId: member.id,
           },
         });
 
