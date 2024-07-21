@@ -242,8 +242,8 @@ model BasicMember {
   referralCode        String
   discountCouponCount Int    @default(0)
 
-  // NOTE: A(010-0000-0000)가 탈퇴하고 번호를 바꿈. 이후 B(010-0000-0000)가 가입했을 때 같은 사람으로 판단하면 안 됨.
-  @@unique([name, phoneNumber])
+  // TODO: A(010-0000-0000)가 탈퇴하고 번호를 바꿈. 이후 B(010-0000-0000)가 가입했을 때 같은 사람으로 판단하면 안 됨.
+  @@unique([phoneNumber])
   @@unique([referralCode])
   @@index([phoneNumber])
   @@index([name])
