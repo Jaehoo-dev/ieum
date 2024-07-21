@@ -785,12 +785,12 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   softDelete: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
-    .mutation(async ({ ctx, input: { id } }) => {
+    .input(z.object({ memberId: z.number() }))
+    .mutation(async ({ ctx, input: { memberId } }) => {
       return ctx.prisma.$transaction(async (tx) => {
         const member = await tx.basicMember.findUniqueOrThrow({
           where: {
-            id,
+            id: memberId,
           },
           include: {
             pendingMatches: true,
@@ -858,7 +858,7 @@ export const basicMemberRouter = createTRPCRouter({
 
         return tx.basicMember.update({
           where: {
-            id,
+            id: memberId,
           },
           data: {
             phoneNumber: hash(

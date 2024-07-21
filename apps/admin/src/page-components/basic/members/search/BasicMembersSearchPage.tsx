@@ -112,7 +112,7 @@ export function BasicMembersSearchPage() {
                             confirm("정말로 탈퇴 처리하시겠습니까?");
 
                           if (confirmed) {
-                            await softDelete({ id: member.id });
+                            await softDelete({ memberId: member.id });
                             alert("탈퇴 처리 완료");
                           }
                         }}
