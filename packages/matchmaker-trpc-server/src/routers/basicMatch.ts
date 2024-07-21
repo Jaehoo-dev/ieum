@@ -253,6 +253,11 @@ export const basicMatchRouter = createTRPCRouter({
                           index: "asc",
                         },
                       },
+                      videos: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
                     },
                   },
                 },
@@ -271,6 +276,11 @@ export const basicMatchRouter = createTRPCRouter({
                   member: {
                     select: {
                       images: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
+                      videos: {
                         orderBy: {
                           index: "asc",
                         },
