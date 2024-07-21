@@ -101,11 +101,11 @@ function Registered() {
         className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage(
-            `${formatUniqueMemberName(member)} - 만남권 할인 이벤트 클릭`,
+            `${formatUniqueMemberName(member)} - 만남권 할인받기 클릭`,
           );
         }}
       >
-        만남권 할인 이벤트
+        만남권 할인받기
       </Link>
       <Link
         href="/my-matches"
