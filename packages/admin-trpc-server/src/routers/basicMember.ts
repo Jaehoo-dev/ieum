@@ -444,6 +444,11 @@ export const basicMemberRouter = createTRPCRouter({
           phoneNumber: {
             notIn: self.blacklistedPhoneNumbers,
           },
+          NOT: {
+            blacklistedPhoneNumbers: {
+              has: self.phoneNumber,
+            },
+          },
           AND: createDealBreakerAndClause(self.idealType),
           pendingMatches: {
             every: {
@@ -601,6 +606,11 @@ export const basicMemberRouter = createTRPCRouter({
             },
             phoneNumber: {
               notIn: self.blacklistedPhoneNumbers,
+            },
+            NOT: {
+              blacklistedPhoneNumbers: {
+                has: self.phoneNumber,
+              },
             },
             AND: [
               {
