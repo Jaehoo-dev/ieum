@@ -203,7 +203,7 @@ function Resolved() {
             </div>
             <div className="flex flex-col gap-2">
               <Checkbox
-                label={<p className="text-xl font-semibold">커스텀 검색</p>}
+                label={<p className="text-xl font-semibold">커스텀</p>}
                 checked={searchMode === "CUSTOM"}
                 onChange={(e) => {
                   setSearchMode(e.target.checked ? "CUSTOM" : "DEFAULT");
