@@ -27,11 +27,17 @@ function Resolved() {
   const router = useRouter();
   const { basicMemberId } = router.query;
 
-  assert(basicMemberId != null, "basicMemberId should be provided");
+  const { data: profile, isFetching } =
+    api.basicMemberRouter.getProfileByMemberId.useQuery(
+      { memberId: Number(basicMemberId) },
+      { enabled: basicMemberId != null },
+    );
 
-  const [profile] = api.basicMemberRouter.getProfileByMemberId.useSuspenseQuery(
-    { memberId: Number(basicMemberId) },
-  );
+  if (isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  assert(profile != null, "profile should be defined");
 
   return (
     <div className="flex w-full flex-col">
