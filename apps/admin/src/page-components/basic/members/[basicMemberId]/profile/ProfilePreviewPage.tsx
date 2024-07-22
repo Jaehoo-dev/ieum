@@ -27,13 +27,13 @@ function Resolved() {
   const router = useRouter();
   const { basicMemberId } = router.query;
 
-  const { data: profile, isFetching } =
+  const { data: profile, isPending } =
     api.basicMemberRouter.getProfileByMemberId.useQuery(
       { memberId: Number(basicMemberId) },
       { enabled: basicMemberId != null },
     );
 
-  if (isFetching) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 
