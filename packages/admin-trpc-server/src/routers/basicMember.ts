@@ -84,7 +84,9 @@ export const basicMemberRouter = createTRPCRouter({
           siblings: z.string().nullable(),
           characteristics: z.string().nullable(),
           tenYearFuture: z.string().nullable(),
-          plannedNumberOfChildren: z.nativeEnum(PlannedNumberOfChildren),
+          plannedNumberOfChildren: z
+            .nativeEnum(PlannedNumberOfChildren)
+            .nullable(),
           lifePhilosophy: z.string().nullable(),
           workPhilosophy: z.string().nullable(),
           hasTattoo: z.boolean(),
@@ -222,7 +224,9 @@ export const basicMemberRouter = createTRPCRouter({
             siblings: z.string().nullable(),
             characteristics: z.string().nullable(),
             tenYearFuture: z.string().nullable(),
-            plannedNumberOfChildren: z.nativeEnum(PlannedNumberOfChildren),
+            plannedNumberOfChildren: z
+              .nativeEnum(PlannedNumberOfChildren)
+              .nullable(),
             lifePhilosophy: z.string().nullable(),
             workPhilosophy: z.string().nullable(),
             hasTattoo: z.boolean(),

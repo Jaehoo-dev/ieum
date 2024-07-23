@@ -11,7 +11,6 @@ import {
   MBTI,
   MemberStatus,
   OccupationStatus,
-  PlannedNumberOfChildren,
   Religion,
 } from "@ieum/prisma";
 
@@ -54,7 +53,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     siblings: null,
     characteristics: null,
     tenYearFuture: null,
-    plannedNumberOfChildren: PlannedNumberOfChildren.NONE,
+    plannedNumberOfChildren: null,
     lifePhilosophy: null,
     workPhilosophy: null,
     hasTattoo: false,

@@ -6,7 +6,6 @@ import {
   연간_벌이_라벨,
   연락_빈도_라벨,
   연락_수단_라벨,
-  자녀수_라벨,
   자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
@@ -25,7 +24,6 @@ import {
   Eyelid,
   Gender,
   OccupationStatus,
-  PlannedNumberOfChildren,
   Religion,
 } from "@ieum/prisma";
 import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
@@ -490,32 +488,6 @@ export function SelfFields() {
             return isEmptyStringOrNil(value) ? null : value;
           },
         })}
-      />
-      <Controller
-        control={control}
-        name="self.plannedNumberOfChildren"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="결혼한다면 자녀 수는"
-              value={value}
-              onChange={onChange}
-            >
-              {Object.values(PlannedNumberOfChildren).map(
-                (plannedNumberOfChildren) => {
-                  return (
-                    <option
-                      key={plannedNumberOfChildren}
-                      value={plannedNumberOfChildren}
-                    >
-                      {자녀수_라벨[plannedNumberOfChildren]}
-                    </option>
-                  );
-                },
-              )}
-            </Select>
-          );
-        }}
       />
       <TextInput
         label="인생관"
