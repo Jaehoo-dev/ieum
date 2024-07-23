@@ -222,7 +222,9 @@ function getStatusLabel(status: MatchStatus) {
 }
 
 function calculateLeftHours(match: BasicMatch) {
-  const expiresAt = addHours(match.updatedAt, 24);
+  assert(match.sentAt != null, "Match should have sentAt");
+
+  const expiresAt = addHours(match.sentAt, 24);
 
   const result = Math.floor(
     (expiresAt.getTime() - new Date().getTime()) / 1000 / 60 / 60,
