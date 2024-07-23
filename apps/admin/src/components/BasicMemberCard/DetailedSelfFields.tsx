@@ -70,7 +70,6 @@ export function DetailedSelfFields({ member }: Props) {
       <div>형제 관계: {member.siblings}</div>
       <div>특징: {member.characteristics}</div>
       <div>10년 뒤 모습: {member.tenYearFuture}</div>
-      <div>희망 자녀수: {자녀수_라벨[member.plannedNumberOfChildren]}</div>
       <div>인생관: {member.lifePhilosophy}</div>
       <div>직업관: {member.workPhilosophy}</div>
       <div>문신 유무: {member.hasTattoo ? "예" : "아니요"}</div>
