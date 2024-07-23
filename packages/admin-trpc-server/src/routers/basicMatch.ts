@@ -283,6 +283,7 @@ export const basicMatchRouter = createTRPCRouter({
           },
           data: {
             status: MatchStatus.PENDING,
+            sentAt: new Date(),
           },
         }),
       ]);

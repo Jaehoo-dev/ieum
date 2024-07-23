@@ -363,6 +363,7 @@ model BasicMatch {
   status     MatchStatus
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
+  sentAt     DateTime?
 
   @@index([status])
 }
