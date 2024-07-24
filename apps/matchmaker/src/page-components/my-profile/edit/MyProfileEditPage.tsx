@@ -80,6 +80,12 @@ function Resolved() {
             `${formatUniqueMemberName(member)} - 내 프로필 수정 저장 클릭`,
           );
 
+          const confirmed = confirm("수정사항을 저장하시겠습니까?");
+
+          if (!confirmed) {
+            return;
+          }
+
           await updateProfile({
             memberId: member.id,
             data: {
