@@ -83,8 +83,12 @@ function Resolved() {
           const confirmed = confirm("수정사항을 저장하시겠습니까?");
 
           if (!confirmed) {
+            sendMessage(`not confirmed`);
+
             return;
           }
+
+          sendMessage(`confirmed`);
 
           await updateProfile({
             memberId: member.id,
