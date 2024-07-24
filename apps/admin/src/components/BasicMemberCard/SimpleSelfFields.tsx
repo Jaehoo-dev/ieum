@@ -49,7 +49,6 @@ export function SimpleSelfFields({ member }: Props) {
         {member.assetsValue != null ? 자산_라벨[member.assetsValue] : null}
       </div>
       <div>문신 유무: {member.hasTattoo ? "예" : "아니요"}</div>
-      <div>자기소개: {member.selfIntroduction}</div>
     </div>
   );
 }
