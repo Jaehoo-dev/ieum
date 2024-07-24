@@ -138,13 +138,7 @@ function Resolved() {
               </p>
               <button
                 onClick={async () => {
-                  const confirmed = window.confirm(
-                    "매칭 제외 목록에서 제거하시겠습니까?",
-                  );
-
-                  if (confirmed) {
-                    await remove({ memberId: member.id, phoneNumber });
-                  }
+                  await remove({ memberId: member.id, phoneNumber });
                 }}
               >
                 <DeleteIcon className="text-red-500" fontSize="small" />
