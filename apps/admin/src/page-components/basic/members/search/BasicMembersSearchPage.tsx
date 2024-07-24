@@ -57,7 +57,7 @@ export function BasicMembersSearchPage() {
         <form
           className="flex items-end gap-2"
           onSubmit={handleSubmit(({ name }) => {
-            router.replace({
+            router.push({
               query: {
                 name,
               },
