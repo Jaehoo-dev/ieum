@@ -21,13 +21,9 @@ export function MyMatchesPage() {
       <Head>
         <meta name="robots" content="noindex" />
       </Head>
-      <div className="flex w-full flex-col gap-4">
-        <Description />
-        <hr className="w-full" />
-        <Suspense fallback={null}>
-          <Resolved />
-        </Suspense>
-      </div>
+      <Suspense fallback={null}>
+        <Resolved />
+      </Suspense>
     </>
   );
 }
@@ -104,12 +100,16 @@ function Resolved() {
       {수락한_매칭들.length > 0 || 거절한_매칭들.length > 0 ? (
         <>
           <hr className="w-full" />
+          <div className="flex w-full">
+            <Description />
+          </div>
+          <hr className="w-full" />
           <div className="flex w-full flex-col gap-2">
             <h2 className="text-xl font-semibold text-gray-800">응답 완료</h2>
             <div className="flex w-full items-start gap-1">
-              <p className="text-sm text-gray-700">※</p>
-              <p className="text-sm text-gray-700">
-                상대방 응답 대기 중 또는 거절 프로필은 조회할 수 없습니다.
+              <p className="text-gray-500">※</p>
+              <p className="text-gray-500">
+                성사된 프로필만 다시 볼 수 있습니다.
               </p>
             </div>
             <div className="mt-2 flex flex-col gap-6">
