@@ -23,10 +23,17 @@ export function MyMatchPage() {
 
 function Resolved() {
   const { member } = useMemberAuthContext();
-  const router = useRouter();
-  const matchId = Number(router.query.basicMatchId);
 
   assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const router = useRouter();
+
+  if (router.query.basicMatchId == null) {
+    return null;
+  }
+
+  const matchId = Number(router.query.basicMatchId);
+
   assert(!Number.isNaN(matchId), "basicMatchId should be a number");
 
   const [profile] =
