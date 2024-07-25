@@ -147,7 +147,7 @@ function Buttons({
 
             const confirmed = await confirm({
               title: "거절하시겠습니까?",
-              description: "번복할 수 없습니다.",
+              description: "번복 시 불이익을 받을 수 있습니다.",
             });
 
             if (!confirmed) {
@@ -172,7 +172,7 @@ function Buttons({
 
             const confirmed = await confirm({
               title: "수락하시겠습니까?",
-              description: "번복할 수 없습니다.",
+              description: "번복 시 불이익을 받을 수 있습니다.",
             });
 
             if (!confirmed) {
