@@ -7,6 +7,7 @@ import { assert } from "@ieum/utils";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 import { Warning } from "~/components/Warning";
+import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
@@ -124,17 +125,27 @@ function Buttons({
         return utils.basicMatchRouter.invalidate();
       },
     });
+  const { open: confirm } = useConfirmDialog();
 
   return (
     <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t border-gray-200 bg-white p-4 pt-2 md:px-6">
       <span className="text-center text-sm text-gray-600">
         ※ 24시간 이상 무응답 시 휴면회원으로 전환합니다
       </span>
-      <div className="flex w-full gap-4">
+      <div className="flex w-full gap-3">
         <button
           className="flex-1 rounded-lg bg-gray-500 p-3 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={async () => {
             onRejectClick();
+
+            const confirmed = await confirm({
+              title: "거절하시겠습니까?",
+              description: "번복할 수 없습니다.",
+            });
+
+            if (!confirmed) {
+              return;
+            }
 
             await reject({
               memberId,
@@ -151,6 +162,15 @@ function Buttons({
           className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
           onClick={async () => {
             onAcceptClick();
+
+            const confirmed = await confirm({
+              title: "수락하시겠습니까?",
+              description: "번복할 수 없습니다.",
+            });
+
+            if (!confirmed) {
+              return;
+            }
 
             await accept({
               memberId,

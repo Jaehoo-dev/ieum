@@ -8,6 +8,8 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+import { ConfirmProvider } from "material-ui-confirm";
+
 import { AuthGuard } from "~/components/AuthGuard";
 import { MemberAuthProvider } from "~/providers/MemberAuthProvider";
 
@@ -32,15 +34,17 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           crossOrigin="anonymous"
         />
       </Head>
-      <MemberAuthProvider>
-        {Component.auth === false ? (
-          <Component {...pageProps} />
-        ) : (
-          <AuthGuard>
+      <ConfirmProvider>
+        <MemberAuthProvider>
+          {Component.auth === false ? (
             <Component {...pageProps} />
-          </AuthGuard>
-        )}
-      </MemberAuthProvider>
+          ) : (
+            <AuthGuard>
+              <Component {...pageProps} />
+            </AuthGuard>
+          )}
+        </MemberAuthProvider>
+      </ConfirmProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
     </>,
   );
