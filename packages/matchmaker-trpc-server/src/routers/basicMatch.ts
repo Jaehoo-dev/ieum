@@ -58,7 +58,7 @@ export const basicMatchRouter = createTRPCRouter({
           pendingMatches: {
             where: {
               status: MatchStatus.PENDING,
-              updatedAt: {
+              sentAt: {
                 gt: subHours(new Date(), 25),
               },
             },
@@ -109,7 +109,7 @@ export const basicMatchRouter = createTRPCRouter({
                   },
                 },
               },
-              updatedAt: {
+              sentAt: {
                 gt: subDays(new Date(), 7),
               },
             },
@@ -144,7 +144,7 @@ export const basicMatchRouter = createTRPCRouter({
                   },
                 },
               },
-              updatedAt: {
+              sentAt: {
                 gt: subDays(new Date(), 7),
               },
             },
@@ -154,7 +154,12 @@ export const basicMatchRouter = createTRPCRouter({
 
       return [...member.rejectedMatches, ...member.acceptedMatches].sort(
         (a, b) => {
-          return b.updatedAt.getTime() - a.updatedAt.getTime();
+          assert(
+            a.sentAt != null && b.sentAt != null,
+            "matches should have sentAt",
+          );
+
+          return b.sentAt.getTime() - a.sentAt.getTime();
         },
       );
     }),
