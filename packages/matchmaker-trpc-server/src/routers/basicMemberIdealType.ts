@@ -7,11 +7,11 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
   getIdealTypeById: publicProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.basicMemberIdealType.findUniqueOrThrow({
+      return ctx.prisma.basicMemberIdealTypeV2.findUniqueOrThrow({
         where: {
           memberId: input.id,
         },
@@ -20,7 +20,7 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
   updatePriorities: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         priorities: z.object({
           dealBreakers: z.array(z.nativeEnum(BasicCondition)),
           highPriorities: z.array(z.nativeEnum(BasicCondition)),
@@ -30,7 +30,7 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input: { memberId, priorities } }) => {
-      return ctx.prisma.basicMemberIdealType.update({
+      return ctx.prisma.basicMemberIdealTypeV2.update({
         where: {
           memberId,
         },

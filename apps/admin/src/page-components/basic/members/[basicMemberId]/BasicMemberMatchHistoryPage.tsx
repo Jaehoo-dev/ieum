@@ -3,9 +3,9 @@ import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { 상태_라벨 } from "@ieum/constants";
-import type { BasicMatch } from "@ieum/prisma";
+import type { BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus } from "@ieum/prisma";
-import { assert } from "@ieum/utils";
+import { assert, isEmptyStringOrNil } from "@ieum/utils";
 import { format, subDays } from "date-fns";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
@@ -39,10 +39,10 @@ function formToQuery(form: Form) {
 
 export function BasicMemberMatchHistoryPage() {
   const router = useRouter();
-  const basicMemberId = Number(router.query.basicMemberId);
+  const basicMemberId = router.query.basicMemberId as string;
   const { data: basicMember } = api.basicMemberRouter.findById.useQuery(
     { id: basicMemberId },
-    { enabled: !isNaN(basicMemberId) },
+    { enabled: !isEmptyStringOrNil(basicMemberId) },
   );
   const { control, getValues, handleSubmit } = useForm<Form>({
     defaultValues: {
@@ -66,7 +66,7 @@ export function BasicMemberMatchHistoryPage() {
   const [queryParams, setQueryParams] = useState(formToQuery(getValues()));
   const { data: matches = [] } = api.basicMatchRouter.findByMemberId.useQuery(
     { memberId: basicMemberId, params: queryParams },
-    { enabled: !isNaN(basicMemberId) },
+    { enabled: !isEmptyStringOrNil(basicMemberId) },
   );
 
   return (
@@ -177,9 +177,9 @@ export function BasicMemberMatchHistoryPage() {
         <div className="flex h-[calc(100vh-240px)] flex-1 flex-col items-center gap-3 overflow-y-auto ">
           {matches.map((match) => {
             const [member1, member2] = [
-              ...match.pendingBy,
-              ...match.rejectedBy,
-              ...match.acceptedBy,
+              ...match.pendingByV2,
+              ...match.rejectedByV2,
+              ...match.acceptedByV2,
             ];
 
             assert(
@@ -235,7 +235,7 @@ export function BasicMemberMatchHistoryPage() {
   );
 }
 
-function StatusButtons({ match }: { match: BasicMatch }) {
+function StatusButtons({ match }: { match: BasicMatchV2 }) {
   const utils = api.useUtils();
   const { mutateAsync: updateStatus, isPending: isUpdatePending } =
     api.basicMatchRouter.updateStatus.useMutation({

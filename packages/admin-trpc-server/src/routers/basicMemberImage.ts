@@ -6,13 +6,13 @@ export const basicMemberImageRouter = createTRPCRouter({
   create: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         bucketPath: z.string(),
         index: z.number(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberImage.create({
+      return ctx.prisma.memberImageV2.create({
         data: {
           member: {
             connect: {
@@ -27,11 +27,11 @@ export const basicMemberImageRouter = createTRPCRouter({
   delete: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberImage.delete({
+      return ctx.prisma.memberImageV2.delete({
         where: {
           id: input.id,
         },
@@ -40,12 +40,12 @@ export const basicMemberImageRouter = createTRPCRouter({
   updateIndex: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         index: z.number(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberImage.update({
+      return ctx.prisma.memberImageV2.update({
         where: {
           id: input.id,
         },
@@ -57,12 +57,12 @@ export const basicMemberImageRouter = createTRPCRouter({
   updateCustomWidth: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         width: z.number().nullable(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberImage.update({
+      return ctx.prisma.memberImageV2.update({
         where: {
           id: input.id,
         },
@@ -74,11 +74,11 @@ export const basicMemberImageRouter = createTRPCRouter({
   findByMemberId: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.memberImage.findMany({
+      return ctx.prisma.memberImageV2.findMany({
         where: {
           memberId: input.memberId,
         },

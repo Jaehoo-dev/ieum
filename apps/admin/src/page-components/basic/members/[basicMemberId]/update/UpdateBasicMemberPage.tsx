@@ -31,7 +31,7 @@ function Resolved() {
   const [done, setDone] = useState(false);
   const router = useRouter();
   const [member] = api.basicMemberRouter.findById.useSuspenseQuery({
-    id: Number(router.query.basicMemberId),
+    id: router.query.basicMemberId as string,
   });
   const methods = useForm<BasicMemberUpdateForm>({
     defaultValues: memberToForm(member),

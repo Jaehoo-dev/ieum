@@ -38,7 +38,7 @@ export const basicMemberRouter = createTRPCRouter({
   getAllByGender: protectedAdminProcedure
     .input(z.nativeEnum(Gender))
     .query(({ ctx, input }) => {
-      return ctx.prisma.basicMember.findMany({
+      return ctx.prisma.basicMemberV2.findMany({
         where: {
           gender: input,
           status: MemberStatus.ACTIVE,
@@ -152,7 +152,7 @@ export const basicMemberRouter = createTRPCRouter({
           idealType,
         },
       }) => {
-        return ctx.prisma.basicMember.create({
+        return ctx.prisma.basicMemberV2.create({
           data: {
             ...selfRest,
             images: {
@@ -186,7 +186,7 @@ export const basicMemberRouter = createTRPCRouter({
   update: protectedAdminProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         data: z.object({
           self: z.object({
             name: z.string(),
@@ -296,7 +296,7 @@ export const basicMemberRouter = createTRPCRouter({
         },
       }) => {
         return ctx.prisma.$transaction([
-          ctx.prisma.basicMember.update({
+          ctx.prisma.basicMemberV2.update({
             where: {
               id,
             },
@@ -304,7 +304,7 @@ export const basicMemberRouter = createTRPCRouter({
               ...self,
             },
           }),
-          ctx.prisma.basicMemberIdealType.update({
+          ctx.prisma.basicMemberIdealTypeV2.update({
             where: {
               memberId: id,
             },
@@ -322,11 +322,11 @@ export const basicMemberRouter = createTRPCRouter({
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
         limit: z.number().min(1).max(100).default(3),
-        cursor: z.number().optional(),
+        cursor: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input: { gender, status, sort, limit, cursor } }) => {
-      const members = await ctx.prisma.basicMember.findMany({
+      const members = await ctx.prisma.basicMemberV2.findMany({
         take: limit + 1,
         where: {
           gender,
@@ -359,9 +359,9 @@ export const basicMemberRouter = createTRPCRouter({
       };
     }),
   findById: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(({ ctx, input: { id } }) => {
-      return ctx.prisma.basicMember.findUniqueOrThrow({
+      return ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id,
         },
@@ -387,7 +387,7 @@ export const basicMemberRouter = createTRPCRouter({
   searchByName: protectedAdminProcedure
     .input(z.object({ name: z.string() }))
     .query(({ ctx, input: { name } }) => {
-      return ctx.prisma.basicMember.findMany({
+      return ctx.prisma.basicMemberV2.findMany({
         where: {
           name,
         },
@@ -409,9 +409,9 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   findMatchCandidates: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input: { id } }) => {
-      const self = await ctx.prisma.basicMember.findUniqueOrThrow({
+      const self = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id,
           status: {
@@ -438,7 +438,7 @@ export const basicMemberRouter = createTRPCRouter({
         ]),
       );
 
-      const candidates = await ctx.prisma.basicMember.findMany({
+      const candidates = await ctx.prisma.basicMemberV2.findMany({
         where: {
           status: MemberStatus.ACTIVE,
           gender: self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
@@ -468,23 +468,23 @@ export const basicMemberRouter = createTRPCRouter({
           AND: createDealBreakerAndClause(self.idealType),
           pendingMatches: {
             every: {
-              pendingBy: { none: { id: self.id } },
-              rejectedBy: { none: { id: self.id } },
-              acceptedBy: { none: { id: self.id } },
+              pendingByV2: { none: { id: self.id } },
+              rejectedByV2: { none: { id: self.id } },
+              acceptedByV2: { none: { id: self.id } },
             },
           },
           rejectedMatches: {
             every: {
-              pendingBy: { none: { id: self.id } },
-              rejectedBy: { none: { id: self.id } },
-              acceptedBy: { none: { id: self.id } },
+              pendingByV2: { none: { id: self.id } },
+              rejectedByV2: { none: { id: self.id } },
+              acceptedByV2: { none: { id: self.id } },
             },
           },
           acceptedMatches: {
             every: {
-              pendingBy: { none: { id: self.id } },
-              rejectedBy: { none: { id: self.id } },
-              acceptedBy: { none: { id: self.id } },
+              pendingByV2: { none: { id: self.id } },
+              rejectedByV2: { none: { id: self.id } },
+              acceptedByV2: { none: { id: self.id } },
             },
           },
         },
@@ -528,7 +528,7 @@ export const basicMemberRouter = createTRPCRouter({
   findCustomMatchCandidates: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         data: z.object({
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
@@ -588,7 +588,7 @@ export const basicMemberRouter = createTRPCRouter({
           },
         },
       }) => {
-        const self = await ctx.prisma.basicMember.findUniqueOrThrow({
+        const self = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
           where: {
             id: memberId,
             status: {
@@ -613,7 +613,7 @@ export const basicMemberRouter = createTRPCRouter({
         );
         const dealBreakersSet = new Set(dealBreakers);
 
-        const candidates = await ctx.prisma.basicMember.findMany({
+        const candidates = await ctx.prisma.basicMemberV2.findMany({
           where: {
             status: MemberStatus.ACTIVE,
             gender: self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
@@ -757,23 +757,23 @@ export const basicMemberRouter = createTRPCRouter({
             ],
             pendingMatches: {
               every: {
-                pendingBy: { none: { id: self.id } },
-                rejectedBy: { none: { id: self.id } },
-                acceptedBy: { none: { id: self.id } },
+                pendingByV2: { none: { id: self.id } },
+                rejectedByV2: { none: { id: self.id } },
+                acceptedByV2: { none: { id: self.id } },
               },
             },
             rejectedMatches: {
               every: {
-                pendingBy: { none: { id: self.id } },
-                rejectedBy: { none: { id: self.id } },
-                acceptedBy: { none: { id: self.id } },
+                pendingByV2: { none: { id: self.id } },
+                rejectedByV2: { none: { id: self.id } },
+                acceptedByV2: { none: { id: self.id } },
               },
             },
             acceptedMatches: {
               every: {
-                pendingBy: { none: { id: self.id } },
-                rejectedBy: { none: { id: self.id } },
-                acceptedBy: { none: { id: self.id } },
+                pendingByV2: { none: { id: self.id } },
+                rejectedByV2: { none: { id: self.id } },
+                acceptedByV2: { none: { id: self.id } },
               },
             },
           },
@@ -813,9 +813,9 @@ export const basicMemberRouter = createTRPCRouter({
       },
     ),
   addToBlacklist: protectedAdminProcedure
-    .input(z.object({ actionMemberId: z.number(), targetMemberId: z.number() }))
+    .input(z.object({ actionMemberId: z.string(), targetMemberId: z.string() }))
     .mutation(async ({ ctx, input: { actionMemberId, targetMemberId } }) => {
-      return ctx.prisma.basicBlacklistItem.create({
+      return ctx.prisma.basicBlacklistItemV2.create({
         data: {
           blacklisterId: actionMemberId,
           targetId: targetMemberId,
@@ -823,10 +823,10 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   softDelete: protectedAdminProcedure
-    .input(z.object({ memberId: z.number() }))
+    .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
       return ctx.prisma.$transaction(async (tx) => {
-        const member = await tx.basicMember.findUniqueOrThrow({
+        const member = await tx.basicMemberV2.findUniqueOrThrow({
           where: {
             id: memberId,
           },
@@ -850,19 +850,19 @@ export const basicMemberRouter = createTRPCRouter({
           )
           .remove(member.videos.map((video) => video.bucketPath));
 
-        await tx.memberImage.deleteMany({
+        await tx.memberImageV2.deleteMany({
           where: {
             memberId: member.id,
           },
         });
 
-        await tx.memberVideo.deleteMany({
+        await tx.memberVideoV2.deleteMany({
           where: {
             memberId: member.id,
           },
         });
 
-        await tx.basicMatch.deleteMany({
+        await tx.basicMatchV2.deleteMany({
           where: {
             id: {
               in: member.pendingMatches.map((match) => {
@@ -873,7 +873,7 @@ export const basicMemberRouter = createTRPCRouter({
         });
 
         if (member.profile != null) {
-          await tx.basicMemberProfile.delete({
+          await tx.basicMemberProfileV2.delete({
             where: {
               memberId: member.id,
             },
@@ -894,7 +894,7 @@ export const basicMemberRouter = createTRPCRouter({
           }
         }
 
-        return tx.basicMember.update({
+        return tx.basicMemberV2.update({
           where: {
             id: memberId,
           },
@@ -909,10 +909,10 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   hardDelete: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input: { id } }) => {
       return ctx.prisma.$transaction(async (tx) => {
-        const member = await tx.basicMember.findUniqueOrThrow({
+        const member = await tx.basicMemberV2.findUniqueOrThrow({
           where: {
             id,
           },
@@ -932,7 +932,7 @@ export const basicMemberRouter = createTRPCRouter({
           ...member.acceptedMatches,
         ];
 
-        await tx.basicMatch.deleteMany({
+        await tx.basicMatchV2.deleteMany({
           where: {
             id: {
               in: matches.map((match) => {
@@ -954,27 +954,27 @@ export const basicMemberRouter = createTRPCRouter({
           )
           .remove(member.videos.map((video) => video.bucketPath));
 
-        await tx.memberImage.deleteMany({
+        await tx.memberImageV2.deleteMany({
           where: {
             memberId: member.id,
           },
         });
 
-        await tx.memberVideo.deleteMany({
+        await tx.memberVideoV2.deleteMany({
           where: {
             memberId: member.id,
           },
         });
 
         if (member.profile != null) {
-          await tx.basicMemberProfile.delete({
+          await tx.basicMemberProfileV2.delete({
             where: {
               memberId: member.id,
             },
           });
         }
 
-        return tx.basicMember.delete({
+        return tx.basicMemberV2.delete({
           where: {
             id,
           },
@@ -982,9 +982,9 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   activate: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input: { id } }) => {
-      return ctx.prisma.basicMember.update({
+      return ctx.prisma.basicMemberV2.update({
         where: {
           id,
         },
@@ -994,9 +994,9 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   inactivate: protectedAdminProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input: { id } }) => {
-      return ctx.prisma.basicMember.update({
+      return ctx.prisma.basicMemberV2.update({
         where: {
           id,
         },
@@ -1008,7 +1008,7 @@ export const basicMemberRouter = createTRPCRouter({
   createProfile: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         profile: z.object({
           birthYear: z.number(),
           residence: z.string(),
@@ -1030,7 +1030,7 @@ export const basicMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input: { memberId, profile } }) => {
-      return ctx.prisma.basicMemberProfile.create({
+      return ctx.prisma.basicMemberProfileV2.create({
         data: {
           ...profile,
           member: {
@@ -1044,7 +1044,7 @@ export const basicMemberRouter = createTRPCRouter({
   updateProfile: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         profile: z.object({
           birthYear: z.number(),
           residence: z.string(),
@@ -1066,7 +1066,7 @@ export const basicMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input: { memberId, profile } }) => {
-      return ctx.prisma.basicMemberProfile.update({
+      return ctx.prisma.basicMemberProfileV2.update({
         where: {
           memberId,
         },
@@ -1076,11 +1076,11 @@ export const basicMemberRouter = createTRPCRouter({
   getProfileByMemberId: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(({ ctx, input: { memberId } }) => {
-      return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
+      return ctx.prisma.basicMemberProfileV2.findUniqueOrThrow({
         where: {
           memberId,
         },
@@ -1105,7 +1105,7 @@ export const basicMemberRouter = createTRPCRouter({
   getAllNeverMatchedByGender: protectedAdminProcedure
     .input(z.nativeEnum(Gender))
     .query(async ({ ctx, input: gender }) => {
-      const members = await ctx.prisma.basicMember.findMany({
+      const members = await ctx.prisma.basicMemberV2.findMany({
         where: {
           status: MemberStatus.ACTIVE,
           gender,

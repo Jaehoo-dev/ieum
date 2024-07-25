@@ -163,7 +163,7 @@ enum BlindCondition {
 }
 
 model BasicMember {
-  id                      Int                     @id @default(autoincrement())
+  id                      Int                      @id @default(autoincrement())
   name                    String
   phoneNumber             String
   gender                  Gender
@@ -264,9 +264,157 @@ model BasicMember {
   @@index([lastMatchedAt])
 }
 
+model BasicMemberV2 {
+  id                      String                   @id @default(cuid())
+  legacyId                Int?                     @unique
+  name                    String
+  phoneNumber             String
+  gender                  Gender
+  birthYear               Int
+  residence               String
+  height                  Float
+  weight                  Int?
+  bmi                     Float?
+  bodyShape               BodyShape
+  fashionStyles           FashionStyle[]
+  eyelid                  Eyelid
+  customEyelid            String?
+  confidentFacialBodyPart String
+  educationLevel          EducationLevel
+  graduatedUniversity     String?
+  occupationStatus        OccupationStatus
+  workplace               String?
+  job                     String?
+  currentSchool           String?
+  mbti                    MBTI?
+  isSmoker                Boolean
+  isDrinker               Boolean
+  alcoholConsumption      String?
+  alcoholTolerance        String?
+  religion                Religion
+  annualIncome            AnnualIncome?
+  assetsValue             AssetsValue?
+  assetManagementApproach String?
+  hobby                   String
+  booksReadPerYear        BooksReadPerYear
+  bookTaste               String?
+  leisureActivity         String?
+  siblings                String?
+  characteristics         String?
+  tenYearFuture           String?
+  plannedNumberOfChildren PlannedNumberOfChildren?
+  lifePhilosophy          String?
+  workPhilosophy          String?
+  hasTattoo               Boolean
+  exercisePerWeek         ExercisePerWeek
+  exerciseType            String?
+  hasCar                  Boolean
+  doesGame                Boolean
+  gameType                String?
+  datingStyle             String?
+  contactFrequency        ContactFrequency
+  customContactFrequency  String?
+  contactMethod           ContactMethod
+  customContactMethod     String?
+  hasPet                  Boolean
+  selfIntroduction        String?
+  images                  MemberImageV2[]
+  videos                  MemberVideoV2[]
+
+  idealType BasicMemberIdealTypeV2?
+
+  memo String?
+
+  lastMatchedAt DateTime @default(now())
+
+  pendingMatches  BasicMatchV2[] @relation(name: "pendingMatchMemberV2")
+  rejectedMatches BasicMatchV2[] @relation(name: "rejectedMatchMemberV2")
+  acceptedMatches BasicMatchV2[] @relation(name: "acceptedMatchMemberV2")
+
+  blacklisting  BasicBlacklistItemV2[] @relation(name: "blacklisterV2")
+  blacklistedBy BasicBlacklistItemV2[] @relation(name: "blacklistTargetV2")
+
+  blacklistedPhoneNumbers String[] @default([])
+  blacklistedNames        String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status  MemberStatus          @default(PENDING)
+  profile BasicMemberProfileV2?
+
+  referralCode        String
+  discountCouponCount Int    @default(0)
+
+  // TODO: A(010-0000-0000)가 탈퇴하고 번호를 바꿈. 이후 B(010-0000-0000)가 가입했을 때 같은 사람으로 판단하면 안 됨. -> name, phoneNumber, gender, birthYear 모두 같아야 같은 사람으로 판단
+  @@unique([phoneNumber])
+  @@unique([referralCode])
+  @@index([phoneNumber])
+  @@index([name])
+  @@index([gender])
+  @@index([birthYear])
+  @@index([height])
+  @@index([educationLevel])
+  @@index([isSmoker])
+  @@index([religion])
+  @@index([annualIncome])
+  @@index([assetsValue])
+  @@index([hasTattoo])
+  @@index([exercisePerWeek])
+  @@index([hasCar])
+  @@index([hasPet])
+  @@index([status])
+  @@index([lastMatchedAt])
+}
+
 model BasicMemberIdealType {
   member   BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
   memberId Int         @id
+
+  minAgeBirthYear         Int?
+  maxAgeBirthYear         Int?
+  regions                 Region[]
+  customRegion            String?
+  minHeight               Int?
+  maxHeight               Int?
+  bodyShapes              BodyShape[]
+  fashionStyles           FashionStyle[]
+  eyelids                 Eyelid[]
+  facialBodyPart          String?
+  educationLevel          EducationLevel?
+  schoolLevel             String?
+  occupationStatuses      OccupationStatus[]
+  nonPreferredWorkplace   String?
+  nonPreferredJob         String?
+  preferredMbtis          MBTI[]
+  nonPreferredMbtis       MBTI[]
+  isSmokerOk              Boolean
+  drinkingFrequency       DrinkingFrequency?
+  customDrinkingFrequency String?
+  preferredReligions      Religion[]
+  nonPreferredReligions   Religion[]
+  minAnnualIncome         AnnualIncome?
+  minAssetsValue          AssetsValue?
+  hobby                   String?
+  booksReadPerYear        BooksReadPerYear?
+  characteristics         String?
+  lifePhilosophy          String?
+  isTattooOk              Boolean
+  exercisePerWeek         ExercisePerWeek?
+  shouldHaveCar           Boolean?
+  isGamingOk              Boolean
+  isPetOk                 Boolean
+  idealTypeDescription    String?
+
+  dealBreakers     BasicCondition[]
+  highPriorities   BasicCondition[]
+  mediumPriorities BasicCondition[]
+  lowPriorities    BasicCondition[]
+}
+
+model BasicMemberIdealTypeV2 {
+  member   BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId String        @id
 
   minAgeBirthYear         Int?
   maxAgeBirthYear         Int?
@@ -318,10 +466,27 @@ model MemberImage {
   customWidth Int?
 }
 
+model MemberImageV2 {
+  id          String        @id @default(cuid())
+  member      BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId    String
+  bucketPath  String
+  index       Int
+  customWidth Int?
+}
+
 model MemberVideo {
   id         String      @id @default(cuid())
   member     BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
   memberId   Int
+  bucketPath String
+  index      Int
+}
+
+model MemberVideoV2 {
+  id         String        @id @default(cuid())
+  member     BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId   String
   bucketPath String
   index      Int
 }
@@ -355,6 +520,28 @@ model BasicMemberProfile {
   idealTypeDescription String?
 }
 
+model BasicMemberProfileV2 {
+  id                   String        @id @default(cuid())
+  member               BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId             String        @unique
+  birthYear            Int
+  residence            String
+  height               Float
+  education            String
+  job                  String
+  annualIncome         String?
+  assetsValue          String?
+  mbti                 String?
+  hobby                String?
+  characteristic       String?
+  lifePhilosophy       String?
+  datingStyle          String?
+  isSmoker             String
+  religion             String
+  selfIntroduction     String?
+  idealTypeDescription String?
+}
+
 model BasicMatch {
   id         Int           @id @default(autoincrement())
   pendingBy  BasicMember[] @relation(name: "pendingMatchMember")
@@ -368,6 +555,19 @@ model BasicMatch {
   @@index([status])
 }
 
+model BasicMatchV2 {
+  id           String          @id @default(cuid())
+  pendingByV2  BasicMemberV2[] @relation(name: "pendingMatchMemberV2")
+  rejectedByV2 BasicMemberV2[] @relation(name: "rejectedMatchMemberV2")
+  acceptedByV2 BasicMemberV2[] @relation(name: "acceptedMatchMemberV2")
+  status       MatchStatus
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  sentAt       DateTime?
+
+  @@index([status])
+}
+
 model BasicBlacklistItem {
   id            Int         @id @default(autoincrement())
   blacklister   BasicMember @relation(name: "blacklister", fields: [blacklisterId], references: [id], onDelete: Cascade)
@@ -375,6 +575,17 @@ model BasicBlacklistItem {
   target        BasicMember @relation(name: "blacklistTarget", fields: [targetId], references: [id], onDelete: Cascade)
   targetId      Int
   createdAt     DateTime    @default(now())
+
+  @@unique([blacklisterId, targetId])
+}
+
+model BasicBlacklistItemV2 {
+  id            String        @id @default(cuid())
+  blacklister   BasicMemberV2 @relation(name: "blacklisterV2", fields: [blacklisterId], references: [id], onDelete: Cascade)
+  blacklisterId String
+  target        BasicMemberV2 @relation(name: "blacklistTargetV2", fields: [targetId], references: [id], onDelete: Cascade)
+  targetId      String
+  createdAt     DateTime      @default(now())
 
   @@unique([blacklisterId, targetId])
 }

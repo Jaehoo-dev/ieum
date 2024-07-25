@@ -1,8 +1,12 @@
-import { BasicMemberProfile, MemberImage, MemberVideo } from "@ieum/prisma";
+import {
+  BasicMemberProfileV2,
+  MemberImageV2,
+  MemberVideoV2,
+} from "@ieum/prisma";
 
-export type BasicMemberProfileWithMediaSources = BasicMemberProfile & {
+export type BasicMemberProfileWithMediaSources = BasicMemberProfileV2 & {
   member: {
-    images: MemberImage[];
-    videos: MemberVideo[];
+    images: MemberImageV2[];
+    videos: MemberVideoV2[];
   };
 };

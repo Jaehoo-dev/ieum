@@ -14,7 +14,10 @@ import {
   주간_운동량_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMember, BasicMemberIdealType } from "@ieum/prisma";
+import type {
+  BasicMemberIdealType,
+  BasicMemberIdealTypeV2,
+} from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
@@ -26,11 +29,6 @@ import {
   MatchStatus,
   MBTI,
   OccupationStatus,
-  orderedAnnualIncomes,
-  orderedAssetsValues,
-  orderedBooksReadPerYears,
-  orderedEducationLevels,
-  orderedExercisePerWeeks,
   Religion,
   satisfiesDealBreakers,
 } from "@ieum/prisma";
@@ -42,7 +40,6 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { match } from "ts-pattern";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Checkbox } from "~/components/Checkbox";
@@ -90,7 +87,7 @@ function Resolved() {
   const [searchMode, setSearchMode] = useState<"DEFAULT" | "CUSTOM">("DEFAULT");
   const utils = api.useUtils();
   const router = useRouter();
-  const basicMemberId = Number(router.query.basicMemberId);
+  const basicMemberId = router.query.basicMemberId as string;
   const [basicMember] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,
   });
@@ -1005,7 +1002,7 @@ function Empty({ id }: { id: 우선순위 }) {
 const 상관없음 = "상관없음";
 
 function createCustomCandidatesSearchFormValues(
-  idealType: BasicMemberIdealType,
+  idealType: BasicMemberIdealTypeV2,
 ): CustomCanditatesSearchForm {
   const {
     minAgeBirthYear,

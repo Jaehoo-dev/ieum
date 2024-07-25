@@ -6,11 +6,11 @@ import {
   체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMemberV2 } from "@ieum/prisma";
 import { getBmiLabel } from "@ieum/utils";
 
 interface Props {
-  member: BasicMember;
+  member: BasicMemberV2;
 }
 
 export function SimpleSelfFields({ member }: Props) {

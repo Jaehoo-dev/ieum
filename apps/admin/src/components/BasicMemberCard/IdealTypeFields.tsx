@@ -12,10 +12,10 @@ import {
   체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMemberIdealType } from "@ieum/prisma";
+import type { BasicMemberIdealTypeV2 } from "@ieum/prisma";
 
 interface Props {
-  idealType: BasicMemberIdealType;
+  idealType: BasicMemberIdealTypeV2;
 }
 
 export function IdealTypeFields({ idealType }: Props) {

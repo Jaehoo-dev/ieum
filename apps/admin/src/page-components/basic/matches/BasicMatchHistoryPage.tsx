@@ -187,9 +187,9 @@ function Match({ match }: { match: BasicMatchWithMembers }) {
       },
     });
   const matchMembers = [
-    ...match.pendingBy,
-    ...match.rejectedBy,
-    ...match.acceptedBy,
+    ...match.pendingByV2,
+    ...match.rejectedByV2,
+    ...match.acceptedByV2,
   ];
 
   const matchMembersSortedByGender = [...matchMembers].sort((a) => {

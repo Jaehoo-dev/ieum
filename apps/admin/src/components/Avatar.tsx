@@ -1,9 +1,9 @@
 import { ImgHTMLAttributes } from "react";
-import { MemberImage } from "@ieum/prisma";
+import { MemberImageV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 interface Props extends ImgHTMLAttributes<HTMLImageElement> {
-  image: MemberImage;
+  image: MemberImageV2;
 }
 
 export function Avatar({ image, ...props }: Props) {

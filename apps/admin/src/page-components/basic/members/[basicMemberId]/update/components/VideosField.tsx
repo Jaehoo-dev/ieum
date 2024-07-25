@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BasicMember, MemberVideo } from "@ieum/prisma";
+import { BasicMemberV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
 import { nanoid } from "nanoid";
@@ -10,7 +10,7 @@ import { VideoPreview } from "~/page-components/basic/components/VideoPreview";
 import { api } from "~/utils/api";
 
 interface Props {
-  memberId: BasicMember["id"];
+  memberId: BasicMemberV2["id"];
 }
 
 export function VideosField({ memberId }: Props) {
@@ -107,7 +107,7 @@ export function VideosField({ memberId }: Props) {
   );
 }
 
-function VideoIndexField({ video }: { video: MemberVideo }) {
+function VideoIndexField({ video }: { video: MemberVideoV2 }) {
   const [value, setValue] = useState(video.index);
   const { mutateAsync: updateIndex, isPending } =
     api.basicMemberVideoRouter.updateIndex.useMutation();

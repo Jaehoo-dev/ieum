@@ -14,23 +14,23 @@ export const basicMatchRouter = createTRPCRouter({
   getDisplayStatus: publicProcedure
     .input(
       z.object({
-        matchId: z.number(),
-        memberId: z.number(),
+        matchId: z.string(),
+        memberId: z.string(),
       }),
     )
     .query(async ({ ctx, input: { matchId, memberId } }) => {
-      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+      const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id: matchId,
         },
         include: {
-          acceptedBy: true,
-          pendingBy: true,
-          rejectedBy: true,
+          acceptedByV2: true,
+          pendingByV2: true,
+          rejectedByV2: true,
         },
       });
 
-      const isRejectedByMember = match.rejectedBy.some((member) => {
+      const isRejectedByMember = match.rejectedByV2.some((member) => {
         return member.id === memberId;
       });
 
@@ -43,11 +43,11 @@ export const basicMatchRouter = createTRPCRouter({
   findActiveMatchesByMemberId: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(async ({ ctx, input: { memberId } }) => {
-      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id: memberId,
           status: {
@@ -71,11 +71,11 @@ export const basicMatchRouter = createTRPCRouter({
   findPastMatchesByMemberId: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(async ({ ctx, input: { memberId } }) => {
-      const member = await ctx.prisma.basicMember.findUniqueOrThrow({
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id: memberId,
           status: {
@@ -88,21 +88,21 @@ export const basicMatchRouter = createTRPCRouter({
               status: {
                 in: [MatchStatus.PENDING, MatchStatus.REJECTED],
               },
-              pendingBy: {
+              pendingByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
                   },
                 },
               },
-              rejectedBy: {
+              rejectedByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
                   },
                 },
               },
-              acceptedBy: {
+              acceptedByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -123,21 +123,21 @@ export const basicMatchRouter = createTRPCRouter({
                   MatchStatus.ACCEPTED,
                 ],
               },
-              pendingBy: {
+              pendingByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
                   },
                 },
               },
-              rejectedBy: {
+              rejectedByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
                   },
                 },
               },
-              acceptedBy: {
+              acceptedByV2: {
                 every: {
                   status: {
                     in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -166,16 +166,16 @@ export const basicMatchRouter = createTRPCRouter({
   getMatchById: publicProcedure
     .input(
       z.object({
-        matchId: z.number(),
+        matchId: z.string(),
       }),
     )
     .query(async ({ ctx, input: { matchId } }) => {
-      return ctx.prisma.basicMatch.findUniqueOrThrow({
+      return ctx.prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id: matchId,
         },
         include: {
-          pendingBy: {
+          pendingByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -183,7 +183,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             select: { id: true },
           },
-          rejectedBy: {
+          rejectedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -191,7 +191,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             select: { id: true },
           },
-          acceptedBy: {
+          acceptedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -205,17 +205,17 @@ export const basicMatchRouter = createTRPCRouter({
   getMatchTargetMemberProfile: publicProcedure
     .input(
       z.object({
-        selfMemberId: z.number(),
-        matchId: z.number(),
+        selfMemberId: z.string(),
+        matchId: z.string(),
       }),
     )
     .query(async ({ ctx, input: { selfMemberId, matchId } }) => {
-      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+      const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id: matchId,
         },
         include: {
-          pendingBy: {
+          pendingByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -242,7 +242,7 @@ export const basicMatchRouter = createTRPCRouter({
               },
             },
           },
-          rejectedBy: {
+          rejectedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -269,7 +269,7 @@ export const basicMatchRouter = createTRPCRouter({
               },
             },
           },
-          acceptedBy: {
+          acceptedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -309,9 +309,9 @@ export const basicMatchRouter = createTRPCRouter({
       );
 
       const matchMembers = [
-        ...match.pendingBy,
-        ...match.rejectedBy,
-        ...match.acceptedBy,
+        ...match.pendingByV2,
+        ...match.rejectedByV2,
+        ...match.acceptedByV2,
       ];
 
       assert(
@@ -355,31 +355,31 @@ export const basicMatchRouter = createTRPCRouter({
   reject: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
-        matchId: z.number(),
+        memberId: z.string(),
+        matchId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input: { memberId, matchId } }) => {
-      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+      const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id: matchId,
         },
         include: {
-          pendingBy: {
+          pendingByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
               },
             },
           },
-          rejectedBy: {
+          rejectedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
               },
             },
           },
-          acceptedBy: {
+          acceptedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -390,9 +390,9 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       const members = [
-        ...match.pendingBy,
-        ...match.rejectedBy,
-        ...match.acceptedBy,
+        ...match.pendingByV2,
+        ...match.rejectedByV2,
+        ...match.acceptedByV2,
       ];
 
       assert(
@@ -414,7 +414,7 @@ export const basicMatchRouter = createTRPCRouter({
       );
 
       assert(
-        match.pendingBy.some((member) => {
+        match.pendingByV2.some((member) => {
           return member.id === memberId;
         }),
         new TRPCError({
@@ -424,47 +424,47 @@ export const basicMatchRouter = createTRPCRouter({
       );
 
       const hasOtherReplied =
-        match.rejectedBy.some((member) => {
+        match.rejectedByV2.some((member) => {
           return member.id !== memberId;
         }) ||
-        match.acceptedBy.some((member) => {
+        match.acceptedByV2.some((member) => {
           return member.id !== memberId;
         });
 
-      const result = await ctx.prisma.basicMatch.update({
+      const result = await ctx.prisma.basicMatchV2.update({
         where: {
           id: matchId,
         },
         data: {
           status: hasOtherReplied ? MatchStatus.REJECTED : undefined,
-          pendingBy: {
+          pendingByV2: {
             disconnect: {
               id: memberId,
             },
           },
-          rejectedBy: {
+          rejectedByV2: {
             connect: {
               id: memberId,
             },
           },
         },
         include: {
-          rejectedBy: true,
-          acceptedBy: true,
+          rejectedByV2: true,
+          acceptedByV2: true,
         },
       });
 
       if (hasOtherReplied) {
         void sendMessageToMatchResultChannel(
           `[제안 실패]${
-            result.acceptedBy.length > 0
-              ? `\n수락: ${result.acceptedBy
+            result.acceptedByV2.length > 0
+              ? `\n수락: ${result.acceptedByV2
                   .map((member) => member.name)
                   .join(", ")}`
               : ""
           }${
-            result.rejectedBy.length > 0
-              ? `\n거절: ${result.rejectedBy
+            result.rejectedByV2.length > 0
+              ? `\n거절: ${result.rejectedByV2
                   .map((member) => member.name)
                   .join(", ")}`
               : ""
@@ -476,14 +476,14 @@ export const basicMatchRouter = createTRPCRouter({
       return true;
     }),
   accept: publicProcedure
-    .input(z.object({ memberId: z.number(), matchId: z.number() }))
+    .input(z.object({ memberId: z.string(), matchId: z.string() }))
     .mutation(async ({ ctx, input: { memberId, matchId } }) => {
-      const match = await ctx.prisma.basicMatch.findUniqueOrThrow({
+      const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id: matchId,
         },
         include: {
-          pendingBy: {
+          pendingByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -491,7 +491,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             include: { profile: true },
           },
-          rejectedBy: {
+          rejectedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -499,7 +499,7 @@ export const basicMatchRouter = createTRPCRouter({
             },
             include: { profile: true },
           },
-          acceptedBy: {
+          acceptedByV2: {
             where: {
               status: {
                 in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
@@ -511,9 +511,9 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       const members = [
-        ...match.pendingBy,
-        ...match.rejectedBy,
-        ...match.acceptedBy,
+        ...match.pendingByV2,
+        ...match.rejectedByV2,
+        ...match.acceptedByV2,
       ];
 
       assert(
@@ -534,7 +534,7 @@ export const basicMatchRouter = createTRPCRouter({
       );
 
       assert(
-        match.pendingBy.some((member) => {
+        match.pendingByV2.some((member) => {
           return member.id === memberId;
         }),
         new TRPCError({
@@ -543,12 +543,12 @@ export const basicMatchRouter = createTRPCRouter({
         }),
       );
 
-      const hasOtherAccepted = match.acceptedBy.some((member) => {
+      const hasOtherAccepted = match.acceptedByV2.some((member) => {
         return member.id !== memberId;
       });
       const hasOtherReplied =
         hasOtherAccepted ||
-        match.rejectedBy.some((member) => {
+        match.rejectedByV2.some((member) => {
           return member.id !== memberId;
         });
       const newStatus = !hasOtherReplied
@@ -557,18 +557,18 @@ export const basicMatchRouter = createTRPCRouter({
         ? MatchStatus.ACCEPTED
         : MatchStatus.REJECTED;
 
-      await ctx.prisma.basicMatch.update({
+      await ctx.prisma.basicMatchV2.update({
         where: {
           id: matchId,
         },
         data: {
           status: newStatus,
-          pendingBy: {
+          pendingByV2: {
             disconnect: {
               id: memberId,
             },
           },
-          acceptedBy: {
+          acceptedByV2: {
             connect: {
               id: memberId,
             },

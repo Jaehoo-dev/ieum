@@ -10,11 +10,11 @@ export const basicMemberProfileRouter = createTRPCRouter({
   getProfileByMemberId: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.basicMemberProfile.findUnique({
+      return ctx.prisma.basicMemberProfileV2.findUnique({
         where: {
           memberId: input.memberId,
           member: {
@@ -60,7 +60,7 @@ export const basicMemberProfileRouter = createTRPCRouter({
         }),
       );
 
-      return ctx.prisma.basicMemberProfile.findUniqueOrThrow({
+      return ctx.prisma.basicMemberProfileV2.findUniqueOrThrow({
         where: {
           memberId:
             selfGender === "male" ? 테스트여성_아이디 : 테스트남성_아이디,
@@ -86,7 +86,7 @@ export const basicMemberProfileRouter = createTRPCRouter({
   updateProfile: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         data: z.object({
           selfIntroduction: z.string().nullish(),
           idealTypeDescription: z.string().nullish(),
@@ -94,7 +94,7 @@ export const basicMemberProfileRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.basicMemberProfile.update({
+      return ctx.prisma.basicMemberProfileV2.update({
         where: {
           memberId: input.memberId,
         },

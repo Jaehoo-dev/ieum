@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import type { BasicMatch } from "@ieum/prisma";
+import type { BasicMatch, BasicMatchV2 } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
@@ -149,7 +149,7 @@ function MatchCard({
   onClick,
   disabled = false,
 }: {
-  match: BasicMatch;
+  match: BasicMatchV2;
   selfMember: Member;
   showLabel: boolean;
   onClick?: () => void;
@@ -223,7 +223,7 @@ function getStatusLabel(status: MatchStatus) {
     .exhaustive();
 }
 
-function calculateLeftHours(match: BasicMatch) {
+function calculateLeftHours(match: BasicMatchV2) {
   assert(match.sentAt != null, "Match should have sentAt");
 
   const expiresAt = addHours(match.sentAt, 24);

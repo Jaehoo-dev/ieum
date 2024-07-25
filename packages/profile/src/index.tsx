@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef } from "react";
-import type { MemberImage, MemberVideo } from "@ieum/prisma";
+import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 import { AccordionSection } from "./components/AccordionSection";
@@ -143,8 +143,8 @@ function MediaSection({
   watermarkText,
   defaultOpened = false,
 }: {
-  videos: MemberVideo[];
-  images: MemberImage[];
+  videos: MemberVideoV2[];
+  images: MemberImageV2[];
   watermarkText?: string;
   defaultOpened?: boolean;
 }) {

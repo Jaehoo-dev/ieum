@@ -1,7 +1,7 @@
 import {
   BasicCondition,
-  BasicMember,
-  BasicMemberIdealType,
+  BasicMemberIdealTypeV2,
+  BasicMemberV2,
   orderedAnnualIncomes,
   orderedAssetsValues,
   orderedBooksReadPerYears,
@@ -14,8 +14,8 @@ import { match } from "ts-pattern";
  * target이 idealType의 필수 조건은 만족했다고 가정한다.
  */
 export function getSimilarityScore(
-  idealType: BasicMemberIdealType,
-  target: BasicMember,
+  idealType: BasicMemberIdealTypeV2,
+  target: BasicMemberV2,
 ) {
   const { highPriorities, mediumPriorities, lowPriorities } = idealType;
   const highPrioritiesSet = new Set(highPriorities);

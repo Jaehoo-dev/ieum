@@ -1,7 +1,7 @@
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMemberV2 } from "@ieum/prisma";
 
 export interface ProfileForm {
-  memberId: BasicMember["id"];
+  memberId: BasicMemberV2["id"];
   profile: {
     birthYear: number;
     residence: string;
