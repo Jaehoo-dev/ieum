@@ -164,6 +164,7 @@ enum BlindCondition {
 
 model BasicMember {
   id                      Int                     @id @default(autoincrement())
+  idV2                    String                  @unique @default(cuid())
   name                    String
   phoneNumber             String
   gender                  Gender
