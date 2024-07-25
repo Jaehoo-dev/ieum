@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import type { BasicMatch, BasicMatchV2 } from "@ieum/prisma";
+import type { BasicMatchV2 } from "@ieum/prisma";
 import { MatchStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { addHours, format } from "date-fns";
@@ -68,15 +68,15 @@ function Resolved() {
     api.basicMatchRouter.findActiveMatchesByMemberId.useSuspenseQuery({
       memberId: member.id,
     });
-  const [pastMatches] =
+  const [{ acceptedByMember: 수락한_매칭들, rejectedByMember: 거절한_매칭들 }] =
     api.basicMatchRouter.findPastMatchesByMemberId.useSuspenseQuery({
       memberId: member.id,
     });
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-6">
       <div className="flex w-full flex-col gap-2">
-        <h2 className="text-xl font-semibold text-gray-800">새 매칭</h2>
+        <h2 className="text-xl font-semibold text-gray-800">신규</h2>
         <div className="flex w-full flex-col items-center gap-4">
           {activeMatches.length > 0 ? (
             activeMatches.map((match) => {
@@ -101,36 +101,72 @@ function Resolved() {
           )}
         </div>
       </div>
-      {pastMatches.length > 0 ? (
+      {수락한_매칭들.length > 0 || 거절한_매칭들.length > 0 ? (
         <>
           <hr className="w-full" />
           <div className="flex w-full flex-col gap-2">
-            <h2 className="text-xl font-semibold text-gray-800">지난 매칭</h2>
+            <h2 className="text-xl font-semibold text-gray-800">응답 완료</h2>
             <div className="flex w-full items-start gap-1">
-              <p className="text-md text-gray-700">※</p>
-              <p className="text-md text-gray-700">
-                응답 대기 중 또는 거절 프로필은 조회할 수 없습니다.
+              <p className="text-sm text-gray-700">※</p>
+              <p className="text-sm text-gray-700">
+                상대방 응답 대기 중 또는 거절 프로필은 조회할 수 없습니다.
               </p>
             </div>
-            <div className="flex w-full flex-col items-center gap-4">
-              {pastMatches.map((match) => {
-                return (
-                  <MatchCard
-                    key={match.id}
-                    match={match}
-                    selfMember={member}
-                    showLabel={true}
-                    onClick={() => {
-                      void sendMessage(
-                        `${formatUniqueMemberName(member)} - ${
-                          match.id
-                        } 매칭 카드 클릭`,
+            <div className="mt-2 flex flex-col gap-6">
+              {수락한_매칭들.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    내가 수락한 매칭
+                  </h3>
+                  <div className="flex w-full flex-col items-center gap-4">
+                    {수락한_매칭들.map((match) => {
+                      return (
+                        <MatchCard
+                          key={match.id}
+                          match={match}
+                          selfMember={member}
+                          showLabel={true}
+                          onClick={() => {
+                            void sendMessage(
+                              `${formatUniqueMemberName(member)} - ${
+                                match.id
+                              } 매칭 카드 클릭`,
+                            );
+                          }}
+                          disabled={match.status !== MatchStatus.ACCEPTED}
+                        />
                       );
-                    }}
-                    disabled={match.status !== MatchStatus.ACCEPTED}
-                  />
-                );
-              })}
+                    })}
+                  </div>
+                </div>
+              ) : null}
+              {거절한_매칭들.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    내가 거절한 매칭
+                  </h3>
+                  <div className="flex w-full flex-col items-center gap-4">
+                    {거절한_매칭들.map((match) => {
+                      return (
+                        <MatchCard
+                          key={match.id}
+                          match={match}
+                          selfMember={member}
+                          showLabel={true}
+                          onClick={() => {
+                            void sendMessage(
+                              `${formatUniqueMemberName(member)} - ${
+                                match.id
+                              } 매칭 카드 클릭`,
+                            );
+                          }}
+                          disabled={match.status !== MatchStatus.ACCEPTED}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         </>
@@ -196,7 +232,7 @@ function MatchCard({
 
 function Empty() {
   return (
-    <div className="mt-2 flex w-full flex-col items-center">
+    <div className="mb-4 mt-2 flex w-full flex-col items-center">
       <p className="text-xl font-medium text-primary-500">
         이상형을 찾고 있어요 💘
       </p>

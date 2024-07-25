@@ -113,6 +113,9 @@ export const basicMatchRouter = createTRPCRouter({
                 gt: subDays(new Date(), 7),
               },
             },
+            orderBy: {
+              sentAt: "desc",
+            },
           },
           acceptedMatches: {
             where: {
@@ -148,20 +151,17 @@ export const basicMatchRouter = createTRPCRouter({
                 gt: subDays(new Date(), 7),
               },
             },
+            orderBy: {
+              sentAt: "desc",
+            },
           },
         },
       });
 
-      return [...member.rejectedMatches, ...member.acceptedMatches].sort(
-        (a, b) => {
-          assert(
-            a.sentAt != null && b.sentAt != null,
-            "matches should have sentAt",
-          );
-
-          return b.sentAt.getTime() - a.sentAt.getTime();
-        },
-      );
+      return {
+        rejectedByMember: member.rejectedMatches,
+        acceptedByMember: member.acceptedMatches,
+      };
     }),
   getMatchById: publicProcedure
     .input(
