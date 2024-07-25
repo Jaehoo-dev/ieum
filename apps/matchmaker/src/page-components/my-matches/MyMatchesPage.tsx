@@ -167,6 +167,8 @@ function MatchCard({
       },
     );
 
+  assert(match.sentAt != null, "Match should have sentAt");
+
   return (
     <button
       className="flex w-full rounded-lg bg-gray-100 p-5 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
@@ -178,7 +180,7 @@ function MatchCard({
     >
       <div className="flex flex-col items-start gap-2">
         <p className="text-xl font-semibold text-gray-800">{`💌 ${format(
-          match.updatedAt,
+          match.sentAt,
           "M월 d일",
         )} 매칭`}</p>
         <p className="text-xl text-gray-600">
