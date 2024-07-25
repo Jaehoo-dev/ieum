@@ -101,7 +101,7 @@ function Description() {
     <div className="flex w-full items-start gap-1">
       <p className="text-sm text-gray-500">※</p>
       <p className="text-sm text-gray-500">
-        블랙리스트에 추가한 전화번호 주인은 매칭에서 제외합니다.
+        블랙리스트에 추가한 전화번호의 주인은 소개 후보군에서 제외합니다.
       </p>
     </div>
   );
