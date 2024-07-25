@@ -15,6 +15,7 @@ export type BasicMemberForm = {
   self: Omit<
     BasicMember,
     | "id"
+    | "idV2"
     | "fashionStyles"
     | "createdAt"
     | "updatedAt"
