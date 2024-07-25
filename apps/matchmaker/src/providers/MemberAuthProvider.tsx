@@ -2,13 +2,13 @@ import { createContext, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { auth, signOut as signOutFirebase } from "@ieum/firebase";
-import type { BasicMember } from "@ieum/prisma";
+import type { BasicMemberV2 } from "@ieum/prisma";
 import { assert, globalKrToBasicKr } from "@ieum/utils";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { api } from "~/utils/api";
 
-export type Member = Pick<BasicMember, "id" | "name" | "phoneNumber">;
+export type Member = Pick<BasicMemberV2, "id" | "name" | "phoneNumber">;
 
 interface MemberAuthContext {
   member: Member | null | undefined;

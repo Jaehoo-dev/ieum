@@ -6,13 +6,13 @@ export const basicMemberVideoRouter = createTRPCRouter({
   create: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         bucketPath: z.string(),
         index: z.number(),
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberVideo.create({
+      return ctx.prisma.memberVideoV2.create({
         data: {
           member: {
             connect: {
@@ -31,7 +31,7 @@ export const basicMemberVideoRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberVideo.delete({
+      return ctx.prisma.memberVideoV2.delete({
         where: {
           id: input.id,
         },
@@ -45,7 +45,7 @@ export const basicMemberVideoRouter = createTRPCRouter({
       }),
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.memberVideo.update({
+      return ctx.prisma.memberVideoV2.update({
         where: {
           id: input.id,
         },
@@ -57,11 +57,11 @@ export const basicMemberVideoRouter = createTRPCRouter({
   findByMemberId: protectedAdminProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
       }),
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.memberVideo.findMany({
+      return ctx.prisma.memberVideoV2.findMany({
         where: {
           memberId: input.memberId,
         },

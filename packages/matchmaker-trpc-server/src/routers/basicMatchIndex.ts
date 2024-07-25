@@ -22,7 +22,7 @@ export const basicMatchIndexRouter = createTRPCRouter({
   getMatchIndex: publicProcedure
     .input(
       z.object({
-        memberId: z.number(),
+        memberId: z.string(),
         customIdealType: z.object({
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
@@ -51,7 +51,7 @@ export const basicMatchIndexRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input: { memberId, customIdealType } }) => {
-      const self = await ctx.prisma.basicMember.findUniqueOrThrow({
+      const self = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id: memberId,
         },
@@ -66,7 +66,7 @@ export const basicMatchIndexRouter = createTRPCRouter({
         self.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE;
 
       const [oppositeGenderCount, oneWayCandidates] = await Promise.all([
-        ctx.prisma.basicMember.count({
+        ctx.prisma.basicMemberV2.count({
           where: {
             gender: 반대_성별,
             status: {
@@ -74,7 +74,7 @@ export const basicMatchIndexRouter = createTRPCRouter({
             },
           },
         }),
-        ctx.prisma.basicMember.findMany({
+        ctx.prisma.basicMemberV2.findMany({
           where: {
             gender: 반대_성별,
             status: {

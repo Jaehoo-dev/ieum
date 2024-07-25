@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BasicMember, MemberImage } from "@ieum/prisma";
+import { BasicMemberV2, MemberImageV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert, isEmptyStringOrNil } from "@ieum/utils";
 import { nanoid } from "nanoid";
@@ -10,7 +10,7 @@ import { ImagePreview } from "~/page-components/basic/components/ImagePreview";
 import { api } from "~/utils/api";
 
 interface Props {
-  memberId: BasicMember["id"];
+  memberId: BasicMemberV2["id"];
 }
 
 export function ImagesField({ memberId }: Props) {
@@ -106,7 +106,7 @@ export function ImagesField({ memberId }: Props) {
   );
 }
 
-function ImageIndexField({ image }: { image: MemberImage }) {
+function ImageIndexField({ image }: { image: MemberImageV2 }) {
   const [value, setValue] = useState(image.index);
   const { mutateAsync: updateImageIndex, isPending } =
     api.basicMemberImageRouter.updateIndex.useMutation();
@@ -138,7 +138,7 @@ function ImageIndexField({ image }: { image: MemberImage }) {
   );
 }
 
-function ImageCustomWidthField({ image }: { image: MemberImage }) {
+function ImageCustomWidthField({ image }: { image: MemberImageV2 }) {
   const [value, setValue] = useState(image.customWidth);
   const { mutateAsync: updateImageWidth, isPending } =
     api.basicMemberImageRouter.updateCustomWidth.useMutation();

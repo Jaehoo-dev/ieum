@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { BasicMatch } from "@ieum/prisma";
+import type { BasicMatch, BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { differenceInCalendarDays } from "date-fns";
@@ -166,7 +166,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
   );
 }
 
-function countMatchesByStatus(matches: BasicMatch[]) {
+function countMatchesByStatus(matches: BasicMatchV2[]) {
   const result = {
     [MatchStatus.BACKLOG]: 0,
     [MatchStatus.PREPARING]: 0,

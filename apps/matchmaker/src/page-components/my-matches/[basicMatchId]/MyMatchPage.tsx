@@ -32,9 +32,7 @@ function Resolved() {
     return null;
   }
 
-  const matchId = Number(router.query.basicMatchId);
-
-  assert(!Number.isNaN(matchId), "basicMatchId should be a number");
+  const matchId = router.query.basicMatchId as string;
 
   const [profile] =
     api.basicMatchRouter.getMatchTargetMemberProfile.useSuspenseQuery({
@@ -45,7 +43,7 @@ function Resolved() {
     matchId,
   });
 
-  const isPendingByMember = match.pendingBy.some(({ id }) => {
+  const isPendingByMember = match.pendingByV2.some(({ id }) => {
     return id === member.id;
   });
 
@@ -60,7 +58,7 @@ function Resolved() {
   }, [match.id, member.name, profile.id, sendMessage]);
 
   useEffect(() => {
-    if (isPendingByMember || match.acceptedBy.length === 2) {
+    if (isPendingByMember || match.acceptedByV2.length === 2) {
       return;
     }
 
@@ -73,7 +71,7 @@ function Resolved() {
     router.replace("/my-matches");
   }, [
     isPendingByMember,
-    match.acceptedBy.length,
+    match.acceptedByV2.length,
     match.id,
     member.name,
     router,
@@ -110,15 +108,12 @@ function Buttons({
   onRejectClick,
   onAcceptClick,
 }: {
-  memberId: number;
+  memberId: string;
   onRejectClick: () => void;
   onAcceptClick: () => void;
 }) {
   const router = useRouter();
-  const matchId = Number(router.query.basicMatchId);
-
-  assert(!Number.isNaN(matchId), "matchId should be a number");
-
+  const matchId = router.query.basicMatchId as string;
   const utils = api.useUtils();
   const { mutateAsync: reject, isPending: isRejecting } =
     api.basicMatchRouter.reject.useMutation({

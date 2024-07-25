@@ -29,9 +29,7 @@ function Resolved() {
 
   assert(router.query.basicMemberId != null, "basicMemberId must be provided");
 
-  const basicMemberId = Number(router.query.basicMemberId);
-
-  assert(!isNaN(basicMemberId), "basicMemberId must be a number");
+  const basicMemberId = router.query.basicMemberId as string;
 
   const [member] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,

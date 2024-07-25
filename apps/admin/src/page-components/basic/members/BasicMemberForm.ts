@@ -1,7 +1,7 @@
 import type {
   BasicCondition,
-  BasicMember,
-  BasicMemberIdealType,
+  BasicMemberIdealTypeV2,
+  BasicMemberV2,
   BodyShape,
   Eyelid,
   FashionStyle,
@@ -13,8 +13,9 @@ import type {
 
 export type BasicMemberForm = {
   self: Omit<
-    BasicMember,
+    BasicMemberV2,
     | "id"
+    | "legacyId"
     | "fashionStyles"
     | "createdAt"
     | "updatedAt"
@@ -27,7 +28,7 @@ export type BasicMemberForm = {
     videoBucketPaths: { value: string }[];
   };
   idealType: Omit<
-    BasicMemberIdealType,
+    BasicMemberIdealTypeV2,
     | "memberId"
     | "regions"
     | "bodyShapes"

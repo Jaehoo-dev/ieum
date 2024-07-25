@@ -25,11 +25,11 @@ export function ProfilePreviewPage() {
 
 function Resolved() {
   const router = useRouter();
-  const { basicMemberId } = router.query;
+  const basicMemberId = router.query.basicMemberId as string;
 
   const { data: profile, isPending } =
     api.basicMemberRouter.getProfileByMemberId.useQuery(
-      { memberId: Number(basicMemberId) },
+      { memberId: basicMemberId },
       { enabled: basicMemberId != null },
     );
 

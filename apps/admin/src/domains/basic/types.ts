@@ -1,22 +1,22 @@
 import type {
-  BasicMatch,
-  BasicMember,
-  BasicMemberIdealType,
-  BasicMemberProfile,
-  MemberImage,
+  BasicMatchV2,
+  BasicMemberIdealTypeV2,
+  BasicMemberProfileV2,
+  BasicMemberV2,
+  MemberImageV2,
 } from "@ieum/prisma";
 
-export type BasicMemberWithJoined = BasicMember & {
-  idealType: BasicMemberIdealType | null;
-  pendingMatches: BasicMatch[];
-  rejectedMatches: BasicMatch[];
-  acceptedMatches: BasicMatch[];
-  profile: BasicMemberProfile | null;
-  images: MemberImage[];
+export type BasicMemberWithJoined = BasicMemberV2 & {
+  idealType: BasicMemberIdealTypeV2 | null;
+  pendingMatches: BasicMatchV2[];
+  rejectedMatches: BasicMatchV2[];
+  acceptedMatches: BasicMatchV2[];
+  profile: BasicMemberProfileV2 | null;
+  images: MemberImageV2[];
 };
 
-export type BasicMatchWithMembers = BasicMatch & {
-  pendingBy: BasicMemberWithJoined[];
-  rejectedBy: BasicMemberWithJoined[];
-  acceptedBy: BasicMemberWithJoined[];
+export type BasicMatchWithMembers = BasicMatchV2 & {
+  pendingByV2: BasicMemberWithJoined[];
+  rejectedByV2: BasicMemberWithJoined[];
+  acceptedByV2: BasicMemberWithJoined[];
 };

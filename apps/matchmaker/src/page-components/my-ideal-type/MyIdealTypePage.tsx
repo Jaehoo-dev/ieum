@@ -41,6 +41,7 @@ import {
   AssetsValue,
   BasicCondition,
   BasicMemberIdealType,
+  BasicMemberIdealTypeV2,
   BooksReadPerYear,
   DrinkingFrequency,
   EducationLevel,
@@ -419,7 +420,7 @@ function DroppableContainer({
 }: {
   id: 우선순위;
   conditions: BasicCondition[];
-  idealType: BasicMemberIdealType;
+  idealType: BasicMemberIdealTypeV2;
   mode: Mode;
 }) {
   const { setNodeRef } = useDroppable({ id });
@@ -502,7 +503,7 @@ function SortableDataField(props: DataFieldProps) {
 
 interface DataFieldProps extends ComponentPropsWithRef<"div"> {
   condition: BasicCondition;
-  idealType: BasicMemberIdealType;
+  idealType: BasicMemberIdealTypeV2;
   dragEnabled: boolean;
   highlight: boolean;
   listeners?: SyntheticListenerMap;
@@ -550,7 +551,7 @@ const DataField = forwardRef<HTMLDivElement, DataFieldProps>(
 );
 
 function createFieldData(
-  idealType: BasicMemberIdealType,
+  idealType: BasicMemberIdealTypeV2,
   condition: BasicCondition,
 ) {
   return match(condition)

@@ -1,4 +1,4 @@
-import type { BasicMatch, BasicMember } from "@ieum/prisma";
+import type { BasicMatchV2, BasicMemberV2 } from "@ieum/prisma";
 
 import type {
   BasicMatchWithMembers,
@@ -21,14 +21,14 @@ export function RespondField({ actionMember, match }: Props) {
 }
 
 function getMemberMatchStatusLabel(
-  { rejectedBy, acceptedBy }: BasicMatchWithMembers,
-  member: BasicMember,
+  { rejectedByV2, acceptedByV2 }: BasicMatchWithMembers,
+  member: BasicMemberV2,
 ) {
-  if (rejectedBy.some((rejectedMember) => rejectedMember.id === member.id)) {
+  if (rejectedByV2.some((rejectedMember) => rejectedMember.id === member.id)) {
     return "거절";
   }
 
-  if (acceptedBy.some((acceptedMember) => acceptedMember.id === member.id)) {
+  if (acceptedByV2.some((acceptedMember) => acceptedMember.id === member.id)) {
     return "수락";
   }
 
@@ -36,8 +36,8 @@ function getMemberMatchStatusLabel(
 }
 
 interface RespondButtonsProps {
-  actionMember: BasicMember;
-  match: BasicMatch;
+  actionMember: BasicMemberV2;
+  match: BasicMatchV2;
 }
 
 function RespondButtons({ actionMember, match }: RespondButtonsProps) {

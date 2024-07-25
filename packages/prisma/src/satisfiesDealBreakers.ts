@@ -1,4 +1,4 @@
-import { BasicMember, BasicMemberIdealType } from "@prisma/client";
+import { BasicMemberIdealTypeV2, BasicMemberV2 } from "@prisma/client";
 import { match } from "ts-pattern";
 
 import {
@@ -13,8 +13,8 @@ export function satisfiesDealBreakers({
   selfIdealType,
   target,
 }: {
-  selfIdealType: BasicMemberIdealType;
-  target: BasicMember;
+  selfIdealType: BasicMemberIdealTypeV2;
+  target: BasicMemberV2;
 }) {
   const {
     dealBreakers,
