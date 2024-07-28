@@ -466,14 +466,6 @@ export function SelfFields() {
         })}
       />
       <TextInput
-        label="형제관계"
-        {...register("self.siblings", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
         label="특징"
         {...register("self.characteristics", {
           setValueAs: (value: string | null) => {
