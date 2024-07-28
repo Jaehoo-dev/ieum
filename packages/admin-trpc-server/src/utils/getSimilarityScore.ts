@@ -281,15 +281,23 @@ export function getSimilarityScore(
           })
           // TODO: 정교화
           .with(BasicCondition.IS_GAMING_OK, () => {
-            return idealType.isGamingOk === target.doesGame
-              ? acc +
-                  getConditionScore(BasicCondition.IS_GAMING_OK, prioritySets)
-              : acc;
+            if (idealType.isGamingOk === false && !target.doesGame) {
+              return (
+                acc +
+                getConditionScore(BasicCondition.IS_GAMING_OK, prioritySets)
+              );
+            }
+
+            return acc;
           })
           .with(BasicCondition.IS_PET_OK, () => {
-            return idealType.isPetOk === target.hasPet
-              ? acc + getConditionScore(BasicCondition.IS_PET_OK, prioritySets)
-              : acc;
+            if (idealType.isPetOk === false && !target.hasPet) {
+              return (
+                acc + getConditionScore(BasicCondition.IS_PET_OK, prioritySets)
+              );
+            }
+
+            return acc;
           })
           .with(
             BasicCondition.REGION,

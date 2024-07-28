@@ -726,14 +726,6 @@ export function IdealTypeFields() {
           );
         }}
       />
-      <div>
-        게임
-        <Checkbox label="괜찮음" {...register("idealType.isGamingOk")} />
-      </div>
-      <div>
-        반려동물
-        <Checkbox label="괜찮음" {...register("idealType.isPetOk")} />
-      </div>
       <TextareaInput
         label="만나고 싶은 이성상"
         {...register("idealType.idealTypeDescription", {

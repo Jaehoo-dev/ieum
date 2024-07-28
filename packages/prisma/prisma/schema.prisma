@@ -447,8 +447,8 @@ model BasicMemberIdealTypeV2 {
   isTattooOk              Boolean
   exercisePerWeek         ExercisePerWeek?
   shouldHaveCar           Boolean?
-  isGamingOk              Boolean
-  isPetOk                 Boolean
+  isGamingOk              Boolean?
+  isPetOk                 Boolean?
   idealTypeDescription    String?
 
   dealBreakers     BasicCondition[]

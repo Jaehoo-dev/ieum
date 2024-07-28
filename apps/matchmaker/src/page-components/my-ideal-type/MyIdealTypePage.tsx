@@ -40,7 +40,6 @@ import {
   AnnualIncome,
   AssetsValue,
   BasicCondition,
-  BasicMemberIdealType,
   BasicMemberIdealTypeV2,
   BooksReadPerYear,
   DrinkingFrequency,
@@ -60,6 +59,8 @@ import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 const unusedBasicConditions = new Set<BasicCondition>([
   BasicCondition.SHOULD_HAVE_CAR,
+  BasicCondition.IS_GAMING_OK,
+  BasicCondition.IS_PET_OK,
 ]);
 
 export function MyIdealTypePage() {
