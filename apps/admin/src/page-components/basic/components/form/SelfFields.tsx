@@ -428,14 +428,6 @@ export function SelfFields() {
           );
         }}
       />
-      <TextInput
-        label="자산 관리 방법"
-        {...register("self.assetManagementApproach", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
       <TextInput label="취미/관심사" {...register("self.hobby")} />
       <Controller
         control={control}
