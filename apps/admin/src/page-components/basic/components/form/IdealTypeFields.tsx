@@ -1,7 +1,6 @@
 import {
   독서량_라벨,
   신분_라벨,
-  쌍꺼풀_라벨,
   연간_벌이_라벨,
   음주량_라벨,
   자산_라벨,
@@ -19,7 +18,6 @@ import {
   DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
-  Eyelid,
   MBTI,
   OccupationStatus,
   Region,
@@ -278,34 +276,6 @@ export function IdealTypeFields() {
                     removePreferredBodyShape(
                       preferredBodyShapeFields.findIndex(
                         (field) => field.value === bodyShape,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div>
-        선호 쌍꺼풀
-        <div className="grid grid-cols-4 gap-2">
-          {Object.values(Eyelid).map((eyelidType) => {
-            return (
-              <Checkbox
-                key={eyelidType}
-                label={쌍꺼풀_라벨[eyelidType]}
-                error={errors.idealType?.eyelids != null}
-                checked={idealEyelidFields.some((field) => {
-                  return field.value === eyelidType;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendIdealEyelid({ value: eyelidType });
-                  } else {
-                    removeIdealEyelid(
-                      idealEyelidFields.findIndex(
-                        (field) => field.value === eyelidType,
                       ),
                     );
                   }
