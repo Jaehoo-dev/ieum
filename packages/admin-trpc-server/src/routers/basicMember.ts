@@ -321,7 +321,7 @@ export const basicMemberRouter = createTRPCRouter({
         gender: z.nativeEnum(Gender),
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
-        limit: z.number().min(1).max(100).default(3),
+        limit: z.number().min(1).max(100).default(5),
         cursor: z.string().optional(),
       }),
     )
