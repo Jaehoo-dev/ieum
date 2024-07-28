@@ -151,14 +151,14 @@ export function satisfiesDealBreakers({
         return target.hasCar;
       })
       .with("IS_GAMING_OK", () => {
-        if (isGamingOk) {
+        if (isGamingOk === true || isGamingOk == null) {
           return true;
         }
 
         return !target.doesGame;
       })
       .with("IS_PET_OK", () => {
-        if (isPetOk) {
+        if (isPetOk === true || isPetOk == null) {
           return true;
         }
 

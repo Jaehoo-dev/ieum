@@ -1,4 +1,4 @@
-import { BasicMemberIdealType } from "@prisma/client";
+import { BasicMemberIdealTypeV2 } from "@prisma/client";
 import { match } from "ts-pattern";
 
 import {
@@ -10,7 +10,7 @@ import {
 } from "./orders";
 
 export function createDealBreakerAndClause(
-  idealType: Omit<BasicMemberIdealType, "memberId">,
+  idealType: Omit<BasicMemberIdealTypeV2, "memberId">,
 ) {
   return idealType.dealBreakers.map((condition) => {
     return match(condition)
@@ -145,12 +145,12 @@ export function createDealBreakerAndClause(
       })
       .with("IS_GAMING_OK", () => {
         return {
-          doesGame: idealType.isGamingOk,
+          doesGame: idealType.isGamingOk === false ? false : undefined,
         };
       })
       .with("IS_PET_OK", () => {
         return {
-          hasPet: idealType.isPetOk,
+          hasPet: idealType.isPetOk === false ? false : undefined,
         };
       })
       .with(

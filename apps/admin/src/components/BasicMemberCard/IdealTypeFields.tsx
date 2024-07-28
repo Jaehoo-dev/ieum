@@ -273,18 +273,22 @@ export function IdealTypeFields({ idealType }: Props) {
           {shouldHaveCar ? "예" : "아니요"}
         </Field>
       ) : null}
-      <Field
-        label="게임 허용"
-        nonNegotiable={dealBreakers.includes("IS_GAMING_OK")}
-      >
-        {isGamingOk ? "예" : "아니요"}
-      </Field>
-      <Field
-        label="반려동물 허용"
-        nonNegotiable={dealBreakers.includes("IS_PET_OK")}
-      >
-        {isPetOk ? "예" : "아니요"}
-      </Field>
+      {isGamingOk != null ? (
+        <Field
+          label="게임 허용"
+          nonNegotiable={dealBreakers.includes("IS_GAMING_OK")}
+        >
+          {isGamingOk ? "예" : "아니요"}
+        </Field>
+      ) : null}
+      {isPetOk != null ? (
+        <Field
+          label="반려동물 허용"
+          nonNegotiable={dealBreakers.includes("IS_PET_OK")}
+        >
+          {isPetOk ? "예" : "아니요"}
+        </Field>
+      ) : null}
       {idealTypeDescription != null ? (
         <Field label="이성상">{idealTypeDescription}</Field>
       ) : null}

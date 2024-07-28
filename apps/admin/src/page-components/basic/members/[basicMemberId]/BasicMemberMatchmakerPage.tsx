@@ -14,10 +14,7 @@ import {
   주간_운동량_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type {
-  BasicMemberIdealType,
-  BasicMemberIdealTypeV2,
-} from "@ieum/prisma";
+import type { BasicMemberIdealTypeV2 } from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
@@ -67,8 +64,8 @@ interface CustomCanditatesSearchForm {
   isTattooOk: boolean;
   exercisePerWeek: ExercisePerWeek | null;
   shouldHaveCar: boolean | null;
-  isGamingOk: boolean;
-  isPetOk: boolean;
+  isGamingOk: boolean | null;
+  isPetOk: boolean | null;
   dealBreakers: { value: BasicCondition }[];
   highPriorities: { value: BasicCondition }[];
   mediumPriorities: { value: BasicCondition }[];
