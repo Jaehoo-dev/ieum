@@ -114,7 +114,7 @@ function DescriptionResolved() {
           {"와 함께 공유해 주세요!"}
         </p>
         <p>
-          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 만남권 50% 할인 쿠폰을 드려요.`}
+          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 이음비 50% 할인 쿠폰을 드려요.`}
         </p>
       </div>
     </div>
@@ -146,7 +146,7 @@ function DiscountCouponCountResolved() {
             />
             <div>
               <p className="font-semibold text-gray-700">
-                만남권 50% 할인 쿠폰
+                이음비 50% 할인 쿠폰
               </p>
               <p className="text-sm text-gray-500">
                 소개 성사 시 자동으로 적용해 드려요
