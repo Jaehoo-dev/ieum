@@ -383,7 +383,7 @@ function EditButton({ onClick }: { onClick: () => void }) {
         assert(member != null, "member should be defined");
 
         void sendMessage(
-          `${formatUniqueMemberName(member)}- 내 이상형 조건 - 수정 클릭`,
+          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 수정 클릭`,
         );
         onClick();
       }}
