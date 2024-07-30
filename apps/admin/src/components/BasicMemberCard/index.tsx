@@ -26,68 +26,61 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
   const [folded, setFolded] = useState(false);
   const [mode, setMode] = useState<Mode>(defaultMode ?? "SIMPLE");
 
-  const matchesCountByStatus = countMatchesByStatus([
-    ...member.pendingMatches,
-    ...member.rejectedMatches,
-    ...member.acceptedMatches,
-  ]);
-
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-1.5 rounded-lg border border-gray-200 p-3 text-sm">
+    <div className="flex w-full max-w-3xl flex-col gap-2 rounded-lg border border-gray-200 p-3 text-sm">
       <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            {member.images[0] != null ? (
-              <Avatar
-                image={member.images[0]}
-                style={{ marginRight: "4px", cursor: "pointer" }}
-                onClick={() => {
-                  router.push(`/basic/members/${member.id}/update`);
-                }}
-              />
-            ) : null}
-            <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          {member.images[0] != null ? (
+            <Avatar
+              image={member.images[0]}
+              style={{ marginRight: "4px", cursor: "pointer" }}
+              onClick={() => {
+                router.push(`/basic/members/${member.id}/update`);
+              }}
+            />
+          ) : null}
+          <div className="flex flex-col gap-0.5">
+            <Link
+              href={`/basic/members/${member.id}/update`}
+              className={`${
+                member.status !== MemberStatus.ACTIVE
+                  ? "text-gray-400"
+                  : member.gender === Gender.MALE
+                  ? "text-blue-500"
+                  : "text-pink-500"
+              } text-lg font-semibold`}
+            >
+              {`${member.name}(${member.phoneNumber.slice(-4)})`}
+            </Link>
+            {member.profile == null ? (
               <Link
-                href={`/basic/members/${member.id}/update`}
-                className={`${
-                  member.status !== MemberStatus.ACTIVE
-                    ? "text-gray-400"
-                    : member.gender === Gender.MALE
-                    ? "text-blue-500"
-                    : "text-pink-500"
-                } text-lg font-semibold`}
+                href={`/basic/members/${member.id}/profile/create`}
+                className="text-blue-600 hover:underline"
               >
-                {`${member.name}(${member.phoneNumber.slice(-4)})`}
+                프로필 생성
               </Link>
-              {member.profile == null ? (
+            ) : (
+              <div className="flex flex-row gap-1">
                 <Link
-                  href={`/basic/members/${member.id}/profile/create`}
+                  href={`/basic/members/${member.id}/profile/update`}
+                  target="_blank"
+                  rel="noreferrer noopener"
                   className="text-blue-600 hover:underline"
                 >
-                  프로필 생성
+                  프로필 수정
                 </Link>
-              ) : (
-                <div className="flex flex-row gap-1">
-                  <Link
-                    href={`/basic/members/${member.id}/profile/update`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="text-blue-600 hover:underline"
-                  >
-                    프로필 수정
-                  </Link>
-                  <span>|</span>
-                  <Link
-                    href={`/basic/members/${member.id}/profile`}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="text-blue-600 hover:underline"
-                  >
-                    보기
-                  </Link>
-                </div>
-              )}
-            </div>
+                <span>|</span>
+                <Link
+                  href={`/basic/members/${member.id}/profile`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-blue-600 hover:underline"
+                >
+                  보기
+                </Link>
+              </div>
+            )}
+            <Count member={member} />
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -136,18 +129,6 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
           </div>
         </div>
       </div>
-      <span>{`백로그 ${matchesCountByStatus[MatchStatus.BACKLOG]} / 준비중 ${
-        matchesCountByStatus[MatchStatus.PREPARING]
-      } / 진행중 ${
-        matchesCountByStatus[MatchStatus.PENDING] +
-        matchesCountByStatus[MatchStatus.ACCEPTED]
-      } / 완료 ${
-        matchesCountByStatus[MatchStatus.REJECTED] +
-        matchesCountByStatus[MatchStatus.BROKEN_UP]
-      } / ${differenceInCalendarDays(
-        new Date(),
-        member.lastMatchedAt,
-      )}일 전`}</span>
       {folded ? null : (
         <div className="flex flex-col gap-1.5">
           <div className="flex gap-3">
@@ -163,6 +144,29 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
         </div>
       )}
     </div>
+  );
+}
+
+function Count({ member }: { member: BasicMemberWithJoined }) {
+  const matchesCountByStatus = countMatchesByStatus([
+    ...member.pendingMatches,
+    ...member.rejectedMatches,
+    ...member.acceptedMatches,
+  ]);
+
+  return (
+    <span>{`백로그 ${matchesCountByStatus[MatchStatus.BACKLOG]} / 준비중 ${
+      matchesCountByStatus[MatchStatus.PREPARING]
+    } / 진행중 ${
+      matchesCountByStatus[MatchStatus.PENDING] +
+      matchesCountByStatus[MatchStatus.ACCEPTED]
+    } / 완료 ${
+      matchesCountByStatus[MatchStatus.REJECTED] +
+      matchesCountByStatus[MatchStatus.BROKEN_UP]
+    } / ${differenceInCalendarDays(
+      new Date(),
+      member.lastMatchedAt,
+    )}일 전`}</span>
   );
 }
 
