@@ -572,36 +572,6 @@ export function IdealTypeFields() {
           );
         }}
       />
-      <Controller
-        control={control}
-        name="idealType.minAssetsValue"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="최소 자산 수준"
-              error={errors.idealType?.minAssetsValue != null}
-              value={value ?? 상관없음}
-              onChange={({ target: { value } }) => {
-                onChange(value === 상관없음 ? null : value);
-              }}
-            >
-              {[상관없음, ...Object.values(AssetsValue)]
-                .filter((item) => {
-                  return item !== AssetsValue.LT_30M;
-                })
-                .map((assetsValueOption) => {
-                  return (
-                    <option key={assetsValueOption} value={assetsValueOption}>
-                      {assetsValueOption === 상관없음
-                        ? 상관없음
-                        : 자산_라벨[assetsValueOption as AssetsValue]}
-                    </option>
-                  );
-                })}
-            </Select>
-          );
-        }}
-      />
       <TextInput
         label="취미/관심사"
         {...register("idealType.hobby", {
