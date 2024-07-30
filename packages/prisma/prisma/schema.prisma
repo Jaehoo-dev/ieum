@@ -273,7 +273,7 @@ model BasicMemberV2 {
   birthYear               Int
   residence               String
   height                  Float
-  weight                  Int?
+  weight                  Float?
   bmi                     Float?
   bodyShape               BodyShape
   fashionStyles           FashionStyle[]
