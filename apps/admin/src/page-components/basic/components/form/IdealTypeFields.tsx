@@ -3,7 +3,6 @@ import {
   신분_라벨,
   연간_벌이_라벨,
   음주량_라벨,
-  자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
   지역_라벨,
@@ -161,7 +160,7 @@ export function IdealTypeFields() {
       />
       <div>
         지역
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-4 gap-1">
           {Object.values(Region).map((region) => {
             return (
               <label key={region} className="flex gap-2">
