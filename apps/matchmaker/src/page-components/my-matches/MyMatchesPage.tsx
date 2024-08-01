@@ -73,29 +73,37 @@ function Resolved() {
     <div className="flex w-full flex-col items-center gap-6">
       <div className="flex w-full flex-col gap-2">
         <h2 className="text-xl font-semibold text-gray-800">신규</h2>
-        <div className="flex w-full flex-col items-center gap-4">
-          {activeMatches.length > 0 ? (
-            activeMatches.map((match) => {
-              return (
-                <MatchCard
-                  key={match.id}
-                  match={match}
-                  selfMember={member}
-                  showLabel={false}
-                  onClick={() => {
-                    void sendMessage(
-                      `${formatUniqueMemberName(member)} - ${
-                        match.id
-                      } 매칭 카드 클릭`,
-                    );
-                  }}
-                />
-              );
-            })
-          ) : (
-            <Empty />
-          )}
-        </div>
+        {activeMatches.length > 0 ? (
+          <>
+            <div className="flex w-full items-start gap-1">
+              <p className="text-gray-500">※</p>
+              <p className="text-gray-500">
+                응답 전엔 상대방의 응답 여부나 수락 여부를 알 수 없습니다.
+              </p>
+            </div>
+            <div className="flex w-full flex-col items-center gap-4">
+              {activeMatches.map((match) => {
+                return (
+                  <MatchCard
+                    key={match.id}
+                    match={match}
+                    selfMember={member}
+                    showLabel={false}
+                    onClick={() => {
+                      void sendMessage(
+                        `${formatUniqueMemberName(member)} - ${
+                          match.id
+                        } 매칭 카드 클릭`,
+                      );
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <Empty />
+        )}
       </div>
       {수락한_매칭들.length > 0 || 거절한_매칭들.length > 0 ? (
         <>
@@ -232,7 +240,7 @@ function MatchCard({
 
 function Empty() {
   return (
-    <div className="mb-4 mt-2 flex w-full flex-col items-center">
+    <div className="my-4 flex w-full flex-col items-center">
       <p className="text-xl font-medium text-primary-500">
         이상형을 찾고 있어요 💘
       </p>
