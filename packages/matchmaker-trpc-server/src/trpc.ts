@@ -10,6 +10,7 @@
 import { prisma } from "@ieum/prisma";
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
+import { OpenApiMeta } from "trpc-openapi";
 import { ZodError } from "zod";
 
 interface CreateContextOptions {
@@ -42,19 +43,22 @@ export type Context = Awaited<ReturnType<typeof createContextInner>>;
  * This is where the trpc api is initialized, connecting the context and
  * transformer
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
-});
+const t = initTRPC
+  .context<typeof createTRPCContext>()
+  .meta<OpenApiMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      };
+    },
+  });
 
 /**
  * Create a server-side caller.
