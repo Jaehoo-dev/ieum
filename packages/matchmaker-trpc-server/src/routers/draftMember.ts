@@ -6,6 +6,7 @@ export const draftMemberRouter = createTRPCRouter({
   create: publicProcedure
     .meta({ openapi: { method: "POST", path: "/draft-members/create" } })
     .input(z.any())
+    .output(z.boolean())
     .mutation(({ ctx, input }) => {
       console.log("create", input);
 
