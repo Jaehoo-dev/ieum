@@ -9,13 +9,6 @@ const config = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  images: {
-    remotePatterns: [
-      {
-        hostname: process.env.NEXT_PUBLIC_SUPABASE_HOSTNAME ?? "",
-      },
-    ],
-  },
   experimental: {
     scrollRestoration: true,
   },
