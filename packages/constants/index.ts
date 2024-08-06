@@ -33,7 +33,7 @@ const Region = {
   "경기 북부": "NORTH_GYEONGGI",
   "인천/부천": "INCHEON_BUCHEON",
   "한 시간 이내": "WITHIN_ONE_HOUR",
-  "서울 경기권": "SEOUL_OR_GYEONGGI",
+  수도권: "SEOUL_OR_GYEONGGI",
   기타: "OTHER",
 } as const;
 
@@ -45,7 +45,7 @@ export const 지역_라벨: Record<Region, string> = {
   [Region["경기 북부"]]: "경기 북부",
   [Region["인천/부천"]]: "인천/부천",
   [Region["한 시간 이내"]]: "한 시간 이내",
-  [Region["서울 경기권"]]: "서울 경기권",
+  [Region["수도권"]]: "서울 또는 경기권이면 상관없음",
   [Region.기타]: "기타",
 } as const;
 
@@ -145,6 +145,16 @@ export const 학력_라벨: Record<EducationLevel, string> = {
   [EducationLevel.DOCTORATE_DEGREE]: "박사",
 } as const;
 
+export const 최소_학력_라벨: Record<EducationLevel, string> = {
+  [EducationLevel.ELEMENTARY_SCHOOL_GRADUATE]: "초등학교 졸업 이상",
+  [EducationLevel.MIDDLE_SCHOOL_GRADUATE]: "중학교 졸업 이상",
+  [EducationLevel.HIGH_SCHOOL_GRADUATE]: "고등학교 졸업 이상",
+  [EducationLevel.ASSOCIATE_DEGREE]: "전문학사 이상",
+  [EducationLevel.BACHELOR_DEGREE]: "학사 이상",
+  [EducationLevel.MASTER_DEGREE]: "석사 이상",
+  [EducationLevel.DOCTORATE_DEGREE]: "박사 이상",
+} as const;
+
 export const 신분_라벨: Record<OccupationStatus, string> = {
   [OccupationStatus.EMPLOYED]: "직장인",
   [OccupationStatus.ENTREPRENEUR]: "사업가/자영업",
@@ -164,6 +174,18 @@ export const 연간_벌이_라벨: Record<AnnualIncome, string> = {
   [AnnualIncome.GTE_500M]: "5억 원 이상",
 } as const;
 
+export const 최소_연간_벌이_라벨: Record<AnnualIncome, string> = {
+  [AnnualIncome.LT_30M]: "상관없음",
+  [AnnualIncome.GTE_30M_LT_50M]: "3천만 원 이상",
+  [AnnualIncome.GTE_50M_LT_70M]: "5천만 원 이상",
+  [AnnualIncome.GTE_70M_LT_100M]: "7천만 원 이상",
+  [AnnualIncome.GTE_100M_LT_150M]: "1억 원 이상",
+  [AnnualIncome.GTE_150M_LT_200M]: "1억5천만 원 이상",
+  [AnnualIncome.GTE_200M_LT_300M]: "2억 원 이상",
+  [AnnualIncome.GTE_300M_LT_500M]: "3억 원 이상",
+  [AnnualIncome.GTE_500M]: "5억 원 이상",
+} as const;
+
 export const 자산_라벨: Record<AssetsValue, string> = {
   [AssetsValue.LT_30M]: "3천만 원 미만",
   [AssetsValue.GTE_30M_LT_50M]: "3천만 ~ 5천만 원",
@@ -176,10 +198,29 @@ export const 자산_라벨: Record<AssetsValue, string> = {
   [AssetsValue.GTE_5B]: "50억 원 이상",
 } as const;
 
+export const 최소_자산_라벨: Record<AssetsValue, string> = {
+  [AssetsValue.LT_30M]: "상관없음",
+  [AssetsValue.GTE_30M_LT_50M]: "3천만 원 이상",
+  [AssetsValue.GTE_50M_LT_100M]: "5천만 원 이상",
+  [AssetsValue.GTE_100M_LT_300M]: "1억 원 이상",
+  [AssetsValue.GTE_300M_LT_500M]: "3억 원 이상",
+  [AssetsValue.GTE_500M_LT_1B]: "5억 원 이상",
+  [AssetsValue.GTE_1B_LT_2B]: "10억 원 이상",
+  [AssetsValue.GTE_2B_LT_5B]: "20억 원 이상",
+  [AssetsValue.GTE_5B]: "50억 원 이상",
+} as const;
+
 export const 독서량_라벨: Record<BooksReadPerYear, string> = {
   [BooksReadPerYear.ZERO]: "0권",
   [BooksReadPerYear.GTE_1_LT_5]: "1권 이상 5권 미만",
   [BooksReadPerYear.GTE_5_LT_10]: "5권 이상 10권 미만",
+  [BooksReadPerYear.GTE_10]: "10권 이상",
+} as const;
+
+export const 최소_독서량_라벨: Record<BooksReadPerYear, string> = {
+  [BooksReadPerYear.ZERO]: "상관없음",
+  [BooksReadPerYear.GTE_1_LT_5]: "1권 이상",
+  [BooksReadPerYear.GTE_5_LT_10]: "5권 이상",
   [BooksReadPerYear.GTE_10]: "10권 이상",
 } as const;
 

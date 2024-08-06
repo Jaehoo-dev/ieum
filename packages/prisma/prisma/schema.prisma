@@ -457,6 +457,72 @@ model BasicMemberIdealTypeV2 {
   lowPriorities    BasicCondition[]
 }
 
+model DraftBasicMember {
+  id                      String          @id @default(cuid())
+  name                    String
+  phoneNumber             String
+  gender                  Gender
+  marriageStatus          MarriageStatus
+  birthYear               Int
+  residence               String
+  height                  Float
+  weight                  Float
+  confidentFacialBodyPart String?
+  educationLevel          EducationLevel
+  graduatedUniversity     String?
+  workplace               String?
+  job                     String?
+  annualIncome            AnnualIncome?
+  assetsValue             AssetsValue?
+  mbti                    MBTI?
+  characteristics         String?
+  hobby                   String
+  exercisePerWeek         ExercisePerWeek
+  exerciseType            String?
+  isSmoker                Boolean
+  isDrinker               Boolean
+  alcoholConsumption      String?
+  alcoholTolerance        String?
+  religion                Religion
+  hasCar                  Boolean
+  hasTattoo               Boolean
+  datingStyle             String
+  selfIntroduction        String
+
+  idealMinAgeBirthYear       Int?
+  idealMaxAgeBirthYear       Int?
+  idealRegions               Region[]
+  idealMinHeight             Float?
+  idealMaxHeight             Float?
+  idealBodyShapes            BodyShape[]
+  idealFacialBodyPart        String?
+  idealEducationLevel        EducationLevel?
+  idealSchoolLevel           String?
+  idealNonPreferredWorkplace String?
+  idealNonPreferredJob       String?
+  idealMinAnnualIncome       AnnualIncome?
+  idealPreferredMbtis        MBTI[]
+  idealNonPreferredMbtis     MBTI[]
+  idealCharacteristics       String?
+  idealIsSmokerOk            Boolean
+  idealPreferredReligions    Religion[]
+  idealNonPreferredReligions Religion[]
+  idealIsTattooOk            Boolean
+  idealTypeDescription       String
+
+  dealBreakers     BasicCondition[] @default([])
+  highPriorities   BasicCondition[] @default([])
+  mediumPriorities BasicCondition[] @default([])
+  lowPriorities    BasicCondition[] @default([])
+
+  referralCode String?
+  memo         String?
+
+  personalInfoConsent Boolean
+
+  createdAt DateTime @default(now())
+}
+
 model MemberImage {
   id          Int         @id @default(autoincrement())
   member      BasicMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -795,4 +861,10 @@ enum CuisineType {
   JAPANESE
   WESTERN
   OTHER
+}
+
+enum MarriageStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
 }

@@ -7,9 +7,10 @@ import { Sidebar } from "./Sidebar";
 interface Props {
   children: ReactNode;
   title: string;
+  padding?: boolean;
 }
 
-export function Layout({ children, title }: Props) {
+export function Layout({ children, title, padding = true }: Props) {
   return (
     <>
       <Head>
@@ -17,7 +18,9 @@ export function Layout({ children, title }: Props) {
       </Head>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
         <Header title={title} />
-        <main className="mt-14 w-full p-6">{children}</main>
+        <main className={`mt-14 w-full ${padding ? "p-6" : ""}`}>
+          {children}
+        </main>
       </div>
     </>
   );
