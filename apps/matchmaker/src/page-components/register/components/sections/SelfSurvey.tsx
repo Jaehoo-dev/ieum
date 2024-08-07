@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import Link from "next/link";
 import { 연간_벌이_라벨, 자산_라벨 } from "@ieum/constants";
 import {
   AnnualIncome,
@@ -8,7 +10,10 @@ import {
   MBTI,
   Religion,
 } from "@ieum/prisma";
-import { isEmptyStringOrNil } from "@ieum/utils";
+import { supabase } from "@ieum/supabase";
+import { assert, isEmptyStringOrNil } from "@ieum/utils";
+import AddIcon from "@mui/icons-material/Add";
+import { nanoid } from "nanoid";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { handleNullableStringNumber, RegisterForm } from "../../RegisterForm";
@@ -595,6 +600,36 @@ export function SelfSurvey({ onBack, onNext }: Props) {
             required: "자기소개를 입력해주세요.",
           })}
         />
+        <Controller
+          control={control}
+          name="imageBucketPaths"
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            return (
+              <ImageField
+                bucketPaths={value}
+                onUpload={(bucketPath) => {
+                  onChange([...value, bucketPath]);
+                }}
+                onRemove={(bucketPath) => {
+                  onChange(
+                    value.filter((path) => {
+                      return path !== bucketPath;
+                    }),
+                  );
+                }}
+                error={error != null}
+                errorText={error?.message}
+              />
+            );
+          }}
+          rules={{
+            validate: (value) => {
+              if (value.length < 2) {
+                return "사진을 두 장 이상 올려주세요.";
+              }
+            },
+          }}
+        />
       </div>
       <div className="mt-4">
         <Buttons
@@ -627,6 +662,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
                 "hasCar",
                 "datingStyle",
                 "selfIntroduction",
+                "imageBucketPaths",
               ],
               {
                 shouldFocus: true,
@@ -640,5 +676,159 @@ export function SelfSurvey({ onBack, onNext }: Props) {
         />
       </div>
     </div>
+  );
+}
+
+interface ImageFieldProps {
+  bucketPaths: string[];
+  onUpload: (bucketPath: string) => void;
+  onRemove: (bucketPath: string) => void;
+  error: boolean;
+  errorText?: string;
+}
+
+function ImageField({
+  bucketPaths,
+  onUpload,
+  onRemove,
+  error,
+  errorText,
+}: ImageFieldProps) {
+  return (
+    <div className="flex flex-col gap-1 text-gray-800">
+      <span className="text-lg font-medium">
+        사진을 두 장 이상 올려주세요. 최소한 한 장은 얼굴을 가리지 않은 정면
+        사진으로, 이목구비가 뚜렷하게 보여야 합니다.{" "}
+        <Link
+          href="https://ieum-love.tistory.com/entry/%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%B1%EC%82%AC%EB%90%98%EB%A0%A4%EB%A9%B4-%EC%9D%B4%EB%9F%B0-%EC%82%AC%EC%A7%84-%EC%93%B0%EC%84%B8%EC%9A%94-%EC%86%8C%EA%B0%9C%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9A%B4%EC%98%81%EC%9E%90%EC%9D%98-%EC%86%8C%EA%B0%9C%ED%8C%85-%EA%BF%80%ED%8C%81-1%ED%8E%B8"
+          className="text-primary-500 underline"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          사진 고르는 팁
+        </Link>
+        을 참고해주세요.
+      </span>
+      <div className="mb-1 flex flex-col gap-1">
+        <span className="text-sm text-gray-500">
+          얼굴 사진과 전신 사진을 골고루 올려주시면 좋습니다. 사진은 추후에
+          수정하실 수 있습니다.
+        </span>
+        {error ? (
+          <span className="text-sm text-red-500">
+            {isEmptyStringOrNil(errorText) ? "사진을 확인해주세요." : errorText}
+          </span>
+        ) : null}
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {bucketPaths.map((bucketPath) => {
+          return (
+            <Image
+              key={bucketPath}
+              bucketPath={bucketPath}
+              onRemove={onRemove}
+            />
+          );
+        })}
+        <ImageUploader onUpload={onUpload} />
+      </div>
+    </div>
+  );
+}
+
+interface ImageProps {
+  bucketPath: string;
+  onRemove: (bucketPath: string) => void;
+}
+
+function Image({ bucketPath, onRemove }: ImageProps) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return (
+    <div key={bucketPath} className="relative">
+      <img
+        className="w-full rounded-lg object-cover"
+        src={publicUrl}
+        alt="사진"
+      />
+      <button
+        className="absolute right-2 top-2 rounded-full bg-white p-1"
+        onClick={async () => {
+          const { error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .remove([bucketPath]);
+
+          assert(error == null, error?.message);
+
+          onRemove(bucketPath);
+        }}
+      >
+        <svg
+          className="h-4 w-4 text-red-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+interface ImageUploaderProps {
+  onUpload: (bucketPath: string) => void;
+}
+
+function ImageUploader({ onUpload }: ImageUploaderProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        onChange={async (event) => {
+          const file = event.target.files?.[0];
+
+          if (file == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .upload(nanoid(), file);
+
+          assert(error == null, error?.message);
+
+          onUpload(data.path);
+        }}
+        className="hidden"
+      />
+      <button
+        className="flex h-40 items-center justify-center rounded-lg bg-gray-200"
+        type="button"
+        onClick={() => {
+          inputRef.current?.click();
+        }}
+      >
+        <AddIcon className="text-gray-500" fontSize="large" />
+      </button>
+    </>
   );
 }
