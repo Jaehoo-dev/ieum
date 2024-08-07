@@ -72,8 +72,6 @@ export function MultiSelect<T extends string | number = string>({
               onClick={() => {
                 const 추가하는가 = !selectedValues.includes(value);
 
-                console.log(selectedValues, max);
-
                 if (추가하는가 && max != null && selectedValues.length >= max) {
                   return;
                 }

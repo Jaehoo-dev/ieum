@@ -458,7 +458,7 @@ model BasicMemberIdealTypeV2 {
 }
 
 model DraftBasicMember {
-  id                      String          @id @default(cuid())
+  id                      String             @id @default(cuid())
   name                    String
   phoneNumber             String
   gender                  Gender
@@ -488,6 +488,7 @@ model DraftBasicMember {
   hasTattoo               Boolean
   datingStyle             String
   selfIntroduction        String
+  images                  DraftMemberImage[]
 
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
@@ -521,6 +522,13 @@ model DraftBasicMember {
   personalInfoConsent Boolean
 
   createdAt DateTime @default(now())
+}
+
+model DraftMemberImage {
+  id            String           @id @default(cuid())
+  draftMember   DraftBasicMember @relation(fields: [draftMemberId], references: [id], onDelete: Cascade)
+  draftMemberId String
+  bucketPath    String
 }
 
 model MemberImage {

@@ -49,6 +49,7 @@ export const draftMemberRouter = createTRPCRouter({
         hasTattoo: z.boolean(),
         datingStyle: z.string(),
         selfIntroduction: z.string(),
+        imageBucketPaths: z.string().array(),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
         idealRegions: z.nativeEnum(Region).array(),
@@ -74,14 +75,25 @@ export const draftMemberRouter = createTRPCRouter({
         personalInfoConsent: z.boolean(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input: { imageBucketPaths, ...data } }) => {
       await ctx.prisma.draftBasicMember.create({
-        data: input,
+        data: {
+          ...data,
+          images: {
+            createMany: {
+              data: imageBucketPaths.map((bucketPath) => {
+                return {
+                  bucketPath,
+                };
+              }),
+            },
+          },
+        },
       });
 
       sendMessageToFormChannel(
-        `*이름*: ${input.name}\n*전화번호*: ${input.phoneNumber}\n*성별*: ${
-          성별_라벨[input.gender]
+        `*이름*: ${data.name}\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
+          성별_라벨[data.gender]
         }`,
       );
 

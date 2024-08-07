@@ -44,6 +44,7 @@ export type RegisterForm = {
   hasTattoo: boolean | null;
   datingStyle: string;
   selfIntroduction: string;
+  imageBucketPaths: string[];
 
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
@@ -102,6 +103,7 @@ const defaultRegisterForm: RegisterForm = {
   hasTattoo: null,
   datingStyle: "",
   selfIntroduction: "",
+  imageBucketPaths: [],
   idealMinAgeBirthYear: null,
   idealMaxAgeBirthYear: null,
   idealRegions: [],
