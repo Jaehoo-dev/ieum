@@ -58,6 +58,7 @@ import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 const unusedBasicConditions = new Set<BasicCondition>([
+  BasicCondition.EYELID,
   BasicCondition.SHOULD_HAVE_CAR,
   BasicCondition.IS_GAMING_OK,
   BasicCondition.IS_PET_OK,
