@@ -75,7 +75,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
                   return true;
                 }
 
-                return "출생연도를 확인해주세요.";
+                return "출생연도를 확인해주세요. 왼쪽이 최소 나이 오른쪽이 최대 나이입니다.";
               },
             }),
           }}
