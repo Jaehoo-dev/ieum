@@ -91,7 +91,7 @@ export const draftMemberRouter = createTRPCRouter({
         },
       });
 
-      sendMessageToFormChannel(
+      await sendMessageToFormChannel(
         `*이름*: ${data.name}\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
           성별_라벨[data.gender]
         }`,
