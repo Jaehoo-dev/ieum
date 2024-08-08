@@ -392,7 +392,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
                 }}
                 error={error != null}
                 errorText={error?.message}
-                cols={3}
+                cols={2}
               />
             );
           }}
