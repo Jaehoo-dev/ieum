@@ -28,12 +28,19 @@ export async function sendMessageToMatchResultChannel(text: string) {
 }
 
 export async function sendMessageToFormChannel(text: string) {
-  return await fetch(process.env.NEXT_PUBLIC_SLACK_FORM_NOTIBOT_WEBHOOK_URL!, {
-    method: "POST",
-    body: JSON.stringify({
-      text,
-    }),
-  });
+  try {
+    return await fetch(
+      process.env.NEXT_PUBLIC_SLACK_FORM_NOTIBOT_WEBHOOK_URL!,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          text,
+        }),
+      },
+    );
+  } catch (err) {
+    // ignore
+  }
 }
 
 export const SLACK_USER_ID_MENTION = "<@U06LZ57FHPA>";
