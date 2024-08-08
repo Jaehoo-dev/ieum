@@ -92,9 +92,9 @@ export const draftMemberRouter = createTRPCRouter({
       });
 
       void sendMessageToFormChannel(
-        `*이름*: ${data.name}\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
-          성별_라벨[data.gender]
-        }`,
+        `*이음:cupid:베이직* 설문 제출\n*이름*: ${data.name}\n*전화번호*: ${
+          data.phoneNumber
+        }\n*성별*: ${성별_라벨[data.gender]}`,
       );
 
       return true;
