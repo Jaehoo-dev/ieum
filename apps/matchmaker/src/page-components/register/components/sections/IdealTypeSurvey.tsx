@@ -49,7 +49,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
       <div className="flex flex-col gap-8">
         <Range
           label="선호하시는 나이를 출생연도로 입력해주세요."
-          description="예) ~ 1988, 1994 ~ 1990"
+          description="상관없으면 비워두시면 됩니다. 예) ~ 1988, 1994 ~ 1990"
           error={
             errors.idealMinAgeBirthYear != null ||
             errors.idealMaxAgeBirthYear != null
@@ -127,7 +127,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         />
         <Range
           label="상대방 키가 어느 정도이길 바라세요?"
-          description="예) 160 ~ 170, 170 ~"
+          description="상관없으면 비워두시면 됩니다. 예) 160 ~ 170, 170 ~"
           error={errors.idealMinHeight != null || errors.idealMaxHeight != null}
           errorText={
             errors.idealMinHeight?.message || errors.idealMaxHeight?.message
@@ -195,6 +195,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         />
         <TextInput
           label="이성을 볼 때 특별히 선호하는 얼굴이나 신체 특징이 있다면 알려주세요."
+          description="없으면 넘어가시면 됩니다."
           error={errors.idealFacialBodyPart != null}
           errorText={errors.idealFacialBodyPart?.message}
           {...register("idealFacialBodyPart")}
@@ -207,6 +208,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
               <UniSelect
                 label="상대방 학력이 어느 정도이길 바라세요?"
                 options={[
+                  { label: "상관없음", value: null },
                   {
                     label: "고등학교 졸업 이상",
                     value: EducationLevel.HIGH_SCHOOL_GRADUATE,
@@ -217,6 +219,10 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
                   },
                   { label: "학사 이상", value: EducationLevel.BACHELOR_DEGREE },
                   { label: "석사 이상", value: EducationLevel.MASTER_DEGREE },
+                  {
+                    label: "박사",
+                    value: EducationLevel.DOCTORATE_DEGREE,
+                  },
                 ]}
                 value={value}
                 onChange={(value) => {
@@ -241,6 +247,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         {선호학력이_학사이상인사 ? (
           <TextInput
             label="이성을 볼 때 선호하는 학벌 수준이 있다면 알려주세요."
+            description="없으면 비워두시면 됩니다."
             error={errors.idealSchoolLevel != null}
             errorText={errors.idealSchoolLevel?.message}
             {...register("idealSchoolLevel")}
@@ -248,12 +255,14 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         ) : null}
         <TextInput
           label="아는 사람이 있어서 피하고 싶은 직장이나 학교가 있다면 알려주세요."
+          description="없으면 비워두시면 됩니다."
           error={errors.idealNonPreferredWorkplace != null}
           errorText={errors.idealNonPreferredWorkplace?.message}
           {...register("idealNonPreferredWorkplace")}
         />
         <TextInput
           label="혹시 선호하지 않는 직무가 있다면 적어주세요."
+          description="없으면 비워두시면 됩니다."
           error={errors.idealNonPreferredJob != null}
           errorText={errors.idealNonPreferredJob?.message}
           {...register("idealNonPreferredJob")}
@@ -265,16 +274,22 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <UniSelect
                 label="상대방 연봉이 어느 정도이길 바라세요?"
-                options={Object.values(AnnualIncome)
-                  .filter((value) => {
-                    return value !== AnnualIncome.LT_30M;
-                  })
-                  .map((annualIncome) => {
-                    return {
-                      label: 최소_연간_벌이_라벨[annualIncome],
-                      value: annualIncome,
-                    };
-                  })}
+                options={[
+                  {
+                    label: "상관없음",
+                    value: null,
+                  },
+                  ...Object.values(AnnualIncome)
+                    .filter((value) => {
+                      return value !== AnnualIncome.LT_30M;
+                    })
+                    .map((annualIncome) => {
+                      return {
+                        label: 최소_연간_벌이_라벨[annualIncome],
+                        value: annualIncome,
+                      };
+                    }),
+                ]}
                 value={value}
                 onChange={onChange}
                 error={error != null}
@@ -291,7 +306,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="선호하는 MBTI가 있다면 골라주세요."
-                description="여러 개 선택 가능"
+                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다. ="
                 options={Object.values(MBTI).map((mbti) => {
                   return {
                     label: mbti,
@@ -314,7 +329,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="잘 맞지 않는다 생각하시는 MBTI는요?"
-                description="여러 개 선택 가능"
+                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다. ="
                 options={Object.values(MBTI).map((mbti) => {
                   return {
                     label: mbti,
@@ -397,7 +412,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="선호하시는 상대방 종교가 있으세요?"
-                description="여러 개 선택 가능"
+                description="여러 개 선택 가능. 상관없으면 선택을 하지 않고 넘어가시면 됩니다."
                 options={Object.values(Religion).map((religion) => {
                   return {
                     label: 종교_라벨[religion],
@@ -420,7 +435,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="기피하는 상대방 종교는요?"
-                description="여러 개 선택 가능"
+                description="여러 개 선택 가능. 상관없으면 선택을 하지 않고 넘어가시면 됩니다."
                 options={Object.values(Religion)
                   .filter((religion) => {
                     return religion !== Religion.NONE;
@@ -497,7 +512,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         />
         <TextareaInput
           label="마지막으로 어떤 이성을 만나고 싶으신지, 이성상을 적어주세요."
-          description="프로필에 기재하니 성의 있게 써주세요 :)"
+          description="프로필에 기재합니다."
           required={true}
           error={errors.idealTypeDescription != null}
           errorText={errors.idealTypeDescription?.message}

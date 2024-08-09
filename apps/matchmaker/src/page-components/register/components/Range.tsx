@@ -27,18 +27,16 @@ export function Range({
   return (
     <div className="flex flex-col gap-1 text-gray-800">
       <span className="text-lg font-medium">
-        {`${label}${required ? "*" : ""}`}
+        {label}
+        {required ? <span className="text-primary-500">*</span> : null}
       </span>
-      {hasSublabel ? (
-        <span
-          className={`mb-1 text-sm ${
-            hasErrorText ? "text-red-500" : "text-gray-500"
-          }`}
-        >
-          {hasErrorText ? errorText : description}
-        </span>
+      {hasDescription ? (
+        <span className="text-sm text-gray-500">{description}</span>
       ) : null}
-      <div className="flex flex-row items-center gap-2">
+      {hasErrorText ? (
+        <span className="text-sm text-red-500">{errorText}</span>
+      ) : null}
+      <div className="mt-1 flex flex-row items-center gap-2">
         <input
           className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-primary-500 ${
             error ? "border-red-500" : "border-gray-300"

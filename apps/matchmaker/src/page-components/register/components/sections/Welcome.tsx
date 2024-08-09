@@ -40,7 +40,7 @@ export function Welcome({ onNext }: Props) {
             error={errors.name != null}
             errorText={errors.name?.message}
             {...register("name", {
-              required: "이름을 입력해주세요. 상대방에게 공개하지 않습니다.",
+              required: "이름을 입력해주세요.",
             })}
           />
           <Controller
@@ -63,8 +63,7 @@ export function Welcome({ onNext }: Props) {
               );
             }}
             rules={{
-              required:
-                "전화번호를 입력해주세요. 상대방에게 공개하지 않습니다.",
+              required: "전화번호를 입력해주세요.",
               pattern: {
                 value: /^010-\d{4}-\d{4}$/,
                 message: "올바른 전화번호를 입력해주세요.",
@@ -127,7 +126,7 @@ export function Welcome({ onNext }: Props) {
               required: "성별을 선택해주세요.",
               validate: (value) => {
                 if (value === "MARRIED") {
-                  return "기혼자는 돌아가주세요!";
+                  return "기혼자는 가입이 불가능합니다.";
                 }
 
                 if (value === "DIVORCED") {

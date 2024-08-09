@@ -24,10 +24,8 @@ export function PreIdealTypeSurvey({ onBack, onNext }: Props) {
         <BackTextButton onClick={onBack} />
         <div className="flex flex-col gap-4">
           <p className="text-lg text-gray-800">
-            이제는 {name} 님이 바라시는 이성상을 알아볼게요!
-          </p>
-          <p className="text-sm text-gray-500">
-            신경쓰지 않는 조건은 비워두시면 됩니다.
+            이제는 {name} 님이 바라시는 이성상을 알아볼게요! 신경쓰지 않으시는
+            조건은 비워두시면 됩니다.
           </p>
         </div>
         <div className="mt-2">

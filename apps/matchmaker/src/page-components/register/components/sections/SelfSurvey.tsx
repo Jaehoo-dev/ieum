@@ -121,7 +121,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
           })}
         />
         <TextInput
-          label="얼굴이나 신체에서 자신 있는 부위가 어디인가요?"
+          label="얼굴이나 신체에서 자신 있는 곳이 어디인가요?"
           description="자신 있게 어필해주세요!"
           error={errors.confidentFacialBodyPart != null}
           errorText={errors.confidentFacialBodyPart?.message}
@@ -586,7 +586,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
           render={({ field: { onChange, value }, fieldState: { error } }) => {
             return (
               <UniSelect
-                label="반려동물을 키우세요??"
+                label="반려동물을 키우세요?"
                 options={[
                   { label: "예", value: true },
                   { label: "아니요", value: false },
@@ -688,6 +688,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
                 "religion",
                 "hasTattoo",
                 "hasCar",
+                "hasPet",
                 "datingStyle",
                 "selfIntroduction",
                 "imageBucketPaths",
@@ -739,8 +740,8 @@ function ImageField({
       </span>
       <div className="mb-1 flex flex-col gap-1">
         <span className="text-sm text-gray-500">
-          얼굴 사진과 전신 사진을 골고루 올려주시면 좋습니다. 사진은 추후에
-          수정하실 수 있습니다.
+          얼굴 사진과 전신 사진을 골고루 올려주시면 좋습니다. 추후에 수정하실 수
+          있습니다.
         </span>
         {error ? (
           <span className="text-sm text-red-500">
