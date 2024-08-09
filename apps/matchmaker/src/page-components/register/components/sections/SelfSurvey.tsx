@@ -745,7 +745,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
   const {
     data: { publicUrl },
   } = supabase.storage
-    .from(process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!)
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
   return (
@@ -760,7 +760,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
         onClick={async () => {
           const { error } = await supabase.storage
             .from(
-              process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!,
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
             )
             .remove([bucketPath]);
 
@@ -810,9 +810,9 @@ function ImageUploader({ onUpload }: ImageUploaderProps) {
 
           const { data, error } = await supabase.storage
             .from(
-              process.env.NEXT_PUBLIC_SUPABASE_DRAFT_MEMBER_IMAGES_BUCKET_NAME!,
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
             )
-            .upload(nanoid(), file);
+            .upload(`/drafts/${nanoid()}`, file);
 
           assert(error == null, error?.message);
 

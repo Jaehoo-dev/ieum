@@ -77,6 +77,19 @@ function Resolved() {
           >
             콘솔에 확인
           </button>
+          <button
+            type="button"
+            className="w-full rounded bg-primary-500 py-2 text-white"
+            onClick={() => {
+              router.push(
+                `/basic/members/${member.id}/profile/${
+                  member.profile == null ? "create" : "update"
+                }`,
+              );
+            }}
+          >
+            {member.profile == null ? "프로필 생성" : "프로필 수정"}
+          </button>
           <div className="flex justify-center gap-4">
             <input
               type="checkbox"
