@@ -78,7 +78,10 @@ export function getSimilarityScore(
               : acc;
           })
           .with(BasicCondition.OCCUPATION_STATUS, () => {
-            if (idealType.occupationStatuses.length === 0) {
+            if (
+              target.occupationStatus == null ||
+              idealType.occupationStatuses.length === 0
+            ) {
               return acc;
             }
 
@@ -228,7 +231,10 @@ export function getSimilarityScore(
               : acc;
           })
           .with(BasicCondition.BOOKS_READ_PER_YEAR, () => {
-            if (idealType.booksReadPerYear == null) {
+            if (
+              target.booksReadPerYear == null ||
+              idealType.booksReadPerYear == null
+            ) {
               return acc;
             }
 

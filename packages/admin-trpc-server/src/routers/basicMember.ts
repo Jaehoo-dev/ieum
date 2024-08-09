@@ -28,6 +28,7 @@ import {
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert, hash, krToGlobal } from "@ieum/utils";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
@@ -57,14 +58,14 @@ export const basicMemberRouter = createTRPCRouter({
           height: z.number(),
           weight: z.number().nullable(),
           bmi: z.number().nullable(),
-          bodyShape: z.nativeEnum(BodyShape),
+          bodyShape: z.nativeEnum(BodyShape).nullable(),
           fashionStyles: z.array(z.nativeEnum(FashionStyle)),
-          eyelid: z.nativeEnum(Eyelid),
+          eyelid: z.nativeEnum(Eyelid).nullable(),
           customEyelid: z.string().nullable(),
-          confidentFacialBodyPart: z.string(),
+          confidentFacialBodyPart: z.string().nullable(),
           educationLevel: z.nativeEnum(EducationLevel),
           graduatedUniversity: z.string().nullable(),
-          occupationStatus: z.nativeEnum(OccupationStatus),
+          occupationStatus: z.nativeEnum(OccupationStatus).nullable(),
           workplace: z.string().nullable(),
           job: z.string().nullable(),
           currentSchool: z.string().nullable(),
@@ -78,7 +79,7 @@ export const basicMemberRouter = createTRPCRouter({
           assetsValue: z.nativeEnum(AssetsValue).nullable(),
           assetManagementApproach: z.string().nullable(),
           hobby: z.string(),
-          booksReadPerYear: z.nativeEnum(BooksReadPerYear),
+          booksReadPerYear: z.nativeEnum(BooksReadPerYear).nullable(),
           bookTaste: z.string().nullable(),
           leisureActivity: z.string().nullable(),
           siblings: z.string().nullable(),
@@ -93,14 +94,14 @@ export const basicMemberRouter = createTRPCRouter({
           exercisePerWeek: z.nativeEnum(ExercisePerWeek),
           exerciseType: z.string().nullable(),
           hasCar: z.boolean(),
-          doesGame: z.boolean(),
+          doesGame: z.boolean().nullable(),
           gameType: z.string().nullable(),
           datingStyle: z.string().nullable(),
-          contactFrequency: z.nativeEnum(ContactFrequency),
+          contactFrequency: z.nativeEnum(ContactFrequency).nullable(),
           customContactFrequency: z.string().nullable(),
-          contactMethod: z.nativeEnum(ContactMethod),
+          contactMethod: z.nativeEnum(ContactMethod).nullable(),
           customContactMethod: z.string().nullable(),
-          hasPet: z.boolean(),
+          hasPet: z.boolean().nullable(),
           selfIntroduction: z.string().nullable(),
           memo: z.string().nullable(),
           imageBucketPaths: z.array(z.string()),
@@ -197,14 +198,14 @@ export const basicMemberRouter = createTRPCRouter({
             height: z.number(),
             weight: z.number().nullable(),
             bmi: z.number().nullable(),
-            bodyShape: z.nativeEnum(BodyShape),
+            bodyShape: z.nativeEnum(BodyShape).nullable(),
             fashionStyles: z.array(z.nativeEnum(FashionStyle)),
-            eyelid: z.nativeEnum(Eyelid),
+            eyelid: z.nativeEnum(Eyelid).nullable(),
             customEyelid: z.string().nullable(),
-            confidentFacialBodyPart: z.string(),
+            confidentFacialBodyPart: z.string().nullable(),
             educationLevel: z.nativeEnum(EducationLevel),
             graduatedUniversity: z.string().nullable(),
-            occupationStatus: z.nativeEnum(OccupationStatus),
+            occupationStatus: z.nativeEnum(OccupationStatus).nullable(),
             workplace: z.string().nullable(),
             job: z.string().nullable(),
             currentSchool: z.string().nullable(),
@@ -218,7 +219,7 @@ export const basicMemberRouter = createTRPCRouter({
             assetsValue: z.nativeEnum(AssetsValue).nullable(),
             assetManagementApproach: z.string().nullable(),
             hobby: z.string(),
-            booksReadPerYear: z.nativeEnum(BooksReadPerYear),
+            booksReadPerYear: z.nativeEnum(BooksReadPerYear).nullable(),
             bookTaste: z.string().nullable(),
             leisureActivity: z.string().nullable(),
             siblings: z.string().nullable(),
@@ -233,14 +234,14 @@ export const basicMemberRouter = createTRPCRouter({
             exercisePerWeek: z.nativeEnum(ExercisePerWeek),
             exerciseType: z.string().nullable(),
             hasCar: z.boolean(),
-            doesGame: z.boolean(),
+            doesGame: z.boolean().nullable(),
             gameType: z.string().nullable(),
             datingStyle: z.string().nullable(),
-            contactFrequency: z.nativeEnum(ContactFrequency),
+            contactFrequency: z.nativeEnum(ContactFrequency).nullable(),
             customContactFrequency: z.string().nullable(),
-            contactMethod: z.nativeEnum(ContactMethod),
+            contactMethod: z.nativeEnum(ContactMethod).nullable(),
             customContactMethod: z.string().nullable(),
-            hasPet: z.boolean(),
+            hasPet: z.boolean().nullable(),
             selfIntroduction: z.string().nullable(),
             memo: z.string().nullable(),
           }),
@@ -1125,6 +1126,41 @@ export const basicMemberRouter = createTRPCRouter({
           member.acceptedMatches.length > 0;
 
         return !hasBeenMatched;
+      });
+    }),
+  createFromDraft: protectedAdminProcedure
+    .input(z.object({ draftMemberId: z.string() }))
+    .mutation(async ({ ctx, input: { draftMemberId } }) => {
+      const draftMember = await ctx.prisma.draftBasicMember.findUniqueOrThrow({
+        where: {
+          id: draftMemberId,
+        },
+      });
+
+      const hashedPhoneNumber = hash(
+        draftMember.phoneNumber,
+        process.env.SOFT_DELETE_SECRET_KEY!,
+      );
+
+      const member = await ctx.prisma.basicMemberV2.findUnique({
+        where: {
+          phoneNumber: hashedPhoneNumber,
+        },
+      });
+
+      if (member == null) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Archived member exists",
+        });
+      }
+
+      return ctx.prisma.basicMemberV2.create({
+        data: {
+          ...draftMember,
+          status: MemberStatus.PENDING,
+          referralCode: generateReferralCode(),
+        },
       });
     }),
 });

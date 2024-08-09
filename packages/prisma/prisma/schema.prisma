@@ -275,14 +275,14 @@ model BasicMemberV2 {
   height                  Float
   weight                  Float?
   bmi                     Float?
-  bodyShape               BodyShape
+  bodyShape               BodyShape?
   fashionStyles           FashionStyle[]
-  eyelid                  Eyelid
+  eyelid                  Eyelid?
   customEyelid            String?
-  confidentFacialBodyPart String
+  confidentFacialBodyPart String?
   educationLevel          EducationLevel
   graduatedUniversity     String?
-  occupationStatus        OccupationStatus
+  occupationStatus        OccupationStatus?
   workplace               String?
   job                     String?
   currentSchool           String?
@@ -296,7 +296,7 @@ model BasicMemberV2 {
   assetsValue             AssetsValue?
   assetManagementApproach String?
   hobby                   String
-  booksReadPerYear        BooksReadPerYear
+  booksReadPerYear        BooksReadPerYear?
   bookTaste               String?
   leisureActivity         String?
   siblings                String?
@@ -309,14 +309,14 @@ model BasicMemberV2 {
   exercisePerWeek         ExercisePerWeek
   exerciseType            String?
   hasCar                  Boolean
-  doesGame                Boolean
+  doesGame                Boolean?
   gameType                String?
   datingStyle             String?
-  contactFrequency        ContactFrequency
+  contactFrequency        ContactFrequency?
   customContactFrequency  String?
-  contactMethod           ContactMethod
+  contactMethod           ContactMethod?
   customContactMethod     String?
-  hasPet                  Boolean
+  hasPet                  Boolean?
   selfIntroduction        String?
   images                  MemberImageV2[]
   videos                  MemberVideoV2[]
@@ -521,7 +521,16 @@ model DraftBasicMember {
 
   personalInfoConsent Boolean
 
+  status DraftStatus @default(PENDING)
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum DraftStatus {
+  PENDING
+  REJECTED
+  APPROVED
 }
 
 model DraftMemberImage {

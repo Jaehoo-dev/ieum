@@ -26,10 +26,11 @@ export function SimpleSelfFields({ member }: Props) {
           ? `${member.bmi.toFixed(2)} (${getBmiLabel(member.bmi)})`
           : null}
       </div>
-      <div>체형: {체형_라벨[member.bodyShape]}</div>
       <div>학력: {학력_라벨[member.educationLevel]}</div>
       <div>졸업한 대학: {member.graduatedUniversity}</div>
-      <div>신분: {신분_라벨[member.occupationStatus]}</div>
+      {member.occupationStatus != null ? (
+        <div>신분: {신분_라벨[member.occupationStatus]}</div>
+      ) : null}
       <div>직장: {member.workplace}</div>
       <div>직무: {member.job}</div>
       {member.currentSchool != null ? (

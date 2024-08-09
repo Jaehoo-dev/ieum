@@ -31,15 +31,18 @@ export function DetailedSelfFields({ member }: Props) {
           ? `${member.bmi.toFixed(2)} (${getBmiLabel(member.bmi)})`
           : null}
       </div>
-      <div>체형: {체형_라벨[member.bodyShape]}</div>
-      <div>
-        쌍꺼풀: <span>{쌍꺼풀_라벨[member.eyelid]}</span>
-        <span>{member.customEyelid}</span>
-      </div>
+      {member.eyelid != null ? (
+        <div>
+          쌍꺼풀: <span>{쌍꺼풀_라벨[member.eyelid]}</span>
+          <span>{member.customEyelid}</span>
+        </div>
+      ) : null}
       <div>자신 있는 부위: {member.confidentFacialBodyPart}</div>
       <div>학력: {학력_라벨[member.educationLevel]}</div>
       <div>졸업한 대학: {member.graduatedUniversity}</div>
-      <div>신분: {신분_라벨[member.occupationStatus]}</div>
+      {member.occupationStatus != null ? (
+        <div>신분: {신분_라벨[member.occupationStatus]}</div>
+      ) : null}
       <div>직장: {member.workplace}</div>
       <div>직무: {member.job}</div>
       {member.currentSchool != null ? (
@@ -63,7 +66,6 @@ export function DetailedSelfFields({ member }: Props) {
       </div>
       <div>자산 관리 방법: {member.assetManagementApproach}</div>
       <div>취미/관심사: {member.hobby}</div>
-      <div>연간 독서량: {독서량_라벨[member.booksReadPerYear]}</div>
       <div>책 취향: {member.bookTaste}</div>
       <div>여가 활동: {member.leisureActivity}</div>
       <div>형제 관계: {member.siblings}</div>
@@ -80,14 +82,6 @@ export function DetailedSelfFields({ member }: Props) {
         게임: {member.doesGame ? "예" : "아니요"} {member.gameType}
       </div>
       <div>데이트: {member.datingStyle}</div>
-      <div>
-        연락 빈도: {연락_빈도_라벨[member.contactFrequency]}{" "}
-        {member.customContactFrequency}
-      </div>
-      <div>
-        연락 형태: {연락_수단_라벨[member.contactMethod]}{" "}
-        {member.customContactMethod}
-      </div>
       <div>반려동물 유무: {member.hasPet ? "예" : "아니요"}</div>
       <div>자기소개: {member.selfIntroduction}</div>
     </div>
