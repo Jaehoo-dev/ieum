@@ -1,6 +1,4 @@
 import {
-  독서량_라벨,
-  신분_라벨,
   연간_벌이_라벨,
   음주량_라벨,
   종교_라벨,
@@ -11,14 +9,11 @@ import {
 } from "@ieum/constants";
 import {
   AnnualIncome,
-  AssetsValue,
   BodyShape,
-  BooksReadPerYear,
   DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
   MBTI,
-  OccupationStatus,
   Region,
   Religion,
 } from "@ieum/prisma";
@@ -55,22 +50,6 @@ export function IdealTypeFields() {
   } = useFieldArray({
     control,
     name: "idealType.bodyShapes",
-  });
-  const {
-    fields: idealEyelidFields,
-    append: appendIdealEyelid,
-    remove: removeIdealEyelid,
-  } = useFieldArray({
-    control,
-    name: "idealType.eyelids",
-  });
-  const {
-    fields: idealOccupationStatusFields,
-    append: appendIdealOccupationStatus,
-    remove: removeIdealOccupationStatus,
-  } = useFieldArray({
-    control,
-    name: "idealType.occupationStatuses",
   });
   const {
     fields: preferredMbtisFields,
@@ -328,34 +307,6 @@ export function IdealTypeFields() {
           },
         })}
       />
-      <div>
-        선호 신분
-        <div className="grid grid-cols-4 gap-2">
-          {Object.values(OccupationStatus).map((occupationStatus) => {
-            return (
-              <Checkbox
-                key={occupationStatus}
-                label={신분_라벨[occupationStatus]}
-                error={errors.idealType?.occupationStatuses != null}
-                checked={idealOccupationStatusFields.some((field) => {
-                  return field.value === occupationStatus;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendIdealOccupationStatus({ value: occupationStatus });
-                  } else {
-                    removeIdealOccupationStatus(
-                      idealOccupationStatusFields.findIndex(
-                        (field) => field.value === occupationStatus,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
       <TextInput
         label="기피 직장/학교"
         {...register("idealType.nonPreferredWorkplace", {
@@ -572,57 +523,8 @@ export function IdealTypeFields() {
         }}
       />
       <TextInput
-        label="취미/관심사"
-        {...register("idealType.hobby", {
-          setValueAs: (value: string) => {
-            return value === "" ? null : value;
-          },
-        })}
-      />
-      <Controller
-        control={control}
-        name="idealType.booksReadPerYear"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="최소 독서량"
-              error={errors.idealType?.booksReadPerYear != null}
-              value={value ?? 상관없음}
-              onChange={({ target: { value } }) => {
-                onChange(value === 상관없음 ? null : value);
-              }}
-            >
-              {[상관없음, ...Object.values(BooksReadPerYear)].map(
-                (booksReadPerYearOption) => {
-                  return (
-                    <option
-                      key={booksReadPerYearOption}
-                      value={booksReadPerYearOption}
-                    >
-                      {booksReadPerYearOption === 상관없음
-                        ? 상관없음
-                        : 독서량_라벨[
-                            booksReadPerYearOption as BooksReadPerYear
-                          ]}
-                    </option>
-                  );
-                },
-              )}
-            </Select>
-          );
-        }}
-      />
-      <TextInput
         label="특징"
         {...register("idealType.characteristics", {
-          setValueAs: (value: string) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
-        label="인생관"
-        {...register("idealType.lifePhilosophy", {
           setValueAs: (value: string) => {
             return isEmptyStringOrNil(value) ? null : value;
           },

@@ -63,6 +63,10 @@ export function satisfiesDealBreakers({
           .includes(target.educationLevel);
       })
       .with("OCCUPATION_STATUS", () => {
+        if (target.occupationStatus == null) {
+          return true;
+        }
+
         return occupationStatuses.includes(target.occupationStatus);
       })
       .with("PREFERRED_MBTIS", () => {
@@ -119,7 +123,7 @@ export function satisfiesDealBreakers({
           .includes(target.assetsValue);
       })
       .with("BOOKS_READ_PER_YEAR", () => {
-        if (booksReadPerYear == null) {
+        if (booksReadPerYear == null || target.booksReadPerYear == null) {
           return true;
         }
 

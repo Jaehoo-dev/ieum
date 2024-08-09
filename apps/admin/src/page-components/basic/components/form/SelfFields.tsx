@@ -1,29 +1,17 @@
 import {
-  독서량_라벨,
   성별_라벨,
-  신분_라벨,
-  쌍꺼풀_라벨,
   연간_벌이_라벨,
-  연락_빈도_라벨,
-  연락_수단_라벨,
   자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
-  체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
 import {
   AnnualIncome,
   AssetsValue,
-  BodyShape,
-  BooksReadPerYear,
-  ContactFrequency,
-  ContactMethod,
   EducationLevel,
   ExercisePerWeek,
-  Eyelid,
   Gender,
-  OccupationStatus,
   Religion,
 } from "@ieum/prisma";
 import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
@@ -119,28 +107,6 @@ export function SelfFields() {
           },
         })}
       />
-      <Controller
-        control={control}
-        name="self.bodyShape"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="체형"
-              error={errors.self?.bodyShape != null}
-              value={value}
-              onChange={onChange}
-            >
-              {Object.values(BodyShape).map((bodyShape) => {
-                return (
-                  <option key={bodyShape} value={bodyShape}>
-                    {체형_라벨[bodyShape]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
       <TextInput
         label="몸무게"
         error={errors.self?.weight != null}
@@ -157,53 +123,6 @@ export function SelfFields() {
           validate: (value) => {
             return value == null || (value >= 30 && value <= 150);
           },
-        })}
-      />
-      <Controller
-        control={control}
-        name="self.eyelid"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="쌍꺼풀"
-              error={errors.self?.eyelid != null}
-              value={value}
-              onChange={(event) => {
-                const option = event.target.value as Eyelid;
-
-                if (option !== "OTHER") {
-                  setValue("self.customEyelid", null);
-                }
-
-                onChange(option);
-              }}
-            >
-              {Object.values(Eyelid).map((eyelidOption) => {
-                return (
-                  <option key={eyelidOption} value={eyelidOption}>
-                    {쌍꺼풀_라벨[eyelidOption]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
-      {watch("self.eyelid") === "OTHER" ? (
-        <TextInput
-          error={errors.self?.customEyelid != null}
-          {...register("self.customEyelid", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
-      ) : null}
-      <TextInput
-        label="얼굴/신체 자신 있는 부위"
-        error={errors.self?.confidentFacialBodyPart != null}
-        {...register("self.confidentFacialBodyPart", {
-          required: true,
         })}
       />
       <Controller
@@ -240,31 +159,6 @@ export function SelfFields() {
           },
         })}
       />
-      <Controller
-        control={control}
-        name="self.occupationStatus"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="신분"
-              error={errors.self?.occupationStatus != null}
-              value={value}
-              onChange={onChange}
-            >
-              {Object.values(OccupationStatus).map((occupationStatusOption) => {
-                return (
-                  <option
-                    key={occupationStatusOption}
-                    value={occupationStatusOption}
-                  >
-                    {신분_라벨[occupationStatusOption]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
       <TextInput
         label="직장"
         error={errors.self?.workplace != null}
@@ -278,15 +172,6 @@ export function SelfFields() {
         label="직무"
         error={errors.self?.job != null}
         {...register("self.job", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
-        label="재학 학교"
-        error={errors.self?.currentSchool != null}
-        {...register("self.currentSchool", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -429,61 +314,9 @@ export function SelfFields() {
         }}
       />
       <TextInput label="취미/관심사" {...register("self.hobby")} />
-      <Controller
-        control={control}
-        name="self.booksReadPerYear"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select label="독서량" value={value} onChange={onChange}>
-              {Object.values(BooksReadPerYear).map((booksReadPerYearOption) => {
-                return (
-                  <option
-                    key={booksReadPerYearOption}
-                    value={booksReadPerYearOption}
-                  >
-                    {독서량_라벨[booksReadPerYearOption]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
-      <TextInput
-        label="책 취향"
-        {...register("self.bookTaste", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
       <TextInput
         label="특징"
         {...register("self.characteristics", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
-        label="10년 뒤 모습"
-        {...register("self.tenYearFuture", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
-        label="인생관"
-        {...register("self.lifePhilosophy", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
-        label="직업관"
-        {...register("self.workPhilosophy", {
           setValueAs: (value: string | null) => {
             return isEmptyStringOrNil(value) ? null : value;
           },
@@ -530,14 +363,6 @@ export function SelfFields() {
         <Checkbox label="함" {...register("self.doesGame")} />
       </div>
       <TextInput
-        label="게임 종류"
-        {...register("self.gameType", {
-          setValueAs: (value: string | null) => {
-            return isEmptyStringOrNil(value) ? null : value;
-          },
-        })}
-      />
-      <TextInput
         label="데이트 스타일"
         {...register("self.datingStyle", {
           setValueAs: (value: string | null) => {
@@ -545,91 +370,6 @@ export function SelfFields() {
           },
         })}
       />
-      <Controller
-        control={control}
-        name="self.contactFrequency"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="연락 빈도"
-              value={value}
-              onChange={(event) => {
-                const option = event.target.value as ContactFrequency;
-
-                if (option !== "OTHER") {
-                  setValue("self.customContactFrequency", null);
-                }
-
-                onChange(option);
-              }}
-            >
-              {Object.values(ContactFrequency).map((contactFrequencyOption) => {
-                return (
-                  <option
-                    key={contactFrequencyOption}
-                    value={contactFrequencyOption}
-                  >
-                    {연락_빈도_라벨[contactFrequencyOption]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
-      {watch("self.contactFrequency") === "OTHER" ? (
-        <TextInput
-          error={errors.self?.customContactFrequency != null}
-          {...register("self.customContactFrequency", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
-      ) : null}
-      <Controller
-        control={control}
-        name="self.contactMethod"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="연락 수단"
-              value={value}
-              onChange={(e) => {
-                const option = e.target.value as ContactMethod;
-
-                if (option !== "OTHER") {
-                  setValue("self.customContactMethod", null);
-                }
-
-                onChange(option);
-              }}
-            >
-              {Object.values(ContactMethod).map((contactMethodOption) => {
-                return (
-                  <option key={contactMethodOption} value={contactMethodOption}>
-                    {연락_수단_라벨[contactMethodOption]}
-                  </option>
-                );
-              })}
-            </Select>
-          );
-        }}
-      />
-      {watch("self.contactMethod") === "OTHER" ? (
-        <TextInput
-          error={errors.self?.customContactMethod != null}
-          {...register("self.customContactMethod", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
-      ) : null}
-      <div>
-        반려동물
-        <Checkbox label="키움" {...register("self.hasPet")} />
-      </div>
       <TextareaInput
         label="나는 이런 사람이에요"
         {...register("self.selfIntroduction", {

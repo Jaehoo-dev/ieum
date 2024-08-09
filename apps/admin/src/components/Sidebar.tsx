@@ -13,6 +13,12 @@ export function Sidebar() {
         </Link>
         <hr />
         <h2>베이직</h2>
+        <Link
+          href="/basic/draft-members"
+          className="text-blue-600 hover:underline"
+        >
+          가입 신청
+        </Link>
         <Link href="/basic/members" className="text-blue-600 hover:underline">
           회원 목록
         </Link>

@@ -4,11 +4,13 @@ import { basicMemberImageRouter } from "./routers/basicMemberImage";
 import { basicMemberVideoRouter } from "./routers/basicMemberVideo";
 import { blindMatchRouter } from "./routers/blindMatch";
 import { blindMemberRouter } from "./routers/blindMember";
+import { draftBasicMemberRouter } from "./routers/draftBasicMember";
 import { indexingApiRouter } from "./routers/indexingApi";
 import { adminMessageRouter } from "./routers/message";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
+  draftBasicMemberRouter,
   basicMemberRouter,
   basicMemberImageRouter,
   basicMemberVideoRouter,
