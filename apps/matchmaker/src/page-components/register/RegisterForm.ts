@@ -42,6 +42,7 @@ export type RegisterForm = {
   religion: Religion | null;
   hasCar: boolean | null;
   hasTattoo: boolean | null;
+  hasPet: boolean | null;
   datingStyle: string;
   selfIntroduction: string;
   imageBucketPaths: string[];
@@ -101,6 +102,7 @@ const defaultRegisterForm: RegisterForm = {
   religion: null,
   hasCar: null,
   hasTattoo: null,
+  hasPet: null,
   datingStyle: "",
   selfIntroduction: "",
   imageBucketPaths: [],
@@ -200,6 +202,7 @@ export function formToPayload({
   religion,
   hasCar,
   hasTattoo,
+  hasPet,
   idealIsSmokerOk,
   idealIsTattooOk,
   characteristics,
@@ -220,6 +223,7 @@ export function formToPayload({
   assert(religion != null, "religion should not be null");
   assert(hasCar != null, "hasCar should not be null");
   assert(hasTattoo != null, "hasTattoo should not be null");
+  assert(hasPet != null, "hasPet should not be null");
   assert(idealIsSmokerOk != null, "idealIsSmokerOk should not be null");
   assert(idealIsTattooOk != null, "idealIsTattooOk should not be null");
   assert(personalInfoConsent != null, "personalInfoConsent should not be null");
@@ -240,6 +244,7 @@ export function formToPayload({
     religion,
     hasCar,
     hasTattoo,
+    hasPet,
     idealIsSmokerOk,
     idealIsTattooOk,
     characteristics:

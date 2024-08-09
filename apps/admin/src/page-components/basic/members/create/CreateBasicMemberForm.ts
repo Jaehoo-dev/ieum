@@ -67,7 +67,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     customContactFrequency: null,
     contactMethod: null,
     customContactMethod: null,
-    hasPet: null,
+    hasPet: false,
     selfIntroduction: null,
     imageBucketPaths: [],
     videoBucketPaths: [],

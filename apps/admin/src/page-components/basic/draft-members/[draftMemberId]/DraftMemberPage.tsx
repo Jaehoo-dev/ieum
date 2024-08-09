@@ -55,6 +55,7 @@ function Resolved() {
       religion,
       hasCar,
       hasTattoo,
+      hasPet,
       datingStyle,
       selfIntroduction,
       idealMinAgeBirthYear,
@@ -197,6 +198,7 @@ function Resolved() {
           </div>
           <TextInput label="종교" value={religion} disabled={true} />
           <TextInput label="자차" value={String(hasCar)} disabled={true} />
+          <TextInput label="반려동물" value={String(hasPet)} disabled={true} />
           <TextInput
             label="데이트 스타일"
             value={datingStyle}

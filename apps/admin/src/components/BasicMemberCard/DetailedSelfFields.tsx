@@ -81,8 +81,8 @@ export function DetailedSelfFields({ member }: Props) {
       <div>
         게임: {member.doesGame ? "예" : "아니요"} {member.gameType}
       </div>
-      <div>데이트: {member.datingStyle}</div>
       <div>반려동물 유무: {member.hasPet ? "예" : "아니요"}</div>
+      <div>데이트: {member.datingStyle}</div>
       <div>자기소개: {member.selfIntroduction}</div>
     </div>
   );
