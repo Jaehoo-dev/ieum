@@ -217,4 +217,34 @@ export const draftBasicMemberRouter = createTRPCRouter({
         },
       });
     }),
+  delete: protectedAdminProcedure
+    .input(z.object({ draftMemberId: z.string() }))
+    .mutation(async ({ ctx, input: { draftMemberId } }) => {
+      const draftMember = await ctx.prisma.draftBasicMember.findUniqueOrThrow({
+        where: {
+          id: draftMemberId,
+        },
+        select: {
+          images: true,
+          status: true,
+        },
+      });
+
+      if (draftMember.status === DraftStatus.PENDING) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "status must not be PENDING",
+        });
+      }
+
+      await supabase.storage
+        .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
+        .remove(draftMember.images.map((image) => image.bucketPath));
+
+      return ctx.prisma.draftBasicMember.delete({
+        where: {
+          id: draftMemberId,
+        },
+      });
+    }),
 });
