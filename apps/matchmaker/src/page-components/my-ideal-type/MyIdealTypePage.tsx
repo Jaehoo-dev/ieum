@@ -63,6 +63,12 @@ const unusedBasicConditions = new Set<BasicCondition>([
   BasicCondition.IS_GAMING_OK,
   BasicCondition.IS_PET_OK,
   BasicCondition.MIN_ASSETS_VALUE,
+  BasicCondition.BOOKS_READ_PER_YEAR,
+  BasicCondition.OCCUPATION_STATUS,
+  BasicCondition.EXERCISE_PER_WEEK,
+  BasicCondition.IS_GAMING_OK,
+  BasicCondition.IS_PET_OK,
+  BasicCondition.SHOULD_HAVE_CAR,
 ]);
 
 export function MyIdealTypePage() {
