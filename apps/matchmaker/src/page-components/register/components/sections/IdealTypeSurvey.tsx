@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   종교_라벨,
   지역_라벨,
@@ -14,6 +15,7 @@ import {
 } from "@ieum/prisma";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { handleNullableStringNumber, RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";
@@ -42,10 +44,25 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
     watch("idealEducationLevel") === EducationLevel.BACHELOR_DEGREE ||
     watch("idealEducationLevel") === EducationLevel.MASTER_DEGREE ||
     watch("idealEducationLevel") === EducationLevel.DOCTORATE_DEGREE;
+  const phoneNumber = getValues("phoneNumber");
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: `${phoneNumber} - 이상형 설문 페이지 진입`,
+    });
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-6 p-6">
-      <BackTextButton onClick={onBack} />
+      <BackTextButton
+        onClick={() => {
+          sendMessage({
+            content: `${phoneNumber} - 이상형 설문 페이지 이전 텍스트버튼 클릭`,
+          });
+          onBack();
+        }}
+      />
       <div className="flex flex-col gap-8">
         <Range
           label="선호하시는 나이를 출생연도로 입력해주세요."
@@ -523,8 +540,17 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
       </div>
       <div className="mt-4">
         <Buttons
-          onBackClick={onBack}
+          onBackClick={() => {
+            sendMessage({
+              content: `${phoneNumber} - 이상형 설문 페이지 이전 버튼 클릭`,
+            });
+            onBack();
+          }}
           onNextClick={async () => {
+            sendMessage({
+              content: `${phoneNumber} - 이상형 설문 페이지 다음 클릭`,
+            });
+
             const isValid = await trigger(
               [
                 "idealMinAgeBirthYear",

@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { RegisterForm, registerFormId } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { TextareaInput } from "../TextareaInput";
@@ -18,10 +20,25 @@ export function WrapUp({ onBack }: Props) {
     watch,
     register,
   } = useFormContext<RegisterForm>();
+  const phoneNumber = getValues("phoneNumber");
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: `${phoneNumber} - 회원가입 마무리 페이지 진입`,
+    });
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-6 p-6">
-      <BackTextButton onClick={onBack} />
+      <BackTextButton
+        onClick={() => {
+          sendMessage({
+            content: `${phoneNumber} - 회원가입 마무리 페이지 이전 텍스트버튼 클릭`,
+          });
+          onBack();
+        }}
+      />
       <div className="flex flex-col gap-8">
         <TextInput
           label="추천을 받아 가입하시는 거라면 추천인 코드를 입력해주세요."
@@ -84,7 +101,12 @@ export function WrapUp({ onBack }: Props) {
       </div>
       <div className="mt-4 flex flex-row gap-2">
         <button
-          onClick={onBack}
+          onClick={() => {
+            sendMessage({
+              content: `${phoneNumber} - 회원가입 마무리 페이지 이전 버튼 클릭`,
+            });
+            onBack();
+          }}
           className="flex-1 rounded-lg bg-gray-500 px-4 py-2 text-lg font-medium text-white hover:bg-gray-600"
         >
           이전
@@ -92,6 +114,11 @@ export function WrapUp({ onBack }: Props) {
         <button
           form={registerFormId}
           type="submit"
+          onClick={() => {
+            sendMessage({
+              content: `${phoneNumber} - 회원가입 마무리 페이지 제출 클릭`,
+            });
+          }}
           className="flex-1 rounded-lg bg-primary-500 px-4 py-2 text-lg font-medium text-white hover:bg-primary-700 disabled:opacity-50"
           disabled={!watch("personalInfoConsent") || isSubmitting}
         >

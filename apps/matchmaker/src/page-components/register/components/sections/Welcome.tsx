@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { 성별_라벨 } from "@ieum/constants";
 import { Gender, MarriageStatus } from "@ieum/prisma";
 import { formatPhoneNumberInput } from "@ieum/utils";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { RegisterForm } from "../../RegisterForm";
 import { TextInput } from "../TextInput";
 import { UniSelect } from "../UniSelect";
@@ -19,6 +21,13 @@ export function Welcome({ onNext }: Props) {
     trigger,
     watch,
   } = useFormContext<RegisterForm>();
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: "회원가입 페이지 진입",
+    });
+  }, []);
 
   return (
     <div className="flex w-full flex-col">
@@ -140,6 +149,10 @@ export function Welcome({ onNext }: Props) {
         </div>
         <button
           onClick={async () => {
+            sendMessage({
+              content: "회원가입 페이지 다음 클릭",
+            });
+
             const isValid = await trigger(
               ["name", "phoneNumber", "gender", "marriageStatus"],
               {

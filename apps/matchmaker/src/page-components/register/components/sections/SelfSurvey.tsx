@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { 연간_벌이_라벨, 자산_라벨 } from "@ieum/constants";
 import {
@@ -16,6 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { nanoid } from "nanoid";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { handleNullableStringNumber, RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";
@@ -39,6 +40,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
     control,
     trigger,
   } = useFormContext<RegisterForm>();
+  const phoneNumber = getValues("phoneNumber");
   const gender = getValues("gender");
   const educationLevel = watch("educationLevel");
   const 대학교를_졸업했는가 =
@@ -51,9 +53,24 @@ export function SelfSurvey({ onBack, onNext }: Props) {
   const 운동을_하는가 =
     exercisePerWeek != null && exercisePerWeek !== ExercisePerWeek.NONE;
 
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: `${phoneNumber} - 본인 설문 페이지 진입`,
+    });
+  }, []);
+
   return (
     <div className="flex w-full flex-col gap-8 p-6">
-      <BackTextButton onClick={onBack} />
+      <BackTextButton
+        onClick={() => {
+          sendMessage({
+            content: `${phoneNumber} - 본인 설문 페이지 이전 텍스트버튼 클릭`,
+          });
+          onBack();
+        }}
+      />
       <div className="flex flex-col gap-8">
         <TextInput
           label="출생연도가 언제인가요?"
@@ -661,8 +678,17 @@ export function SelfSurvey({ onBack, onNext }: Props) {
       </div>
       <div className="mt-4">
         <Buttons
-          onBackClick={onBack}
+          onBackClick={() => {
+            sendMessage({
+              content: `${phoneNumber} - 본인 설문 페이지 이전 버튼 클릭`,
+            });
+            onBack();
+          }}
           onNextClick={async () => {
+            sendMessage({
+              content: `${phoneNumber} - 본인 설문 페이지 다음 클릭`,
+            });
+
             const isValid = await trigger(
               [
                 "birthYear",
