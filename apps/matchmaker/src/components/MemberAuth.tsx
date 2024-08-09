@@ -72,7 +72,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           );
 
           try {
-            void sendMessage(`인증번호 전송: ${phoneNumber}`);
+            void sendMessage({ content: `인증번호 전송: ${phoneNumber}` });
 
             const result = await signInWithPhoneNumber(
               auth,
@@ -162,7 +162,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
           );
 
           try {
-            void sendMessage("로그인 시도");
+            void sendMessage({ content: "로그인 시도" });
 
             if (!shouldPersist) {
               await setPersistence(auth, browserSessionPersistence);

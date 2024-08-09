@@ -21,9 +21,9 @@ export function PlacesPage({ places }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
-    );
+    void sendMessage({
+      content: `소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+    });
   }, [sendMessage]);
 
   return (
@@ -74,9 +74,9 @@ export function PlacesPage({ places }: Props) {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => {
-                            sendMessage(
-                              `소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
-                            );
+                            sendMessage({
+                              content: `소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
+                            });
                           }}
                         >
                           {place.name}

@@ -23,9 +23,9 @@ export function DemoMatchPage() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `체험 - 프로필 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
-    );
+    void sendMessage({
+      content: `체험 - 프로필 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+    });
   }, [sendMessage]);
 
   return (

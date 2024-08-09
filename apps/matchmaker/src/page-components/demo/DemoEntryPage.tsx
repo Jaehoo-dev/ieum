@@ -14,9 +14,9 @@ export function DemoEntryPage() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `체험 - 선택 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
-    );
+    void sendMessage({
+      content: `체험 - 선택 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
+    });
   }, [router.query.from, sendMessage]);
 
   return (
@@ -39,7 +39,7 @@ export function DemoEntryPage() {
             href="/demo/match?my-gender=male"
             className="block w-full rounded-lg bg-blue-500 p-3 text-center text-xl font-medium text-white hover:bg-blue-600"
             onClick={() => {
-              void sendMessage("체험 - 남성 선택");
+              void sendMessage({ content: "체험 - 남성 선택" });
             }}
           >
             남성
@@ -48,7 +48,7 @@ export function DemoEntryPage() {
             href="/demo/match?my-gender=female"
             className="block w-full rounded-lg bg-pink-500 p-3 text-center text-xl font-medium text-white hover:bg-pink-600"
             onClick={() => {
-              void sendMessage("체험 - 여성 선택");
+              void sendMessage({ content: "체험 - 여성 선택" });
             }}
           >
             여성
@@ -59,7 +59,7 @@ export function DemoEntryPage() {
           href="/tips?from=demo-entry"
           className="text-center text-lg text-gray-600 underline hover:text-gray-800"
           onClick={() => {
-            void sendMessage("체험 - 소개팅 꿀팁 보러 가기 클릭");
+            void sendMessage({ content: "체험 - 소개팅 꿀팁 보러 가기 클릭" });
           }}
         >
           소개팅 꿀팁 보러 가기

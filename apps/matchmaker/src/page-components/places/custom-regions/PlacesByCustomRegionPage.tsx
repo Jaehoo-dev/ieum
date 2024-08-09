@@ -24,9 +24,9 @@ export function PlacesByCustomRegionPage({ customRegion, places }: Props) {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `${커스텀_지역} 소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
-    );
+    void sendMessage({
+      content: `${커스텀_지역} 소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+    });
   }, [sendMessage]);
 
   const placesByCuisineType = places.reduce(
@@ -84,9 +84,9 @@ export function PlacesByCustomRegionPage({ customRegion, places }: Props) {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => {
-                            sendMessage(
-                              `${커스텀_지역} 소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
-                            );
+                            sendMessage({
+                              content: `${커스텀_지역} 소개팅 장소 추천 페이지 - ${place.name} 링크 클릭`,
+                            });
                           }}
                         >
                           {place.name}
