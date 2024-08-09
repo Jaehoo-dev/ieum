@@ -1,4 +1,8 @@
-export type 슬랙_채널 = "알림" | "매칭_결과_알림" | "폼_제출_알림";
+export type 슬랙_채널 =
+  | "에러_알림"
+  | "알림"
+  | "매칭_결과_알림"
+  | "폼_제출_알림";
 
 export async function sendSlackMessage({
   channel,
@@ -8,6 +12,7 @@ export async function sendSlackMessage({
   content: string;
 }) {
   const webhookUrl: Record<슬랙_채널, string> = {
+    에러_알림: process.env.NEXT_PUBLIC_ERROR_CHANNEL_WEBHOOK_URL!,
     알림: process.env.NEXT_PUBLIC_SLACK_NOTIBOT_WEBHOOK_URL!,
     매칭_결과_알림: process.env.NEXT_PUBLIC_SLACK_MATCH_NOTIBOT_WEBHOOK_URL!,
     폼_제출_알림: process.env.NEXT_PUBLIC_SLACK_FORM_NOTIBOT_WEBHOOK_URL!,

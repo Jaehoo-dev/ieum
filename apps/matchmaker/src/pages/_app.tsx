@@ -11,6 +11,7 @@ import "~/styles/globals.css";
 import { ConfirmProvider } from "material-ui-confirm";
 
 import { AuthGuard } from "~/components/AuthGuard";
+import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { MemberAuthProvider } from "~/providers/MemberAuthProvider";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
@@ -26,7 +27,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <>
+    <ErrorBoundary>
       <Head>
         <script
           async
@@ -46,7 +47,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
         </MemberAuthProvider>
       </ConfirmProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
-    </>,
+    </ErrorBoundary>,
   );
 };
 
