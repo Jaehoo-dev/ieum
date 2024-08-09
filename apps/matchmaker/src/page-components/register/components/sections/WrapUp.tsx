@@ -49,7 +49,7 @@ export function WrapUp({ onBack }: Props) {
         />
         <TextareaInput
           label="수고하셨어요! 호스트에게 특별히 하고 싶은 말이 있다면 남겨주세요."
-          description="왜 이음을 선택하셨나요? 본인 또는 상대방과 관련한 이야기, 추가로 어필하고 싶은 점이나 요청사항, 설문 피드백 등 모두 좋습니다."
+          description="왜 이음을 선택하셨나요? 본인 또는 이상형과 관련한 이야기, 추가로 어필하고 싶은 점이나 설문 피드백 등 모두 좋습니다."
           error={errors.memo != null}
           errorText={errors.memo?.message}
         />
@@ -74,7 +74,10 @@ export function WrapUp({ onBack }: Props) {
           }}
           rules={{
             validate: (value) => {
-              return value === true || "개인정보 수집에 동의해주세요.";
+              return (
+                value === true ||
+                "개인정보 수집에 동의하지 않으시면 서비스를 제공해드릴 수 없습니다."
+              );
             },
           }}
         />

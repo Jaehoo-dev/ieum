@@ -5,7 +5,7 @@ interface Props<T extends string | number | boolean = string> {
   label: string;
   options: Array<{
     label: string;
-    value: T;
+    value: T | null;
   }>;
   value: T | null | undefined;
   onChange: (value: T | null) => void;
@@ -29,24 +29,21 @@ export function UniSelect<T extends string | number | boolean = string>({
 }: Props<T>) {
   const hasErrorText = error && !isEmptyStringOrNil(errorText);
   const hasDescription = !isEmptyStringOrNil(description);
-  const hasSublabel = hasErrorText || hasDescription;
 
   return (
     <div className="flex flex-col gap-1 text-gray-800">
       <span className="text-lg font-medium">
-        {`${label}${required ? "*" : ""}`}
+        {label}
+        {required ? <span className="text-primary-500">*</span> : null}
       </span>
-      {hasSublabel ? (
-        <span
-          className={`mb-1 text-sm ${
-            hasErrorText ? "text-red-500" : "text-gray-500"
-          }`}
-        >
-          {hasErrorText ? errorText : description}
-        </span>
+      {hasDescription ? (
+        <span className="text-sm text-gray-500">{description}</span>
+      ) : null}
+      {hasErrorText ? (
+        <span className="text-sm text-red-500">{errorText}</span>
       ) : null}
       <div
-        className={`grid gap-1.5 ${
+        className={`mt-1 grid gap-1.5 ${
           cols === 2
             ? "grid-cols-2"
             : cols === 3
