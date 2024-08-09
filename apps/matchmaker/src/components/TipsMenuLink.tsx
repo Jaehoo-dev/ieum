@@ -13,7 +13,7 @@ export function TipsMenuLink({ target, rel, onClick, ...props }: Props) {
       href="/tips"
       className="text-gray-500 underline hover:text-gray-800 md:text-lg"
       onClick={(event) => {
-        sendMessage("'소개팅 꿀팁 보러 가기' 클릭");
+        sendMessage({ content: "'소개팅 꿀팁 보러 가기' 클릭" });
         onClick?.(event);
       }}
       {...props}

@@ -1,8 +1,5 @@
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
-import {
-  sendMessageToMatchResultChannel,
-  SLACK_USER_ID_MENTION,
-} from "@ieum/slack";
+import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
@@ -455,8 +452,9 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       if (hasOtherReplied) {
-        void sendMessageToMatchResultChannel(
-          `[제안 실패]${
+        void sendSlackMessage({
+          channel: "매칭_결과_알림",
+          content: `[제안 실패]${
             result.acceptedByV2.length > 0
               ? `\n수락: ${result.acceptedByV2
                   .map((member) => member.name)
@@ -470,7 +468,7 @@ export const basicMatchRouter = createTRPCRouter({
               : ""
           }
           `,
-        );
+        });
       }
 
       return true;
@@ -577,11 +575,14 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       if (hasOtherReplied) {
-        void sendMessageToMatchResultChannel(
-          `[제안 ${hasOtherAccepted ? "성공" : "실패"}] ${members[0].name} - ${
-            members[1].name
-          }${hasOtherAccepted ? ` 🙌 ${SLACK_USER_ID_MENTION}` : ""}`,
-        );
+        void sendSlackMessage({
+          channel: "매칭_결과_알림",
+          content: `[제안 ${hasOtherAccepted ? "성공" : "실패"}] ${
+            members[0].name
+          } - ${members[1].name}${
+            hasOtherAccepted ? ` 🙌 ${SLACK_USER_ID_MENTION}` : ""
+          }`,
+        });
       }
 
       return true;

@@ -54,16 +54,18 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    sendMessage(
-      `${formatUniqueMemberName(member)} - 내 추천인 코드 페이지 진입`,
-    );
+    sendMessage({
+      content: `${formatUniqueMemberName(member)} - 내 추천인 코드 페이지 진입`,
+    });
   }, [member.name]);
 
   return (
     <div
       className="flex w-full cursor-pointer flex-row items-center justify-between px-4 py-3"
       onClick={async () => {
-        sendMessage(`${formatUniqueMemberName(member)} - 추천인 코드 복사`);
+        sendMessage({
+          content: `${formatUniqueMemberName(member)} - 추천인 코드 복사`,
+        });
         await navigator.clipboard.writeText(referralCode);
         alert("추천인 코드를 복사했습니다.");
       }}

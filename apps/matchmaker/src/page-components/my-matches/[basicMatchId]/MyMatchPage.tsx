@@ -50,11 +50,11 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - ${match.id} 매칭 페이지 진입 / ${
-        profile.id
-      } 프로필 조회`,
-    );
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - ${
+        match.id
+      } 매칭 페이지 진입 / ${profile.id} 프로필 조회`,
+    });
   }, [match.id, member.name, profile.id, sendMessage]);
 
   useEffect(() => {
@@ -62,11 +62,11 @@ function Resolved() {
       return;
     }
 
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - ${
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - ${
         match.id
       } 매칭 페이지 진입 -> redirect to /my-matches`,
-    );
+    });
 
     router.replace("/my-matches");
   }, [
@@ -88,14 +88,18 @@ function Resolved() {
         <Buttons
           memberId={member.id}
           onRejectClick={() => {
-            void sendMessage(
-              `${formatUniqueMemberName(member)} - ${match.id} 매칭 거절 클릭`,
-            );
+            void sendMessage({
+              content: `${formatUniqueMemberName(member)} - ${
+                match.id
+              } 매칭 거절 클릭`,
+            });
           }}
           onAcceptClick={() => {
-            void sendMessage(
-              `${formatUniqueMemberName(member)} - ${match.id} 매칭 수락 클릭`,
-            );
+            void sendMessage({
+              content: `${formatUniqueMemberName(member)} - ${
+                match.id
+              } 매칭 수락 클릭`,
+            });
           }}
         />
       ) : null}

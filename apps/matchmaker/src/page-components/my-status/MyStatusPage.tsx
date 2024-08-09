@@ -82,11 +82,11 @@ function Inactive() {
           <button
             className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
             onClick={async () => {
-              sendMessage(
-                `${formatUniqueMemberName(
+              sendMessage({
+                content: `${formatUniqueMemberName(
                   member,
                 )} - 휴면 해제 클릭 ${SLACK_USER_ID_MENTION}`,
-              );
+              });
               await activate({ memberId: member.id });
               alert("휴면 해제했습니다");
             }}

@@ -199,9 +199,9 @@ function Resolved() {
   );
 
   useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - 내 이상형 조건 페이지 진입`,
-    );
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - 내 이상형 조건 페이지 진입`,
+    });
   }, []);
 
   const handleDragEnd = ({ active, over }: DragOverEvent) => {
@@ -390,9 +390,11 @@ function EditButton({ onClick }: { onClick: () => void }) {
       onClick={() => {
         assert(member != null, "member should be defined");
 
-        void sendMessage(
-          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 수정 클릭`,
-        );
+        void sendMessage({
+          content: `${formatUniqueMemberName(
+            member,
+          )} - 내 이상형 조건 - 수정 클릭`,
+        });
         onClick();
       }}
     >
@@ -411,9 +413,11 @@ function DoneButton({ onClick }: { onClick: () => void }) {
       onClick={() => {
         assert(member != null, "member should be defined");
 
-        void sendMessage(
-          `${formatUniqueMemberName(member)} - 내 이상형 조건 - 완료 클릭`,
-        );
+        void sendMessage({
+          content: `${formatUniqueMemberName(
+            member,
+          )} - 내 이상형 조건 - 완료 클릭`,
+        });
         onClick();
       }}
     >

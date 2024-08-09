@@ -14,9 +14,9 @@ export function TipsPage() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `소개팅 꿀팁 모음 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
-    );
+    void sendMessage({
+      content: `소개팅 꿀팁 모음 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
+    });
   }, [router.query.from, sendMessage]);
 
   return (
@@ -173,9 +173,9 @@ function Section({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {
-                  sendMessage(
-                    `소개팅 꿀팁 모음 페이지 - ${post.title} 링크 클릭`,
-                  );
+                  sendMessage({
+                    content: `소개팅 꿀팁 모음 페이지 - ${post.title} 링크 클릭`,
+                  });
                 }}
               >
                 {post.title}

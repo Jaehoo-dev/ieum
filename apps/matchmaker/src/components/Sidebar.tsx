@@ -91,7 +91,7 @@ function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
           isActive ? "bg-primary-200" : ""
         }`}
         onClick={(e) => {
-          sendMessage(`메뉴 - ${label} 클릭`);
+          sendMessage({ content: `메뉴 - ${label} 클릭` });
           onClick?.(e);
         }}
         {...props}

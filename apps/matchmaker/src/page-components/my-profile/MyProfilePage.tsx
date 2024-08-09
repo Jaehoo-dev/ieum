@@ -32,9 +32,9 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - 내 프로필 페이지 진입`,
-    );
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - 내 프로필 페이지 진입`,
+    });
   }, [member.name, sendMessage]);
 
   const [profile] =
@@ -70,7 +70,9 @@ function EditButton() {
         <button
           className="w-full rounded-lg bg-gray-200 p-3 text-xl font-medium text-gray-600 hover:bg-gray-300"
           onClick={() => {
-            sendMessage(`${formatUniqueMemberName(member)} - 프로필 수정 클릭`);
+            sendMessage({
+              content: `${formatUniqueMemberName(member)} - 프로필 수정 클릭`,
+            });
             router.push("/my-profile/edit");
           }}
         >

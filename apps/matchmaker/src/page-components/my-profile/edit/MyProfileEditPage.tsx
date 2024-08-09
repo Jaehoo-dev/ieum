@@ -17,9 +17,9 @@ export function MyProfileEditPage() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - 내 프로필 수정 페이지 진입`,
-    );
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - 내 프로필 수정 페이지 진입`,
+    });
   }, [member.name, sendMessage]);
 
   return (
@@ -76,9 +76,11 @@ function Resolved() {
       className="mb-24 flex flex-col gap-6"
       onSubmit={handleSubmit(
         async ({ selfIntroduction, idealTypeDescription }) => {
-          sendMessage(
-            `${formatUniqueMemberName(member)} - 내 프로필 수정 저장 클릭`,
-          );
+          sendMessage({
+            content: `${formatUniqueMemberName(
+              member,
+            )} - 내 프로필 수정 저장 클릭`,
+          });
 
           await updateProfile({
             memberId: member.id,

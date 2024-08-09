@@ -55,9 +55,9 @@ function Resolved() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(
-      `${formatUniqueMemberName(member)} - 매칭 목록 페이지 진입`,
-    );
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - 매칭 목록 페이지 진입`,
+    });
   }, [member.name, sendMessage]);
 
   const [activeMatches] =
@@ -90,11 +90,11 @@ function Resolved() {
                     selfMember={member}
                     showLabel={false}
                     onClick={() => {
-                      void sendMessage(
-                        `${formatUniqueMemberName(member)} - ${
+                      void sendMessage({
+                        content: `${formatUniqueMemberName(member)} - ${
                           match.id
                         } 매칭 카드 클릭`,
-                      );
+                      });
                     }}
                   />
                 );
@@ -135,11 +135,11 @@ function Resolved() {
                           selfMember={member}
                           showLabel={true}
                           onClick={() => {
-                            void sendMessage(
-                              `${formatUniqueMemberName(member)} - ${
+                            void sendMessage({
+                              content: `${formatUniqueMemberName(member)} - ${
                                 match.id
                               } 매칭 카드 클릭`,
-                            );
+                            });
                           }}
                           disabled={match.status !== MatchStatus.ACCEPTED}
                         />
@@ -162,11 +162,11 @@ function Resolved() {
                           selfMember={member}
                           showLabel={true}
                           onClick={() => {
-                            void sendMessage(
-                              `${formatUniqueMemberName(member)} - ${
+                            void sendMessage({
+                              content: `${formatUniqueMemberName(member)} - ${
                                 match.id
                               } 매칭 카드 클릭`,
-                            );
+                            });
                           }}
                           disabled={match.status !== MatchStatus.ACCEPTED}
                         />

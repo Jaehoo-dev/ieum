@@ -85,7 +85,9 @@ function Registered() {
   const router = useRouter();
 
   useEffect(() => {
-    void sendMessage(`${formatUniqueMemberName(member)} - 홈 진입`);
+    void sendMessage({
+      content: `${formatUniqueMemberName(member)} - 홈 진입`,
+    });
   }, [member]);
 
   useEffect(() => {
@@ -100,9 +102,9 @@ function Registered() {
         href="/referral"
         className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(
-            `${formatUniqueMemberName(member)} - 이음비 할인받기 클릭`,
-          );
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 이음비 할인받기 클릭`,
+          });
         }}
       >
         이음비 할인받기
@@ -111,9 +113,9 @@ function Registered() {
         href="/my-matches"
         className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-semibold text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(
-            `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
-          );
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
+          });
         }}
       >
         매칭 목록 보기
@@ -122,9 +124,9 @@ function Registered() {
         href="/my-profile"
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(
-            `${formatUniqueMemberName(member)} - 내 프로필 보기 클릭`,
-          );
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 내 프로필 보기 클릭`,
+          });
         }}
       >
         내 프로필 보기
@@ -133,9 +135,9 @@ function Registered() {
         href="/my-ideal-type"
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
         onClick={() => {
-          void sendMessage(
-            `${formatUniqueMemberName(member)} - 내 이상형 조건 클릭`,
-          );
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 내 이상형 조건 클릭`,
+          });
         }}
       >
         내 이상형 조건
@@ -144,7 +146,9 @@ function Registered() {
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
         onClick={() => {
-          void sendMessage(`${formatUniqueMemberName(member)} - 로그아웃 클릭`);
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 로그아웃 클릭`,
+          });
           void signOut();
         }}
       >
@@ -158,7 +162,7 @@ function Unregistered() {
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage(`미가입자 - 홈 진입`);
+    void sendMessage({ content: `미가입자 - 홈 진입` });
   }, [sendMessage]);
 
   return (
