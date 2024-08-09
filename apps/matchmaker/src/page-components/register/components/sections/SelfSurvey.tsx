@@ -580,6 +580,34 @@ export function SelfSurvey({ onBack, onNext }: Props) {
             },
           }}
         />
+        <Controller
+          control={control}
+          name="hasPet"
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            return (
+              <UniSelect
+                label="반려동물을 키우세요??"
+                options={[
+                  { label: "예", value: true },
+                  { label: "아니요", value: false },
+                ]}
+                required={true}
+                value={value}
+                onChange={onChange}
+                error={error != null}
+                errorText={error?.message}
+                cols={2}
+              />
+            );
+          }}
+          rules={{
+            validate: (value) => {
+              if (value == null) {
+                return "빈려동물 유무를 선택해주세요.";
+              }
+            },
+          }}
+        />
         <TextInput
           label="어떤 데이트를 선호하시는지 적어주세요. 연인과 무엇을 하고 싶은지 적으셔도 좋아요."
           required={true}

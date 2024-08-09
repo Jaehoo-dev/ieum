@@ -316,7 +316,7 @@ model BasicMemberV2 {
   customContactFrequency  String?
   contactMethod           ContactMethod?
   customContactMethod     String?
-  hasPet                  Boolean?
+  hasPet                  Boolean
   selfIntroduction        String?
   images                  MemberImageV2[]
   videos                  MemberVideoV2[]
@@ -488,6 +488,7 @@ model DraftBasicMember {
   religion                Religion
   hasCar                  Boolean
   hasTattoo               Boolean
+  hasPet                  Boolean
   datingStyle             String
   selfIntroduction        String
   images                  DraftMemberImage[]

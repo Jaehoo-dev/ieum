@@ -144,8 +144,6 @@ export const draftBasicMemberRouter = createTRPCRouter({
         }),
       );
 
-      console.log(bucketPaths);
-
       const [newMember] = await ctx.prisma.$transaction([
         ctx.prisma.basicMemberV2.create({
           data: {

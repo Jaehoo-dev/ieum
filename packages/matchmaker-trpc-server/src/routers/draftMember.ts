@@ -47,6 +47,7 @@ export const draftMemberRouter = createTRPCRouter({
         religion: z.nativeEnum(Religion),
         hasCar: z.boolean(),
         hasTattoo: z.boolean(),
+        hasPet: z.boolean(),
         datingStyle: z.string(),
         selfIntroduction: z.string(),
         imageBucketPaths: z.string().array(),

@@ -362,6 +362,10 @@ export function SelfFields() {
         게임
         <Checkbox label="함" {...register("self.doesGame")} />
       </div>
+      <div>
+        반려동물
+        <Checkbox label="키움" {...register("self.hasPet")} />
+      </div>
       <TextInput
         label="데이트 스타일"
         {...register("self.datingStyle", {
