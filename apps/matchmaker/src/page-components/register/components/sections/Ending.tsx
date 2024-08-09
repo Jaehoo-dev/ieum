@@ -1,7 +1,18 @@
+import { useEffect } from "react";
 import Link from "next/link";
 import { WORLDCUP_URL } from "@ieum/constants";
 
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+
 export function Ending() {
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: `회원가입 끝 페이지 진입`,
+    });
+  }, []);
+
   return (
     <div className="flex w-full flex-col">
       <img
@@ -24,12 +35,22 @@ export function Ending() {
           <Link
             href="/tips"
             className="text-center text-primary-500 underline hover:text-primary-700"
+            onClick={() => {
+              sendMessage({
+                content: `회원가입 끝 페이지 - 소개팅 꿀팁 보러 가기 클릭`,
+              });
+            }}
           >
             소개팅 꿀팁 보러 가기
           </Link>
           <Link
             href={WORLDCUP_URL}
             className="text-center text-primary-500 underline hover:text-primary-700"
+            onClick={() => {
+              sendMessage({
+                content: `회원가입 끝 페이지 - AI 이상형 월드컵 하러 가기 클릭`,
+              });
+            }}
           >
             AI 이상형 월드컵 하러 가기
           </Link>
