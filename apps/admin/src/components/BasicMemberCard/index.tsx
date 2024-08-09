@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { BasicMatch, BasicMatchV2 } from "@ieum/prisma";
+import type { BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { differenceInCalendarDays } from "date-fns";
