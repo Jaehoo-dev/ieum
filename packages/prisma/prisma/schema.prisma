@@ -346,6 +346,8 @@ model BasicMemberV2 {
   referralCode        String
   discountCouponCount Int    @default(0)
 
+  personalInfoConsent Boolean
+
   // TODO: A(010-0000-0000)가 탈퇴하고 번호를 바꿈. 이후 B(010-0000-0000)가 가입했을 때 같은 사람으로 판단하면 안 됨. -> name, phoneNumber, gender, birthYear 모두 같아야 같은 사람으로 판단
   @@unique([phoneNumber])
   @@unique([referralCode])

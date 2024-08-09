@@ -75,6 +75,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     blacklistedNames: [],
     memo: null,
     status: MemberStatus.PENDING,
+    personalInfoConsent: true,
   },
   idealType: {
     minAgeBirthYear: null,

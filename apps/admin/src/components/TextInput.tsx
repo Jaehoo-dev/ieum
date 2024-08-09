@@ -11,9 +11,9 @@ function _TextInput(
   { label, error = false, ...props }: Props,
   ref: Ref<HTMLInputElement>,
 ) {
-  const fieldId = `${label}-${nanoid(8)}`;
+  const fieldId = `${label}-${nanoid(4)}`;
 
-  return (
+  return label != null ? (
     <label className="flex flex-col" htmlFor={fieldId}>
       {label}
       <input
@@ -26,6 +26,16 @@ function _TextInput(
         {...props}
       />
     </label>
+  ) : (
+    <input
+      id={fieldId}
+      ref={ref}
+      className={`rounded px-2 py-1 ${
+        error ? "border-2 border-red-500" : "border border-gray-300"
+      }`}
+      type="text"
+      {...props}
+    />
   );
 }
 

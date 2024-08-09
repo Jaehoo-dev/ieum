@@ -28,7 +28,6 @@ import {
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert, hash, krToGlobal } from "@ieum/utils";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
@@ -106,6 +105,7 @@ export const basicMemberRouter = createTRPCRouter({
           memo: z.string().nullable(),
           imageBucketPaths: z.array(z.string()),
           videoBucketPaths: z.array(z.string()),
+          personalInfoConsent: z.boolean(),
         }),
         idealType: z.object({
           minAgeBirthYear: z.number().nullable(),
@@ -1126,41 +1126,6 @@ export const basicMemberRouter = createTRPCRouter({
           member.acceptedMatches.length > 0;
 
         return !hasBeenMatched;
-      });
-    }),
-  createFromDraft: protectedAdminProcedure
-    .input(z.object({ draftMemberId: z.string() }))
-    .mutation(async ({ ctx, input: { draftMemberId } }) => {
-      const draftMember = await ctx.prisma.draftBasicMember.findUniqueOrThrow({
-        where: {
-          id: draftMemberId,
-        },
-      });
-
-      const hashedPhoneNumber = hash(
-        draftMember.phoneNumber,
-        process.env.SOFT_DELETE_SECRET_KEY!,
-      );
-
-      const member = await ctx.prisma.basicMemberV2.findUnique({
-        where: {
-          phoneNumber: hashedPhoneNumber,
-        },
-      });
-
-      if (member == null) {
-        throw new TRPCError({
-          code: "CONFLICT",
-          message: "Archived member exists",
-        });
-      }
-
-      return ctx.prisma.basicMemberV2.create({
-        data: {
-          ...draftMember,
-          status: MemberStatus.PENDING,
-          referralCode: generateReferralCode(),
-        },
       });
     }),
 });
