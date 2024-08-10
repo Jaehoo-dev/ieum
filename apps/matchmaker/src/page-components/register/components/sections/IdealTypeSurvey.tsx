@@ -323,7 +323,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="선호하는 MBTI가 있다면 골라주세요."
-                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다. ="
+                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다."
                 options={Object.values(MBTI).map((mbti) => {
                   return {
                     label: mbti,
@@ -346,7 +346,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             return (
               <MultiSelect
                 label="잘 맞지 않는다 생각하시는 MBTI는요?"
-                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다. ="
+                description="여러 개 선택 가능. 없으면 선택을 하지 않고 넘어가시면 됩니다."
                 options={Object.values(MBTI).map((mbti) => {
                   return {
                     label: mbti,
