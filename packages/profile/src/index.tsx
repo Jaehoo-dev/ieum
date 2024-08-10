@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
@@ -23,6 +23,18 @@ export function Profile({
     idealTypeDescription,
     member: { images, videos },
   } = profile;
+
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
 
   return (
     <div className="flex w-full flex-col items-center gap-4" {...props}>
@@ -162,10 +174,10 @@ function MediaSection({
         })}
         {images.map(({ id, bucketPath, customWidth }) => {
           return (
-            <ImageField
+            <ProtectedImageField
               key={id}
               bucketPath={bucketPath}
-              width={customWidth ?? undefined}
+              customWidth={customWidth ?? undefined}
               watermarkText={watermarkText}
             />
           );
@@ -175,16 +187,20 @@ function MediaSection({
   );
 }
 
-function ImageField({
-  bucketPath,
-  watermarkText,
-  width,
-}: {
+interface ProtectedImageFieldProps {
   bucketPath: string;
-  width?: number;
+  customWidth?: number;
   watermarkText?: string;
-}) {
-  const _width = width ?? 440;
+}
+
+function ProtectedImageField({
+  bucketPath,
+  customWidth,
+  watermarkText,
+}: ProtectedImageFieldProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const {
     data: { publicUrl },
@@ -192,15 +208,60 @@ function ImageField({
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
+  useEffect(() => {
+    const img = new Image();
+
+    img.onload = () => {
+      const container = containerRef.current;
+
+      if (container != null) {
+        const containerWidth = container.clientWidth;
+        const aspectRatio = img.height / img.width;
+        const newWidth = Math.min(
+          containerWidth,
+          customWidth ?? containerWidth,
+        );
+        const newHeight = newWidth * aspectRatio;
+
+        setDimensions({
+          width: newWidth,
+          height: newHeight,
+        });
+      }
+    };
+
+    img.src = publicUrl;
+  }, [publicUrl]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (canvas != null && dimensions.width > 0 && dimensions.height > 0) {
+      canvas.width = dimensions.width;
+      canvas.height = dimensions.height;
+      const ctx = canvas.getContext("2d");
+
+      if (ctx != null) {
+        const img = new Image();
+
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
+        };
+
+        img.src = publicUrl;
+      }
+    }
+  }, [publicUrl, dimensions]);
+
   return (
-    <div className="relative max-w-xl">
-      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
-      <img
-        src={publicUrl}
-        alt="프로필 이미지"
-        width={_width}
-        className="m-auto rounded-lg"
+    <div ref={containerRef} className="relative max-w-xl">
+      <canvas
+        ref={canvasRef}
+        width={dimensions.width}
+        height={dimensions.height}
+        className="m-auto select-none rounded-lg"
       />
+      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
     </div>
   );
 }
@@ -240,3 +301,5 @@ function DataField({ label, value }: { label: string; value: string }) {
     </span>
   );
 }
+
+const MAX_W_LG = 512;

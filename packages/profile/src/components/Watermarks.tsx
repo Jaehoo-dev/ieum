@@ -1,6 +1,6 @@
 export function Watermarks({ text }: { text: string }) {
   return (
-    <div className="pointer-events-none absolute h-full w-full overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden">
       <div className="absolute -left-36 -top-[160px] flex w-[800px] -rotate-45 justify-between p-4">
         <p className="text-md text-white opacity-25">{text}</p>
         <p className="text-md text-white opacity-25">{text}</p>
