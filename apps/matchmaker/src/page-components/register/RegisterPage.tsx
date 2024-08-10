@@ -121,7 +121,7 @@ export function RegisterPage() {
 
 RegisterPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout title="회원 가입" padding={false}>
+    <Layout title="회원 가입" sidebar={false} padding={false}>
       {page}
     </Layout>
   );
