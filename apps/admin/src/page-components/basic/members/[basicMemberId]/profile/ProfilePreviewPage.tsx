@@ -43,7 +43,8 @@ function Resolved() {
     <div className="flex w-full flex-col">
       <Profile
         profile={profile}
-        watermarkText="미리보기"
+        nameWatermark="미리보기"
+        numberWatermark="미리보기"
         defaultOpened={true}
       />
       <Spacing size={108} />

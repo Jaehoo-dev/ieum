@@ -35,7 +35,8 @@ export function DemoMatchPage() {
       {profile != null ? (
         <Profile
           profile={profile}
-          watermarkText="체험중"
+          nameWatermark="체험중"
+          numberWatermark="체험중"
           defaultOpened={true}
         />
       ) : null}
