@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { Profile } from "@ieum/profile";
-import { assert } from "@ieum/utils";
+import { assert, krToKrHyphen } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
@@ -82,7 +82,11 @@ function Resolved() {
     <div className="flex w-full flex-col">
       <Warning />
       <Spacing size={16} />
-      <Profile profile={profile} watermarkText={member.name} />
+      <Profile
+        profile={profile}
+        nameWatermark={member.name}
+        numberWatermark={krToKrHyphen(member.phoneNumber)}
+      />
       <Spacing size={108} />
       {isPendingByMember ? (
         <Buttons

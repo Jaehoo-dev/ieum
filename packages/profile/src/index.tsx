@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
+import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
@@ -8,13 +9,15 @@ import { BasicMemberProfileWithMediaSources } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
   profile: BasicMemberProfileWithMediaSources;
-  watermarkText?: string;
+  nameWatermark: string;
+  numberWatermark: string;
   defaultOpened?: boolean;
 }
 
 export function Profile({
   profile,
-  watermarkText,
+  nameWatermark,
+  numberWatermark,
   defaultOpened = false,
   ...props
 }: Props) {
@@ -54,7 +57,8 @@ export function Profile({
       <MediaSection
         videos={videos}
         images={images}
-        watermarkText={watermarkText}
+        nameWatermark={nameWatermark}
+        numberWatermark={numberWatermark}
         defaultOpened={defaultOpened}
       />
     </div>
@@ -152,12 +156,14 @@ function IdealTypeDescriptionSection({
 function MediaSection({
   videos,
   images,
-  watermarkText,
+  nameWatermark,
+  numberWatermark,
   defaultOpened = false,
 }: {
   videos: MemberVideoV2[];
   images: MemberImageV2[];
-  watermarkText?: string;
+  nameWatermark: string;
+  numberWatermark: string;
   defaultOpened?: boolean;
 }) {
   return (
@@ -168,7 +174,8 @@ function MediaSection({
             <VideoField
               key={id}
               bucketPath={bucketPath}
-              watermarkText={watermarkText}
+              nameWatermark={nameWatermark}
+              numberWatermark={numberWatermark}
             />
           );
         })}
@@ -177,8 +184,9 @@ function MediaSection({
             <ProtectedImageField
               key={id}
               bucketPath={bucketPath}
+              nameWatermark={nameWatermark}
+              numberWatermark={numberWatermark}
               customWidth={customWidth ?? undefined}
-              watermarkText={watermarkText}
             />
           );
         })}
@@ -189,16 +197,17 @@ function MediaSection({
 
 interface ProtectedImageFieldProps {
   bucketPath: string;
+  nameWatermark: string;
+  numberWatermark: string;
   customWidth?: number;
-  watermarkText?: string;
 }
 
 function ProtectedImageField({
   bucketPath,
+  nameWatermark,
+  numberWatermark,
   customWidth,
-  watermarkText,
 }: ProtectedImageFieldProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -210,24 +219,21 @@ function ProtectedImageField({
 
   useEffect(() => {
     const img = new Image();
+    const canvas = canvasRef.current;
 
     img.onload = () => {
-      const container = containerRef.current;
+      assert(canvas != null);
 
-      if (container != null) {
-        const containerWidth = container.clientWidth;
-        const aspectRatio = img.height / img.width;
-        const newWidth = Math.min(
-          containerWidth,
-          customWidth ?? containerWidth,
-        );
-        const newHeight = newWidth * aspectRatio;
+      const parentWidth =
+        canvas.parentElement?.clientWidth ?? window.innerWidth;
+      const aspectRatio = img.height / img.width;
+      const newWidth = Math.min(parentWidth, customWidth ?? parentWidth);
+      const newHeight = newWidth * aspectRatio;
 
-        setDimensions({
-          width: newWidth,
-          height: newHeight,
-        });
-      }
+      setDimensions({
+        width: newWidth,
+        height: newHeight,
+      });
     };
 
     img.src = publicUrl;
@@ -236,42 +242,71 @@ function ProtectedImageField({
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (canvas != null && dimensions.width > 0 && dimensions.height > 0) {
+    assert(canvas != null);
+
+    if (dimensions.width > 0 && dimensions.height > 0) {
       canvas.width = dimensions.width;
       canvas.height = dimensions.height;
       const ctx = canvas.getContext("2d");
+      const img = new Image();
 
-      if (ctx != null) {
-        const img = new Image();
+      img.onload = () => {
+        if (ctx == null) {
+          return;
+        }
 
-        img.onload = () => {
-          ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
-        };
+        ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
 
-        img.src = publicUrl;
-      }
+        ctx.save();
+
+        ctx.font = "14px 'Nanum Gothic', sans-serif";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
+        ctx.translate(0, 0);
+        ctx.rotate(-Math.PI / 4);
+        const nameTextWidth = ctx.measureText(nameWatermark).width;
+        const numberTextWidth = ctx.measureText(numberWatermark).width;
+        const textHeight = 14;
+        const startX = -20;
+        const startY = 80;
+
+        for (let row = 0; row < 10; row++) {
+          const _watermark = row % 2 === 0 ? nameWatermark : numberWatermark;
+          const _textWidth = row % 2 === 0 ? nameTextWidth : numberTextWidth;
+
+          for (let col = 0; col < 6; col++) {
+            ctx.fillText(
+              `${_watermark}`,
+              startX - row * 134 + col * (_textWidth + 120),
+              startY + row * (textHeight + 120),
+            );
+          }
+        }
+
+        ctx.restore();
+      };
+
+      img.src = publicUrl;
     }
   }, [publicUrl, dimensions]);
 
   return (
-    <div ref={containerRef} className="relative max-w-xl">
-      <canvas
-        ref={canvasRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        className="m-auto select-none rounded-lg"
-      />
-      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
-    </div>
+    <canvas
+      ref={canvasRef}
+      width={dimensions.width}
+      height={dimensions.height}
+      className="m-auto select-none rounded-lg"
+    />
   );
 }
 
 function VideoField({
   bucketPath,
-  watermarkText,
+  nameWatermark,
+  numberWatermark,
 }: {
   bucketPath: string;
-  watermarkText?: string;
+  nameWatermark: string;
+  numberWatermark: string;
 }) {
   const {
     data: { publicUrl },
@@ -281,7 +316,7 @@ function VideoField({
 
   return (
     <div className="relative max-w-xl">
-      {watermarkText != null ? <Watermarks text={watermarkText} /> : null}
+      <Watermarks watermark1={nameWatermark} watermark2={numberWatermark} />
       <video
         className="m-auto rounded-lg"
         src={publicUrl}

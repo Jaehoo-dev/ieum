@@ -46,7 +46,8 @@ function Resolved() {
     <>
       <Profile
         profile={profile}
-        watermarkText="이음"
+        nameWatermark="이음"
+        numberWatermark="이음"
         style={{ marginBottom: "84px" }}
       />
       <EditButton />
