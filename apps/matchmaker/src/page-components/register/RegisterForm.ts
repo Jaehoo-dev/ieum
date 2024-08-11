@@ -46,6 +46,7 @@ export type RegisterForm = {
   datingStyle: string;
   selfIntroduction: string;
   imageBucketPaths: string[];
+  videoBucketPaths: string[];
 
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
@@ -106,6 +107,7 @@ const defaultRegisterForm: RegisterForm = {
   datingStyle: "",
   selfIntroduction: "",
   imageBucketPaths: [],
+  videoBucketPaths: [],
   idealMinAgeBirthYear: null,
   idealMaxAgeBirthYear: null,
   idealRegions: [],

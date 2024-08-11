@@ -79,6 +79,7 @@ function Resolved() {
       idealIsTattooOk,
       idealTypeDescription,
       images,
+      videos,
     },
   ] = api.draftBasicMemberRouter.findOne.useSuspenseQuery({
     id: draftMemberId,
@@ -326,6 +327,13 @@ function Resolved() {
           );
         })}
       </div>
+      <div className="flex flex-row gap-1">
+        {videos.map((video) => {
+          return (
+            <VideoField key={video.bucketPath} bucketPath={video.bucketPath} />
+          );
+        })}
+      </div>
       <div className="flex w-full flex-row gap-2">
         <button
           className="flex-1 rounded bg-gray-300"
@@ -364,7 +372,19 @@ function ImageField({ bucketPath }: { bucketPath: string }) {
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
-  return <img src={publicUrl} alt="사진" width={400} />;
+  return (
+    <img src={publicUrl} alt="사진" width={400} className="object-contain" />
+  );
+}
+
+function VideoField({ bucketPath }: { bucketPath: string }) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return <video src={publicUrl} controls width={400} />;
 }
 
 DraftMemberPage.getLayout = function getLayout(page: ReactElement) {

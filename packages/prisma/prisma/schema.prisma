@@ -345,6 +345,7 @@ model DraftBasicMember {
   datingStyle             String
   selfIntroduction        String
   images                  DraftMemberImage[]
+  videos                  DraftMemberVideo[]
 
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
@@ -403,6 +404,13 @@ model MemberImageV2 {
   bucketPath  String
   index       Int
   customWidth Int?
+}
+
+model DraftMemberVideo {
+  id            String           @id @default(cuid())
+  draftMember   DraftBasicMember @relation(fields: [draftMemberId], references: [id], onDelete: Cascade)
+  draftMemberId String
+  bucketPath    String
 }
 
 model MemberVideoV2 {
