@@ -264,6 +264,7 @@ export const 음주량_라벨: Record<DrinkingFrequency, string> = {
 
 export const IMWEB_HOMEPAGE_URL = "https://ieum-love.imweb.me";
 export const HOMEPAGE_URL = "https://ieum.love";
+export const WWW_HOMEPAGE_URL = "https://www.ieum.love";
 export const MATCHMAKER_URL = "https://match.ieum.love";
 export const WORLDCUP_URL = "https://worldcup.ieum.love";
 
