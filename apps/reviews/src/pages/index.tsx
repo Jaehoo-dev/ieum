@@ -22,6 +22,19 @@ export default function Home() {
     }
 
     sendHeightToParent(height);
+
+    const observer = new MutationObserver(() => {
+      sendHeightToParent(height);
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
   }, [data]);
 
   if (data == null) {
