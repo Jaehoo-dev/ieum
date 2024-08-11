@@ -11,6 +11,9 @@ export function Sidebar() {
         <Link href="/messaging" className="text-blue-600 hover:underline">
           메시지
         </Link>
+        <Link href="/reviews" className="text-blue-600 hover:underline">
+          후기
+        </Link>
         <hr />
         <h2>베이직</h2>
         <Link

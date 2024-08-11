@@ -686,3 +686,17 @@ enum MarriageStatus {
   MARRIED
   DIVORCED
 }
+
+model FripReview {
+  id        String     @id @default(cuid())
+  nickname  String
+  rating    FripRating
+  writtenAt DateTime
+  content   String
+  option    String
+}
+
+enum FripRating {
+  FOUR_POINT_FIVE
+  FIVE
+}
