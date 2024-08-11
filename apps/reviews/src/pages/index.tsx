@@ -15,26 +15,13 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const height = document.documentElement.scrollHeight;
+    const height = document.documentElement.offsetHeight;
 
     if (height === 0) {
       return;
     }
 
     sendHeightToParent(height);
-
-    const observer = new MutationObserver(() => {
-      sendHeightToParent(height);
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    });
-
-    return () => {
-      observer.disconnect();
-    };
   }, [data]);
 
   if (data == null) {
