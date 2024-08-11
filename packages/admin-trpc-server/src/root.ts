@@ -7,6 +7,7 @@ import { blindMemberRouter } from "./routers/blindMember";
 import { draftBasicMemberRouter } from "./routers/draftBasicMember";
 import { indexingApiRouter } from "./routers/indexingApi";
 import { adminMessageRouter } from "./routers/message";
+import { reviewRouter } from "./routers/review";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   blindMatchRouter,
   adminMessageRouter,
   indexingApiRouter,
+  reviewRouter,
 });
 
 // export type definition of API

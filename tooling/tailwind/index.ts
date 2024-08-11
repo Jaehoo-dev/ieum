@@ -16,6 +16,7 @@ export default {
         "primary-600": "#ff725c",
         "primary-700": "#ff6f5e",
         "primary-900": "#ff3d00",
+        "frip-primary-500": "#7a29fa",
       },
     },
   },
