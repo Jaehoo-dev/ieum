@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const sendHeightToParent = () => {
       const height = document.documentElement.scrollHeight;
-      window.parent.postMessage(height, "*"); // Use '*' for testing; specify origin in production
+      window.parent.postMessage(height, "*");
     };
 
     window.addEventListener("load", sendHeightToParent);
