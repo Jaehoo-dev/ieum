@@ -13,16 +13,6 @@ export default function Home() {
     take: 페이지당_후기_개수,
   });
 
-  if (data == null) {
-    return null;
-  }
-
-  const { reviews, count } = data;
-  const hasPreviousPageGroup = pageGroup > 0;
-  const hasNextPageGroup =
-    pageGroup <
-    Math.floor(count / 페이지당_후기_개수 / 페이지그룹당_페이지_개수);
-
   useEffect(() => {
     const sendHeightToParent = () => {
       const height = document.documentElement.scrollHeight;
@@ -35,6 +25,16 @@ export default function Home() {
       window.removeEventListener("load", sendHeightToParent);
     };
   }, []);
+
+  if (data == null) {
+    return null;
+  }
+
+  const { reviews, count } = data;
+  const hasPreviousPageGroup = pageGroup > 0;
+  const hasNextPageGroup =
+    pageGroup <
+    Math.floor(count / 페이지당_후기_개수 / 페이지그룹당_페이지_개수);
 
   return (
     <div className="flex flex-col gap-4">
