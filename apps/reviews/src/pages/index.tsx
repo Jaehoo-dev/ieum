@@ -45,8 +45,8 @@ export default function Home() {
     Math.floor(count / 페이지당_후기_개수 / 페이지그룹당_페이지_개수);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col">
+    <div className="lex flex-col gap-4 border-t border-t-gray-500 pt-4">
+      <div className="flex flex-col gap-4">
         {reviews.map((review) => {
           return <Review key={review.id} data={review} />;
         })}
