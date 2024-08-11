@@ -100,6 +100,6 @@ const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
 
 const sendHeightToParent = (height: number) => {
-  window.parent.postMessage(height, IMWEB_HOMEPAGE_URL);
   window.parent.postMessage(height, HOMEPAGE_URL);
+  window.parent.postMessage(height, IMWEB_HOMEPAGE_URL);
 };
