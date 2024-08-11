@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HOMEPAGE_URL, IMWEB_HOMEPAGE_URL } from "@ieum/constants";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
@@ -13,26 +14,14 @@ export default function Home() {
     take: 페이지당_후기_개수,
   });
 
-  const sendHeightToParent = () => {
-    const height = document.documentElement.scrollHeight;
-    window.parent.postMessage(height, "*");
-  };
-
   useEffect(() => {
     const height = document.documentElement.scrollHeight;
-    window.parent.postMessage(height, "*");
 
-    const observer = new MutationObserver(sendHeightToParent);
+    if (height === 0) {
+      return;
+    }
 
-    observer.observe(document.body, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    });
-
-    return () => {
-      observer.disconnect();
-    };
+    sendHeightToParent(height);
   }, [data]);
 
   if (data == null) {
@@ -109,3 +98,8 @@ export default function Home() {
 
 const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
+
+const sendHeightToParent = (height: number) => {
+  window.parent.postMessage(height, IMWEB_HOMEPAGE_URL);
+  window.parent.postMessage(height, HOMEPAGE_URL);
+};
