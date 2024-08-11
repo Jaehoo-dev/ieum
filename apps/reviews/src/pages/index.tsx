@@ -13,9 +13,13 @@ export default function Home() {
     take: 페이지당_후기_개수,
   });
 
-  useEffect(() => {
-    sendHeightToParent();
-  }, [data]);
+  const sendHeightToParent = () => {
+    const height = document.documentElement.scrollHeight;
+    console.log(height, data);
+    window.parent.postMessage(height, "*");
+  };
+
+  useEffect(sendHeightToParent, [data]);
 
   if (data == null) {
     return null;
@@ -91,9 +95,3 @@ export default function Home() {
 
 const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
-
-const sendHeightToParent = () => {
-  const height = document.documentElement.scrollHeight;
-
-  window.parent.postMessage(height, "*");
-};
