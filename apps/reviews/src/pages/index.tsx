@@ -13,19 +13,26 @@ export default function Home() {
     take: 페이지당_후기_개수,
   });
 
-  useEffect(() => {
-    const sendHeightToParent = () => {
-      const height = document.documentElement.scrollHeight;
-      console.log(data, height);
-      window.parent.postMessage(height, "*");
-    };
+  const sendHeightToParent = () => {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(height, "*");
+  };
 
-    window.addEventListener("load", sendHeightToParent);
+  useEffect(() => {
+    sendHeightToParent();
+
+    const observer = new MutationObserver(sendHeightToParent);
+
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
 
     return () => {
-      window.removeEventListener("load", sendHeightToParent);
+      observer.disconnect();
     };
-  }, []);
+  }, [data]);
 
   if (data == null) {
     return null;
