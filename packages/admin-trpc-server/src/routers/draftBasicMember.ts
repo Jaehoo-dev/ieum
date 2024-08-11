@@ -35,6 +35,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         },
         include: {
           images: true,
+          videos: true,
         },
       });
     }),
@@ -73,6 +74,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         },
         include: {
           images: true,
+          videos: true,
         },
       });
 
@@ -98,6 +100,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         id,
         marriageStatus,
         images,
+        videos,
         idealMinAgeBirthYear,
         idealMaxAgeBirthYear,
         idealRegions,
@@ -125,7 +128,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         ...self
       } = draftMember;
 
-      const bucketPaths = await Promise.all(
+      const imageBucketPaths = await Promise.all(
         images.map(async ({ bucketPath }) => {
           const { data, error } = await supabase.storage
             .from(
@@ -144,6 +147,25 @@ export const draftBasicMemberRouter = createTRPCRouter({
         }),
       );
 
+      const videoBucketPaths = await Promise.all(
+        videos.map(async ({ bucketPath }) => {
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+            )
+            .copy(bucketPath, nanoid());
+
+          if (error != null) {
+            throw error;
+          }
+
+          return data.path.replace(
+            `${process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME}/`,
+            "",
+          );
+        }),
+      );
+
       const [newMember] = await ctx.prisma.$transaction([
         ctx.prisma.basicMemberV2.create({
           data: {
@@ -153,7 +175,17 @@ export const draftBasicMemberRouter = createTRPCRouter({
             referralCode: generateReferralCode(),
             images: {
               createMany: {
-                data: bucketPaths.map((bucketPath, index) => {
+                data: imageBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
+              },
+            },
+            videos: {
+              createMany: {
+                data: videoBucketPaths.map((bucketPath, index) => {
                   return {
                     bucketPath,
                     index,
@@ -224,6 +256,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         },
         select: {
           images: true,
+          videos: true,
           status: true,
         },
       });
@@ -235,9 +268,18 @@ export const draftBasicMemberRouter = createTRPCRouter({
         });
       }
 
-      await supabase.storage
-        .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
-        .remove(draftMember.images.map((image) => image.bucketPath));
+      await Promise.all([
+        supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+          )
+          .remove(draftMember.images.map((image) => image.bucketPath)),
+        supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+          )
+          .remove(draftMember.videos.map((video) => video.bucketPath)),
+      ]);
 
       return ctx.prisma.draftBasicMember.delete({
         where: {

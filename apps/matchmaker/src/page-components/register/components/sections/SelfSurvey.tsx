@@ -675,6 +675,29 @@ export function SelfSurvey({ onBack, onNext }: Props) {
             },
           }}
         />
+        <Controller
+          control={control}
+          name="videoBucketPaths"
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            return (
+              <VideoField
+                bucketPaths={value}
+                onUpload={(bucketPath) => {
+                  onChange([...value, bucketPath]);
+                }}
+                onRemove={(bucketPath) => {
+                  onChange(
+                    value.filter((path) => {
+                      return path !== bucketPath;
+                    }),
+                  );
+                }}
+                error={error != null}
+                errorText={error?.message}
+              />
+            );
+          }}
+        />
       </div>
       <div className="mt-4">
         <Buttons
@@ -718,6 +741,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
                 "datingStyle",
                 "selfIntroduction",
                 "imageBucketPaths",
+                "videoBucketPaths",
               ],
               {
                 shouldFocus: true,
@@ -762,9 +786,9 @@ function ImageField({
         >
           사진 고르는 팁
         </Link>
-        을 참고해주세요.
+        을 참고해주세요.<span className="text-primary-500">*</span>
       </span>
-      <div className="mb-1 flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <span className="text-sm text-gray-500">
           얼굴 사진과 전신 사진을 골고루 올려주시면 좋습니다. 추후에 수정하실 수
           있습니다.
@@ -775,7 +799,7 @@ function ImageField({
           </span>
         ) : null}
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="mt-1 grid grid-cols-2 gap-2">
         {bucketPaths.map((bucketPath) => {
           return (
             <Image
@@ -843,6 +867,90 @@ function Image({ bucketPath, onRemove }: ImageProps) {
   );
 }
 
+function VideoField({
+  bucketPaths,
+  onUpload,
+  onRemove,
+  error,
+  errorText,
+}: ImageFieldProps) {
+  return (
+    <div className="flex flex-col gap-1 text-gray-800">
+      <span className="text-lg font-medium">
+        원하신다면 동영상으로 매력을 보여줄 수도 있습니다.
+      </span>
+      {error ? (
+        <span className="text-sm text-red-500">
+          {isEmptyStringOrNil(errorText) ? "동영상을 확인해주세요." : errorText}
+        </span>
+      ) : null}
+      <div className="mt-1 grid grid-cols-2 gap-2">
+        {bucketPaths.map((bucketPath) => {
+          return (
+            <Video
+              key={bucketPath}
+              bucketPath={bucketPath}
+              onRemove={onRemove}
+            />
+          );
+        })}
+        <VideoUploader onUpload={onUpload} />
+      </div>
+    </div>
+  );
+}
+
+function Video({ bucketPath, onRemove }: ImageProps) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return (
+    <div key={bucketPath} className="relative">
+      <video
+        className="w-full rounded-lg object-cover"
+        src={publicUrl}
+        controls={true}
+        controlsList="nodownload"
+        onContextMenu={(event) => {
+          event.preventDefault();
+        }}
+      />
+      <button
+        className="absolute right-2 top-2 rounded-full bg-white p-1"
+        onClick={async () => {
+          const { error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+            )
+            .remove([bucketPath]);
+
+          assert(error == null, error?.message);
+
+          onRemove(bucketPath);
+        }}
+      >
+        <svg
+          className="h-4 w-4 text-red-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 interface ImageUploaderProps {
   onUpload: (bucketPath: string) => void;
 }
@@ -866,6 +974,51 @@ function ImageUploader({ onUpload }: ImageUploaderProps) {
           const { data, error } = await supabase.storage
             .from(
               process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .upload(`/drafts/${nanoid()}`, file);
+
+          assert(error == null, error?.message);
+
+          onUpload(data.path);
+        }}
+        className="hidden"
+      />
+      <button
+        className="flex h-40 items-center justify-center rounded-lg bg-gray-200"
+        type="button"
+        onClick={() => {
+          inputRef.current?.click();
+        }}
+      >
+        <AddIcon className="text-gray-500" fontSize="large" />
+      </button>
+    </>
+  );
+}
+
+interface VideoUploaderProps {
+  onUpload: (bucketPath: string) => void;
+}
+
+function VideoUploader({ onUpload }: VideoUploaderProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="video/*"
+        onChange={async (event) => {
+          const file = event.target.files?.[0];
+
+          if (file == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
             )
             .upload(`/drafts/${nanoid()}`, file);
 

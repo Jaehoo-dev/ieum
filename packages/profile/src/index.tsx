@@ -321,6 +321,8 @@ function VideoField({
         className="m-auto rounded-lg"
         src={publicUrl}
         controls
+        controlsList="nodownload"
+        onContextMenu={(e) => e.preventDefault()}
         muted
         loop
       />

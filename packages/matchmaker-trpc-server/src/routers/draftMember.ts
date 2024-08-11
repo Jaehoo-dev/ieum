@@ -51,6 +51,7 @@ export const draftMemberRouter = createTRPCRouter({
         datingStyle: z.string(),
         selfIntroduction: z.string(),
         imageBucketPaths: z.string().array(),
+        videoBucketPaths: z.string().array(),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
         idealRegions: z.nativeEnum(Region).array(),
@@ -76,31 +77,45 @@ export const draftMemberRouter = createTRPCRouter({
         personalInfoConsent: z.boolean(),
       }),
     )
-    .mutation(async ({ ctx, input: { imageBucketPaths, ...data } }) => {
-      await ctx.prisma.draftBasicMember.create({
-        data: {
-          ...data,
-          images: {
-            createMany: {
-              data: imageBucketPaths.map((bucketPath) => {
-                return {
-                  bucketPath,
-                };
-              }),
+    .mutation(
+      async ({
+        ctx,
+        input: { imageBucketPaths, videoBucketPaths, ...data },
+      }) => {
+        await ctx.prisma.draftBasicMember.create({
+          data: {
+            ...data,
+            images: {
+              createMany: {
+                data: imageBucketPaths.map((bucketPath) => {
+                  return {
+                    bucketPath,
+                  };
+                }),
+              },
+            },
+            videos: {
+              createMany: {
+                data: videoBucketPaths.map((bucketPath) => {
+                  return {
+                    bucketPath,
+                  };
+                }),
+              },
             },
           },
-        },
-      });
+        });
 
-      await sendSlackMessage({
-        channel: "폼_제출_알림",
-        content: `*이음:cupid:베이직* 설문 제출\n*이름*: ${
-          data.name
-        }\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
-          성별_라벨[data.gender]
-        }\n${JSON.stringify(data)}`,
-      });
+        await sendSlackMessage({
+          channel: "폼_제출_알림",
+          content: `*이음:cupid:베이직* 설문 제출\n*이름*: ${
+            data.name
+          }\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
+            성별_라벨[data.gender]
+          }\n${JSON.stringify(data)}`,
+        });
 
-      return true;
-    }),
+        return true;
+      },
+    ),
 });
