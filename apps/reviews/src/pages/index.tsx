@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
@@ -22,6 +22,19 @@ export default function Home() {
   const hasNextPageGroup =
     pageGroup <
     Math.floor(count / 페이지당_후기_개수 / 페이지그룹당_페이지_개수);
+
+  useEffect(() => {
+    const sendHeightToParent = () => {
+      const height = document.documentElement.scrollHeight;
+      window.parent.postMessage(height, "*"); // Use '*' for testing; specify origin in production
+    };
+
+    window.addEventListener("load", sendHeightToParent);
+
+    return () => {
+      window.removeEventListener("load", sendHeightToParent);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
