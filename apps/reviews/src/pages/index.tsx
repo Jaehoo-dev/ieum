@@ -15,11 +15,25 @@ export default function Home() {
 
   const sendHeightToParent = () => {
     const height = document.documentElement.scrollHeight;
-    console.log(height, data);
     window.parent.postMessage(height, "*");
   };
 
-  useEffect(sendHeightToParent, [data]);
+  useEffect(() => {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage(height, "*");
+
+    const observer = new MutationObserver(sendHeightToParent);
+
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [data]);
 
   if (data == null) {
     return null;
