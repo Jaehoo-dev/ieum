@@ -24,7 +24,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
 
   useEffect(() => {
     void sendMessage({
-      content: `${구} 소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      content: `${구} 소개팅 장소 추천 페이지 진입\nreferrer: ${document.referrer}`,
     });
   }, [sendMessage]);
 

@@ -24,7 +24,7 @@ export function DemoMatchPage() {
 
   useEffect(() => {
     void sendMessage({
-      content: `체험 - 프로필 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      content: `체험 - 프로필 페이지 진입\nreferrer: ${document.referrer}`,
     });
   }, [sendMessage]);
 

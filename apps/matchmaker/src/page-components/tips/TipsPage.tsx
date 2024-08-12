@@ -15,7 +15,7 @@ export function TipsPage() {
 
   useEffect(() => {
     void sendMessage({
-      content: `소개팅 꿀팁 모음 페이지 진입\n${navigator.userAgent}\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
+      content: `소개팅 꿀팁 모음 페이지 진입\nfrom: ${router.query.from}\nreferrer: ${document.referrer}`,
     });
   }, [router.query.from, sendMessage]);
 
