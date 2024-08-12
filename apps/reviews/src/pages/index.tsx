@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  HOMEPAGE_URL,
-  IMWEB_HOMEPAGE_URL,
-  WWW_HOMEPAGE_URL,
-} from "@ieum/constants";
+import { HOMEPAGE_URL } from "@ieum/constants";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
@@ -27,7 +23,11 @@ export default function Home() {
       return;
     }
 
-    sendHeightToParent(height, (router.query.origin ?? HOMEPAGE_URL) as string);
+    sendHeightToParent({
+      height,
+      target: (router.query.origin ?? HOMEPAGE_URL) as string,
+      device: (router.query.device ?? "mobile") as Device,
+    });
   }, [data]);
 
   if (data == null) {
@@ -105,6 +105,16 @@ export default function Home() {
 const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
 
-const sendHeightToParent = (height: number, target: string) => {
-  window.parent.postMessage(height, target);
+const sendHeightToParent = ({
+  height,
+  target,
+  device,
+}: {
+  height: number;
+  target: string;
+  device: Device;
+}) => {
+  window.parent.postMessage({ height, device }, target);
 };
+
+type Device = "pc" | "mobile";
