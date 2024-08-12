@@ -63,6 +63,9 @@ export const basicMatchRouter = createTRPCRouter({
                 gt: subHours(new Date(), 25),
               },
             },
+            orderBy: {
+              sentAt: "desc",
+            },
           },
         },
       });
