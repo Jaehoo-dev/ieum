@@ -6,8 +6,8 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { RegisterForm } from "../../RegisterForm";
-import { TextInput } from "../TextInput";
-import { UniSelect } from "../UniSelect";
+import { TextInput } from "~/components/form/TextInput";
+import { UniSelect } from "~/components/form/UniSelect";
 
 interface Props {
   onNext: () => void;

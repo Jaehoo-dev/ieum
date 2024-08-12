@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   종교_라벨,
   지역_라벨,
@@ -13,18 +12,16 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { MultiSelect } from "~/components/form/MultiSelect";
 import { Range } from "~/components/form/Range";
 import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { handleNullableStringNumber } from "~/utils/form/handleNullableStringNumber";
-import { RegisterForm } from "../../RegisterForm";
-import { BackTextButton } from "../BackTextButton";
-import { Buttons } from "../Buttons";
+import { defaultDemoForm, DemoForm } from "../DemoForm";
+import { BackTextButton } from "./BackTextButton";
 
 interface Props {
   onBack: () => void;
@@ -39,31 +36,17 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
     formState: { errors },
     register,
     control,
-    trigger,
-  } = useFormContext<RegisterForm>();
+  } = useForm<DemoForm>({
+    defaultValues: defaultDemoForm,
+  });
   const 선호학력이_학사이상인사 =
     watch("idealEducationLevel") === EducationLevel.BACHELOR_DEGREE ||
     watch("idealEducationLevel") === EducationLevel.MASTER_DEGREE ||
     watch("idealEducationLevel") === EducationLevel.DOCTORATE_DEGREE;
-  const phoneNumber = getValues("phoneNumber");
-  const { sendMessage } = useSlackNotibot();
-
-  useEffect(() => {
-    sendMessage({
-      content: `${phoneNumber} - 이상형 설문 페이지 진입`,
-    });
-  }, []);
 
   return (
     <div className="flex w-full flex-col gap-6 p-6">
-      <BackTextButton
-        onClick={() => {
-          sendMessage({
-            content: `${phoneNumber} - 이상형 설문 페이지 이전 텍스트버튼 클릭`,
-          });
-          onBack();
-        }}
-      />
+      <BackTextButton onClick={onBack} />
       <div className="flex flex-col gap-8">
         <Range
           label="선호하시는 나이를 출생연도로 입력해주세요."
@@ -540,50 +523,20 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         />
       </div>
       <div className="mt-4">
-        <Buttons
-          onBackClick={() => {
-            sendMessage({
-              content: `${phoneNumber} - 이상형 설문 페이지 이전 버튼 클릭`,
-            });
-            onBack();
-          }}
-          onNextClick={async () => {
-            sendMessage({
-              content: `${phoneNumber} - 이상형 설문 페이지 다음 클릭`,
-            });
-
-            const isValid = await trigger(
-              [
-                "idealMinAgeBirthYear",
-                "idealMaxAgeBirthYear",
-                "idealRegions",
-                "idealMinHeight",
-                "idealMaxHeight",
-                "idealBodyShapes",
-                "idealCharacteristics",
-                "idealEducationLevel",
-                "idealSchoolLevel",
-                "idealNonPreferredWorkplace",
-                "idealNonPreferredJob",
-                "idealMinAnnualIncome",
-                "idealPreferredMbtis",
-                "idealNonPreferredMbtis",
-                "idealPreferredReligions",
-                "idealNonPreferredReligions",
-                "idealIsSmokerOk",
-                "idealIsTattooOk",
-                "idealTypeDescription",
-              ],
-              {
-                shouldFocus: true,
-              },
-            );
-
-            if (isValid) {
-              onNext();
-            }
-          }}
-        />
+        <div className="flex flex-row gap-2">
+          <button
+            onClick={onBack}
+            className="flex-1 rounded-lg bg-gray-500 px-4 py-2 text-lg font-medium text-white hover:bg-gray-600"
+          >
+            이전
+          </button>
+          <button
+            onClick={onNext}
+            className="flex-1 rounded-lg bg-primary-500 px-4 py-2 text-lg font-medium text-white hover:bg-primary-700"
+          >
+            다음
+          </button>
+        </div>
       </div>
     </div>
   );

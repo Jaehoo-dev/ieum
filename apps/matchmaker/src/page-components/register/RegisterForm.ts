@@ -11,7 +11,7 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
-import { assert, isEmptyStringOrNil, krHyphenToKr } from "@ieum/utils";
+import { assert, krHyphenToKr } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
 export type RegisterForm = {
@@ -255,14 +255,4 @@ export function formToPayload({
       idealCharacteristics.length > 0 ? idealCharacteristics.join(", ") : null,
     personalInfoConsent,
   };
-}
-
-export function handleNullableStringNumber(value: string | null) {
-  if (isEmptyStringOrNil(value)) {
-    return null;
-  }
-
-  const valueAsNumber = Number(value);
-
-  return isNaN(valueAsNumber) ? null : valueAsNumber;
 }

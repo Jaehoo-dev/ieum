@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { TextareaInput } from "~/components/form/TextareaInput";
+import { TextInput } from "~/components/form/TextInput";
+import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { RegisterForm, registerFormId } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
-import { TextareaInput } from "../TextareaInput";
-import { TextInput } from "../TextInput";
-import { UniSelect } from "../UniSelect";
 
 interface Props {
   onBack: () => void;
