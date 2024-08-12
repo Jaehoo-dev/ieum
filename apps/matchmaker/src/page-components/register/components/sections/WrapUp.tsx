@@ -15,7 +15,7 @@ interface Props {
 export function WrapUp({ onBack }: Props) {
   const {
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     getValues,
     watch,
     register,
@@ -120,7 +120,7 @@ export function WrapUp({ onBack }: Props) {
             });
           }}
           className="flex-1 rounded-lg bg-primary-500 px-4 py-2 text-lg font-medium text-white hover:bg-primary-700 disabled:opacity-50"
-          disabled={!watch("personalInfoConsent") || isSubmitting}
+          disabled={!watch("personalInfoConsent")}
         >
           제출
         </button>
