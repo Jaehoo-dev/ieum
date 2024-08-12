@@ -16,14 +16,15 @@ import AddIcon from "@mui/icons-material/Add";
 import { nanoid } from "nanoid";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { MultiSelect } from "~/components/form/MultiSelect";
+import { TextareaInput } from "~/components/form/TextareaInput";
+import { TextInput } from "~/components/form/TextInput";
+import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { handleNullableStringNumber, RegisterForm } from "../../RegisterForm";
+import { handleNullableStringNumber } from "~/utils/form/handleNullableStringNumber";
+import { RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";
-import { MultiSelect } from "../MultiSelect";
-import { TextareaInput } from "../TextareaInput";
-import { TextInput } from "../TextInput";
-import { UniSelect } from "../UniSelect";
 
 interface Props {
   onBack: () => void;
