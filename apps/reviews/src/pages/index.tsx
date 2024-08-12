@@ -16,6 +16,9 @@ export default function Home() {
     take: 페이지당_후기_개수,
   });
 
+  const iframeParentTarget = (router.query.origin ?? HOMEPAGE_URL) as string;
+  const parentDevice = (router.query.device ?? "mobile") as Device;
+
   useEffect(() => {
     const height = document.documentElement.offsetHeight;
 
@@ -25,8 +28,8 @@ export default function Home() {
 
     sendHeightToParent({
       height,
-      target: (router.query.origin ?? HOMEPAGE_URL) as string,
-      device: (router.query.device ?? "mobile") as Device,
+      target: iframeParentTarget,
+      device: parentDevice,
     });
   }, [data]);
 
@@ -54,6 +57,11 @@ export default function Home() {
 
             setPageGroup(oldPageGroup - 1);
             setPage(oldPageGroup * 페이지그룹당_페이지_개수 - 1);
+
+            sendScrollTriggerToParent({
+              target: iframeParentTarget,
+              device: parentDevice,
+            });
           }}
           disabled={!hasPreviousPageGroup}
         >
@@ -75,6 +83,10 @@ export default function Home() {
               disabled={pageNumber * 페이지당_후기_개수 >= count}
               onClick={() => {
                 setPage(pageNumber);
+                sendScrollTriggerToParent({
+                  target: iframeParentTarget,
+                  device: parentDevice,
+                });
               }}
               className={`${
                 isCurrentPage
@@ -92,6 +104,11 @@ export default function Home() {
 
             setPageGroup(newPageGroup);
             setPage(newPageGroup * 페이지그룹당_페이지_개수);
+
+            sendScrollTriggerToParent({
+              target: iframeParentTarget,
+              device: parentDevice,
+            });
           }}
           disabled={!hasNextPageGroup}
         >
@@ -105,7 +122,7 @@ export default function Home() {
 const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
 
-const sendHeightToParent = ({
+function sendHeightToParent({
   height,
   target,
   device,
@@ -113,8 +130,36 @@ const sendHeightToParent = ({
   height: number;
   target: string;
   device: Device;
-}) => {
-  window.parent.postMessage({ height, device }, target);
-};
+}) {
+  window.parent.postMessage(
+    {
+      event: "HEIGHT",
+      data: {
+        height,
+        device,
+      },
+    },
+    target,
+  );
+}
 
+function sendScrollTriggerToParent({
+  target,
+  device,
+}: {
+  target: string;
+  device: Device;
+}) {
+  window.parent.postMessage(
+    {
+      event: "SCROLL",
+      data: {
+        device,
+      },
+    },
+    target,
+  );
+}
+
+type Event = "HEIGHT" | "SCROLL";
 type Device = "pc" | "mobile";
