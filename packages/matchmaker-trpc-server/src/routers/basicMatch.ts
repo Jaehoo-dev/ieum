@@ -48,7 +48,11 @@ export const basicMatchRouter = createTRPCRouter({
         where: {
           id: memberId,
           status: {
-            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+            in: [
+              MemberStatus.PENDING,
+              MemberStatus.ACTIVE,
+              MemberStatus.INACTIVE,
+            ],
           },
         },
         select: {
@@ -76,7 +80,11 @@ export const basicMatchRouter = createTRPCRouter({
         where: {
           id: memberId,
           status: {
-            in: [MemberStatus.ACTIVE, MemberStatus.INACTIVE],
+            in: [
+              MemberStatus.PENDING,
+              MemberStatus.ACTIVE,
+              MemberStatus.INACTIVE,
+            ],
           },
         },
         select: {
