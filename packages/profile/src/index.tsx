@@ -245,8 +245,8 @@ function ProtectedImageField({
     assert(canvas != null);
 
     if (dimensions.width > 0 && dimensions.height > 0) {
-      canvas.width = dimensions.width;
-      canvas.height = dimensions.height;
+      resizeCanvas(canvas, dimensions);
+
       const ctx = canvas.getContext("2d");
       const img = new Image();
 
@@ -256,32 +256,8 @@ function ProtectedImageField({
         }
 
         ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
-
         ctx.save();
-
-        ctx.font = "14px 'Nanum Gothic', sans-serif";
-        ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
-        ctx.translate(0, 0);
-        ctx.rotate(-Math.PI / 4);
-        const nameTextWidth = ctx.measureText(nameWatermark).width;
-        const numberTextWidth = ctx.measureText(numberWatermark).width;
-        const textHeight = 14;
-        const startX = -20;
-        const startY = 80;
-
-        for (let row = 0; row < 10; row++) {
-          const _watermark = row % 2 === 0 ? nameWatermark : numberWatermark;
-          const _textWidth = row % 2 === 0 ? nameTextWidth : numberTextWidth;
-
-          for (let col = 0; col < 6; col++) {
-            ctx.fillText(
-              `${_watermark}`,
-              startX - row * 134 + col * (_textWidth + 120),
-              startY + row * (textHeight + 120),
-            );
-          }
-        }
-
+        drawWatermarks(ctx, nameWatermark, numberWatermark);
         ctx.restore();
       };
 
@@ -289,14 +265,7 @@ function ProtectedImageField({
     }
   }, [publicUrl, dimensions]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      width={dimensions.width}
-      height={dimensions.height}
-      className="m-auto select-none rounded-lg"
-    />
-  );
+  return <canvas ref={canvasRef} className="m-auto select-none rounded-lg" />;
 }
 
 function VideoField({
@@ -339,4 +308,53 @@ function DataField({ label, value }: { label: string; value: string }) {
   );
 }
 
-const MAX_W_LG = 512;
+function resizeCanvas(
+  canvas: HTMLCanvasElement,
+  {
+    width,
+    height,
+  }: {
+    width: number;
+    height: number;
+  },
+) {
+  const dpr = window.devicePixelRatio;
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  const ctx = canvas.getContext("2d");
+
+  ctx?.scale(dpr, dpr);
+}
+
+function drawWatermarks(
+  ctx: CanvasRenderingContext2D,
+  nameWatermark: string,
+  numberWatermark: string,
+) {
+  ctx.font = "14px 'Nanum Gothic', sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
+  ctx.translate(0, 0);
+  ctx.rotate(-Math.PI / 4);
+  const nameTextWidth = ctx.measureText(nameWatermark).width;
+  const numberTextWidth = ctx.measureText(numberWatermark).width;
+  const textHeight = 14;
+  const startX = -20;
+  const startY = 80;
+
+  for (let row = 0; row < 10; row++) {
+    const _watermark = row % 2 === 0 ? nameWatermark : numberWatermark;
+    const _textWidth = row % 2 === 0 ? nameTextWidth : numberTextWidth;
+
+    for (let col = 0; col < 6; col++) {
+      ctx.fillText(
+        `${_watermark}`,
+        startX - row * 134 + col * (_textWidth + 120),
+        startY + row * (textHeight + 120),
+      );
+    }
+  }
+}
