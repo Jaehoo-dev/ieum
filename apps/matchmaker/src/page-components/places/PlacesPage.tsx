@@ -22,7 +22,7 @@ export function PlacesPage({ places }: Props) {
 
   useEffect(() => {
     void sendMessage({
-      content: `소개팅 장소 추천 페이지 진입\n${navigator.userAgent}\nreferrer: ${document.referrer}`,
+      content: `소개팅 장소 추천 페이지 진입\nreferrer: ${document.referrer}`,
     });
   }, [sendMessage]);
 
