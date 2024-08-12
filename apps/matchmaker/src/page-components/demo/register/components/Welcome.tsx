@@ -1,11 +1,3 @@
-import { useEffect } from "react";
-import { 성별_라벨 } from "@ieum/constants";
-import { Gender, MarriageStatus } from "@ieum/prisma";
-import { formatPhoneNumberInput } from "@ieum/utils";
-import { Controller, useFormContext } from "react-hook-form";
-
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-
 interface Props {
   onNext: () => void;
 }
