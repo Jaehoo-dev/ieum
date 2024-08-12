@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   HOMEPAGE_URL,
   IMWEB_HOMEPAGE_URL,
@@ -11,6 +12,7 @@ import { Review } from "~/components/Review";
 import { api } from "~/utils/api";
 
 export default function Home() {
+  const router = useRouter();
   const [page, setPage] = useState(0);
   const [pageGroup, setPageGroup] = useState(0);
   const { data } = api.reviewRouter.getFripReviews.useQuery({
@@ -25,7 +27,7 @@ export default function Home() {
       return;
     }
 
-    sendHeightToParent(height);
+    sendHeightToParent(height, (router.query.origin ?? HOMEPAGE_URL) as string);
   }, [data]);
 
   if (data == null) {
@@ -103,8 +105,6 @@ export default function Home() {
 const 페이지당_후기_개수 = 10;
 const 페이지그룹당_페이지_개수 = 5;
 
-const sendHeightToParent = (height: number) => {
-  window.parent.postMessage(height, HOMEPAGE_URL);
-  window.parent.postMessage(height, WWW_HOMEPAGE_URL);
-  window.parent.postMessage(height, IMWEB_HOMEPAGE_URL);
+const sendHeightToParent = (height: number, target: string) => {
+  window.parent.postMessage(height, target);
 };
