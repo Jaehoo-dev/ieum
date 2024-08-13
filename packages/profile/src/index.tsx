@@ -10,7 +10,7 @@ import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
-import { useSuspenseSignedUrl } from "./hooks/useSignedUrl";
+import { useSuspenseSignedUrl } from "./hooks/useSuspenseSignedUrl";
 import { BasicMemberProfileWithMediaSources } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
