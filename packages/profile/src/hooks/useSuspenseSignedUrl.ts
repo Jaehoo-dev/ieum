@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 export function useSuspenseSignedUrl({
   bucket,
   path,
-  expiresIn = 3,
+  expiresIn = 20,
 }: {
   bucket: string;
   path: string;
