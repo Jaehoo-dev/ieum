@@ -291,20 +291,21 @@ function ProtectedImageField({
       resizeCanvas(canvas, dimensions);
 
       const ctx = canvas.getContext("2d");
+
+      assert(ctx != null, "ctx should be defined");
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+
       const img = new Image();
+      img.src = publicUrl;
 
       img.onload = () => {
-        if (ctx == null) {
-          return;
-        }
-
         ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
         ctx.save();
         drawWatermarks(ctx, nameWatermark, numberWatermark);
         ctx.restore();
       };
-
-      img.src = publicUrl;
     }
   }, [publicUrl, dimensions]);
 
