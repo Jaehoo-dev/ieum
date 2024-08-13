@@ -69,6 +69,15 @@ export function WrapUp({ onBack }: Props) {
           description="왜 이음을 선택하셨나요? 본인 또는 이상형과 관련한 이야기, 추가로 어필하고 싶은 점이나 설문 피드백 등 모두 좋습니다."
           error={errors.memo != null}
           errorText={errors.memo?.message}
+          {...register("memo", {
+            setValueAs: (value) => {
+              if (value == null || value === "") {
+                return null;
+              }
+
+              return value.trim();
+            },
+          })}
         />
         <Controller
           control={control}
