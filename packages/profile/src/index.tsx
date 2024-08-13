@@ -1,10 +1,16 @@
-import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
+import {
+  ComponentPropsWithoutRef,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
-import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
+import { useSuspenseSignedUrl } from "./hooks/useSignedUrl";
 import { BasicMemberProfileWithMediaSources } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
@@ -171,23 +177,25 @@ function MediaSection({
       <div className="flex flex-col gap-4">
         {videos.map(({ id, bucketPath }) => {
           return (
-            <VideoField
-              key={id}
-              bucketPath={bucketPath}
-              nameWatermark={nameWatermark}
-              numberWatermark={numberWatermark}
-            />
+            <Suspense key={id}>
+              <VideoField
+                bucketPath={bucketPath}
+                nameWatermark={nameWatermark}
+                numberWatermark={numberWatermark}
+              />
+            </Suspense>
           );
         })}
         {images.map(({ id, bucketPath, customWidth }) => {
           return (
-            <ProtectedImageField
-              key={id}
-              bucketPath={bucketPath}
-              nameWatermark={nameWatermark}
-              numberWatermark={numberWatermark}
-              customWidth={customWidth ?? undefined}
-            />
+            <Suspense key={id}>
+              <ProtectedImageField
+                bucketPath={bucketPath}
+                nameWatermark={nameWatermark}
+                numberWatermark={numberWatermark}
+                customWidth={customWidth ?? undefined}
+              />
+            </Suspense>
           );
         })}
       </div>
@@ -204,11 +212,10 @@ function VideoField({
   nameWatermark: string;
   numberWatermark: string;
 }) {
-  const {
-    data: { publicUrl },
-  } = supabase.storage
-    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!)
-    .getPublicUrl(bucketPath);
+  const { data: signedUrl } = useSuspenseSignedUrl({
+    bucket: process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+    path: bucketPath,
+  });
 
   return (
     <div className="relative max-w-xl">
@@ -218,7 +225,7 @@ function VideoField({
       />
       <video
         className="m-auto rounded-lg"
-        src={publicUrl}
+        src={signedUrl}
         controls
         controlsList="nodownload"
         onContextMenu={(e) => e.preventDefault()}
@@ -251,14 +258,12 @@ function ProtectedImageField({
   numberWatermark,
   customWidth,
 }: ProtectedImageFieldProps) {
+  const { data: signedUrl } = useSuspenseSignedUrl({
+    bucket: process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+    path: bucketPath,
+  });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  const {
-    data: { publicUrl },
-  } = supabase.storage
-    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
-    .getPublicUrl(bucketPath);
 
   useEffect(() => {
     const img = new Image();
@@ -279,8 +284,8 @@ function ProtectedImageField({
       });
     };
 
-    img.src = publicUrl;
-  }, [publicUrl]);
+    img.src = signedUrl;
+  }, [signedUrl]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -298,7 +303,7 @@ function ProtectedImageField({
       ctx.imageSmoothingQuality = "high";
 
       const img = new Image();
-      img.src = publicUrl;
+      img.src = signedUrl;
 
       img.onload = () => {
         ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
@@ -307,7 +312,7 @@ function ProtectedImageField({
         ctx.restore();
       };
     }
-  }, [publicUrl, dimensions]);
+  }, [signedUrl, dimensions]);
 
   return <canvas ref={canvasRef} className="m-auto select-none rounded-lg" />;
 }
