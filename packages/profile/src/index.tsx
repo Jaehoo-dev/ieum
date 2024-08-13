@@ -215,7 +215,10 @@ function ImageField({
 
   return (
     <div className="relative max-w-xl">
-      <Watermarks watermark1={nameWatermark} watermark2={numberWatermark} />
+      <Watermarks
+        nameWatermark={nameWatermark}
+        numberWatermark={numberWatermark}
+      />
       <img
         src={publicUrl}
         alt="프로필 이미지"
@@ -244,7 +247,10 @@ function VideoField({
 
   return (
     <div className="relative max-w-xl">
-      <Watermarks watermark1={nameWatermark} watermark2={numberWatermark} />
+      <Watermarks
+        nameWatermark={nameWatermark}
+        numberWatermark={numberWatermark}
+      />
       <video
         className="m-auto rounded-lg"
         src={publicUrl}
