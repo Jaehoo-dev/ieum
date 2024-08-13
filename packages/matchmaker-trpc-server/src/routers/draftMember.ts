@@ -12,6 +12,7 @@ import {
   Religion,
 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
+import { krToKrHyphen } from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -110,9 +111,9 @@ export const draftMemberRouter = createTRPCRouter({
           await Promise.all([
             sendSlackMessage({
               channel: "폼_제출_알림",
-              content: `*이음:cupid:베이직* 설문 제출\n*이름*: ${
+              content: `*이음:cupid:베이직* 설문 제출\n${
                 data.name
-              }\n*전화번호*: ${data.phoneNumber}\n*성별*: ${
+              } / ${krToKrHyphen(data.phoneNumber)} / ${
                 성별_라벨[data.gender]
               }`,
             }),
