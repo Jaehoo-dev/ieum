@@ -1,7 +1,6 @@
-import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
+import { ComponentPropsWithoutRef, useEffect } from "react";
 import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { Watermarks } from "./components/Watermarks";
@@ -181,7 +180,7 @@ function MediaSection({
         })}
         {images.map(({ id, bucketPath, customWidth }) => {
           return (
-            <ProtectedImageField
+            <ImageField
               key={id}
               bucketPath={bucketPath}
               nameWatermark={nameWatermark}
@@ -195,21 +194,18 @@ function MediaSection({
   );
 }
 
-interface ProtectedImageFieldProps {
-  bucketPath: string;
-  nameWatermark: string;
-  numberWatermark: string;
-  customWidth?: number;
-}
-
-function ProtectedImageField({
+function ImageField({
   bucketPath,
   nameWatermark,
   numberWatermark,
   customWidth,
-}: ProtectedImageFieldProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+}: {
+  bucketPath: string;
+  nameWatermark: string;
+  numberWatermark: string;
+  customWidth?: number;
+}) {
+  const _width = customWidth ?? 440;
 
   const {
     data: { publicUrl },
@@ -217,55 +213,18 @@ function ProtectedImageField({
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
-  useEffect(() => {
-    const img = new Image();
-    const canvas = canvasRef.current;
-
-    img.onload = () => {
-      assert(canvas != null);
-
-      const parentWidth =
-        canvas.parentElement?.clientWidth ?? window.innerWidth;
-      const aspectRatio = img.height / img.width;
-      const newWidth = Math.min(parentWidth, customWidth ?? parentWidth);
-      const newHeight = newWidth * aspectRatio;
-
-      setDimensions({
-        width: newWidth,
-        height: newHeight,
-      });
-    };
-
-    img.src = publicUrl;
-  }, [publicUrl]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-
-    assert(canvas != null);
-
-    if (dimensions.width > 0 && dimensions.height > 0) {
-      resizeCanvas(canvas, dimensions);
-
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
-
-      img.onload = () => {
-        if (ctx == null) {
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
-        ctx.save();
-        drawWatermarks(ctx, nameWatermark, numberWatermark);
-        ctx.restore();
-      };
-
-      img.src = publicUrl;
-    }
-  }, [publicUrl, dimensions]);
-
-  return <canvas ref={canvasRef} className="m-auto select-none rounded-lg" />;
+  return (
+    <div className="relative max-w-xl">
+      <Watermarks watermark1={nameWatermark} watermark2={numberWatermark} />
+      <img
+        src={publicUrl}
+        alt="프로필 이미지"
+        width={_width}
+        className="m-auto select-none rounded-lg"
+        onContextMenu={(e) => e.preventDefault()}
+      />
+    </div>
+  );
 }
 
 function VideoField({
@@ -308,53 +267,126 @@ function DataField({ label, value }: { label: string; value: string }) {
   );
 }
 
-function resizeCanvas(
-  canvas: HTMLCanvasElement,
-  {
-    width,
-    height,
-  }: {
-    width: number;
-    height: number;
-  },
-) {
-  const dpr = window.devicePixelRatio;
+// interface ProtectedImageFieldProps {
+//   bucketPath: string;
+//   nameWatermark: string;
+//   numberWatermark: string;
+//   customWidth?: number;
+// }
 
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
+// function ProtectedImageField({
+//   bucketPath,
+//   nameWatermark,
+//   numberWatermark,
+//   customWidth,
+// }: ProtectedImageFieldProps) {
+//   const canvasRef = useRef<HTMLCanvasElement>(null);
+//   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const ctx = canvas.getContext("2d");
+//   const {
+//     data: { publicUrl },
+//   } = supabase.storage
+//     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
+//     .getPublicUrl(bucketPath);
 
-  ctx?.scale(dpr, dpr);
-}
+//   useEffect(() => {
+//     const img = new Image();
+//     const canvas = canvasRef.current;
 
-function drawWatermarks(
-  ctx: CanvasRenderingContext2D,
-  nameWatermark: string,
-  numberWatermark: string,
-) {
-  ctx.font = "14px 'Nanum Gothic', sans-serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
-  ctx.translate(0, 0);
-  ctx.rotate(-Math.PI / 4);
-  const nameTextWidth = ctx.measureText(nameWatermark).width;
-  const numberTextWidth = ctx.measureText(numberWatermark).width;
-  const textHeight = 14;
-  const startX = -20;
-  const startY = 80;
+//     img.onload = () => {
+//       assert(canvas != null);
 
-  for (let row = 0; row < 10; row++) {
-    const _watermark = row % 2 === 0 ? nameWatermark : numberWatermark;
-    const _textWidth = row % 2 === 0 ? nameTextWidth : numberTextWidth;
+//       const parentWidth =
+//         canvas.parentElement?.clientWidth ?? window.innerWidth;
+//       const aspectRatio = img.height / img.width;
+//       const newWidth = Math.min(parentWidth, customWidth ?? parentWidth);
+//       const newHeight = newWidth * aspectRatio;
 
-    for (let col = 0; col < 6; col++) {
-      ctx.fillText(
-        `${_watermark}`,
-        startX - row * 134 + col * (_textWidth + 120),
-        startY + row * (textHeight + 120),
-      );
-    }
-  }
-}
+//       setDimensions({
+//         width: newWidth,
+//         height: newHeight,
+//       });
+//     };
+
+//     img.src = publicUrl;
+//   }, [publicUrl]);
+
+//   useEffect(() => {
+//     const canvas = canvasRef.current;
+
+//     assert(canvas != null);
+
+//     if (dimensions.width > 0 && dimensions.height > 0) {
+//       resizeCanvas(canvas, dimensions);
+
+//       const ctx = canvas.getContext("2d");
+//       const img = new Image();
+
+//       img.onload = () => {
+//         if (ctx == null) {
+//           return;
+//         }
+
+//         ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
+//         ctx.save();
+//         drawWatermarks(ctx, nameWatermark, numberWatermark);
+//         ctx.restore();
+//       };
+
+//       img.src = publicUrl;
+//     }
+//   }, [publicUrl, dimensions]);
+
+//   return <canvas ref={canvasRef} className="m-auto select-none rounded-lg" />;
+// }
+
+// function resizeCanvas(
+//   canvas: HTMLCanvasElement,
+//   {
+//     width,
+//     height,
+//   }: {
+//     width: number;
+//     height: number;
+//   },
+// ) {
+//   const dpr = window.devicePixelRatio;
+
+//   canvas.width = width * dpr;
+//   canvas.height = height * dpr;
+//   canvas.style.width = `${width}px`;
+//   canvas.style.height = `${height}px`;
+
+//   const ctx = canvas.getContext("2d");
+
+//   ctx?.scale(dpr, dpr);
+// }
+
+// function drawWatermarks(
+//   ctx: CanvasRenderingContext2D,
+//   nameWatermark: string,
+//   numberWatermark: string,
+// ) {
+//   ctx.font = "14px 'Nanum Gothic', sans-serif";
+//   ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
+//   ctx.translate(0, 0);
+//   ctx.rotate(-Math.PI / 4);
+//   const nameTextWidth = ctx.measureText(nameWatermark).width;
+//   const numberTextWidth = ctx.measureText(numberWatermark).width;
+//   const textHeight = 14;
+//   const startX = -20;
+//   const startY = 80;
+
+//   for (let row = 0; row < 10; row++) {
+//     const _watermark = row % 2 === 0 ? nameWatermark : numberWatermark;
+//     const _textWidth = row % 2 === 0 ? nameTextWidth : numberTextWidth;
+
+//     for (let col = 0; col < 6; col++) {
+//       ctx.fillText(
+//         `${_watermark}`,
+//         startX - row * 134 + col * (_textWidth + 120),
+//         startY + row * (textHeight + 120),
+//       );
+//     }
+//   }
+// }
