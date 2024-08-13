@@ -1,6 +1,7 @@
 import { ReactElement, Suspense, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@ieum/supabase";
+import { calculateBmi, getBmiLabel } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { TextareaInput } from "~/components/TextareaInput";
@@ -10,7 +11,7 @@ import { api } from "~/utils/api";
 export function DraftMemberPage() {
   return (
     <div className="flex min-h-screen flex-col items-center gap-4 py-2">
-      <h1 className="text-2xl font-semibold">신규 가입 회원 목록</h1>
+      <h1 className="text-2xl font-semibold">신규 가입 회원 정보</h1>
       <Suspense>
         <Resolved />
       </Suspense>
@@ -129,6 +130,13 @@ function Resolved() {
           <div className="flex flex-row gap-1">
             <TextInput label="키" value={height} disabled={true} />
             <TextInput label="몸무게" value={weight} disabled={true} />
+            <TextInput
+              label="bmi"
+              value={`${calculateBmi(height, weight).toFixed(2)} (${getBmiLabel(
+                calculateBmi(height, weight),
+              )})`}
+              disabled={true}
+            />
           </div>
           <TextInput
             label="자신 있는 얼굴/신체 부위"
