@@ -353,7 +353,7 @@ function Resolved() {
           반려
         </button>
         <button
-          className="flex-1 rounded bg-blue-500 px-4 py-2 text-white"
+          className="flex-1 rounded bg-blue-500 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
           onClick={async () => {
             if (!isPhoneNumberChecked) {
               alert("전화번호 중복 확인을 진행하세요.");
@@ -365,6 +365,7 @@ function Resolved() {
 
             router.push(`/basic/members/${newMember.id}/update`);
           }}
+          disabled={!isPhoneNumberChecked}
         >
           생성
         </button>
