@@ -47,19 +47,25 @@ export const draftBasicMemberRouter = createTRPCRouter({
         process.env.SOFT_DELETE_SECRET_KEY!,
       );
 
-      const member = await ctx.prisma.basicMemberV2.findUnique({
+      const member = await ctx.prisma.basicMemberV2.findFirst({
         where: {
-          phoneNumber: hashedPhoneNumber,
+          OR: [
+            { phoneNumber: hashedPhoneNumber },
+            { phoneNumber: phoneNumber },
+          ],
         },
         select: {
           name: true,
+          phoneNumber: true,
         },
       });
 
       if (member != null) {
         throw new TRPCError({
           code: "CONFLICT",
-          message: `Archived member exists. Name: ${member.name}`,
+          message: `${
+            member.phoneNumber === hashedPhoneNumber ? "Archived" : "Active"
+          } member exists. Name: ${member.name}`,
         });
       }
 
@@ -83,16 +89,24 @@ export const draftBasicMemberRouter = createTRPCRouter({
         process.env.SOFT_DELETE_SECRET_KEY!,
       );
 
-      const member = await ctx.prisma.basicMemberV2.findUnique({
+      const member = await ctx.prisma.basicMemberV2.findFirst({
         where: {
-          phoneNumber: hashedPhoneNumber,
+          OR: [
+            { phoneNumber: hashedPhoneNumber },
+            { phoneNumber: draftMember.phoneNumber },
+          ],
+        },
+        select: {
+          phoneNumber: true,
         },
       });
 
       if (member != null) {
         throw new TRPCError({
           code: "CONFLICT",
-          message: "Archived member exists",
+          message: `${
+            member.phoneNumber === hashedPhoneNumber ? "Archived" : "Active"
+          } member exists`,
         });
       }
 
