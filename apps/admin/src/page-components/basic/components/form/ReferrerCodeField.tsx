@@ -1,20 +1,20 @@
 import { isEmptyStringOrNil } from "@ieum/utils";
 import { useFormContext } from "react-hook-form";
 
-import { TextareaInput } from "~/components/TextareaInput";
+import { TextInput } from "~/components/TextInput";
 import { BasicMemberForm } from "../../members/BasicMemberForm";
 
-export function MemoField() {
+export function ReferrerCodeField() {
   const {
     register,
     formState: { errors },
   } = useFormContext<BasicMemberForm>();
 
   return (
-    <TextareaInput
-      label="메모"
-      error={errors.self?.memo != null}
-      {...register("self.memo", {
+    <TextInput
+      label="추천인 코드"
+      error={errors.self?.referrerCode != null}
+      {...register("self.referrerCode", {
         setValueAs: (value: string | null) => {
           return isEmptyStringOrNil(value) ? null : value;
         },
