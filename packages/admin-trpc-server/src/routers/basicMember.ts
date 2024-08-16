@@ -452,6 +452,16 @@ export const basicMemberRouter = createTRPCRouter({
           name: {
             notIn: self.blacklistedNames,
           },
+          OR: [
+            { referrerCode: { not: self.referralCode } },
+            { referrerCode: null },
+          ],
+          referralCode:
+            self.referrerCode != null
+              ? {
+                  not: self.referrerCode,
+                }
+              : undefined,
           NOT: {
             OR: [
               {
@@ -627,6 +637,14 @@ export const basicMemberRouter = createTRPCRouter({
             name: {
               notIn: self.blacklistedNames,
             },
+            OR: [
+              { referrerCode: null },
+              { referrerCode: { not: self.referralCode } },
+            ],
+            referralCode:
+              self.referrerCode != null
+                ? { not: self.referrerCode }
+                : undefined,
             NOT: {
               OR: [
                 {
