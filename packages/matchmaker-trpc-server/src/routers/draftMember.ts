@@ -73,7 +73,7 @@ export const draftMemberRouter = createTRPCRouter({
         idealNonPreferredReligions: z.nativeEnum(Religion).array(),
         idealIsTattooOk: z.boolean(),
         idealTypeDescription: z.string(),
-        referralCode: z.string().nullable(),
+        referrerCode: z.string().nullable(),
         memo: z.string().nullable(),
         personalInfoConsent: z.boolean(),
       }),

@@ -81,6 +81,7 @@ function Resolved() {
       idealTypeDescription,
       images,
       videos,
+      referrerCode,
     },
   ] = api.draftBasicMemberRouter.findOne.useSuspenseQuery({
     id: draftMemberId,
@@ -94,7 +95,7 @@ function Resolved() {
     api.draftBasicMemberRouter.createBasicMemberFromDraft.useMutation();
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-start gap-4">
       <div className="flex w-full flex-row gap-4">
         <div className="flex flex-1 flex-col gap-2">
           <div className="flex flex-row gap-1">
@@ -328,6 +329,11 @@ function Resolved() {
           />
         </div>
       </div>
+      <TextInput
+        label="추천 코드"
+        value={referrerCode ?? "null"}
+        disabled={true}
+      />
       <div className="flex flex-row gap-1">
         {images.map((image) => {
           return (
