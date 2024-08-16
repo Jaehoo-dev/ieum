@@ -17,6 +17,7 @@ import { api } from "~/utils/api";
 import { ConditionPrioritiesField } from "../../components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
+import { ReferrerCodeField } from "../../components/form/ReferrerCodeField";
 import { SelfFields } from "../../components/form/SelfFields";
 import { ImagePreview } from "../../components/ImagePreview";
 import { VideoPreview } from "../../components/VideoPreview";
@@ -58,6 +59,7 @@ export function CreateBasicMemberPage() {
               <ConditionPrioritiesField />
             </div>
           </div>
+          <ReferrerCodeField />
           <MemoField />
           <ImagesField />
           <VideosField />

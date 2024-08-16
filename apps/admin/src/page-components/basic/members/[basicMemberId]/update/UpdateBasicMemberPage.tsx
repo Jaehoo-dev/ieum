@@ -8,6 +8,7 @@ import { BasicMemberWithJoined } from "~/domains/basic/types";
 import { ConditionPrioritiesField } from "~/page-components/basic/components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
+import { ReferrerCodeField } from "~/page-components/basic/components/form/ReferrerCodeField";
 import { SelfFields } from "~/page-components/basic/components/form/SelfFields";
 import { api } from "~/utils/api";
 import { BasicMemberForm } from "../../BasicMemberForm";
@@ -65,6 +66,7 @@ function Resolved() {
               <ConditionPrioritiesField />
             </div>
           </div>
+          <ReferrerCodeField />
           <MemoField />
           <ImagesField memberId={member.id} />
           <VideosField memberId={member.id} />
