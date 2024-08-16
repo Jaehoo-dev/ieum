@@ -1,4 +1,4 @@
-import { DraftStatus, MemberStatus } from "@ieum/prisma";
+import { DraftStatus, MemberStatus, PrismaPromise } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, hash } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
@@ -180,74 +180,101 @@ export const draftBasicMemberRouter = createTRPCRouter({
         }),
       );
 
-      const [newMember] = await ctx.prisma.$transaction([
-        ctx.prisma.basicMemberV2.create({
-          data: {
-            ...self,
-            bmi: calculateBmi(draftMember.height, draftMember.weight),
-            status: MemberStatus.PENDING,
-            referralCode: generateReferralCode(),
-            images: {
-              createMany: {
-                data: imageBucketPaths.map((bucketPath, index) => {
-                  return {
-                    bucketPath,
-                    index,
-                  };
-                }),
+      const referrer =
+        draftMember.referrerCode == null
+          ? null
+          : await ctx.prisma.basicMemberV2.findUnique({
+              where: {
+                referralCode: draftMember.referrerCode,
               },
-            },
-            videos: {
-              createMany: {
-                data: videoBucketPaths.map((bucketPath, index) => {
-                  return {
-                    bucketPath,
-                    index,
-                  };
-                }),
+              select: {
+                id: true,
               },
-            },
-            idealType: {
-              create: {
-                minAgeBirthYear: idealMinAgeBirthYear,
-                maxAgeBirthYear: idealMaxAgeBirthYear,
-                regions: idealRegions,
-                minHeight: idealMinHeight,
-                maxHeight: idealMaxHeight,
-                bodyShapes: idealBodyShapes,
-                facialBodyPart: idealFacialBodyPart,
-                educationLevel: idealEducationLevel,
-                schoolLevel: idealSchoolLevel,
-                nonPreferredWorkplace: idealNonPreferredWorkplace,
-                nonPreferredJob: idealNonPreferredJob,
-                preferredMbtis: idealPreferredMbtis,
-                nonPreferredMbtis: idealNonPreferredMbtis,
-                isSmokerOk: idealIsSmokerOk,
-                preferredReligions: idealPreferredReligions,
-                nonPreferredReligions: idealNonPreferredReligions,
-                minAnnualIncome: idealMinAnnualIncome,
-                characteristics: idealCharacteristics,
-                isTattooOk: idealIsTattooOk,
-                idealTypeDescription,
-                dealBreakers,
-                highPriorities,
-                mediumPriorities,
-                lowPriorities,
-              },
-            },
-          },
-        }),
-        ctx.prisma.draftBasicMember.update({
-          where: {
-            id: draftMemberId,
-          },
-          data: {
-            status: DraftStatus.APPROVED,
-          },
-        }),
-      ]);
+            });
 
-      return newMember;
+      return ctx.prisma.$transaction(async (tx) => {
+        const [newMember] = await Promise.all([
+          tx.basicMemberV2.create({
+            data: {
+              ...self,
+              bmi: calculateBmi(self.height, self.weight),
+              status: MemberStatus.PENDING,
+              referralCode: generateReferralCode(),
+              discountCouponCount: referrer == null ? 0 : 1,
+              images: {
+                createMany: {
+                  data: imageBucketPaths.map((bucketPath, index) => {
+                    return {
+                      bucketPath,
+                      index,
+                    };
+                  }),
+                },
+              },
+              videos: {
+                createMany: {
+                  data: videoBucketPaths.map((bucketPath, index) => {
+                    return {
+                      bucketPath,
+                      index,
+                    };
+                  }),
+                },
+              },
+              idealType: {
+                create: {
+                  minAgeBirthYear: idealMinAgeBirthYear,
+                  maxAgeBirthYear: idealMaxAgeBirthYear,
+                  regions: idealRegions,
+                  minHeight: idealMinHeight,
+                  maxHeight: idealMaxHeight,
+                  bodyShapes: idealBodyShapes,
+                  facialBodyPart: idealFacialBodyPart,
+                  educationLevel: idealEducationLevel,
+                  schoolLevel: idealSchoolLevel,
+                  nonPreferredWorkplace: idealNonPreferredWorkplace,
+                  nonPreferredJob: idealNonPreferredJob,
+                  preferredMbtis: idealPreferredMbtis,
+                  nonPreferredMbtis: idealNonPreferredMbtis,
+                  isSmokerOk: idealIsSmokerOk,
+                  preferredReligions: idealPreferredReligions,
+                  nonPreferredReligions: idealNonPreferredReligions,
+                  minAnnualIncome: idealMinAnnualIncome,
+                  characteristics: idealCharacteristics,
+                  isTattooOk: idealIsTattooOk,
+                  idealTypeDescription,
+                  dealBreakers,
+                  highPriorities,
+                  mediumPriorities,
+                  lowPriorities,
+                },
+              },
+            },
+          }),
+          tx.draftBasicMember.update({
+            where: {
+              id: draftMemberId,
+            },
+            data: {
+              status: DraftStatus.APPROVED,
+            },
+          }),
+          referrer == null
+            ? null
+            : tx.basicMemberV2.update({
+                where: {
+                  id: referrer.id,
+                },
+                data: {
+                  discountCouponCount: {
+                    increment: 1,
+                  },
+                },
+              }),
+        ]);
+
+        return newMember;
+      });
     }),
   reject: protectedAdminProcedure
     .input(z.object({ draftMemberId: z.string() }))
