@@ -73,6 +73,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     videoBucketPaths: [],
     blacklistedPhoneNumbers: [],
     blacklistedNames: [],
+    referrerCode: null,
     memo: null,
     status: MemberStatus.PENDING,
     personalInfoConsent: true,

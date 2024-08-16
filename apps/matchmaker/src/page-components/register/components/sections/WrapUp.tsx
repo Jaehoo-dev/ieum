@@ -45,9 +45,9 @@ export function WrapUp({ onBack }: Props) {
           description={`${getValues(
             "name",
           )} 님과 추천인 모두에게 이음비 50% 할인 쿠폰을 드립니다!`}
-          error={errors.referralCode != null}
-          errorText={errors.referralCode?.message}
-          {...register("referralCode", {
+          error={errors.referrerCode != null}
+          errorText={errors.referrerCode?.message}
+          {...register("referrerCode", {
             setValueAs: (value) => {
               if (value == null || value === "") {
                 return null;

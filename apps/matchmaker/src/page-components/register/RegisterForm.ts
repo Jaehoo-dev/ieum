@@ -69,7 +69,7 @@ export type RegisterForm = {
   idealIsTattooOk: boolean | null;
   idealTypeDescription: string;
 
-  referralCode: string | null;
+  referrerCode: string | null;
   memo: string | null;
 
   personalInfoConsent: boolean | null;
@@ -128,7 +128,7 @@ const defaultRegisterForm: RegisterForm = {
   idealNonPreferredReligions: [],
   idealIsTattooOk: null,
   idealTypeDescription: "",
-  referralCode: null,
+  referrerCode: null,
   memo: null,
   personalInfoConsent: null,
 };
