@@ -267,6 +267,8 @@ model BasicMemberV2 {
   @@index([hasPet])
   @@index([status])
   @@index([lastMatchedAt])
+  @@index([referralCode])
+  @@index([referrerCode])
 }
 
 model BasicMemberIdealTypeV2 {
