@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { PRODUCT_URL, 성별_라벨 } from "@ieum/constants";
 import { Gender, MarriageStatus } from "@ieum/prisma";
 import { formatPhoneNumberInput } from "@ieum/utils";
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export function Welcome({ onNext }: Props) {
+  const router = useRouter();
   const {
     formState: { errors },
     register,
@@ -30,6 +32,16 @@ export function Welcome({ onNext }: Props) {
       content: "회원가입 페이지 진입",
     });
   }, []);
+
+  useEffect(() => {
+    if (router.query.from == null) {
+      return;
+    }
+
+    sendMessage({
+      content: `from: ${router.query.from}`,
+    });
+  }, [router.query.from]);
 
   return (
     <div className="flex w-full flex-col">
