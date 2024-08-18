@@ -266,7 +266,7 @@ export const FRIP_PRODUCT_URL = "https://frip.co.kr/products/176056";
 export const IMWEB_HOMEPAGE_URL = "https://ieum-love.imweb.me";
 export const HOMEPAGE_URL = "https://ieum.love";
 export const WWW_HOMEPAGE_URL = "https://www.ieum.love";
-export const PRODUCT_URL = "https://www.ieum.love/shop_view/?idx=1";
+export const PRODUCT_URL = "https://ieum.love/shop_view/?idx=1";
 export const MATCHMAKER_URL = "https://match.ieum.love";
 export const WORLDCUP_URL = "https://worldcup.ieum.love";
 

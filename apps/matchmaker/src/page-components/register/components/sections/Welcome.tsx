@@ -1,13 +1,15 @@
 import { useEffect } from "react";
-import { 성별_라벨 } from "@ieum/constants";
+import Link from "next/link";
+import { PRODUCT_URL, 성별_라벨 } from "@ieum/constants";
 import { Gender, MarriageStatus } from "@ieum/prisma";
 import { formatPhoneNumberInput } from "@ieum/utils";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm } from "../../RegisterForm";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { RegisterForm } from "../../RegisterForm";
 
 interface Props {
   onNext: () => void;
@@ -37,9 +39,22 @@ export function Welcome({ onNext }: Props) {
         className="h-2/5 w-full object-cover object-center"
       />
       <div className="mt-2 flex w-full flex-col gap-6 p-8">
-        <h1 className="text-xl font-medium text-gray-800">
-          안녕하세요! 이음입니다.
-        </h1>
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl font-medium text-gray-800">
+            안녕하세요! 이음입니다.
+          </h1>
+          <span className="flex flex-row items-center gap-1">
+            <Link
+              href={PRODUCT_URL}
+              className="text-sm text-primary-500 underline hover:text-primary-700"
+              target="_blank"
+              rel="noopener"
+            >
+              이음 상품 설명
+            </Link>
+            <OpenInNewRoundedIcon className="text-sm text-primary-500" />
+          </span>
+        </div>
         <div className="flex flex-col gap-8">
           <TextInput
             label="성함을 알려주세요."
