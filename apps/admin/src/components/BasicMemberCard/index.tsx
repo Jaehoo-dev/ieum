@@ -86,6 +86,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
         <div className="flex flex-col items-end gap-1">
           <div className="flex items-center gap-2">
             {member.status === MemberStatus.ACTIVE ||
+            member.status === MemberStatus.INACTIVE ||
             member.status === MemberStatus.PENDING ? (
               <>
                 <Link

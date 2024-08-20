@@ -416,7 +416,11 @@ export const basicMemberRouter = createTRPCRouter({
         where: {
           id,
           status: {
-            in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+            in: [
+              MemberStatus.PENDING,
+              MemberStatus.ACTIVE,
+              MemberStatus.INACTIVE,
+            ],
           },
         },
         include: {
@@ -603,7 +607,11 @@ export const basicMemberRouter = createTRPCRouter({
           where: {
             id: memberId,
             status: {
-              in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+              in: [
+                MemberStatus.PENDING,
+                MemberStatus.ACTIVE,
+                MemberStatus.INACTIVE,
+              ],
             },
           },
           include: {
