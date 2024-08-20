@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { DndContext, useDroppable } from "@dnd-kit/core";
