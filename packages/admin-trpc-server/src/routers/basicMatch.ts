@@ -405,6 +405,7 @@ export const basicMatchRouter = createTRPCRouter({
             id: true,
             name: true,
             phoneNumber: true,
+            // pendingMatches: true,
           },
         },
       },

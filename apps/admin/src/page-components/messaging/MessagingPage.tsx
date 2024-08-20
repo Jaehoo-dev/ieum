@@ -94,6 +94,16 @@ export function MessagingPage() {
                 { staleTime: 0 },
               );
 
+            // const _members = members.filter((member) => {
+            //   const pendingMatches = member.pendingMatches.filter(
+            //     (match: BasicMatchV2) => {
+            //       return match.status === MatchStatus.PENDING;
+            //     },
+            //   );
+
+            //   return pendingMatches.length > 1;
+            // });
+
             replaceTargets(
               members.map((member) => {
                 return {
