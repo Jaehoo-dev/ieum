@@ -81,17 +81,12 @@ export function BasicMemberMatchmakerPage() {
 }
 
 function Resolved() {
-  const [searchMode, setSearchMode] = useState<"DEFAULT" | "CUSTOM">("DEFAULT");
   const utils = api.useUtils();
   const router = useRouter();
   const basicMemberId = router.query.basicMemberId as string;
   const [basicMember] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,
   });
-  const [defaultMatchCandidates] =
-    api.basicMemberRouter.findMatchCandidates.useSuspenseQuery({
-      id: basicMemberId,
-    });
 
   assert(basicMember.idealType != null, "idealType is required");
 
@@ -102,24 +97,11 @@ function Resolved() {
     formToValues(methods.getValues()),
   );
 
-  useEffect(() => {
-    if (searchMode === "DEFAULT") {
-      return;
-    }
-
-    setCustomSearchQueryParams(formToValues(methods.getValues()));
-  }, [methods, searchMode]);
-
-  const { data: customMatchCandidates = [] } =
-    api.basicMemberRouter.findCustomMatchCandidates.useQuery(
-      {
-        memberId: basicMemberId,
-        data: customSearchQueryParams,
-      },
-      {
-        enabled: searchMode === "CUSTOM" && basicMember != null,
-      },
-    );
+  const [matchCandidates] =
+    api.basicMemberRouter.findCustomMatchCandidates.useSuspenseQuery({
+      memberId: basicMemberId,
+      data: customSearchQueryParams,
+    });
   const { mutateAsync: createMatch, isPending: isCreatingMatch } =
     api.basicMatchRouter.create.useMutation({
       onSuccess: () => {
@@ -136,27 +118,10 @@ function Resolved() {
 
   const list = useMemo(() => {
     if (!shouldCrossCheck) {
-      return searchMode === "CUSTOM"
-        ? customMatchCandidates
-        : defaultMatchCandidates;
+      return matchCandidates;
     }
 
-    if (basicMember == null) {
-      return [];
-    }
-
-    if (searchMode === "CUSTOM") {
-      return customMatchCandidates.filter((member) => {
-        assert(member.idealType != null, "idealType is required");
-
-        return satisfiesDealBreakers({
-          selfIdealType: member.idealType,
-          target: basicMember,
-        });
-      });
-    }
-
-    return defaultMatchCandidates.filter((member) => {
+    return matchCandidates.filter((member) => {
       assert(member.idealType != null, "idealType is required");
 
       return satisfiesDealBreakers({
@@ -164,13 +129,7 @@ function Resolved() {
         target: basicMember,
       });
     });
-  }, [
-    shouldCrossCheck,
-    basicMember,
-    searchMode,
-    defaultMatchCandidates,
-    customMatchCandidates,
-  ]);
+  }, [shouldCrossCheck, basicMember, matchCandidates]);
 
   return (
     <div className="mr-28 min-h-screen">
@@ -195,27 +154,16 @@ function Resolved() {
               <h2 className="text-xl font-semibold">본인</h2>
               <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
             </div>
-            <div className="flex flex-col gap-2">
-              <Checkbox
-                label={<p className="text-xl font-semibold">커스텀</p>}
-                checked={searchMode === "CUSTOM"}
-                onChange={(e) => {
-                  setSearchMode(e.target.checked ? "CUSTOM" : "DEFAULT");
+            <FormProvider {...methods}>
+              <CustomSearchForm
+                onReset={() => {
+                  methods.reset();
+                }}
+                onSubmit={(fields) => {
+                  setCustomSearchQueryParams(formToValues(fields));
                 }}
               />
-              {searchMode === "CUSTOM" ? (
-                <FormProvider {...methods}>
-                  <CustomSearchForm
-                    onReset={() => {
-                      methods.reset();
-                    }}
-                    onSubmit={(fields) => {
-                      setCustomSearchQueryParams(formToValues(fields));
-                    }}
-                  />
-                </FormProvider>
-              ) : null}
-            </div>
+            </FormProvider>
             <div className="flex w-5/12 flex-col items-start gap-2">
               <div className="flex items-center gap-4">
                 <h2 className="text-xl font-semibold">{`상대방 (${list.length}명)`}</h2>
@@ -444,7 +392,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
 
   return (
     <form
-      className="flex w-full flex-col gap-2 text-sm"
+      className="flex flex-col gap-2 text-sm"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div>
