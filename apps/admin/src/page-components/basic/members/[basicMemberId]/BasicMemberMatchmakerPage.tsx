@@ -97,8 +97,8 @@ function Resolved() {
     formToValues(methods.getValues()),
   );
 
-  const [matchCandidates] =
-    api.basicMemberRouter.findCustomMatchCandidates.useSuspenseQuery({
+  const { data: matchCandidates = [] } =
+    api.basicMemberRouter.findCustomMatchCandidates.useQuery({
       memberId: basicMemberId,
       data: customSearchQueryParams,
     });
