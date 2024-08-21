@@ -311,3 +311,5 @@ export const 음식종류_라벨: Record<CuisineType, string> = {
   [CuisineType.KOREAN]: "한식",
   [CuisineType.OTHER]: "기타",
 } as const;
+
+export const primary500 = "#ff8271";
