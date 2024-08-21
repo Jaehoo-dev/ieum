@@ -220,7 +220,7 @@ function Resolved() {
       (필수조건_초과인가 || 필수조건_불가항목인가)
     ) {
       if (필수조건_불가항목인가) {
-        alert("선택 항목은 '포기 못하는 조건'으로 설정할 수 없습니다.");
+        alert("선택 항목은 '가장 높음'으로 설정할 수 없습니다.");
       }
 
       overSetter((prev) => {
@@ -306,9 +306,7 @@ function Resolved() {
               <DoneButton
                 onClick={async () => {
                   if (dealBreakers.length > 5) {
-                    alert(
-                      "'포기 못하는 조건'은 최대 5개까지 선택할 수 있습니다.",
-                    );
+                    alert("'가장 높음'은 최대 5개까지 선택할 수 있습니다.");
 
                     return;
                   }
@@ -337,7 +335,7 @@ function Resolved() {
                 매칭지수 == null ? "-" : 매칭지수_라벨[매칭지수]
               }`}</span>
               <h3 className="font-semibold text-gray-800">
-                절대 포기 못하는 조건 (최대 5개)
+                우선순위 - 가장 높음 (최대 5개)
               </h3>
             </div>
             <DroppableContainer
