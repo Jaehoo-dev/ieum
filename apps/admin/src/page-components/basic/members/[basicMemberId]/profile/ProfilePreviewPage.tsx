@@ -10,12 +10,12 @@ export function ProfilePreviewPage() {
   return (
     <Suspense>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
-        <header className="shadow-xs fixed top-0 z-10 flex h-16 w-full items-center justify-center border-b border-b-gray-200 bg-white">
+        <header className="fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
           <h1 className="text-2xl font-semibold text-gray-700">
             프로필 미리보기
           </h1>
         </header>
-        <main className="mt-16 w-full p-6">
+        <main className="mt-14 w-full p-6">
           <Resolved />
         </main>
       </div>
