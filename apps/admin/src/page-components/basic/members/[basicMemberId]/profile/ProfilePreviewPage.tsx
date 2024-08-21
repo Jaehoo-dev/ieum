@@ -11,7 +11,7 @@ export function ProfilePreviewPage() {
     <Suspense>
       <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
         <header className="shadow-xs fixed top-0 z-10 flex h-16 w-full items-center justify-center border-b border-b-gray-200 bg-white">
-          <h1 className="text-3xl font-semibold text-gray-700">
+          <h1 className="text-2xl font-semibold text-gray-700">
             프로필 미리보기
           </h1>
         </header>
