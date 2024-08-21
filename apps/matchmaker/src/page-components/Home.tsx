@@ -86,7 +86,9 @@ function Registered() {
 
   useEffect(() => {
     void sendMessage({
-      content: `${formatUniqueMemberName(member)} - 홈 진입`,
+      content: `${formatUniqueMemberName(member)} - 홈 진입\n${
+        navigator.userAgent
+      }`,
     });
   }, [member]);
 
