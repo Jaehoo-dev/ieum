@@ -8,8 +8,11 @@ export function Sidebar() {
   return (
     <aside className="fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col justify-between overflow-auto bg-gray-100 p-3">
       <div className="flex flex-col gap-3 text-sm">
+        <Link href="/alimtalk" className="text-blue-600 hover:underline">
+          알림톡
+        </Link>
         <Link href="/messaging" className="text-blue-600 hover:underline">
-          메시지
+          문자
         </Link>
         <Link href="/reviews" className="text-blue-600 hover:underline">
           후기
