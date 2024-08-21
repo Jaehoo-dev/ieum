@@ -47,8 +47,8 @@ export function Home() {
           />
         </div>
         <div className="flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
-          <div className="flex w-full max-w-md flex-col items-center">
-            <h1 className="mb-2 mt-4 text-3xl font-semibold text-primary-500 md:text-4xl">
+          <div className="flex w-full max-w-md flex-col items-center gap-4">
+            <h1 className="mt-4 text-3xl font-semibold text-primary-700 md:text-4xl">
               이음
             </h1>
             <Suspense fallback={<Loader />}>
@@ -79,7 +79,7 @@ function Resolved() {
 
 function Loading() {
   return (
-    <div className="mt-3 flex w-full flex-col items-center justify-center">
+    <div className="flex w-full flex-col items-center justify-center">
       <Loader />
       <Spacing size={354} />
     </div>
@@ -118,7 +118,7 @@ function Registered() {
   }, []);
 
   return (
-    <div className="mt-3 flex w-full flex-col items-center gap-3 pb-10">
+    <div className="flex w-full flex-col items-center gap-3 pb-10">
       <Link
         href="/referral"
         className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
@@ -187,7 +187,7 @@ function Unregistered() {
   }, [sendMessage]);
 
   return (
-    <div className="mt-3 flex w-full flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-4">
       <Link
         href={HOMEPAGE_URL}
         className="w-full rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
