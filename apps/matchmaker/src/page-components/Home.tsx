@@ -6,7 +6,9 @@ import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 import { MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
+import { Loader } from "~/components/Loader";
 import { MemberAuth } from "~/components/MemberAuth";
+import { Spacing } from "~/components/Spacing";
 import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -14,8 +16,6 @@ import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function Home() {
-  const { loggedIn } = useMemberAuthContext();
-
   return (
     <>
       <Head>
@@ -51,13 +51,9 @@ export function Home() {
             <h1 className="mb-2 mt-4 text-3xl font-semibold text-primary-500 md:text-4xl">
               이음
             </h1>
-            {loggedIn ? (
-              <Suspense fallback={null}>
-                <LoggedIn />
-              </Suspense>
-            ) : (
-              <MemberAuth />
-            )}
+            <Suspense fallback={<Loader />}>
+              <Resolved />
+            </Suspense>
           </div>
         </div>
       </div>
@@ -66,6 +62,29 @@ export function Home() {
 }
 
 Home.auth = false;
+
+function Resolved() {
+  const { loading, loggedIn } = useMemberAuthContext();
+
+  return loading ? (
+    <Loading />
+  ) : loggedIn ? (
+    <Suspense fallback={<Loader />}>
+      <LoggedIn />
+    </Suspense>
+  ) : (
+    <MemberAuth />
+  );
+}
+
+function Loading() {
+  return (
+    <div className="mt-3 flex w-full flex-col items-center justify-center">
+      <Loader />
+      <Spacing size={354} />
+    </div>
+  );
+}
 
 function LoggedIn() {
   const { registered } = useMemberAuthContext();
