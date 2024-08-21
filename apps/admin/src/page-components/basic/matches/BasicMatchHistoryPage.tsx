@@ -287,6 +287,9 @@ function Match({ match }: { match: BasicMatchWithMembers }) {
         >
           삭제
         </button>
+        {match.sentAt != null
+          ? `제안: ${format(match.sentAt, "yyyy-MM-dd")}`
+          : null}
       </div>
     </div>
   );
