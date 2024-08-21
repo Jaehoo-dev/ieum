@@ -28,16 +28,16 @@ export const adminMessageRouter = createTRPCRouter({
     .input(
       z.array(
         z.object({
-          to: z.string(),
+          phoneNumber: z.string(),
           name: z.string(),
         }),
       ),
     )
     .mutation(({ input }) => {
       return solapiMessageService.send(
-        input.map(({ to, name }) => {
+        input.map(({ phoneNumber, name }) => {
           return {
-            to,
+            to: phoneNumber,
             from: process.env.ADMIN_PHONE_NUMBER,
             kakaoOptions: {
               pfId: process.env.KAKAO_CHANNEL_PFID!,

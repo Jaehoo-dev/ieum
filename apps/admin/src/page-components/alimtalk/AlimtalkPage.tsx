@@ -1,29 +1,11 @@
 import { ReactElement } from "react";
-import { MATCHMAKER_URL } from "@ieum/constants";
-import { isEmptyStringOrNil } from "@ieum/utils";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
-const 제목_기본값 = "이음 매칭 안내";
-const 내용_기본값 = `안녕하세요! 이음 호스트입니다. 매칭 제안드려요 :)
-
-아래 사이트에서 상대방 프로필을 확인하시고 *24시간 안에* 수락 여부를 결정해주세요.
-${MATCHMAKER_URL}
-
-양쪽 모두 수락하시면 소개가 성사되며 호스트가 연락을 드립니다.
-
-감사합니다!
-
-자주 묻는 질문
-https://ieum.love/faq`;
-
 interface Form {
-  subject: string;
-  text: string;
   targets: Array<{
     value: {
       name: string;
@@ -32,18 +14,14 @@ interface Form {
   }>;
 }
 
-export function MessagingPage() {
+export function AlimtalkPage() {
   const {
     register,
     control,
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<Form>({
-    defaultValues: {
-      subject: 제목_기본값,
-      text: 내용_기본값,
-      targets: [],
-    },
+    defaultValues: { targets: [] },
   });
   const {
     fields: targetFields,
@@ -53,16 +31,16 @@ export function MessagingPage() {
     control,
     name: "targets",
   });
-  const { mutateAsync: sendMessages } =
-    api.adminMessageRouter.sendMessages.useMutation();
+  const { mutateAsync: sendAlimtalks } =
+    api.adminMessageRouter.sendMatchAlimtalks.useMutation();
   const utils = api.useUtils();
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-6">
-      <h1 className="mt-2 text-2xl font-semibold">문자 보내기</h1>
+      <h1 className="mt-2 text-2xl font-semibold">알림톡 보내기</h1>
       <form
         className="flex min-w-[480px] flex-col gap-6"
-        onSubmit={handleSubmit(async ({ targets, subject, text }) => {
+        onSubmit={handleSubmit(async ({ targets }) => {
           const confirmed = confirm("정말 보내시겠습니까?");
 
           if (!confirmed) {
@@ -71,19 +49,16 @@ export function MessagingPage() {
 
           const payload = targets.map((target) => {
             return {
-              to: target.value.phoneNumber,
-              subject: !isEmptyStringOrNil(subject) ? subject : undefined,
-              text: text,
+              name: target.value.name,
+              phoneNumber: target.value.phoneNumber,
             };
           });
 
-          await sendMessages(payload);
+          await sendAlimtalks(payload);
 
           alert("발송 완료!");
         })}
       >
-        <TextInput label="제목" {...register("subject")} />
-        <TextareaInput label="내용" rows={10} {...register("text")} />
         <button
           type="button"
           className="w-full rounded bg-gray-300 py-2"
@@ -93,16 +68,6 @@ export function MessagingPage() {
                 undefined,
                 { staleTime: 0 },
               );
-
-            // const _members = members.filter((member) => {
-            //   const pendingMatches = member.pendingMatches.filter(
-            //     (match: BasicMatchV2) => {
-            //       return match.status === MatchStatus.PENDING;
-            //     },
-            //   );
-
-            //   return pendingMatches.length > 1;
-            // });
 
             replaceTargets(
               members.map((member) => {
@@ -163,6 +128,6 @@ export function MessagingPage() {
   );
 }
 
-MessagingPage.getLayout = function getLayout(page: ReactElement) {
+AlimtalkPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
