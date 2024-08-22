@@ -243,8 +243,8 @@ export const basicMatchRouter = createTRPCRouter({
         id: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input: { id } }) => {
-      const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({
+    .mutation(async ({ ctx: { prisma }, input: { id } }) => {
+      const match = await prisma.basicMatchV2.findUniqueOrThrow({
         where: {
           id,
         },
@@ -264,8 +264,8 @@ export const basicMatchRouter = createTRPCRouter({
         "Match must have 2 pending members with profiles.",
       );
 
-      return ctx.prisma.$transaction([
-        ctx.prisma.basicMemberV2.updateMany({
+      return prisma.$transaction([
+        prisma.basicMemberV2.updateMany({
           where: {
             id: {
               in: match.pendingByV2.map((member) => {
@@ -277,7 +277,7 @@ export const basicMatchRouter = createTRPCRouter({
             lastMatchedAt: new Date(),
           },
         }),
-        ctx.prisma.basicMatchV2.update({
+        prisma.basicMatchV2.update({
           where: {
             id,
           },
@@ -288,6 +288,66 @@ export const basicMatchRouter = createTRPCRouter({
         }),
       ]);
     }),
+  bulkShiftPreparingToPending: protectedAdminProcedure.mutation(
+    async ({ ctx: { prisma } }) => {
+      const preparingMatches = await prisma.basicMatchV2.findMany({
+        where: {
+          status: MatchStatus.PREPARING,
+        },
+        select: {
+          id: true,
+          pendingByV2: {
+            include: {
+              profile: true,
+            },
+          },
+        },
+      });
+
+      preparingMatches.forEach((match) => {
+        assert(
+          match.pendingByV2.length === 2 &&
+            match.pendingByV2[0]?.profile != null &&
+            match.pendingByV2[1]?.profile != null,
+          "Match must have 2 pending members with profiles.",
+        );
+      });
+
+      const memberIds = new Set(
+        preparingMatches.flatMap((match) => {
+          return match.pendingByV2.map((member) => {
+            return member.id;
+          });
+        }),
+      );
+
+      return prisma.$transaction([
+        prisma.basicMatchV2.updateMany({
+          where: {
+            id: {
+              in: preparingMatches.map((match) => {
+                return match.id;
+              }),
+            },
+          },
+          data: {
+            status: MatchStatus.PENDING,
+            sentAt: new Date(),
+          },
+        }),
+        prisma.basicMemberV2.updateMany({
+          where: {
+            id: {
+              in: Array.from(memberIds),
+            },
+          },
+          data: {
+            lastMatchedAt: new Date(),
+          },
+        }),
+      ]);
+    },
+  ),
   rejectBy: protectedAdminProcedure
     .input(
       z.object({
