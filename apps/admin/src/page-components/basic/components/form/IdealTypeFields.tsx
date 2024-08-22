@@ -1,6 +1,5 @@
 import {
   연간_벌이_라벨,
-  음주량_라벨,
   종교_라벨,
   주간_운동량_라벨,
   지역_라벨,
@@ -10,7 +9,6 @@ import {
 import {
   AnnualIncome,
   BodyShape,
-  DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
   MBTI,
@@ -390,52 +388,6 @@ export function IdealTypeFields() {
           }}
         />
       </div>
-      <Controller
-        control={control}
-        name="idealType.drinkingFrequency"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="선호하는 음주량"
-              error={errors.idealType?.drinkingFrequency != null}
-              value={value ?? 상관없음}
-              onChange={({ target: { value } }) => {
-                if (value !== DrinkingFrequency.OTHER) {
-                  setValue("idealType.customDrinkingFrequency", null);
-                }
-
-                onChange(value === 상관없음 ? null : value);
-              }}
-            >
-              {[상관없음, ...Object.values(DrinkingFrequency)].map(
-                (drinkingFrequencyOption) => {
-                  return (
-                    <option
-                      key={drinkingFrequencyOption}
-                      value={drinkingFrequencyOption}
-                    >
-                      {drinkingFrequencyOption === 상관없음
-                        ? 상관없음
-                        : 음주량_라벨[
-                            drinkingFrequencyOption as DrinkingFrequency
-                          ]}
-                    </option>
-                  );
-                },
-              )}
-            </Select>
-          );
-        }}
-      />
-      {watch("idealType.drinkingFrequency") === DrinkingFrequency.OTHER ? (
-        <TextInput
-          {...register("idealType.customDrinkingFrequency", {
-            setValueAs: (value: string | null) => {
-              return isEmptyStringOrNil(value) ? null : value;
-            },
-          })}
-        />
-      ) : null}
       <div>
         선호 종교
         <div className="flex flex-row gap-4">

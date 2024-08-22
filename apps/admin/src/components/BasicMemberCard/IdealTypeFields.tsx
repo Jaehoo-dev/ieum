@@ -37,7 +37,6 @@ export function IdealTypeFields({ idealType }: Props) {
     preferredMbtis,
     nonPreferredMbtis,
     isSmokerOk,
-    drinkingFrequency,
     preferredReligions,
     nonPreferredReligions,
     minAnnualIncome,
@@ -176,14 +175,6 @@ export function IdealTypeFields({ idealType }: Props) {
       >
         {isSmokerOk ? "예" : "아니요"}
       </Field>
-      {drinkingFrequency != null ? (
-        <Field
-          label="음주 빈도"
-          nonNegotiable={dealBreakers.includes("DRINKING_FREQUENCY")}
-        >
-          {음주량_라벨[drinkingFrequency]}
-        </Field>
-      ) : null}
       {preferredReligions.length > 0 ? (
         <Field
           label="선호 종교"

@@ -1,16 +1,9 @@
 import {
-  BodyShape,
-  BooksReadPerYear,
-  ContactFrequency,
-  ContactMethod,
-  DrinkingFrequency,
   EducationLevel,
   ExercisePerWeek,
-  Eyelid,
   Gender,
   MBTI,
   MemberStatus,
-  OccupationStatus,
   Religion,
 } from "@ieum/prisma";
 
@@ -97,7 +90,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     preferredMbtis: [],
     nonPreferredMbtis: [],
     isSmokerOk: false,
-    drinkingFrequency: DrinkingFrequency.OCCASIONALLY,
+    drinkingFrequency: null,
     customDrinkingFrequency: null,
     preferredReligions: [],
     nonPreferredReligions: [],
