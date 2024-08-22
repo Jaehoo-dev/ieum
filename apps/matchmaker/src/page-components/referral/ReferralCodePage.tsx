@@ -102,7 +102,12 @@ function DescriptionResolved() {
   return (
     <div className="flex w-full items-start gap-1.5 text-sm text-gray-600">
       <p>※</p>
-      <div>
+      <div className="flex flex-col gap-0.5">
+        <p>
+          {`추천인 코드로 신규 회원이 가입을 완료할 때마다 ${member.name} 님께 `}
+          <span className=" font-medium text-primary-700">현금 1만 원</span>
+          {`을 드립니다. 10명이 가입하면 10만 원!`}
+        </p>
         <p>
           {"추천인 코드를 "}
           <Link
@@ -113,12 +118,7 @@ function DescriptionResolved() {
           >
             서비스 소개 링크
           </Link>
-          {"와 함께 공유해 주세요! 온라인 커뮤니티에 올리셔도 좋아요."}
-        </p>
-        <p>
-          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님께 `}
-          <span className="text-primary-500">현금 1만 원</span>
-          {`을 드립니다. 10명이 가입하면 10만 원!`}
+          {"와 함께 공유해 주세요. 온라인 커뮤니티에 올리셔도 좋아요."}
         </p>
       </div>
     </div>
