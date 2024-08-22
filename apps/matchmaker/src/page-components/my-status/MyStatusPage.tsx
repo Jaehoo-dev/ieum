@@ -83,6 +83,7 @@ function Inactive() {
             className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
             onClick={async () => {
               sendMessage({
+                channel: "폼_제출_알림",
                 content: `${formatUniqueMemberName(
                   member,
                 )} - 휴면 해제 클릭 ${SLACK_USER_ID_MENTION}`,

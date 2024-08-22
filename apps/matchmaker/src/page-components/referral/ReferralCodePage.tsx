@@ -116,7 +116,9 @@ function DescriptionResolved() {
           {"와 함께 공유해 주세요! 온라인 커뮤니티에 올리셔도 좋아요."}
         </p>
         <p>
-          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님과 신규 회원님 모두에게 이음비 50% 할인 쿠폰을 드려요.`}
+          {`추천인 코드로 신규 회원이 가입을 완료하면 ${member.name} 님께 `}
+          <span className="text-primary-500">현금 1만 원</span>
+          {`을 드립니다. 10명이 가입하면 10만 원!`}
         </p>
       </div>
     </div>
@@ -151,7 +153,7 @@ function DiscountCouponCountResolved() {
                 이음비 50% 할인 쿠폰
               </p>
               <p className="text-sm text-gray-500">
-                소개 성사 시 자동으로 적용해 드려요
+                이음비 결제 전에 사용을 요청해주세요.
               </p>
             </div>
           </div>

@@ -124,15 +124,17 @@ function Registered() {
         className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 이음비 할인받기 클릭`,
+            content: `${formatUniqueMemberName(
+              member,
+            )} - 10,000원 캐시백 받기 클릭`,
           });
         }}
       >
-        이음비 할인받기
+        10,000원 캐시백 받기
       </Link>
       <Link
         href="/my-matches"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-semibold text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,

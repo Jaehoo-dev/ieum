@@ -1,6 +1,7 @@
 import { DraftStatus, MemberStatus, PrismaPromise } from "@ieum/prisma";
+import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { supabase } from "@ieum/supabase";
-import { calculateBmi, hash } from "@ieum/utils";
+import { calculateBmi, formatUniqueMemberName, hash } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { nanoid } from "nanoid";
 import { z } from "zod";
@@ -188,93 +189,92 @@ export const draftBasicMemberRouter = createTRPCRouter({
                 referralCode: draftMember.referrerCode,
               },
               select: {
-                id: true,
+                name: true,
+                phoneNumber: true,
               },
             });
 
-      return ctx.prisma.$transaction(async (tx) => {
-        const [newMember] = await Promise.all([
-          tx.basicMemberV2.create({
-            data: {
-              ...self,
-              bmi: calculateBmi(self.height, self.weight),
-              status: MemberStatus.PENDING,
-              referralCode: generateReferralCode(),
-              discountCouponCount: referrer == null ? 0 : 1,
-              images: {
-                createMany: {
-                  data: imageBucketPaths.map((bucketPath, index) => {
-                    return {
-                      bucketPath,
-                      index,
-                    };
-                  }),
-                },
-              },
-              videos: {
-                createMany: {
-                  data: videoBucketPaths.map((bucketPath, index) => {
-                    return {
-                      bucketPath,
-                      index,
-                    };
-                  }),
-                },
-              },
-              idealType: {
-                create: {
-                  minAgeBirthYear: idealMinAgeBirthYear,
-                  maxAgeBirthYear: idealMaxAgeBirthYear,
-                  regions: idealRegions,
-                  minHeight: idealMinHeight,
-                  maxHeight: idealMaxHeight,
-                  bodyShapes: idealBodyShapes,
-                  facialBodyPart: idealFacialBodyPart,
-                  educationLevel: idealEducationLevel,
-                  schoolLevel: idealSchoolLevel,
-                  nonPreferredWorkplace: idealNonPreferredWorkplace,
-                  nonPreferredJob: idealNonPreferredJob,
-                  preferredMbtis: idealPreferredMbtis,
-                  nonPreferredMbtis: idealNonPreferredMbtis,
-                  isSmokerOk: idealIsSmokerOk,
-                  preferredReligions: idealPreferredReligions,
-                  nonPreferredReligions: idealNonPreferredReligions,
-                  minAnnualIncome: idealMinAnnualIncome,
-                  characteristics: idealCharacteristics,
-                  isTattooOk: idealIsTattooOk,
-                  idealTypeDescription,
-                  dealBreakers,
-                  highPriorities,
-                  mediumPriorities,
-                  lowPriorities,
-                },
+      const [newMember] = await ctx.prisma.$transaction([
+        ctx.prisma.basicMemberV2.create({
+          data: {
+            ...self,
+            bmi: calculateBmi(self.height, self.weight),
+            status: MemberStatus.PENDING,
+            referralCode: generateReferralCode(),
+            images: {
+              createMany: {
+                data: imageBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
               },
             },
-          }),
-          tx.draftBasicMember.update({
-            where: {
-              id: draftMemberId,
+            videos: {
+              createMany: {
+                data: videoBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
+              },
             },
-            data: {
-              status: DraftStatus.APPROVED,
+            idealType: {
+              create: {
+                minAgeBirthYear: idealMinAgeBirthYear,
+                maxAgeBirthYear: idealMaxAgeBirthYear,
+                regions: idealRegions,
+                minHeight: idealMinHeight,
+                maxHeight: idealMaxHeight,
+                bodyShapes: idealBodyShapes,
+                facialBodyPart: idealFacialBodyPart,
+                educationLevel: idealEducationLevel,
+                schoolLevel: idealSchoolLevel,
+                nonPreferredWorkplace: idealNonPreferredWorkplace,
+                nonPreferredJob: idealNonPreferredJob,
+                preferredMbtis: idealPreferredMbtis,
+                nonPreferredMbtis: idealNonPreferredMbtis,
+                isSmokerOk: idealIsSmokerOk,
+                preferredReligions: idealPreferredReligions,
+                nonPreferredReligions: idealNonPreferredReligions,
+                minAnnualIncome: idealMinAnnualIncome,
+                characteristics: idealCharacteristics,
+                isTattooOk: idealIsTattooOk,
+                idealTypeDescription,
+                dealBreakers,
+                highPriorities,
+                mediumPriorities,
+                lowPriorities,
+              },
             },
-          }),
-          referrer == null
-            ? null
-            : tx.basicMemberV2.update({
-                where: {
-                  id: referrer.id,
-                },
-                data: {
-                  discountCouponCount: {
-                    increment: 1,
-                  },
-                },
-              }),
-        ]);
+          },
+        }),
+        ctx.prisma.draftBasicMember.update({
+          where: {
+            id: draftMemberId,
+          },
+          data: {
+            status: DraftStatus.APPROVED,
+          },
+        }),
+      ]);
 
-        return newMember;
-      });
+      if (referrer != null) {
+        sendSlackMessage({
+          channel: "폼_제출_알림",
+          content: `${formatUniqueMemberName({
+            name: referrer.name,
+            phoneNumber: referrer.phoneNumber,
+          })} 님의 추천으로 신규 회원 ${formatUniqueMemberName({
+            name: newMember.name,
+            phoneNumber: newMember.phoneNumber,
+          })} 님 가입 ${SLACK_USER_ID_MENTION}`,
+        });
+      }
+
+      return newMember;
     }),
   reject: protectedAdminProcedure
     .input(z.object({ draftMemberId: z.string() }))

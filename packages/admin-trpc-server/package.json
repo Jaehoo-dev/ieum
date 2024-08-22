@@ -15,6 +15,7 @@
     "@ieum/constants": "*",
     "@ieum/firebase-admin": "*",
     "@ieum/prisma": "*",
+    "@ieum/slack": "*",
     "@ieum/solapi": "*",
     "@ieum/supabase": "*",
     "@ieum/utils": "*",
