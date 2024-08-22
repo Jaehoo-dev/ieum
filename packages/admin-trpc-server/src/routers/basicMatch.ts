@@ -1,4 +1,4 @@
-import { MatchStatus } from "@ieum/prisma";
+import { MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { endOfDay, startOfDay } from "date-fns";
 import { z } from "zod";
@@ -297,8 +297,10 @@ export const basicMatchRouter = createTRPCRouter({
         select: {
           id: true,
           pendingByV2: {
-            include: {
+            select: {
+              id: true,
               profile: true,
+              status: true,
             },
           },
         },
@@ -307,9 +309,11 @@ export const basicMatchRouter = createTRPCRouter({
       preparingMatches.forEach((match) => {
         assert(
           match.pendingByV2.length === 2 &&
-            match.pendingByV2[0]?.profile != null &&
-            match.pendingByV2[1]?.profile != null,
-          "Match must have 2 pending members with profiles.",
+            match.pendingByV2[0]?.status === MemberStatus.ACTIVE &&
+            match.pendingByV2[1]?.status === MemberStatus.ACTIVE &&
+            match.pendingByV2[0].profile != null &&
+            match.pendingByV2[1].profile != null,
+          "Match must have 2 active members with profiles.",
         );
       });
 
