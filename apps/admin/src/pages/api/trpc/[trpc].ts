@@ -16,3 +16,9 @@ export default createNextApiHandler({
         }
       : undefined,
 });
+
+export const config = {
+  api: {
+    responseLimit: "8mb",
+  },
+};
