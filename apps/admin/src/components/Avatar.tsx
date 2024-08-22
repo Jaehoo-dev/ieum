@@ -18,6 +18,7 @@ export function Avatar({ image, ...props }: Props) {
       src={publicUrl}
       alt="프로필 사진"
       className="h-24 w-24 rounded-full object-cover"
+      loading="lazy"
       {...props}
     />
   );
