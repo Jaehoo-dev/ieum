@@ -41,7 +41,11 @@ export function Sidebar({ open, onClose }: Props) {
               onClick={onClose}
             />
             <MenuItem label="블랙리스트" href="/blacklist" onClick={onClose} />
-            <MenuItem label="추천인 코드" href="/referral" onClick={onClose} />
+            <MenuItem
+              label="추천인 코드 - 캐시백 받기"
+              href="/referral"
+              onClick={onClose}
+            />
             <MenuItem
               label="활성 상태 조회"
               href="/my-status"
