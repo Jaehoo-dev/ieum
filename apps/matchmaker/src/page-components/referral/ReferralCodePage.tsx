@@ -135,7 +135,7 @@ function DiscountCouponCountResolved() {
       memberId: member.id,
     });
 
-  return (
+  return couponCount > 0 ? (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row items-center justify-between">
         <h2 className="text-xl font-medium text-gray-800">내 쿠폰</h2>
@@ -160,7 +160,7 @@ function DiscountCouponCountResolved() {
         );
       })}
     </div>
-  );
+  ) : null;
 }
 
 ReferralCodePage.getLayout = function getLayout(page: ReactElement) {
