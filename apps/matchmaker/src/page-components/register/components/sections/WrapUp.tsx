@@ -42,9 +42,6 @@ export function WrapUp({ onBack }: Props) {
       <div className="flex flex-col gap-8">
         <TextInput
           label="추천을 받아 가입하시는 거라면 추천인 코드를 입력해주세요."
-          description={`${getValues(
-            "name",
-          )} 님과 추천인 모두에게 이음비 50% 할인 쿠폰을 드립니다!`}
           error={errors.referrerCode != null}
           errorText={errors.referrerCode?.message}
           {...register("referrerCode", {
