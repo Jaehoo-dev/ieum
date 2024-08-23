@@ -25,8 +25,7 @@ export function FripReviewsRegistrationPage() {
       date: "2024-01-01",
       time: "12:00",
       content: "",
-      option:
-        "[이벤트] 이음비 (서로 소개에 응했을 때 구매합니다. 두근두근 새 인연!)",
+      option: "이음비 (서로 소개에 응했을 때 구매합니다. 두근두근 새 인연!)",
     },
   });
   const { mutateAsync: createFripReview } =
