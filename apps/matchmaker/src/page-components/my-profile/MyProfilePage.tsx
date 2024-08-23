@@ -69,7 +69,7 @@ function EditButton() {
     <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
       <div className="w-full max-w-lg px-2">
         <button
-          className="w-full rounded-lg bg-gray-200 p-3 text-xl font-medium text-gray-600 hover:bg-gray-300"
+          className="w-full rounded-lg bg-gray-200 p-3 text-xl font-medium text-gray-700 hover:bg-gray-300"
           onClick={() => {
             sendMessage({
               content: `${formatUniqueMemberName(member)} - 프로필 수정 클릭`,
