@@ -29,7 +29,7 @@ export function FeedbackFormDialog({ open, onClose }: Props) {
         onCancel={onClose}
         onSubmit={() => {
           onClose();
-          alert("의견을 보냈습니다. 감사합니다.");
+          alert("의견을 접수했습니다. 감사합니다.");
         }}
       />
     </Dialog>
