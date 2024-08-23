@@ -1,10 +1,11 @@
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, WORLDCUP_URL } from "@ieum/constants";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { FeedbackFormDialog } from "./FeedbackFormDialog";
 
 interface Props {
   open: boolean;
@@ -15,24 +16,24 @@ export function Sidebar({ open, onClose }: Props) {
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-72 transform bg-white py-4 shadow-md ${
+        className={`fixed left-0 top-0 z-50 h-full w-72 transform bg-white shadow-md ${
           open ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out`}
+        } flex flex-col transition-transform duration-300 ease-in-out`}
       >
-        <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between px-4">
-            <Link
-              href="/"
-              role="button"
-              className="text-xl font-semibold text-gray-800"
-            >
-              이음
-            </Link>
-            <button onClick={onClose}>
-              <CloseRoundedIcon className="text-gray-700" />
-            </button>
-          </div>
-          <ul className="mt-4 space-y-2 overflow-y-auto px-4">
+        <div className="flex items-center justify-between px-4 py-4">
+          <Link
+            href="/"
+            role="button"
+            className="text-xl font-semibold text-gray-800"
+          >
+            이음
+          </Link>
+          <button onClick={onClose}>
+            <CloseRoundedIcon className="text-gray-700" />
+          </button>
+        </div>
+        <div className="flex-grow overflow-y-auto">
+          <ul className="space-y-2 px-4">
             <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem
@@ -72,6 +73,9 @@ export function Sidebar({ open, onClose }: Props) {
             />
           </ul>
         </div>
+        <div className="px-4 py-4">
+          <FeedbackButton />
+        </div>
       </aside>
       {open ? <Overlay onClick={onClose} /> : null}
     </>
@@ -109,5 +113,28 @@ function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
 function Overlay({ onClick }: { onClick: () => void }) {
   return (
     <div className="fixed inset-0 z-40 bg-black opacity-50" onClick={onClick} />
+  );
+}
+
+function FeedbackButton() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        className="w-full rounded-md bg-gray-200 py-2 text-gray-700 hover:bg-gray-300"
+        onClick={() => {
+          setIsDialogOpen(true);
+        }}
+      >
+        의견 보내기
+      </button>
+      <FeedbackFormDialog
+        open={isDialogOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+        }}
+      />
+    </>
   );
 }

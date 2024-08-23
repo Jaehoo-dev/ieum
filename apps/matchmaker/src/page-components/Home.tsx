@@ -6,6 +6,7 @@ import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
 import { MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
+import { FeedbackButton } from "~/components/FeedbackButton";
 import { Loader } from "~/components/Loader";
 import { MemberAuth } from "~/components/MemberAuth";
 import { Spacing } from "~/components/Spacing";
@@ -177,6 +178,7 @@ function Registered() {
       >
         로그아웃
       </button>
+      <FeedbackButton />
     </div>
   );
 }

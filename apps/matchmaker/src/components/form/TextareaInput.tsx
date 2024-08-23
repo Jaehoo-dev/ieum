@@ -2,7 +2,7 @@ import { ComponentPropsWithRef, forwardRef } from "react";
 import { isEmptyStringOrNil } from "@ieum/utils";
 
 interface Props extends ComponentPropsWithRef<"textarea"> {
-  label: string;
+  label?: string;
   description?: string;
   error?: boolean;
   errorText?: string;
@@ -24,10 +24,12 @@ function _TextareaInput(
 
   return (
     <label className="flex flex-col gap-1 text-gray-800" htmlFor={label}>
-      <span className="text-lg font-medium">
-        {label}
-        {props.required ? <span className="text-primary-500">*</span> : null}
-      </span>
+      {label != null || props.required ? (
+        <span className="text-lg font-medium">
+          {label}
+          {props.required ? <span className="text-primary-500">*</span> : null}
+        </span>
+      ) : null}
       {hasDescription ? (
         <span className="text-sm text-gray-500">{description}</span>
       ) : null}
