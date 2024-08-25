@@ -105,6 +105,7 @@ export const basicMemberRouter = createTRPCRouter({
           memo: z.string().nullable(),
           imageBucketPaths: z.array(z.string()),
           videoBucketPaths: z.array(z.string()),
+          audioBucketPaths: z.array(z.string()),
           personalInfoConsent: z.boolean(),
         }),
         idealType: z.object({
@@ -149,7 +150,12 @@ export const basicMemberRouter = createTRPCRouter({
       ({
         ctx,
         input: {
-          self: { imageBucketPaths, videoBucketPaths, ...selfRest },
+          self: {
+            imageBucketPaths,
+            videoBucketPaths,
+            audioBucketPaths,
+            ...selfRest
+          },
           idealType,
         },
       }) => {
@@ -169,6 +175,16 @@ export const basicMemberRouter = createTRPCRouter({
             videos: {
               createMany: {
                 data: videoBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
+              },
+            },
+            audios: {
+              createMany: {
+                data: audioBucketPaths.map((bucketPath, index) => {
                   return {
                     bucketPath,
                     index,
@@ -374,6 +390,11 @@ export const basicMemberRouter = createTRPCRouter({
             },
           },
           videos: {
+            orderBy: {
+              index: "asc",
+            },
+          },
+          audios: {
             orderBy: {
               index: "asc",
             },
@@ -862,32 +883,45 @@ export const basicMemberRouter = createTRPCRouter({
             profile: true,
             images: true,
             videos: true,
+            audios: true,
           },
         });
 
-        await supabase.storage
-          .from(
-            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-          )
-          .remove(member.images.map((image) => image.bucketPath));
+        await Promise.all([
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .remove(member.images.map((image) => image.bucketPath)),
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+            )
+            .remove(member.videos.map((video) => video.bucketPath)),
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .remove(member.audios.map((audio) => audio.bucketPath)),
+        ]);
 
-        await supabase.storage
-          .from(
-            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
-          )
-          .remove(member.videos.map((video) => video.bucketPath));
-
-        await tx.memberImageV2.deleteMany({
-          where: {
-            memberId: member.id,
-          },
-        });
-
-        await tx.memberVideoV2.deleteMany({
-          where: {
-            memberId: member.id,
-          },
-        });
+        await Promise.all([
+          tx.memberImageV2.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+          tx.memberVideoV2.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+          tx.memberAudio.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+        ]);
 
         await tx.basicMatchV2.deleteMany({
           where: {
@@ -950,6 +984,7 @@ export const basicMemberRouter = createTRPCRouter({
             profile: true,
             images: true,
             videos: true,
+            audios: true,
           },
         });
 
@@ -969,29 +1004,41 @@ export const basicMemberRouter = createTRPCRouter({
           },
         });
 
-        await supabase.storage
-          .from(
-            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
-          )
-          .remove(member.images.map((image) => image.bucketPath));
+        await Promise.all([
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!,
+            )
+            .remove(member.images.map((image) => image.bucketPath)),
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
+            )
+            .remove(member.videos.map((video) => video.bucketPath)),
+          supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .remove(member.audios.map((audio) => audio.bucketPath)),
+        ]);
 
-        await supabase.storage
-          .from(
-            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
-          )
-          .remove(member.videos.map((video) => video.bucketPath));
-
-        await tx.memberImageV2.deleteMany({
-          where: {
-            memberId: member.id,
-          },
-        });
-
-        await tx.memberVideoV2.deleteMany({
-          where: {
-            memberId: member.id,
-          },
-        });
+        await Promise.all([
+          tx.memberImageV2.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+          tx.memberVideoV2.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+          tx.memberAudio.deleteMany({
+            where: {
+              memberId: member.id,
+            },
+          }),
+        ]);
 
         if (member.profile != null) {
           await tx.basicMemberProfileV2.delete({
@@ -1120,6 +1167,11 @@ export const basicMemberRouter = createTRPCRouter({
                 },
               },
               videos: {
+                orderBy: {
+                  index: "asc",
+                },
+              },
+              audios: {
                 orderBy: {
                   index: "asc",
                 },

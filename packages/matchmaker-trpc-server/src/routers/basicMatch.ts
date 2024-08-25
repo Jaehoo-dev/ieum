@@ -244,6 +244,11 @@ export const basicMatchRouter = createTRPCRouter({
                           index: "asc",
                         },
                       },
+                      audios: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
                     },
                   },
                 },
@@ -271,6 +276,11 @@ export const basicMatchRouter = createTRPCRouter({
                           index: "asc",
                         },
                       },
+                      audios: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
                     },
                   },
                 },
@@ -294,6 +304,11 @@ export const basicMatchRouter = createTRPCRouter({
                         },
                       },
                       videos: {
+                        orderBy: {
+                          index: "asc",
+                        },
+                      },
+                      audios: {
                         orderBy: {
                           index: "asc",
                         },

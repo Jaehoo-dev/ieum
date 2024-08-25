@@ -699,6 +699,29 @@ export function SelfSurvey({ onBack, onNext }: Props) {
             );
           }}
         />
+        <Controller
+          control={control}
+          name="audioBucketPaths"
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            return (
+              <AudioField
+                bucketPaths={value}
+                onUpload={(bucketPath) => {
+                  onChange([...value, bucketPath]);
+                }}
+                onRemove={(bucketPath) => {
+                  onChange(
+                    value.filter((path) => {
+                      return path !== bucketPath;
+                    }),
+                  );
+                }}
+                error={error != null}
+                errorText={error?.message}
+              />
+            );
+          }}
+        />
       </div>
       <div className="mt-4">
         <Buttons
@@ -981,17 +1004,19 @@ function ImageUploader({ onUpload }: ImageUploaderProps) {
           assert(error == null, error?.message);
 
           onUpload(data.path);
+
+          inputRef.current!.value = "";
         }}
         className="hidden"
       />
       <button
-        className="flex h-40 items-center justify-center rounded-lg bg-gray-200"
+        className="flex h-40 items-center justify-center rounded-lg bg-gray-200 hover:bg-gray-300"
         type="button"
         onClick={() => {
           inputRef.current?.click();
         }}
       >
-        <AddIcon className="text-gray-500" fontSize="large" />
+        <AddIcon className="text-gray-600" fontSize="large" />
       </button>
     </>
   );
@@ -1026,17 +1051,167 @@ function VideoUploader({ onUpload }: VideoUploaderProps) {
           assert(error == null, error?.message);
 
           onUpload(data.path);
+
+          inputRef.current!.value = "";
         }}
         className="hidden"
       />
       <button
-        className="flex h-40 items-center justify-center rounded-lg bg-gray-200"
+        className="flex h-40 items-center justify-center rounded-lg bg-gray-200 hover:bg-gray-300"
         type="button"
         onClick={() => {
           inputRef.current?.click();
         }}
       >
-        <AddIcon className="text-gray-500" fontSize="large" />
+        <AddIcon className="text-gray-600" fontSize="large" />
+      </button>
+    </>
+  );
+}
+
+interface AudioFieldProps {
+  bucketPaths: string[];
+  onUpload: (bucketPath: string) => void;
+  onRemove: (bucketPath: string) => void;
+  error: boolean;
+  errorText?: string;
+}
+
+function AudioField({
+  bucketPaths,
+  onUpload,
+  onRemove,
+  error,
+  errorText,
+}: AudioFieldProps) {
+  return (
+    <div className="flex flex-col gap-1 text-gray-800">
+      <span className="text-lg font-medium">
+        음성으로 매력을 더하고 싶으신가요? 원하신다면 음성 파일을
+        업로드해주세요.
+      </span>
+      {error ? (
+        <span className="text-sm text-red-500">
+          {isEmptyStringOrNil(errorText)
+            ? "음성 파일을 확인해주세요."
+            : errorText}
+        </span>
+      ) : null}
+      <div className="mt-1 flex flex-col gap-2">
+        {bucketPaths.map((bucketPath) => {
+          return (
+            <Audio
+              key={bucketPath}
+              bucketPath={bucketPath}
+              onRemove={onRemove}
+            />
+          );
+        })}
+        <AudioUploader onUpload={onUpload} />
+      </div>
+    </div>
+  );
+}
+
+function Audio({
+  bucketPath,
+  onRemove,
+}: {
+  bucketPath: string;
+  onRemove: (bucketPath: string) => void;
+}) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return (
+    <div className="relative">
+      <audio
+        className="w-full rounded-lg object-cover"
+        src={publicUrl}
+        controls={true}
+        controlsList="nodownload"
+        onContextMenu={(event) => {
+          event.preventDefault();
+        }}
+      />
+      <button
+        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-1"
+        onClick={async () => {
+          const { error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .remove([bucketPath]);
+
+          assert(error == null, error?.message);
+
+          onRemove(bucketPath);
+        }}
+      >
+        <svg
+          className="h-4 w-4 text-red-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+function AudioUploader({
+  onUpload,
+}: {
+  onUpload: (bucketPath: string) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="audio/*"
+        onChange={async (event) => {
+          const file = event.target.files?.[0];
+
+          if (file == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .upload(`/drafts/${nanoid()}`, file);
+
+          assert(error == null, error?.message);
+
+          onUpload(data.path);
+
+          inputRef.current!.value = "";
+        }}
+        className="hidden"
+      />
+      <button
+        className="flex h-16 items-center justify-center rounded-lg bg-gray-200 hover:bg-gray-300"
+        type="button"
+        onClick={() => {
+          inputRef.current?.click();
+        }}
+      >
+        <AddIcon className="text-gray-600" fontSize="large" />
       </button>
     </>
   );

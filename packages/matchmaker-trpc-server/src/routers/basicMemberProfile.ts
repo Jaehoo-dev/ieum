@@ -40,6 +40,11 @@ export const basicMemberProfileRouter = createTRPCRouter({
                   index: "asc",
                 },
               },
+              audios: {
+                orderBy: {
+                  index: "asc",
+                },
+              },
             },
           },
         },
@@ -74,6 +79,11 @@ export const basicMemberProfileRouter = createTRPCRouter({
                 },
               },
               videos: {
+                orderBy: {
+                  index: "asc",
+                },
+              },
+              audios: {
                 orderBy: {
                   index: "asc",
                 },

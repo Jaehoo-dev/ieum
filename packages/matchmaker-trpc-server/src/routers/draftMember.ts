@@ -53,6 +53,7 @@ export const draftMemberRouter = createTRPCRouter({
         selfIntroduction: z.string(),
         imageBucketPaths: z.string().array(),
         videoBucketPaths: z.string().array(),
+        audioBucketPaths: z.string().array(),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
         idealRegions: z.nativeEnum(Region).array(),
@@ -81,7 +82,12 @@ export const draftMemberRouter = createTRPCRouter({
     .mutation(
       async ({
         ctx,
-        input: { imageBucketPaths, videoBucketPaths, ...data },
+        input: {
+          imageBucketPaths,
+          videoBucketPaths,
+          audioBucketPaths,
+          ...data
+        },
       }) => {
         await ctx.prisma.draftBasicMember.create({
           data: {
@@ -98,6 +104,15 @@ export const draftMemberRouter = createTRPCRouter({
             videos: {
               createMany: {
                 data: videoBucketPaths.map((bucketPath) => {
+                  return {
+                    bucketPath,
+                  };
+                }),
+              },
+            },
+            audios: {
+              createMany: {
+                data: audioBucketPaths.map((bucketPath) => {
                   return {
                     bucketPath,
                   };
