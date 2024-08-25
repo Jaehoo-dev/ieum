@@ -1087,8 +1087,7 @@ function AudioField({
   return (
     <div className="flex flex-col gap-1 text-gray-800">
       <span className="text-lg font-medium">
-        음성으로 매력을 더하고 싶으신가요? 원하신다면 음성 파일을
-        업로드해주세요.
+        목소리가 매력적이신가요? 음성 파일을 올릴 수도 있습니다.
       </span>
       {error ? (
         <span className="text-sm text-red-500">
