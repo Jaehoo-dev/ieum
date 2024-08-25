@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
+import type { MemberAudio, MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
@@ -30,7 +30,7 @@ export function Profile({
   const {
     selfIntroduction,
     idealTypeDescription,
-    member: { images, videos },
+    member: { images, videos, audios },
   } = profile;
 
   useEffect(() => {
@@ -60,7 +60,10 @@ export function Profile({
           defaultOpened={defaultOpened}
         />
       ) : null}
-      <MediaSection
+      {audios.length > 0 ? (
+        <AudioSection audios={audios} defaultOpened={defaultOpened} />
+      ) : null}
+      <VisualMediaSection
         videos={videos}
         images={images}
         nameWatermark={nameWatermark}
@@ -159,7 +162,49 @@ function IdealTypeDescriptionSection({
   );
 }
 
-function MediaSection({
+function AudioSection({
+  audios,
+  defaultOpened = false,
+}: {
+  audios: MemberAudio[];
+  defaultOpened?: boolean;
+}) {
+  return (
+    <AccordionSection
+      title="저를 표현하는 소리예요"
+      defaultOpened={defaultOpened}
+    >
+      <div className="flex flex-col gap-4">
+        {audios.map(({ id, bucketPath }) => {
+          return (
+            <Suspense key={id}>
+              <AudioField bucketPath={bucketPath} />
+            </Suspense>
+          );
+        })}
+      </div>
+    </AccordionSection>
+  );
+}
+
+function AudioField({ bucketPath }: { bucketPath: string }) {
+  const { data: signedUrl } = useSuspenseSignedUrl({
+    bucket: process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+    path: bucketPath,
+  });
+
+  return (
+    <audio
+      className="w-full"
+      src={signedUrl}
+      controls
+      controlsList="nodownload"
+      onContextMenu={(e) => e.preventDefault()}
+    />
+  );
+}
+
+function VisualMediaSection({
   videos,
   images,
   nameWatermark,
