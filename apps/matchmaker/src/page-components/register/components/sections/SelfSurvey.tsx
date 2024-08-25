@@ -1089,6 +1089,10 @@ function AudioField({
       <span className="text-lg font-medium">
         목소리가 매력적이신가요? 음성 파일을 올릴 수도 있습니다.
       </span>
+      <span className="text-sm text-gray-500">
+        인사말이나 직접 부른 노래, 악기 연주, 나를 표현하는 음악 등을 올리셔도
+        좋아요.
+      </span>
       {error ? (
         <span className="text-sm text-red-500">
           {isEmptyStringOrNil(errorText)
