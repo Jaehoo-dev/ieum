@@ -64,6 +64,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     selfIntroduction: null,
     imageBucketPaths: [],
     videoBucketPaths: [],
+    audioBucketPaths: [],
     blacklistedPhoneNumbers: [],
     blacklistedNames: [],
     referrerCode: null,

@@ -10,10 +10,12 @@ import {
   useFormContext,
 } from "react-hook-form";
 
+import { AudioInput } from "~/components/AudioInput";
 import { ImageInput } from "~/components/ImageInput";
 import { Layout } from "~/components/Layout";
 import { VideoInput } from "~/components/VideoInput";
 import { api } from "~/utils/api";
+import { AudioPreview } from "../../components/AudioPreview";
 import { ConditionPrioritiesField } from "../../components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "../../components/form/IdealTypeFields";
 import { MemoField } from "../../components/form/MemoField";
@@ -210,6 +212,65 @@ function VideosField() {
   );
 }
 
+function AudiosField() {
+  const { control } = useFormContext<BasicMemberForm>();
+  const [audioFile, setAudioFile] = useState<File>();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "self.audioBucketPaths",
+  });
+
+  return (
+    <>
+      <AudioInput
+        label="음성"
+        onChange={(file) => {
+          setAudioFile(file);
+        }}
+        onRegister={async () => {
+          if (audioFile == null) {
+            return;
+          }
+
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .upload(nanoid(), audioFile);
+
+          assert(error == null, error?.message);
+
+          append({ value: data.path });
+        }}
+      />
+      {fields.map((field, index) => {
+        return (
+          <div key={field.id} className="flex gap-2">
+            <AudioPreview bucketPath={field.value} />
+            <button
+              type="button"
+              onClick={async () => {
+                const { error } = await supabase.storage
+                  .from(
+                    process.env
+                      .NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+                  )
+                  .remove([field.value]);
+
+                assert(error == null, error?.message);
+
+                remove(index);
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 function formToPayload({ self, idealType }: BasicMemberForm) {
   return {
     self: {
@@ -221,6 +282,7 @@ function formToPayload({ self, idealType }: BasicMemberForm) {
       fashionStyles: self.fashionStyles.map((style) => style.value),
       imageBucketPaths: self.imageBucketPaths.map((path) => path.value),
       videoBucketPaths: self.videoBucketPaths.map((path) => path.value),
+      audioBucketPaths: self.audioBucketPaths.map((path) => path.value),
     },
     idealType: {
       ...idealType,

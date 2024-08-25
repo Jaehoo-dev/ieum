@@ -81,6 +81,7 @@ function Resolved() {
       idealTypeDescription,
       images,
       videos,
+      audios,
       referrerCode,
     },
   ] = api.draftBasicMemberRouter.findOne.useSuspenseQuery({
@@ -348,6 +349,13 @@ function Resolved() {
           );
         })}
       </div>
+      <div className="flex flex-row gap-1">
+        {audios.map((video) => {
+          return (
+            <AudioField key={video.bucketPath} bucketPath={video.bucketPath} />
+          );
+        })}
+      </div>
       <div className="flex w-full flex-row gap-2">
         <button
           className="flex-1 rounded bg-gray-300"
@@ -400,6 +408,16 @@ function VideoField({ bucketPath }: { bucketPath: string }) {
     .getPublicUrl(bucketPath);
 
   return <video src={publicUrl} controls width={400} />;
+}
+
+function AudioField({ bucketPath }: { bucketPath: string }) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!)
+    .getPublicUrl(bucketPath);
+
+  return <audio src={publicUrl} controls />;
 }
 
 DraftMemberPage.getLayout = function getLayout(page: ReactElement) {

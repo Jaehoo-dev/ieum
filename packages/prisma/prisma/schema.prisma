@@ -218,6 +218,7 @@ model BasicMemberV2 {
   selfIntroduction        String?
   images                  MemberImageV2[]
   videos                  MemberVideoV2[]
+  audios                  MemberAudio[]
 
   idealType BasicMemberIdealTypeV2?
 
@@ -350,6 +351,7 @@ model DraftBasicMember {
   selfIntroduction        String
   images                  DraftMemberImage[]
   videos                  DraftMemberVideo[]
+  audios                  DraftMemberAudio[]
 
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
@@ -418,6 +420,21 @@ model DraftMemberVideo {
 }
 
 model MemberVideoV2 {
+  id         String        @id @default(cuid())
+  member     BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId   String
+  bucketPath String
+  index      Int
+}
+
+model DraftMemberAudio {
+  id            String           @id @default(cuid())
+  draftMember   DraftBasicMember @relation(fields: [draftMemberId], references: [id], onDelete: Cascade)
+  draftMemberId String
+  bucketPath    String
+}
+
+model MemberAudio {
   id         String        @id @default(cuid())
   member     BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
   memberId   String

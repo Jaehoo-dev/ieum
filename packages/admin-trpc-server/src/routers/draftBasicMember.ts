@@ -37,6 +37,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         include: {
           images: true,
           videos: true,
+          audios: true,
         },
       });
     }),
@@ -82,6 +83,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         include: {
           images: true,
           videos: true,
+          audios: true,
         },
       });
 
@@ -116,6 +118,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         marriageStatus,
         images,
         videos,
+        audios,
         idealMinAgeBirthYear,
         idealMaxAgeBirthYear,
         idealRegions,
@@ -181,6 +184,25 @@ export const draftBasicMemberRouter = createTRPCRouter({
         }),
       );
 
+      const audiosBucketPaths = await Promise.all(
+        audios.map(async ({ bucketPath }) => {
+          const { data, error } = await supabase.storage
+            .from(
+              process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+            )
+            .copy(bucketPath, nanoid());
+
+          if (error != null) {
+            throw error;
+          }
+
+          return data.path.replace(
+            `${process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME}/`,
+            "",
+          );
+        }),
+      );
+
       const referrer =
         draftMember.referrerCode == null
           ? null
@@ -214,6 +236,16 @@ export const draftBasicMemberRouter = createTRPCRouter({
             videos: {
               createMany: {
                 data: videoBucketPaths.map((bucketPath, index) => {
+                  return {
+                    bucketPath,
+                    index,
+                  };
+                }),
+              },
+            },
+            audios: {
+              createMany: {
+                data: audiosBucketPaths.map((bucketPath, index) => {
                   return {
                     bucketPath,
                     index,
@@ -298,6 +330,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         select: {
           images: true,
           videos: true,
+          audios: true,
           status: true,
         },
       });
@@ -320,6 +353,11 @@ export const draftBasicMemberRouter = createTRPCRouter({
             process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!,
           )
           .remove(draftMember.videos.map((video) => video.bucketPath)),
+        supabase.storage
+          .from(
+            process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!,
+          )
+          .remove(draftMember.videos.map((audio) => audio.bucketPath)),
       ]);
 
       return ctx.prisma.draftBasicMember.delete({
