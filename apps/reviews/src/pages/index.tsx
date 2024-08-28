@@ -55,6 +55,7 @@ export default function Home() {
           value={orderBy}
           onChange={(event) => {
             setOrderBy(event.target.value as OrderBy);
+            setPage(0);
           }}
         >
           <option value="PRIORITY">추천순</option>
