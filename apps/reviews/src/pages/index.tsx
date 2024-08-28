@@ -51,7 +51,7 @@ export default function Home() {
     <div className="mt-4 flex flex-col gap-3">
       <div className="flex justify-end">
         <select
-          className="rounded-lg border border-gray-200 p-2 text-xs font-bold text-[#363636]"
+          className="rounded-lg border border-gray-200 p-2 text-sm font-bold text-[#363636]"
           value={orderBy}
           onChange={(event) => {
             setOrderBy(event.target.value as OrderBy);
