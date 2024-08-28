@@ -11,9 +11,11 @@ export default function Home() {
   const router = useRouter();
   const [page, setPage] = useState(0);
   const [pageGroup, setPageGroup] = useState(0);
+  const [orderBy, setOrderBy] = useState<"PRIORITY" | "WRITTEN_AT">("PRIORITY");
   const { data } = api.reviewRouter.getFripReviews.useQuery({
     skip: page * 페이지당_후기_개수,
     take: 페이지당_후기_개수,
+    orderBy: orderBy,
   });
 
   const iframeParentTarget = (router.query.origin ?? HOMEPAGE_URL) as string;
@@ -45,6 +47,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-6 border-t border-t-gray-500 pt-4">
+      <div className="flex justify-end">
+        <select
+          className="rounded-lg border border-gray-200 p-[10px] text-sm font-bold"
+          value={orderBy}
+          onChange={(event) => {
+            setOrderBy(event.target.value as "PRIORITY" | "WRITTEN_AT");
+          }}
+        >
+          <option value="PRIORITY">추천순</option>
+          <option value="WRITTEN_AT">최신순</option>
+        </select>
+      </div>
       <div className="flex flex-col gap-4">
         {reviews.map((review) => {
           return <Review key={review.id} data={review} />;
