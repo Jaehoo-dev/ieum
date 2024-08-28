@@ -15,6 +15,7 @@ interface Form {
   time: `${number}:${number}`;
   content: string;
   option: string;
+  priority: number;
 }
 
 export function FripReviewsRegistrationPage() {
@@ -26,6 +27,7 @@ export function FripReviewsRegistrationPage() {
       time: "12:00",
       content: "",
       option: "이음비 (서로 소개에 응했을 때 구매합니다. 두근두근 새 인연!)",
+      priority: 1,
     },
   });
   const { mutateAsync: createFripReview } =
@@ -64,6 +66,17 @@ export function FripReviewsRegistrationPage() {
           {...register("content", { required: true })}
         />
         <TextInput label="옵션" {...register("option", { required: true })} />
+        <Controller
+          control={control}
+          name="priority"
+          render={({ field }) => (
+            <Select label="우선순위" {...field}>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+            </Select>
+          )}
+        />
         <button
           type="submit"
           className="w-full rounded bg-blue-600 py-2 text-white"

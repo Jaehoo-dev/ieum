@@ -15,6 +15,7 @@ export const reviewRouter = createTRPCRouter({
         prisma.fripReview.findMany({
           ...input,
           orderBy: {
+            priority: "desc",
             writtenAt: "desc",
           },
         }),
