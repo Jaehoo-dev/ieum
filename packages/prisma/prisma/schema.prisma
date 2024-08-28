@@ -746,6 +746,7 @@ model FripReview {
   writtenAt DateTime
   content   String
   option    String
+  priority  Int
 }
 
 enum FripRating {
