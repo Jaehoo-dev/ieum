@@ -1,5 +1,10 @@
 import { MemberStatus } from "@ieum/prisma";
-import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
+import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
+import {
+  assert,
+  formatUniqueMemberName,
+  isKrPhoneNumberWithoutHyphens,
+} from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -152,15 +157,33 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.status;
     }),
-  activate: publicProcedure
+  requestActivation: publicProcedure
     .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          name: true,
+          phoneNumber: true,
+        },
+      });
+
+      await sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `${formatUniqueMemberName(
+          member,
+        )} - 휴면 해제 요청 ${SLACK_USER_ID_MENTION}`,
+        throwOnError: true,
+      });
+
       await ctx.prisma.basicMemberV2.update({
         where: {
           id: memberId,
         },
         data: {
-          status: MemberStatus.ACTIVE,
+          status: MemberStatus.PENDING,
         },
       });
 
