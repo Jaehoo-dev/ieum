@@ -14,10 +14,7 @@ export const reviewRouter = createTRPCRouter({
       const [reviews, count] = await Promise.all([
         prisma.fripReview.findMany({
           ...input,
-          orderBy: {
-            priority: "desc",
-            writtenAt: "desc",
-          },
+          orderBy: [{ writtenAt: "desc" }, { priority: "desc" }],
         }),
         prisma.fripReview.count(),
       ]);
