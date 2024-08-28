@@ -18,9 +18,7 @@ export function Review({ data }: Props) {
         </div>
       </div>
       <p className="text-sm text-gray-500">{data.option}</p>
-      <p className="whitespace-pre-wrap break-words text-gray-700">
-        {data.content}
-      </p>
+      <p className="whitespace-pre-wrap break-words">{data.content}</p>
     </div>
   );
 }

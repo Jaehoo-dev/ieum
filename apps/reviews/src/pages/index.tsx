@@ -48,10 +48,11 @@ export default function Home() {
     Math.floor(count / 페이지당_후기_개수 / 페이지그룹당_페이지_개수);
 
   return (
-    <div className="mt-4 flex flex-col gap-3">
-      <div className="flex justify-end">
+    <div className="mt-4 flex flex-col gap-3 text-[#363636]">
+      <div className="flex flex-row items-end justify-between">
+        <p className="font-medium">프립 후기</p>
         <select
-          className="rounded-lg border border-gray-200 p-2 text-sm font-bold text-[#363636]"
+          className="rounded-lg border border-gray-200 p-2 text-sm font-bold"
           value={orderBy}
           onChange={(event) => {
             setOrderBy(event.target.value as OrderBy);
