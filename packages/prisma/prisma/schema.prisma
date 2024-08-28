@@ -747,6 +747,8 @@ model FripReview {
   content   String
   option    String
   priority  Int
+
+  @@index([priority])
 }
 
 enum FripRating {
