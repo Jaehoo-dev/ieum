@@ -9,9 +9,11 @@ export type 슬랙_채널 =
 export async function sendSlackMessage({
   channel,
   content,
+  throwOnError = false,
 }: {
   channel: 슬랙_채널;
   content: string;
+  throwOnError?: boolean;
 }) {
   const webhookUrl: Record<슬랙_채널, string> = {
     에러_알림: process.env.NEXT_PUBLIC_ERROR_CHANNEL_WEBHOOK_URL!,
@@ -29,8 +31,10 @@ export async function sendSlackMessage({
         text: content,
       }),
     });
-  } catch {
-    // ignore
+  } catch (err) {
+    if (throwOnError) {
+      throw err;
+    }
   }
 }
 

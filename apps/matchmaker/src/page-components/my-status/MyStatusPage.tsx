@@ -1,15 +1,12 @@
 import { ReactElement, Suspense } from "react";
 import Head from "next/head";
 import { MemberStatus } from "@ieum/prisma";
-import { SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyStatusPage() {
   return (
@@ -64,12 +61,12 @@ function Inactive() {
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const utils = api.useUtils();
-  const { mutateAsync: activate } = api.basicMemberRouter.activate.useMutation({
-    onSuccess: () => {
-      return utils.basicMemberRouter.getStatus.invalidate();
-    },
-  });
-  const { sendMessage } = useSlackNotibot();
+  const { mutateAsync: requestActivation, isPending: isRequesting } =
+    api.basicMemberRouter.requestActivation.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberRouter.getStatus.invalidate();
+      },
+    });
 
   return (
     <>
@@ -80,19 +77,20 @@ function Inactive() {
       <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
         <div className="w-full max-w-lg px-2">
           <button
-            className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
+            className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700 disabled:opacity-50"
             onClick={async () => {
-              sendMessage({
-                channel: "폼_제출_알림",
-                content: `${formatUniqueMemberName(
-                  member,
-                )} - 휴면 해제 클릭 ${SLACK_USER_ID_MENTION}`,
-              });
-              await activate({ memberId: member.id });
-              alert("휴면 해제했습니다");
+              try {
+                await requestActivation({ memberId: member.id });
+                alert("휴면 해제를 요청했습니다. 관리자 확인 후 활성화됩니다.");
+              } catch (error) {
+                alert(
+                  "휴면 해제 요청 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
+                );
+              }
             }}
+            disabled={isRequesting}
           >
-            휴면 해제
+            {isRequesting ? "접수 중.." : "휴면 해제 요청"}
           </button>
         </div>
       </div>
