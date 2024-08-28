@@ -230,6 +230,9 @@ model BasicMemberV2 {
   rejectedMatches BasicMatchV2[] @relation(name: "rejectedMatchMemberV2")
   acceptedMatches BasicMatchV2[] @relation(name: "acceptedMatchMemberV2")
 
+  megaphoneMatchesAsSender   MegaphoneMatch[] @relation(name: "megaphoneMatchSender")
+  megaphoneMatchesAsReceiver MegaphoneMatch[] @relation(name: "megaphoneMatchReceiver")
+
   blacklisting  BasicBlacklistItemV2[] @relation(name: "blacklisterV2")
   blacklistedBy BasicBlacklistItemV2[] @relation(name: "blacklistTargetV2")
 
@@ -482,6 +485,34 @@ model BasicMatchV2 {
   sentAt       DateTime?
 
   @@index([status])
+}
+
+model MegaphoneMatch {
+  id               String                      @id @default(cuid())
+  sender           BasicMemberV2               @relation(fields: [senderId], references: [id], onDelete: Cascade, name: "megaphoneMatchSender")
+  senderId         String
+  receiver         BasicMemberV2               @relation(fields: [receiverId], references: [id], onDelete: Cascade, name: "megaphoneMatchReceiver")
+  receiverId       String
+  status           MatchStatus
+  senderStatus     MegaphoneMatchMemberStatus
+  receiverStatus   MegaphoneMatchMemberStatus?
+  createdAt        DateTime                    @default(now())
+  updatedAt        DateTime                    @updatedAt
+  sentToReceiverAt DateTime?
+  sentToSenderAt   DateTime?
+
+  @@unique([senderId, receiverId])
+  @@index([status])
+  @@index([senderStatus])
+  @@index([receiverStatus])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+enum MegaphoneMatchMemberStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 model BasicBlacklistItemV2 {
