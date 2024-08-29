@@ -17,7 +17,7 @@ export default function Home() {
   const { data } = api.reviewRouter.getFripReviews.useQuery({
     skip: page * 페이지당_후기_개수,
     take: 페이지당_후기_개수,
-    orderBy: orderBy,
+    orderBy,
   });
 
   const iframeParentTarget = (router.query.origin ?? HOMEPAGE_URL) as string;
