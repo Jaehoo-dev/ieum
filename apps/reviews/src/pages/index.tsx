@@ -52,7 +52,7 @@ export default function Home() {
       <div className="flex flex-row items-end justify-between">
         <div className="flex flex-row items-center gap-0.5">
           <p className="font-semibold">프립 후기</p>
-          <p className="text-sm text-frip-primary-500">({data.count})</p>
+          <p className="text-sm text-frip-primary-500">{`(${count})`}</p>
         </div>
         <select
           className="rounded-lg border border-gray-200 p-2 text-sm font-bold"
