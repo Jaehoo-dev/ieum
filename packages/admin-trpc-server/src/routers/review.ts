@@ -12,6 +12,7 @@ export const reviewRouter = createTRPCRouter({
         writtenAt: z.date(),
         content: z.string(),
         option: z.string(),
+        priority: z.number(),
       }),
     )
     .mutation(({ ctx: { prisma }, input }) => {
