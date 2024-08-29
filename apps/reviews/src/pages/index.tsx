@@ -50,7 +50,10 @@ export default function Home() {
   return (
     <div className="mt-4 flex flex-col gap-3 text-[#363636]">
       <div className="flex flex-row items-end justify-between">
-        <p className="font-semibold">프립 후기</p>
+        <div className="flex flex-row items-center gap-0.5">
+          <p className="font-semibold">프립 후기</p>
+          <p className="text-sm text-frip-primary-500">({data.count})</p>
+        </div>
         <select
           className="rounded-lg border border-gray-200 p-2 text-sm font-bold"
           value={orderBy}
