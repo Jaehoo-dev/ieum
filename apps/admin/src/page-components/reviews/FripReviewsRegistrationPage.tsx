@@ -78,10 +78,13 @@ export function FripReviewsRegistrationPage() {
                 onChange(Number(value));
               }}
             >
-              <option value={0}>0</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
+              {[0, 1, 2, 3].map((priority) => {
+                return (
+                  <option key={priority} value={priority}>
+                    {priority}
+                  </option>
+                );
+              })}
             </Select>
           )}
         />
