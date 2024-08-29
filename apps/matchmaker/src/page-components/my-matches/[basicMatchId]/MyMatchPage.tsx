@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Profile } from "@ieum/profile";
 import { assert, krToKrHyphen } from "@ieum/utils";
 
+import { KakaoBrowserOnly } from "~/components/KakaoBrowserOnly";
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 import { Warning } from "~/components/Warning";
@@ -13,11 +14,25 @@ import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
+function KakaoBrowserFallback() {
+  return (
+    <div className="flex w-full items-start gap-1">
+      <p className="text-md text-gray-800">※</p>
+      <p className="text-md text-gray-800">
+        개인정보 유출 방지 정책으로 상대방 프로필은 카카오톡 브라우저에서만 조회
+        가능합니다.
+      </p>
+    </div>
+  );
+}
+
 export function MyMatchPage() {
   return (
-    <Suspense fallback={null}>
-      <Resolved />
-    </Suspense>
+    <KakaoBrowserOnly fallback={<KakaoBrowserFallback />}>
+      <Suspense fallback={null}>
+        <Resolved />
+      </Suspense>
+    </KakaoBrowserOnly>
   );
 }
 
