@@ -69,9 +69,10 @@ export function FripReviewsRegistrationPage() {
         <Controller
           control={control}
           name="priority"
-          render={({ field: { onChange } }) => (
+          render={({ field: { value, onChange } }) => (
             <Select
               label="우선순위"
+              value={value}
               onChange={({ target: { value } }) => {
                 onChange(Number(value));
               }}
