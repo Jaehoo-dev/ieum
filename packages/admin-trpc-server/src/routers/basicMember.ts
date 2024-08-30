@@ -1,3 +1,4 @@
+import { 매치_유형 } from "@ieum/constants";
 import { auth, FirebaseAuthError } from "@ieum/firebase-admin";
 import {
   AnnualIncome,
@@ -339,7 +340,7 @@ export const basicMemberRouter = createTRPCRouter({
         gender: z.nativeEnum(Gender),
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
-        matchType: z.enum(["basic", "megaphone"]),
+        matchType: z.nativeEnum(매치_유형),
         limit: z.number().min(1).max(100).default(5),
         cursor: z.string().optional(),
       }),
@@ -440,8 +441,8 @@ export const basicMemberRouter = createTRPCRouter({
       });
     }),
   findMatchCandidates: protectedAdminProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input: { id } }) => {
+    .input(z.object({ memberId: z.string() }))
+    .query(async ({ ctx, input: { memberId: id } }) => {
       const self = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id,
@@ -599,6 +600,7 @@ export const basicMemberRouter = createTRPCRouter({
           mediumPriorities: z.array(z.nativeEnum(BasicCondition)),
           lowPriorities: z.array(z.nativeEnum(BasicCondition)),
         }),
+        matchType: z.nativeEnum(매치_유형),
       }),
     )
     .query(
@@ -631,6 +633,7 @@ export const basicMemberRouter = createTRPCRouter({
             mediumPriorities,
             lowPriorities,
           },
+          matchType,
         },
       }) => {
         const self = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -833,6 +836,11 @@ export const basicMemberRouter = createTRPCRouter({
                 acceptedByV2: { none: { id: self.id } },
               },
             },
+            // TODO: 정교화(receiver였을 땐?, 확성기 -> 기본 영향도 생각해야 하나?)
+            megaphoneMatchesAsReceiver:
+              matchType === 매치_유형.확성기
+                ? { none: { senderId: self.id } }
+                : undefined,
           },
           include: {
             idealType: true,

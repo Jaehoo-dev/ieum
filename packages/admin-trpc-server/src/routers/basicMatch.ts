@@ -105,19 +105,17 @@ export const basicMatchRouter = createTRPCRouter({
       z.object({
         member1Id: z.string(),
         member2Id: z.string(),
-        initialStatus: z
-          .nativeEnum({
-            [MatchStatus.BACKLOG]: MatchStatus.BACKLOG,
-            [MatchStatus.PREPARING]: MatchStatus.PREPARING,
-          })
-          .optional(),
+        initialStatus: z.nativeEnum({
+          [MatchStatus.BACKLOG]: MatchStatus.BACKLOG,
+          [MatchStatus.PREPARING]: MatchStatus.PREPARING,
+        }),
       }),
     )
     .mutation(
       async ({ ctx, input: { member1Id, member2Id, initialStatus } }) => {
         return ctx.prisma.basicMatchV2.create({
           data: {
-            status: initialStatus ?? MatchStatus.BACKLOG,
+            status: initialStatus,
             pendingByV2: {
               connect: [{ id: member1Id }, { id: member2Id }],
             },

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { 매치_유형 } from "@ieum/constants";
 import type { BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
@@ -89,8 +90,21 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
             member.status === MemberStatus.INACTIVE ||
             member.status === MemberStatus.PENDING ? (
               <>
+                {member.isMegaphoneUser ? (
+                  <>
+                    <Link
+                      href={`/basic/members/${member.id}/matchmaker/${매치_유형.확성기}`}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      확성기
+                    </Link>
+                    <span>|</span>{" "}
+                  </>
+                ) : null}
                 <Link
-                  href={`/basic/members/${member.id}/matchmaker`}
+                  href={`/basic/members/${member.id}/matchmaker/${매치_유형.기본}`}
                   className="text-blue-600 hover:underline"
                   target="_blank"
                   rel="noreferrer noopener"
