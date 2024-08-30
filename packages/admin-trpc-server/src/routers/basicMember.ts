@@ -339,43 +339,51 @@ export const basicMemberRouter = createTRPCRouter({
         gender: z.nativeEnum(Gender),
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
+        matchType: z.enum(["basic", "megaphone"]),
         limit: z.number().min(1).max(100).default(5),
         cursor: z.string().optional(),
       }),
     )
-    .query(async ({ ctx, input: { gender, status, sort, limit, cursor } }) => {
-      const members = await ctx.prisma.basicMemberV2.findMany({
-        take: limit + 1,
-        where: {
-          gender,
-          status,
-        },
-        include: {
-          idealType: true,
-          pendingMatches: true,
-          rejectedMatches: true,
-          acceptedMatches: true,
-          profile: true,
-          images: {
-            orderBy: {
-              index: "asc",
+    .query(
+      async ({
+        ctx,
+        input: { gender, status, sort, matchType, limit, cursor },
+      }) => {
+        const members = await ctx.prisma.basicMemberV2.findMany({
+          take: limit + 1,
+          where: {
+            gender,
+            status,
+            isMegaphoneUser: matchType === "megaphone" ? true : undefined,
+          },
+          include: {
+            idealType: true,
+            pendingMatches: true,
+            rejectedMatches: true,
+            acceptedMatches: true,
+            profile: true,
+            images: {
+              orderBy: {
+                index: "asc",
+              },
             },
           },
-        },
-        cursor: cursor ? { id: cursor } : undefined,
-        orderBy:
-          sort === "lastMatchedAt"
-            ? { lastMatchedAt: "asc" }
-            : { createdAt: sort },
-      });
+          cursor: cursor ? { id: cursor } : undefined,
+          orderBy:
+            sort === "lastMatchedAt"
+              ? { lastMatchedAt: "asc" }
+              : { createdAt: sort },
+        });
 
-      const nextCursor = members.length > limit ? members.pop()!.id : undefined;
+        const nextCursor =
+          members.length > limit ? members.pop()!.id : undefined;
 
-      return {
-        members,
-        nextCursor,
-      };
-    }),
+        return {
+          members,
+          nextCursor,
+        };
+      },
+    ),
   findById: protectedAdminProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input: { id } }) => {

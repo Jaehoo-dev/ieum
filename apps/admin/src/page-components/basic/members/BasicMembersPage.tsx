@@ -15,11 +15,20 @@ const 정렬 = {
 
 type 정렬 = (typeof 정렬)[keyof typeof 정렬];
 
+const 매치_유형 = {
+  기본: "basic",
+  확성기: "megaphone",
+} as const;
+
+type 매치_유형 = (typeof 매치_유형)[keyof typeof 매치_유형];
+
 export function BasicMembersPage() {
   const router = useRouter();
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
+  const matchTypeQuery = (router.query.matchType ??
+    매치_유형.기본) as 매치_유형;
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-4 py-2">
@@ -41,9 +50,21 @@ export function BasicMembersPage() {
             },
           });
         }}
+        onMatchTypeChange={(matchType) => {
+          router.replace({
+            query: {
+              ...router.query,
+              matchType,
+            },
+          });
+        }}
       />
       <Suspense>
-        <Resolved status={statusQuery} sort={sortQuery} />
+        <Resolved
+          status={statusQuery}
+          sort={sortQuery}
+          matchType={matchTypeQuery}
+        />
       </Suspense>
     </div>
   );
@@ -52,14 +73,18 @@ export function BasicMembersPage() {
 function Filter({
   onStatusChange,
   onSortChange,
+  onMatchTypeChange,
 }: {
   onStatusChange: (status: MemberStatus) => void;
   onSortChange: (sort: 정렬) => void;
+  onMatchTypeChange: (matchType: 매치_유형) => void;
 }) {
   const router = useRouter();
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
+  const matchTypeQuery = (router.query.matchType ??
+    매치_유형.기본) as 매치_유형;
 
   return (
     <div className="flex flex-row justify-center gap-2">
@@ -87,11 +112,30 @@ function Filter({
         <option value={정렬.생성_오래된_순}>생성 오래된 순</option>
         <option value={정렬.제안_오래된_순}>제안 오래된 순</option>
       </Select>
+      <Select
+        label="매치 유형"
+        value={matchTypeQuery}
+        onChange={({ target: { value } }) => {
+          onMatchTypeChange(value as 매치_유형);
+        }}
+        style={{ width: "80px" }}
+      >
+        <option value={매치_유형.기본}>기본</option>
+        <option value={매치_유형.확성기}>확성기</option>
+      </Select>
     </div>
   );
 }
 
-function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
+function Resolved({
+  status,
+  sort,
+  matchType,
+}: {
+  status: MemberStatus;
+  sort: 정렬;
+  matchType: 매치_유형;
+}) {
   const [
     { pages: maleMemberPages },
     {
@@ -104,6 +148,7 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
       gender: Gender.MALE,
       status,
       sort,
+      matchType,
     },
     {
       getNextPageParam: (lastPage) => {
@@ -123,6 +168,7 @@ function Resolved({ status, sort }: { status: MemberStatus; sort: 정렬 }) {
       gender: Gender.FEMALE,
       status,
       sort,
+      matchType,
     },
     {
       getNextPageParam: (lastPage) => {
