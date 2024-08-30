@@ -107,6 +107,7 @@ export const basicMemberRouter = createTRPCRouter({
           videoBucketPaths: z.array(z.string()),
           audioBucketPaths: z.array(z.string()),
           personalInfoConsent: z.boolean(),
+          isMegaphoneUser: z.boolean(),
         }),
         idealType: z.object({
           minAgeBirthYear: z.number().nullable(),
