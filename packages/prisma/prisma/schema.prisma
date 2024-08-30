@@ -230,6 +230,7 @@ model BasicMemberV2 {
   rejectedMatches BasicMatchV2[] @relation(name: "rejectedMatchMemberV2")
   acceptedMatches BasicMatchV2[] @relation(name: "acceptedMatchMemberV2")
 
+  isMegaphoneUser            Boolean
   megaphoneMatchesAsSender   MegaphoneMatch[] @relation(name: "megaphoneMatchSender")
   megaphoneMatchesAsReceiver MegaphoneMatch[] @relation(name: "megaphoneMatchReceiver")
 
@@ -273,6 +274,7 @@ model BasicMemberV2 {
   @@index([lastMatchedAt])
   @@index([referralCode])
   @@index([referrerCode])
+  @@index([isMegaphoneUser])
 }
 
 model BasicMemberIdealTypeV2 {
