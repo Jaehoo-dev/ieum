@@ -6,6 +6,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
   독서량_라벨,
+  매치_유형,
   베이직_조건_라벨,
   신분_라벨,
   연간_벌이_라벨,
@@ -37,6 +38,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
+import { match } from "ts-pattern";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Checkbox } from "~/components/Checkbox";
@@ -45,6 +47,8 @@ import { Select } from "~/components/Select";
 import { TextInput } from "~/components/TextInput";
 import type { BasicMemberWithJoined } from "~/domains/basic/types";
 import { api } from "~/utils/api";
+import { CreateBasicMatchButton } from "./components/CreateBasicMatchButton";
+import { CreateMegaphoneButton } from "./components/CreateMegaphoneButton";
 
 interface CustomCanditatesSearchForm {
   minAgeBirthYear: number | null;
@@ -84,10 +88,12 @@ function Resolved() {
   const utils = api.useUtils();
   const router = useRouter();
   const basicMemberId = router.query.basicMemberId as string;
+  const matchType = router.query.matchType as 매치_유형;
   const [basicMember] = api.basicMemberRouter.findById.useSuspenseQuery({
     id: basicMemberId,
   });
 
+  assert(!(matchType === 매치_유형.확성기 && !basicMember.isMegaphoneUser));
   assert(basicMember.idealType != null, "idealType is required");
 
   const methods = useForm({
@@ -101,20 +107,25 @@ function Resolved() {
     api.basicMemberRouter.findCustomMatchCandidates.useQuery({
       memberId: basicMemberId,
       data: customSearchQueryParams,
+      matchType,
     });
-  const { mutateAsync: createMatch, isPending: isCreatingMatch } =
-    api.basicMatchRouter.create.useMutation({
-      onSuccess: () => {
-        return utils.basicMemberRouter.invalidate();
-      },
-    });
+
   const { mutateAsync: addToBlacklist, isPending: isAddingToBlacklist } =
     api.basicMemberRouter.addToBlacklist.useMutation({
       onSuccess: () => {
         return utils.basicMemberRouter.invalidate();
       },
     });
-  const [shouldCrossCheck, setShouldCrossCheck] = useState(true);
+  const [shouldCrossCheck, setShouldCrossCheck] = useState(
+    match(matchType)
+      .with(매치_유형.기본, () => {
+        return true;
+      })
+      .with(매치_유형.확성기, () => {
+        return false;
+      })
+      .exhaustive(),
+  );
 
   const list = useMemo(() => {
     if (!shouldCrossCheck) {
@@ -147,7 +158,14 @@ function Resolved() {
                 {basicMember.name}
               </span>
             ) : null}
-            <span>{" 님 매칭"}</span>
+            <span>{` 님 ${match(matchType)
+              .with(매치_유형.기본, () => {
+                return "기본";
+              })
+              .with(매치_유형.확성기, () => {
+                return "확성기";
+              })
+              .exhaustive()} 매칭`}</span>
           </h1>
           <div className="flex w-full justify-center gap-3">
             <div className="flex w-5/12 max-w-3xl flex-col items-end gap-2">
@@ -195,31 +213,40 @@ function Resolved() {
                         >
                           Blacklist
                         </button>
-                        <button
-                          className="rounded-lg bg-yellow-500 p-2 text-xs font-medium text-white"
-                          disabled={isCreatingMatch}
-                          onClick={async () => {
-                            await createMatch({
+                        {matchType === 매치_유형.확성기 ? (
+                          <CreateMegaphoneButton
+                            payload={{
+                              senderId: basicMemberId,
+                              receiverId: member.id,
+                              targetStatus: MatchStatus.BACKLOG,
+                            }}
+                          />
+                        ) : (
+                          <CreateBasicMatchButton
+                            payload={{
                               member1Id: basicMemberId,
                               member2Id: member.id,
-                            });
-                          }}
-                        >
-                          Backlog
-                        </button>
-                        <button
-                          className="rounded-lg bg-green-500 p-2 text-xs font-medium text-white"
-                          disabled={isCreatingMatch}
-                          onClick={async () => {
-                            await createMatch({
+                              targetStatus: MatchStatus.BACKLOG,
+                            }}
+                          />
+                        )}
+                        {matchType === 매치_유형.확성기 ? (
+                          <CreateMegaphoneButton
+                            payload={{
+                              senderId: basicMemberId,
+                              receiverId: member.id,
+                              targetStatus: MatchStatus.PREPARING,
+                            }}
+                          />
+                        ) : (
+                          <CreateBasicMatchButton
+                            payload={{
                               member1Id: basicMemberId,
                               member2Id: member.id,
-                              initialStatus: MatchStatus.PREPARING,
-                            });
-                          }}
-                        >
-                          Prepare
-                        </button>
+                              targetStatus: MatchStatus.PREPARING,
+                            }}
+                          />
+                        )}
                       </div>
                     </div>
                   );

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { 상태_라벨 } from "@ieum/constants";
+import { 매치_유형, 상태_라벨 } from "@ieum/constants";
 import type { BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus } from "@ieum/prisma";
 import { assert, isEmptyStringOrNil } from "@ieum/utils";
@@ -87,7 +87,7 @@ export function BasicMemberMatchHistoryPage() {
           <span>{" 님의 매칭 이력"}</span>
         </h1>
         <Link
-          href={`/basic/members/${basicMemberId}/matchmaker`}
+          href={`/basic/members/${basicMemberId}/matchmaker/${매치_유형.기본}`}
           className="text-blue-600 hover:underline"
         >
           {"매칭 >"}

@@ -7,6 +7,7 @@ import { blindMatchRouter } from "./routers/blindMatch";
 import { blindMemberRouter } from "./routers/blindMember";
 import { draftBasicMemberRouter } from "./routers/draftBasicMember";
 import { indexingApiRouter } from "./routers/indexingApi";
+import { megaphoneMatchRouter } from "./routers/megaphoneMatch";
 import { adminMessageRouter } from "./routers/message";
 import { reviewRouter } from "./routers/review";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   basicMemberVideoRouter,
   basicMemberAudioRouter,
   basicMatchRouter,
+  megaphoneMatchRouter,
   blindMemberRouter,
   blindMatchRouter,
   adminMessageRouter,

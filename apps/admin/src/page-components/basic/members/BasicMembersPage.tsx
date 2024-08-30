@@ -1,5 +1,6 @@
 import { Suspense, type ReactElement } from "react";
 import { useRouter } from "next/router";
+import { 매치_유형 } from "@ieum/constants";
 import { Gender, MemberStatus } from "@ieum/prisma";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
@@ -14,13 +15,6 @@ const 정렬 = {
 } as const;
 
 type 정렬 = (typeof 정렬)[keyof typeof 정렬];
-
-const 매치_유형 = {
-  기본: "basic",
-  확성기: "megaphone",
-} as const;
-
-type 매치_유형 = (typeof 매치_유형)[keyof typeof 매치_유형];
 
 export function BasicMembersPage() {
   const router = useRouter();

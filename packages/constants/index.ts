@@ -313,3 +313,10 @@ export const 음식종류_라벨: Record<CuisineType, string> = {
 } as const;
 
 export const primary500 = "#ff8271";
+
+export const 매치_유형 = {
+  기본: "basic",
+  확성기: "megaphone",
+} as const;
+
+export type 매치_유형 = (typeof 매치_유형)[keyof typeof 매치_유형];
