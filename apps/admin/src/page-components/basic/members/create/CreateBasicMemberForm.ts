@@ -71,6 +71,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     memo: null,
     status: MemberStatus.PENDING,
     personalInfoConsent: true,
+    isMegaphoneUser: false,
   },
   idealType: {
     minAgeBirthYear: null,

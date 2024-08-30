@@ -223,6 +223,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
             bmi: calculateBmi(self.height, self.weight),
             status: MemberStatus.PENDING,
             referralCode: generateReferralCode(),
+            isMegaphoneUser: false,
             images: {
               createMany: {
                 data: imageBucketPaths.map((bucketPath, index) => {
