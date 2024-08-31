@@ -1,9 +1,9 @@
-import { useState } from "react";
-import type { ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
+import { useRouter } from "next/router";
 import { 상태_라벨 } from "@ieum/constants";
 import { Gender, MatchStatus } from "@ieum/prisma";
 import { format, subDays } from "date-fns";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
@@ -13,49 +13,53 @@ import { api } from "~/utils/api";
 import { RespondField } from "../components/RespondField";
 
 interface Form {
-  statuses: { value: MatchStatus }[];
+  status: MatchStatus;
   name: string;
   from: Date;
   to: Date;
 }
 
-function formToQuery(form: Form) {
-  const { statuses, name, from, to, ...fields } = form;
+function formToParams(form: Form) {
+  const { status, name, from, to, ...fields } = form;
 
   return {
     ...fields,
-    statuses:
-      statuses.length > 0
-        ? statuses.map((status) => {
-            return status.value;
-          })
-        : undefined,
+    status,
     name: name !== "" ? name : undefined,
-    from: from.toISOString(),
-    to: to.toISOString(),
+    from: format(from, "yyyy-MM-dd"),
+    to: format(to, "yyyy-MM-dd"),
   };
 }
 
 export function BasicMatchHistoryPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.query.status == null) {
+      router.replace({
+        query: {
+          ...router.query,
+          status: MatchStatus.PENDING,
+          from: format(subDays(new Date(), 1), "yyyy-MM-dd"),
+          to: format(new Date(), "yyyy-MM-dd"),
+        },
+      });
+    }
+  }, [router.query.status]);
+
   const { control, getValues, register, handleSubmit } = useForm<Form>({
-    defaultValues: {
-      statuses: [{ value: "PREPARING" }],
-      name: "",
-      from: subDays(new Date(), 6),
-      to: new Date(),
+    values: {
+      status: (router.query.status ?? MatchStatus.PENDING) as MatchStatus,
+      from: new Date((router.query.from as string) ?? subDays(new Date(), 1)),
+      to: new Date((router.query.to as string) ?? new Date()),
+      name: (router.query.name as string) ?? "",
     },
   });
-  const {
-    fields: statusFields,
-    append: appendStatus,
-    remove: removeStatus,
-  } = useFieldArray({
-    control,
-    name: "statuses",
-  });
-  const [queryParams, setQueryParams] = useState(formToQuery(getValues()));
-  const { data: matches = [] } =
-    api.basicMatchRouter.findAll.useQuery(queryParams);
+
+  const { data: matches = [] } = api.basicMatchRouter.findAll.useQuery(
+    formToParams(getValues()),
+    { enabled: router.query.status != null },
+  );
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center gap-4 py-2">
@@ -63,35 +67,36 @@ export function BasicMatchHistoryPage() {
       <form
         className="flex flex-col gap-2"
         onSubmit={handleSubmit((form) => {
-          setQueryParams(formToQuery(form));
+          router.push({
+            query: formToParams(form),
+          });
         })}
       >
-        <span>필터</span>
-        <div className="flex gap-2">
-          {Object.values(MatchStatus).map((status) => {
-            return (
-              <label key={status} className="flex gap-2">
-                <input
-                  type="checkbox"
-                  checked={statusFields.some((field) => {
-                    return field.value === status;
-                  })}
+        <div className="flex items-center gap-2">
+          <span>상태</span>
+          <Controller
+            control={control}
+            name="status"
+            render={({ field: { value, onChange } }) => {
+              return (
+                <select
+                  className="rounded-lg border border-gray-200 px-1.5 py-1"
+                  value={value}
                   onChange={(e) => {
-                    if (e.target.checked) {
-                      appendStatus({ value: status });
-                    } else {
-                      removeStatus(
-                        statusFields.findIndex((field) => {
-                          return field.value === status;
-                        }),
-                      );
-                    }
+                    onChange(e.target.value as MatchStatus);
                   }}
-                />
-                {상태_라벨[status]}
-              </label>
-            );
-          })}
+                >
+                  {Object.values(MatchStatus).map((status) => {
+                    return (
+                      <option key={status} value={status}>
+                        {상태_라벨[status]}
+                      </option>
+                    );
+                  })}
+                </select>
+              );
+            }}
+          />
         </div>
         <div className="flex items-center gap-2">
           <span>날짜</span>
