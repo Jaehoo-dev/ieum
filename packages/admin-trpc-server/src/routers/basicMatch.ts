@@ -9,20 +9,23 @@ export const basicMatchRouter = createTRPCRouter({
   findAll: protectedAdminProcedure
     .input(
       z.object({
-        status: z.nativeEnum(MatchStatus),
+        statuses: z.nativeEnum(MatchStatus).array(),
         from: z.string(),
         to: z.string(),
         name: z.string().optional(),
       }),
     )
-    .query(({ ctx, input: { status, name, from, to } }) => {
+    .query(({ ctx, input: { statuses, name, from, to } }) => {
+      const 상태_필터가_있는가 =
+        statuses.length > 0 &&
+        statuses.length < Object.values(MatchStatus).length;
       const 이름_필터가_있는가 = name != null && name !== "";
 
       return ctx.prisma.basicMatchV2.findMany({
         where: {
           AND: [
             {
-              status,
+              status: 상태_필터가_있는가 ? { in: statuses } : undefined,
               OR: 이름_필터가_있는가
                 ? [
                     { pendingByV2: { some: { name: { equals: name } } } },

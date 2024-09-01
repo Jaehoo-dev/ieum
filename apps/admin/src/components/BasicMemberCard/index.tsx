@@ -7,7 +7,11 @@ import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { differenceInCalendarDays } from "date-fns";
 
-import type { BasicMemberWithJoined } from "~/domains/basic/types";
+import { isBasicMemberWithBasicMatchesJoined } from "~/domains/basic/isBasicMemberWithBasicMatchesJoined";
+import type {
+  BasicMemberWithBasicMatchesJoined,
+  BasicMemberWithMegaphoneMatchesJoined,
+} from "~/domains/basic/types";
 import { Avatar } from "../Avatar";
 import { DetailedSelfFields } from "./DetailedSelfFields";
 import { IdealTypeFields } from "./IdealTypeFields";
@@ -16,7 +20,9 @@ import { SimpleSelfFields } from "./SimpleSelfFields";
 type Mode = "SIMPLE" | "DETAILED";
 
 interface Props {
-  member: BasicMemberWithJoined;
+  member:
+    | BasicMemberWithBasicMatchesJoined
+    | BasicMemberWithMegaphoneMatchesJoined;
   defaultMode?: Mode;
 }
 
@@ -81,7 +87,9 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
                 </Link>
               </div>
             )}
-            <Count member={member} />
+            {isBasicMemberWithBasicMatchesJoined(member) ? (
+              <Count member={member} />
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -162,7 +170,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
   );
 }
 
-function Count({ member }: { member: BasicMemberWithJoined }) {
+function Count({ member }: { member: BasicMemberWithBasicMatchesJoined }) {
   const matchesCountByStatus = countMatchesByStatus([
     ...member.pendingMatches,
     ...member.rejectedMatches,

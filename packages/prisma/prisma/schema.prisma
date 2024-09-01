@@ -496,7 +496,7 @@ model MegaphoneMatch {
   receiver         BasicMemberV2               @relation(fields: [receiverId], references: [id], onDelete: Cascade, name: "megaphoneMatchReceiver")
   receiverId       String
   status           MatchStatus
-  senderStatus     MegaphoneMatchMemberStatus
+  senderStatus     MegaphoneMatchMemberStatus?
   receiverStatus   MegaphoneMatchMemberStatus?
   createdAt        DateTime                    @default(now())
   updatedAt        DateTime                    @updatedAt

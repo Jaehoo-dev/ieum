@@ -4,7 +4,7 @@ import { assert, calculateBmi } from "@ieum/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { BasicMemberWithJoined } from "~/domains/basic/types";
+import { BasicMemberWithBasicMatchesJoined } from "~/domains/basic/types";
 import { ConditionPrioritiesField } from "~/page-components/basic/components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
@@ -114,7 +114,10 @@ function Resolved() {
   );
 }
 
-function memberToForm({ idealType, ...member }: BasicMemberWithJoined) {
+function memberToForm({
+  idealType,
+  ...member
+}: BasicMemberWithBasicMatchesJoined) {
   assert(idealType != null, "idealType must not be null");
 
   return {

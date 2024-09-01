@@ -13,7 +13,7 @@ import { match } from "ts-pattern";
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Layout } from "~/components/Layout";
 import { api } from "~/utils/api";
-import { RespondField } from "../../components/RespondField";
+import { BasicMatchRespondField } from "../../components/BasicMatchRespondField";
 
 interface Form {
   statuses: { value: MatchStatus }[];
@@ -215,11 +215,14 @@ export function BasicMemberMatchHistoryPage() {
                   <div className="flex items-center gap-10">
                     <div className="flex items-center gap-1">
                       <span className="text-2xl">👈</span>
-                      <RespondField actionMember={basicMember!} match={match} />
+                      <BasicMatchRespondField
+                        actionMember={basicMember!}
+                        match={match}
+                      />
                     </div>
                     <div className="flex items-center gap-1">
                       <span className="text-2xl">👆</span>
-                      <RespondField
+                      <BasicMatchRespondField
                         actionMember={matchedMember}
                         match={match}
                       />

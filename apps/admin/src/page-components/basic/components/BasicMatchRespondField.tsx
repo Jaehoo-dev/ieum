@@ -2,16 +2,16 @@ import type { BasicMatchV2, BasicMemberV2 } from "@ieum/prisma";
 
 import type {
   BasicMatchWithMembers,
-  BasicMemberWithJoined,
+  BasicMemberWithBasicMatchesJoined,
 } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 
 interface Props {
-  actionMember: BasicMemberWithJoined;
+  actionMember: BasicMemberWithBasicMatchesJoined;
   match: BasicMatchWithMembers;
 }
 
-export function RespondField({ actionMember, match }: Props) {
+export function BasicMatchRespondField({ actionMember, match }: Props) {
   return (
     <div className="flex items-center gap-2">
       <span>{`응답: ${getMemberMatchStatusLabel(match, actionMember)}`}</span>
