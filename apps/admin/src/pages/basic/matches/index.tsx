@@ -1,1 +1,1 @@
-export { BasicMatchHistoryPage as default } from "~/page-components/basic/matches/BasicMatchHistoryPage";
+export { MatchHistoryPage as default } from "~/page-components/basic/matches/MatchHistoryPage";

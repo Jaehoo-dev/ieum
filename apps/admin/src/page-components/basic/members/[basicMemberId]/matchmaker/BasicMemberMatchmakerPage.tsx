@@ -45,7 +45,7 @@ import { Checkbox } from "~/components/Checkbox";
 import { Layout } from "~/components/Layout";
 import { Select } from "~/components/Select";
 import { TextInput } from "~/components/TextInput";
-import type { BasicMemberWithJoined } from "~/domains/basic/types";
+import type { BasicMemberWithBasicMatchesJoined } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 import { CreateBasicMatchButton } from "./components/CreateBasicMatchButton";
 import { CreateMegaphoneButton } from "./components/CreateMegaphoneButton";
@@ -198,7 +198,7 @@ function Resolved() {
                   return (
                     <div key={member.id} className="flex w-full gap-3">
                       <BasicMemberCard
-                        member={member as BasicMemberWithJoined}
+                        member={member as BasicMemberWithBasicMatchesJoined}
                       />
                       <div className="flex flex-col gap-2">
                         <button
