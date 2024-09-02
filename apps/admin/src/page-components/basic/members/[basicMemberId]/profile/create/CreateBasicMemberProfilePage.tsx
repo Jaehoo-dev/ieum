@@ -80,6 +80,8 @@ function Resolved() {
         characteristic: member.characteristics,
         lifePhilosophy: member.lifePhilosophy,
         datingStyle: member.datingStyle,
+        contactStyle: member.contactStyle,
+        marriagePlan: member.marriagePlan,
         isSmoker: member.isSmoker ? "예" : "아니요",
         religion: 종교_라벨[member.religion],
         selfIntroduction: member.selfIntroduction,
@@ -213,6 +215,24 @@ function Resolved() {
           label="데이트 스타일"
           error={errors.profile?.datingStyle != null}
           {...register("profile.datingStyle", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+        <TextareaInput
+          label="연락"
+          error={errors.profile?.contactStyle != null}
+          {...register("profile.contactStyle", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+        <TextareaInput
+          label="결혼관"
+          error={errors.profile?.marriagePlan != null}
+          {...register("profile.marriagePlan", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },

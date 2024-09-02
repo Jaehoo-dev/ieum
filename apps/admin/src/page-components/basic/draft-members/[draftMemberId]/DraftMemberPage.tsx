@@ -58,6 +58,8 @@ function Resolved() {
       hasTattoo,
       hasPet,
       datingStyle,
+      contactStyle,
+      marriagePlan,
       selfIntroduction,
       idealMinAgeBirthYear,
       idealMaxAgeBirthYear,
@@ -213,6 +215,16 @@ function Resolved() {
           <TextInput
             label="데이트 스타일"
             value={datingStyle}
+            disabled={true}
+          />
+          <TextInput
+            label="연락"
+            value={contactStyle ?? "null"}
+            disabled={true}
+          />
+          <TextInput
+            label="결혼관"
+            value={marriagePlan ?? "null"}
             disabled={true}
           />
           <TextareaInput

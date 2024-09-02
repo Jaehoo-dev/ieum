@@ -791,6 +791,8 @@ export function SelfSurvey({ onBack, onNext }: Props) {
                 "hasCar",
                 "hasPet",
                 "datingStyle",
+                "contactStyle",
+                "marriagePlan",
                 "selfIntroduction",
                 "imageBucketPaths",
                 "videoBucketPaths",
