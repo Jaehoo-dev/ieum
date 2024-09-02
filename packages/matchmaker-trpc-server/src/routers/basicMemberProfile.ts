@@ -100,6 +100,9 @@ export const basicMemberProfileRouter = createTRPCRouter({
         data: z.object({
           selfIntroduction: z.string().nullish(),
           idealTypeDescription: z.string().nullish(),
+          datingStyle: z.string().nullish(),
+          contactStyle: z.string().nullish(),
+          marriagePlan: z.string().nullish(),
         }),
       }),
     )

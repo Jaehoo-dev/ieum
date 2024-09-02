@@ -65,6 +65,9 @@ function Resolved() {
     defaultValues: {
       selfIntroduction: profile.selfIntroduction,
       idealTypeDescription: profile.idealTypeDescription,
+      datingStyle: profile.datingStyle,
+      contactStyle: profile.contactStyle,
+      marriagePlan: profile.marriagePlan,
     },
   });
   const { mutateAsync: updateProfile } =
@@ -75,7 +78,13 @@ function Resolved() {
     <form
       className="mb-24 flex flex-col gap-6"
       onSubmit={handleSubmit(
-        async ({ selfIntroduction, idealTypeDescription }) => {
+        async ({
+          selfIntroduction,
+          idealTypeDescription,
+          datingStyle,
+          contactStyle,
+          marriagePlan,
+        }) => {
           sendMessage({
             content: `${formatUniqueMemberName(
               member,
@@ -91,6 +100,9 @@ function Resolved() {
               idealTypeDescription: dirtyFields.idealTypeDescription
                 ? idealTypeDescription
                 : undefined,
+              datingStyle: dirtyFields.datingStyle ? datingStyle : undefined,
+              contactStyle: dirtyFields.contactStyle ? contactStyle : undefined,
+              marriagePlan: dirtyFields.marriagePlan ? marriagePlan : undefined,
             },
           });
 
@@ -116,6 +128,42 @@ function Resolved() {
           className="w-full rounded-lg border border-gray-300 p-4 outline-primary-500"
           rows={8}
           {...register("idealTypeDescription", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">데이트 스타일</span>
+        <textarea
+          className="w-full rounded-lg border border-gray-300 p-4 outline-primary-500"
+          rows={2}
+          {...register("datingStyle", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">연락 주기/방식</span>
+        <textarea
+          className="w-full rounded-lg border border-gray-300 p-4 outline-primary-500"
+          rows={2}
+          {...register("contactStyle", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span className="text-lg font-semibold">결혼관</span>
+        <textarea
+          className="w-full rounded-lg border border-gray-300 p-4 outline-primary-500"
+          rows={2}
+          {...register("marriagePlan", {
             setValueAs: (value: string | null) => {
               return isEmptyStringOrNil(value) ? null : value;
             },
