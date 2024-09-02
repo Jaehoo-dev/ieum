@@ -353,6 +353,8 @@ model DraftBasicMember {
   hasTattoo               Boolean
   hasPet                  Boolean
   datingStyle             String
+  contactStyle            String?
+  marriagePlan            String?
   selfIntroduction        String
   images                  DraftMemberImage[]
   videos                  DraftMemberVideo[]
