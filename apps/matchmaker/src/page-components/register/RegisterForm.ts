@@ -44,6 +44,8 @@ export type RegisterForm = {
   hasTattoo: boolean | null;
   hasPet: boolean | null;
   datingStyle: string;
+  contactStyle: string;
+  marriagePlan: string;
   selfIntroduction: string;
   imageBucketPaths: string[];
   videoBucketPaths: string[];
@@ -106,6 +108,8 @@ const defaultRegisterForm: RegisterForm = {
   hasTattoo: null,
   hasPet: null,
   datingStyle: "",
+  contactStyle: "",
+  marriagePlan: "",
   selfIntroduction: "",
   imageBucketPaths: [],
   videoBucketPaths: [],
