@@ -50,6 +50,8 @@ export const draftMemberRouter = createTRPCRouter({
         hasTattoo: z.boolean(),
         hasPet: z.boolean(),
         datingStyle: z.string(),
+        contactStyle: z.string(),
+        marriagePlan: z.string().nullable(),
         selfIntroduction: z.string(),
         imageBucketPaths: z.string().array(),
         videoBucketPaths: z.string().array(),
