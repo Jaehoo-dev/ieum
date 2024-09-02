@@ -32,6 +32,10 @@ export function Profile({
     idealTypeDescription,
     member: { images, videos, audios },
   } = profile;
+  const hasDatingStyleInfo =
+    profile.datingStyle != null ||
+    profile.contactStyle != null ||
+    profile.marriagePlan != null;
 
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
@@ -54,6 +58,9 @@ export function Profile({
         profile={profile}
         defaultOpened={selfIntroduction == null || defaultOpened}
       />
+      {hasDatingStyleInfo ? (
+        <DatingStyleSection profile={profile} defaultOpened={defaultOpened} />
+      ) : null}
       {idealTypeDescription != null ? (
         <IdealTypeDescriptionSection
           content={idealTypeDescription}
@@ -93,7 +100,6 @@ function PersonalInformationSection({
     hobby,
     characteristic,
     lifePhilosophy,
-    datingStyle,
     isSmoker,
     religion,
   } = profile;
@@ -123,11 +129,37 @@ function PersonalInformationSection({
         {lifePhilosophy != null ? (
           <DataField label="인생관" value={lifePhilosophy} />
         ) : null}
+        <DataField label="흡연 여부" value={isSmoker} />
+        {religion != null ? <DataField label="종교" value={religion} /> : null}
+      </div>
+    </AccordionSection>
+  );
+}
+
+function DatingStyleSection({
+  defaultOpened,
+  profile,
+}: {
+  defaultOpened: boolean;
+  profile: BasicMemberProfileWithMediaSources;
+}) {
+  const { datingStyle, contactStyle, marriagePlan } = profile;
+
+  return (
+    <AccordionSection
+      title="연애할 땐 이런 유형이에요"
+      defaultOpened={defaultOpened}
+    >
+      <div className="flex flex-col gap-0.5">
         {datingStyle != null ? (
           <DataField label="데이트 스타일" value={datingStyle} />
         ) : null}
-        <DataField label="흡연 여부" value={isSmoker} />
-        {religion != null ? <DataField label="종교" value={religion} /> : null}
+        {contactStyle != null ? (
+          <DataField label="연락" value={contactStyle} />
+        ) : null}
+        {marriagePlan != null ? (
+          <DataField label="결혼관" value={marriagePlan} />
+        ) : null}
       </div>
     </AccordionSection>
   );
