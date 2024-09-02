@@ -34,6 +34,11 @@ const Region = {
   "인천/부천": "INCHEON_BUCHEON",
   "한 시간 이내": "WITHIN_ONE_HOUR",
   수도권: "SEOUL_OR_GYEONGGI",
+  경상권: "GYEONGSANG",
+  충청권: "CHUNGCHEONG",
+  전라권: "JEOLLA",
+  강원권: "GANGWON",
+  제주: "JEJU",
   기타: "OTHER",
 } as const;
 
@@ -46,6 +51,11 @@ export const 지역_라벨: Record<Region, string> = {
   [Region["인천/부천"]]: "인천/부천",
   [Region["한 시간 이내"]]: "한 시간 이내",
   [Region["수도권"]]: "서울 또는 경기권이면 상관없음",
+  [Region["경상권"]]: "경상권",
+  [Region["충청권"]]: "충청권",
+  [Region["전라권"]]: "전라권",
+  [Region["강원권"]]: "강원권",
+  [Region["제주"]]: "제주",
   [Region.기타]: "기타",
 } as const;
 
