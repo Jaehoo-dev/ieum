@@ -458,6 +458,7 @@ model BasicMemberProfileV2 {
   id                   String        @id @default(cuid())
   member               BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
   memberId             String        @unique
+
   birthYear            Int
   residence            String
   height               Float
@@ -469,11 +470,15 @@ model BasicMemberProfileV2 {
   hobby                String?
   characteristic       String?
   lifePhilosophy       String?
-  datingStyle          String?
   isSmoker             String
   religion             String
+
   selfIntroduction     String?
   idealTypeDescription String?
+
+  datingStyle          String?
+  contactStyle         String?
+  marriagePlan         String?
 }
 
 model BasicMatchV2 {
