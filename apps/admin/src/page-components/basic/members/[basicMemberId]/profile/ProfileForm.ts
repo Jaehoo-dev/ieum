@@ -15,6 +15,8 @@ export interface ProfileForm {
     characteristic: string | null;
     lifePhilosophy: string | null;
     datingStyle: string | null;
+    contactStyle: string | null;
+    marriagePlan: string | null;
     isSmoker: string;
     religion: string;
     selfIntroduction: string | null;

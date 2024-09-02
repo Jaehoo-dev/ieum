@@ -209,12 +209,14 @@ model BasicMemberV2 {
   hasCar                  Boolean
   doesGame                Boolean?
   gameType                String?
+  hasPet                  Boolean
   datingStyle             String?
+  contactStyle            String?
   contactFrequency        ContactFrequency?
   customContactFrequency  String?
   contactMethod           ContactMethod?
   customContactMethod     String?
-  hasPet                  Boolean
+  marriagePlan            String?
   selfIntroduction        String?
   images                  MemberImageV2[]
   videos                  MemberVideoV2[]

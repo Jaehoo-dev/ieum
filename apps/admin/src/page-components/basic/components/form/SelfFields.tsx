@@ -374,6 +374,22 @@ export function SelfFields() {
           },
         })}
       />
+      <TextInput
+        label="연락"
+        {...register("self.contactStyle", {
+          setValueAs: (value: string | null) => {
+            return isEmptyStringOrNil(value) ? null : value;
+          },
+        })}
+      />
+      <TextInput
+        label="결혼관"
+        {...register("self.marriagePlan", {
+          setValueAs: (value: string | null) => {
+            return isEmptyStringOrNil(value) ? null : value;
+          },
+        })}
+      />
       <TextareaInput
         label="나는 이런 사람이에요"
         {...register("self.selfIntroduction", {

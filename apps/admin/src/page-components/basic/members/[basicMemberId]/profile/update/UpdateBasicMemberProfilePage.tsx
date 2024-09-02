@@ -181,6 +181,24 @@ function Resolved() {
             },
           })}
         />
+        <TextareaInput
+          label="연락"
+          error={errors.profile?.contactStyle != null}
+          {...register("profile.contactStyle", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
+        <TextareaInput
+          label="결혼관"
+          error={errors.profile?.marriagePlan != null}
+          {...register("profile.marriagePlan", {
+            setValueAs: (value: string | null) => {
+              return isEmptyStringOrNil(value) ? null : value;
+            },
+          })}
+        />
         <TextInput
           label="흡연"
           {...register("profile.isSmoker", {

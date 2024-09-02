@@ -83,6 +83,8 @@ export function DetailedSelfFields({ member }: Props) {
       </div>
       <div>반려동물 유무: {member.hasPet ? "예" : "아니요"}</div>
       <div>데이트: {member.datingStyle}</div>
+      <div>연락: {member.contactStyle}</div>
+      <div>결혼관: {member.marriagePlan}</div>
       <div>자기소개: {member.selfIntroduction}</div>
     </div>
   );

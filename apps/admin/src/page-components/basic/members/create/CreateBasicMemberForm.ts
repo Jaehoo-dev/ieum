@@ -56,6 +56,8 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     doesGame: null,
     gameType: null,
     datingStyle: null,
+    contactStyle: null,
+    marriagePlan: null,
     contactFrequency: null,
     customContactFrequency: null,
     contactMethod: null,
