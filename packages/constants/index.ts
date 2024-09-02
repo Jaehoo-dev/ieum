@@ -49,13 +49,13 @@ export const 지역_라벨: Record<Region, string> = {
   [Region["경기 남부"]]: "경기 남부",
   [Region["경기 북부"]]: "경기 북부",
   [Region["인천/부천"]]: "인천/부천",
-  [Region["한 시간 이내"]]: "한 시간 이내",
   [Region["수도권"]]: "수도권(서울/인천/경기도)",
   [Region["경상권"]]: "경상권",
   [Region["충청권"]]: "충청권",
   [Region["전라권"]]: "전라권",
   [Region["강원권"]]: "강원권",
   [Region["제주"]]: "제주",
+  [Region["한 시간 이내"]]: "한 시간 이내",
   [Region.기타]: "기타",
 } as const;
 
