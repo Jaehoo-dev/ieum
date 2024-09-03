@@ -12,11 +12,11 @@ export function Welcome({ onNext }: Props) {
       />
       <div className="mt-2 flex w-full flex-col gap-8 p-8">
         <div className="flex flex-col gap-6">
-          <h1 className="text-xl font-medium text-gray-800">
+          <h1 className="text-lg font-medium text-gray-800">
             안녕하세요! 이 설문은 이음💘 설문 체험판으로, 실제 설문의
             일부입니다.
           </h1>
-          <h2 className="text-lg text-gray-700">
+          <h2 className="text-gray-500">
             개인을 특정할 수 있는 문항은 없으며, 답변을 저장하지 않으니 편하게
             둘러보세요. 😊
           </h2>
