@@ -94,16 +94,6 @@ export function MessagingPage() {
                 { staleTime: 0 },
               );
 
-            // const _members = members.filter((member) => {
-            //   const pendingMatches = member.pendingMatches.filter(
-            //     (match: BasicMatchV2) => {
-            //       return match.status === MatchStatus.PENDING;
-            //     },
-            //   );
-
-            //   return pendingMatches.length > 1;
-            // });
-
             replaceTargets(
               members.map((member) => {
                 return {
@@ -126,10 +116,12 @@ export function MessagingPage() {
                   <div key={field.id} className="flex flex-row gap-2">
                     <TextInput
                       readOnly={true}
+                      disabled={true}
                       {...register(`targets.${index}.value.name`)}
                     />
                     <TextInput
                       readOnly={true}
+                      disabled={true}
                       error={
                         errors.targets?.[index]?.value?.phoneNumber != null
                       }
