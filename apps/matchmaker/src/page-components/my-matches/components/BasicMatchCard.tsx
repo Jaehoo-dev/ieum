@@ -37,7 +37,7 @@ export function BasicMatchCard({
 
   const 남은_시간 = calculateRemainingHours({
     sentAt: match.sentAt,
-    durationHours: 24,
+    durationHours: BASIC_MATCH_DURATION_HOURS,
   });
 
   return (
@@ -62,3 +62,5 @@ export function BasicMatchCard({
     </button>
   );
 }
+
+const BASIC_MATCH_DURATION_HOURS = 24;
