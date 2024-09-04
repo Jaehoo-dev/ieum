@@ -42,21 +42,20 @@ export function BasicMatchCard({
 
   return (
     <button
-      className="flex w-full rounded-lg bg-gray-100 p-5 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
+      className="flex w-full rounded-lg bg-gray-100 p-4 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
       onClick={() => {
         onClick?.();
         void router.push(`/my-matches/basic/${match.id}`);
       }}
       disabled={disabled}
     >
-      <div className="flex flex-col items-start gap-2">
-        <p className="text-xl font-semibold text-gray-800">{`💌 ${format(
-          match.sentAt,
-          "M월 d일",
-        )} 매칭`}</p>
-        <p className="text-xl text-gray-600">{`⏰ ${남은_시간}시간 남음`}</p>
+      <div className="flex flex-col items-start gap-1">
+        <p className="font-semibold text-gray-800">
+          {`💌 ${format(match.sentAt, "M월d일")}`}
+        </p>
+        <p className="text-gray-600">{`⏰ ${남은_시간}시간 남음`}</p>
         {showLabel && displayStatus != null ? (
-          <p className="text-xl">{`🚦 ${getStatusLabel(displayStatus)}`}</p>
+          <p>{`🚦 ${getStatusLabel(displayStatus)}`}</p>
         ) : null}
       </div>
     </button>
