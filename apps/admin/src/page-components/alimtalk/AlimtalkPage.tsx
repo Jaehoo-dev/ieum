@@ -91,10 +91,12 @@ export function AlimtalkPage() {
                   <div key={field.id} className="flex flex-row gap-2">
                     <TextInput
                       readOnly={true}
+                      disabled={true}
                       {...register(`targets.${index}.value.name`)}
                     />
                     <TextInput
                       readOnly={true}
+                      disabled={true}
                       error={
                         errors.targets?.[index]?.value?.phoneNumber != null
                       }
