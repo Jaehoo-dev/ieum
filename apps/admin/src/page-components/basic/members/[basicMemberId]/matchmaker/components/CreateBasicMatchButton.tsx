@@ -1,5 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
 import { MatchStatus } from "@ieum/prisma";
+import { match } from "ts-pattern";
 
 import { api } from "~/utils/api";
 
@@ -41,7 +42,10 @@ export function CreateBasicMatchButton({
       disabled={disabled || isPending}
       {...props}
     >
-      Backlog
+      {match(targetStatus)
+        .with(MatchStatus.BACKLOG, () => "백로그")
+        .with(MatchStatus.PREPARING, () => "준비중")
+        .exhaustive()}
     </button>
   );
 }
