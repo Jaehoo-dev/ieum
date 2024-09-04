@@ -26,7 +26,7 @@ function KakaoBrowserFallback() {
   );
 }
 
-export function MyMatchPage() {
+export function BasicMatchPage() {
   return (
     <KakaoBrowserOnly fallback={<KakaoBrowserFallback />}>
       <Suspense fallback={null}>
@@ -213,6 +213,6 @@ function Buttons({
   );
 }
 
-MyMatchPage.getLayout = function getLayout(page: ReactElement) {
+BasicMatchPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout title="상대방 프로필">{page}</Layout>;
 };

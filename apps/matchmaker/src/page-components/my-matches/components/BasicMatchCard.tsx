@@ -1,0 +1,64 @@
+import { useRouter } from "next/router";
+import type { BasicMatchV2 } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
+import { format } from "date-fns";
+
+import { Member } from "~/providers/MemberAuthProvider";
+import { api } from "~/utils/api";
+import { calculateRemainingHours } from "../utils/calculateRemainingHours";
+import { getStatusLabel } from "../utils/getStatusLabel";
+
+interface Props {
+  match: BasicMatchV2;
+  selfMember: Member;
+  showLabel: boolean;
+  disabled: boolean;
+  onClick?: () => void;
+}
+
+export function BasicMatchCard({
+  match,
+  selfMember,
+  showLabel,
+  onClick,
+  disabled,
+}: Props) {
+  const router = useRouter();
+  const { data: displayStatus } =
+    api.basicMatchRouter.getDisplayStatus.useQuery(
+      {
+        matchId: match.id,
+        memberId: selfMember.id,
+      },
+      { enabled: showLabel },
+    );
+
+  assert(match.sentAt != null, "Match should have sentAt");
+
+  const 남은_시간 = calculateRemainingHours({
+    sentAt: match.sentAt,
+    durationHours: 24,
+  });
+
+  return (
+    <button
+      className="flex w-full rounded-lg bg-gray-100 p-5 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
+      onClick={() => {
+        onClick?.();
+        void router.push(`/my-matches/basic/${match.id}`);
+      }}
+      disabled={disabled}
+    >
+      <div className="flex flex-col items-start gap-2">
+        <p className="text-xl font-semibold text-gray-800">{`💌 ${format(
+          match.sentAt,
+          "M월 d일",
+        )} 매칭`}</p>
+        <p className="text-xl text-gray-600">{`⏰ ${남은_시간}시간 남음`}</p>
+        {showLabel && displayStatus != null ? (
+          <p className="text-xl">{`🚦 ${getStatusLabel(displayStatus)}`}</p>
+        ) : null}
+      </div>
+    </button>
+  );
+}

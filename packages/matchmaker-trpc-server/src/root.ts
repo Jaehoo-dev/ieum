@@ -4,6 +4,7 @@ import { basicMemberRouter } from "./routers/basicMember";
 import { basicMemberIdealTypeRouter } from "./routers/basicMemberIdealType";
 import { basicMemberProfileRouter } from "./routers/basicMemberProfile";
 import { draftMemberRouter } from "./routers/draftMember";
+import { megaphoneMatchRouter } from "./routers/megaphoneMatch";
 import { reviewRouter } from "./routers/review";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   basicMemberProfileRouter,
   basicMatchIndexRouter,
   draftMemberRouter,
+  megaphoneMatchRouter,
   reviewRouter,
 });
 
