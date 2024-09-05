@@ -6,8 +6,9 @@ interface Props {
     MegaphoneMatch,
     "id" | "status" | "sentToReceiverAt" | "receiverStatus" | "receiverId"
   >;
-  onClick?: () => void;
+  showLabel: boolean;
   disabled: boolean;
+  onClick?: () => void;
 }
 
 export function MegaphoneMatchCard({ match, onClick, disabled }: Props) {
