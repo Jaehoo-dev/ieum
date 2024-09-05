@@ -7,10 +7,10 @@ import {
 } from "@ieum/utils";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const basicMemberRouter = createTRPCRouter({
-  findByPhoneNumber: publicProcedure
+  findByPhoneNumber: protectedProcedure
     .input(
       z.object({
         phoneNumber: z.string(),
@@ -35,7 +35,7 @@ export const basicMemberRouter = createTRPCRouter({
         },
       });
     }),
-  getReferralCode: publicProcedure
+  getReferralCode: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -49,7 +49,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.referralCode;
     }),
-  getDiscountCouponCount: publicProcedure
+  getDiscountCouponCount: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -63,7 +63,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.discountCouponCount;
     }),
-  getBlacklist: publicProcedure
+  getBlacklist: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -77,7 +77,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.blacklistedPhoneNumbers;
     }),
-  addToBlacklist: publicProcedure
+  addToBlacklist: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -103,7 +103,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  removeFromBlacklist: publicProcedure
+  removeFromBlacklist: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -136,7 +136,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  getStatus: publicProcedure
+  getStatus: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -157,7 +157,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.status;
     }),
-  requestActivation: publicProcedure
+  requestActivation: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({

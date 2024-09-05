@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ieum/constants": "*",
+    "@ieum/firebase-admin": "*",
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
     "@ieum/utils": "*",

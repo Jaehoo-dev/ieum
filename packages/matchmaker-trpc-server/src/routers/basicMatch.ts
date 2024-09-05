@@ -5,10 +5,10 @@ import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const basicMatchRouter = createTRPCRouter({
-  getDisplayStatus: publicProcedure
+  getDisplayStatus: protectedProcedure
     .input(
       z.object({
         matchId: z.string(),
@@ -37,7 +37,7 @@ export const basicMatchRouter = createTRPCRouter({
 
       return match.status;
     }),
-  findActiveMatchesByMemberId: publicProcedure
+  findActiveMatchesByMemberId: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -77,7 +77,7 @@ export const basicMatchRouter = createTRPCRouter({
 
       return member.pendingMatches;
     }),
-  findPastMatchesByMemberId: publicProcedure
+  findPastMatchesByMemberId: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -186,7 +186,7 @@ export const basicMatchRouter = createTRPCRouter({
         acceptedByMember: member.acceptedMatches,
       };
     }),
-  getMatchById: publicProcedure
+  getMatchById: protectedProcedure
     .input(
       z.object({
         matchId: z.string(),
@@ -225,7 +225,7 @@ export const basicMatchRouter = createTRPCRouter({
         },
       });
     }),
-  getMatchTargetMemberProfile: publicProcedure
+  getMatchTargetMemberProfile: protectedProcedure
     .input(
       z.object({
         selfMemberId: z.string(),
@@ -390,7 +390,7 @@ export const basicMatchRouter = createTRPCRouter({
 
       return targetMember.profile;
     }),
-  reject: publicProcedure
+  reject: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -514,7 +514,7 @@ export const basicMatchRouter = createTRPCRouter({
 
       return true;
     }),
-  accept: publicProcedure
+  accept: protectedProcedure
     .input(z.object({ memberId: z.string(), matchId: z.string() }))
     .mutation(async ({ ctx, input: { memberId, matchId } }) => {
       const match = await ctx.prisma.basicMatchV2.findUniqueOrThrow({

@@ -16,10 +16,10 @@ import {
 import { assert } from "@ieum/utils";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const basicMatchIndexRouter = createTRPCRouter({
-  getMatchIndex: publicProcedure
+  getMatchIndex: protectedProcedure
     .input(
       z.object({
         memberId: z.string(),
