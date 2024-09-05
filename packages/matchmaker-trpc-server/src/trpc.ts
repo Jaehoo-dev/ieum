@@ -88,7 +88,7 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-const authMiddleware = t.middleware(async ({ ctx, next }) => {
+const firebaseAuth = t.middleware(async ({ ctx, next }) => {
   const authHeader = ctx.headers.authorization;
 
   if (authHeader == null) {
@@ -117,4 +117,4 @@ const authMiddleware = t.middleware(async ({ ctx, next }) => {
   }
 });
 
-export const protectedProcedure = t.procedure.use(authMiddleware);
+export const protectedProcedure = t.procedure.use(firebaseAuth);
