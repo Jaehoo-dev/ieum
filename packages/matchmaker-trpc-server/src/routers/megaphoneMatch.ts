@@ -128,7 +128,12 @@ export const megaphoneMatchRouter = createTRPCRouter({
         .with(receiverId, () => {
           return 확성기_매치_참가자_유형.RECEIVER;
         })
-        .exhaustive();
+        .otherwise(() => {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Requested member is not in the match",
+          });
+        });
 
       assert(
         (selfMemberType === 확성기_매치_참가자_유형.RECEIVER &&
@@ -158,7 +163,12 @@ export const megaphoneMatchRouter = createTRPCRouter({
         .with(receiverId, () => {
           return senderId;
         })
-        .exhaustive();
+        .otherwise(() => {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Requested member is not in the match",
+          });
+        });
 
       const targetMemberProfile =
         await prisma.basicMemberProfileV2.findUniqueOrThrow({
