@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { BASIC_MATCH_DURATION_HOURS } from "@ieum/constants";
 import type { BasicMatchV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { format } from "date-fns";
@@ -61,5 +62,3 @@ export function BasicMatchCard({
     </button>
   );
 }
-
-const BASIC_MATCH_DURATION_HOURS = 24;

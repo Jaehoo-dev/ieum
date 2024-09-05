@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
+import { BASIC_MATCH_DURATION_HOURS } from "@ieum/constants";
 import { Profile } from "@ieum/profile";
 import { assert, krToKrHyphen } from "@ieum/utils";
 
@@ -57,7 +58,7 @@ function Resolved() {
     void sendMessage({
       content: `${formatUniqueMemberName(member)} - ${
         match.id
-      } 매칭 페이지 진입 / ${profile.id} 프로필 조회`,
+      } 기본 매치 페이지 진입 / ${profile.id} 프로필 조회`,
     });
   }, [match.id, member.name, profile.id, sendMessage]);
 
@@ -69,7 +70,7 @@ function Resolved() {
     void sendMessage({
       content: `${formatUniqueMemberName(member)} - ${
         match.id
-      } 매칭 페이지 진입 -> redirect to /my-matches`,
+      } 기본 매치 페이지 -> redirect to /my-matches`,
     });
 
     router.replace("/my-matches");
@@ -144,7 +145,7 @@ function Buttons({
   return (
     <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t border-gray-200 bg-white p-4 pt-2 md:px-6">
       <span className="text-center text-sm text-gray-600">
-        ※ 24시간 이상 무응답 시 휴면회원으로 전환합니다
+        {`※ ${BASIC_MATCH_DURATION_HOURS}시간 무응답 시 휴면회원으로 전환합니다`}
       </span>
       <div className="flex w-full gap-3">
         <button
@@ -166,7 +167,7 @@ function Buttons({
               matchId,
             });
             alert("거절하셨습니다. 더 잘 맞는 분을 찾아 드릴게요.");
-            void router.push("/my-matches");
+            void router.replace("/my-matches");
           }}
           disabled={isRejecting || isAccepting}
         >
@@ -190,8 +191,8 @@ function Buttons({
               memberId,
               matchId,
             });
-            alert("수락하셨습니다. 성사되면 호스트가 연락 드릴게요!");
-            void router.push("/my-matches");
+            alert("수락하셨습니다. 성사되면 호스트가 연락드릴게요!");
+            void router.replace("/my-matches");
           }}
           disabled={isAccepting || isRejecting}
         >

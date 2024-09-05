@@ -1,3 +1,4 @@
+import { BASIC_MATCH_DURATION_HOURS_EXTENDED } from "@ieum/constants";
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
 import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
@@ -60,7 +61,7 @@ export const basicMatchRouter = createTRPCRouter({
             where: {
               status: MatchStatus.PENDING,
               sentAt: {
-                gt: subHours(new Date(), 25),
+                gt: subHours(new Date(), BASIC_MATCH_DURATION_HOURS_EXTENDED),
               },
             },
             orderBy: {
