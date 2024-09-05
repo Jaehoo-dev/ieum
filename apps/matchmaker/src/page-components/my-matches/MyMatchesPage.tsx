@@ -144,7 +144,7 @@ function PastMatchesSectionResolved() {
               내가 수락한 매칭
             </h3>
             <Description />
-            <div className="flex w-full flex-col items-center gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {수락한_매칭들.map((match) => {
                 return (
                   <BasicMatchCard
@@ -171,7 +171,7 @@ function PastMatchesSectionResolved() {
             <h3 className="text-lg font-semibold text-gray-800">
               내가 거절한 매칭
             </h3>
-            <div className="flex w-full flex-col items-center gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {거절한_매칭들.map((match) => {
                 return (
                   <BasicMatchCard
