@@ -6,10 +6,10 @@ import {
 import { subHours } from "date-fns";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const megaphoneMatchRouter = createTRPCRouter({
-  findActiveMatchesAsReceiverByMemberId: publicProcedure
+  findActiveMatchesAsReceiverByMemberId: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({

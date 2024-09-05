@@ -4,6 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
+import { getFirebaseIdToken } from "@ieum/firebase";
 import type { AppRouter } from "@ieum/matchmaker-trpc-server";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
@@ -39,6 +40,11 @@ export const api = createTRPCNext<AppRouter>({
            */
           transformer: superjson,
           url: `${getBaseUrl()}/api/trpc`,
+          headers: async () => {
+            const token = await getFirebaseIdToken();
+
+            return token != null ? { Authorization: `Bearer ${token}` } : {};
+          },
         }),
       ],
     };

@@ -7,13 +7,16 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
+import { getAuth } from "@ieum/firebase-admin";
 import { prisma } from "@ieum/prisma";
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+import { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 interface CreateContextOptions {
   session: null;
+  headers: CreateNextContextOptions["req"]["headers"];
 }
 
 /**
@@ -22,16 +25,16 @@ interface CreateContextOptions {
  */
 export async function createContextInner(opts: CreateContextOptions) {
   return {
+    headers: opts.headers,
     session: opts.session,
     prisma,
   };
 }
 
-export async function createTRPCContext() {
-  // for API-response caching see https://trpc.io/docs/v11/caching
-
+export async function createTRPCContext({ req }: CreateNextContextOptions) {
   return await createContextInner({
     session: null,
+    headers: req.headers,
   });
 }
 
@@ -84,3 +87,34 @@ export const createTRPCRouter = t.router;
  * can still access user session data if they are logged in
  */
 export const publicProcedure = t.procedure;
+
+const authMiddleware = t.middleware(async ({ ctx, next }) => {
+  const authHeader = ctx.headers.authorization;
+
+  if (authHeader == null) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (token == null) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(token);
+
+    return next({
+      ctx: {
+        ...ctx,
+        session: {
+          user: decodedToken,
+        },
+      },
+    });
+  } catch (err) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+});
+
+export const protectedProcedure = t.procedure.use(authMiddleware);

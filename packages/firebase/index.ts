@@ -20,4 +20,16 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
+export async function getFirebaseIdToken() {
+  const user = auth.currentUser;
+
+  if (user == null) {
+    return null;
+  }
+
+  const token = await user.getIdToken();
+
+  return token;
+}
+
 export * from "firebase/auth";
