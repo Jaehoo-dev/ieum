@@ -325,8 +325,28 @@ export const 음식종류_라벨: Record<CuisineType, string> = {
 export const primary500 = "#ff8271";
 
 export const 매치_유형 = {
-  기본: "basic",
-  확성기: "megaphone",
+  기본: "BASIC",
+  확성기: "MEGAPHONE",
 } as const;
 
 export type 매치_유형 = (typeof 매치_유형)[keyof typeof 매치_유형];
+
+export const 확성기_매치_참가자_유형 = {
+  SENDER: "SENDER",
+  RECEIVER: "RECEIVER",
+} as const;
+
+export type 확성기_매치_참가자_유형 =
+  (typeof 확성기_매치_참가자_유형)[keyof typeof 확성기_매치_참가자_유형];
+
+export const BASIC_MATCH_DURATION_HOURS = 24;
+export const BASIC_MATCH_DURATION_HOURS_EXTENDED =
+  BASIC_MATCH_DURATION_HOURS + 1;
+
+export const MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS = 72;
+export const MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED =
+  MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS + 1;
+
+export const MEGAPHONE_MATCH_SENDER_DURATION_HOURS = 24;
+export const MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED =
+  MEGAPHONE_MATCH_SENDER_DURATION_HOURS + 1;

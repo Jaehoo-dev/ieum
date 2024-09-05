@@ -359,7 +359,7 @@ export const basicMemberRouter = createTRPCRouter({
           where: {
             gender,
             status,
-            isMegaphoneUser: matchType === "megaphone" ? true : undefined,
+            isMegaphoneUser: matchType === 매치_유형.확성기 ? true : undefined,
           },
           include: {
             idealType: true,
