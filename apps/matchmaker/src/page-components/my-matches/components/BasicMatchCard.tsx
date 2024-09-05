@@ -51,7 +51,7 @@ export function BasicMatchCard({
     >
       <div className="flex flex-col items-start gap-1">
         <p className="font-semibold text-gray-800">
-          {`💌 ${format(match.sentAt, "M월d일")}`}
+          {`💌 ${format(match.sentAt, "M월d일")} 발송`}
         </p>
         <p className="text-gray-600">{`⏰ ${남은_시간}시간 남음`}</p>
         {showLabel && displayStatus != null ? (
