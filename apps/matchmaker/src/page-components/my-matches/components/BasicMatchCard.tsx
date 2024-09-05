@@ -9,7 +9,7 @@ import { calculateRemainingHours } from "../utils/calculateRemainingHours";
 import { getStatusLabel } from "../utils/getStatusLabel";
 
 interface Props {
-  match: BasicMatchV2;
+  match: Pick<BasicMatchV2, "id" | "sentAt">;
   selfMember: Member;
   showLabel: boolean;
   disabled: boolean;

@@ -66,6 +66,10 @@ export const basicMatchRouter = createTRPCRouter({
             orderBy: {
               sentAt: "desc",
             },
+            select: {
+              id: true,
+              sentAt: true,
+            },
           },
         },
       });
@@ -124,6 +128,10 @@ export const basicMatchRouter = createTRPCRouter({
             orderBy: {
               sentAt: "desc",
             },
+            select: {
+              id: true,
+              sentAt: true,
+            },
           },
           acceptedMatches: {
             where: {
@@ -161,6 +169,10 @@ export const basicMatchRouter = createTRPCRouter({
             },
             orderBy: {
               sentAt: "desc",
+            },
+            select: {
+              id: true,
+              sentAt: true,
             },
           },
         },
