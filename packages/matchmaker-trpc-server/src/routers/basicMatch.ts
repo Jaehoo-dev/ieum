@@ -69,6 +69,7 @@ export const basicMatchRouter = createTRPCRouter({
             select: {
               id: true,
               sentAt: true,
+              status: true,
             },
           },
         },
@@ -131,6 +132,7 @@ export const basicMatchRouter = createTRPCRouter({
             select: {
               id: true,
               sentAt: true,
+              status: true,
             },
           },
           acceptedMatches: {
@@ -173,6 +175,7 @@ export const basicMatchRouter = createTRPCRouter({
             select: {
               id: true,
               sentAt: true,
+              status: true,
             },
           },
         },
