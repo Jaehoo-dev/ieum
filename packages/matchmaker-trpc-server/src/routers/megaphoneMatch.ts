@@ -84,44 +84,99 @@ export const megaphoneMatchRouter = createTRPCRouter({
     }),
   findActiveMatchesAsSenderByMemberId: protectedProcedure
     .input(z.object({ memberId: z.string() }))
-    .query(({ ctx: { prisma }, input: { memberId } }) => {
-      // TODO: 일단은 상대방이 수락한 매치만 보여줌. 먼저 보내고 응답 대기 중인 매치도 보여줄지 결정 필요.
-      return prisma.megaphoneMatch.findMany({
-        where: {
-          senderId: memberId,
-          status: MatchStatus.PENDING,
-          sentToSenderAt: {
-            gt: subHours(
-              new Date(),
-              MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED,
-            ),
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const [pendingBySender, pendingByReceiverOrWaiting] = await Promise.all([
+        prisma.megaphoneMatch.findMany({
+          where: {
+            senderId: memberId,
+            status: MatchStatus.PENDING,
+            sentToSenderAt: {
+              gt: subHours(
+                new Date(),
+                MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED,
+              ),
+            },
+            senderStatus: MegaphoneMatchMemberStatus.PENDING,
+            receiverStatus: MegaphoneMatchMemberStatus.ACCEPTED,
+            sender: {
+              status: {
+                in: [
+                  MemberStatus.PENDING,
+                  MemberStatus.ACTIVE,
+                  MemberStatus.INACTIVE,
+                ],
+              },
+            },
+            receiver: {
+              status: {
+                in: [
+                  MemberStatus.PENDING,
+                  MemberStatus.ACTIVE,
+                  MemberStatus.INACTIVE,
+                ],
+              },
+            },
           },
-          senderStatus: MegaphoneMatchMemberStatus.PENDING,
-          receiverStatus: MegaphoneMatchMemberStatus.ACCEPTED,
-          sender: {
-            status: {
+          orderBy: {
+            sentToSenderAt: "desc",
+          },
+          select: {
+            id: true,
+            status: true,
+            sentToSenderAt: true,
+          },
+        }),
+        prisma.megaphoneMatch.findMany({
+          where: {
+            senderId: memberId,
+            status: MatchStatus.PENDING,
+            senderStatus: null,
+            receiverStatus: {
               in: [
-                MemberStatus.PENDING,
-                MemberStatus.ACTIVE,
-                MemberStatus.INACTIVE,
+                MegaphoneMatchMemberStatus.PENDING,
+                MegaphoneMatchMemberStatus.ACCEPTED,
               ],
             },
-          },
-          receiver: {
-            status: {
-              in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+            sentToReceiverAt: {
+              gt: subHours(
+                new Date(),
+                MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED,
+              ),
+            },
+            sender: {
+              status: {
+                in: [
+                  MemberStatus.PENDING,
+                  MemberStatus.ACTIVE,
+                  MemberStatus.INACTIVE,
+                ],
+              },
+            },
+            receiver: {
+              status: {
+                in: [
+                  MemberStatus.PENDING,
+                  MemberStatus.ACTIVE,
+                  MemberStatus.INACTIVE,
+                ],
+              },
             },
           },
-        },
-        orderBy: {
-          sentToSenderAt: "desc",
-        },
-        select: {
-          id: true,
-          status: true,
-          sentToSenderAt: true,
-        },
-      });
+          orderBy: {
+            sentToReceiverAt: "desc",
+          },
+          select: {
+            id: true,
+            status: true,
+            sentToReceiverAt: true,
+          },
+        }),
+      ]);
+
+      return {
+        pendingBySender,
+        pendingByReceiverOrWaiting,
+      };
     }),
   findPastMatchesAsSenderByMemberId: protectedProcedure
     .input(z.object({ memberId: z.string() }))

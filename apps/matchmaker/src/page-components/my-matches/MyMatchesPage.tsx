@@ -78,7 +78,7 @@ export function MyMatchesPage() {
           receiverNotification={activeMegaphoneMatchesAsReceiver.length > 0}
           senderNotification={
             activeMegaphoneMatchesAsSender != null &&
-            activeMegaphoneMatchesAsSender?.length > 0
+            activeMegaphoneMatchesAsSender.pendingBySender.length > 0
           }
         />
         <Suspense
@@ -88,7 +88,7 @@ export function MyMatchesPage() {
             </div>
           }
         >
-          <div className="flex w-full flex-col items-center gap-4">
+          <div className="flex w-full flex-col items-center gap-8">
             {matchPattern(matchType)
               .with(조회용_매치_유형.BASIC, () => {
                 return (
