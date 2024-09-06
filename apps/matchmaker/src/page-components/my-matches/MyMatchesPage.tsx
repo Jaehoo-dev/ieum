@@ -84,32 +84,34 @@ export function MyMatchesPage() {
             </div>
           }
         >
-          {matchPattern(matchType)
-            .with(조회용_매치_유형.BASIC, () => {
-              return (
-                <div className="flex w-full flex-col items-center gap-4">
-                  <ActiveBasicMatchesSectionResolved />
-                  <PastBasicMatchesSectionResolved />
-                </div>
-              );
-            })
-            .with(조회용_매치_유형.MEGAPHONE_RECEIVER, () => {
-              return (
-                <div className="flex w-full flex-col items-center gap-4">
-                  <ActiveMegaphoneMatchesSectionAsReceiverResolved />
-                  <PastMegaphoneMatchesAsReceiverSectionResolved />
-                </div>
-              );
-            })
-            .with(조회용_매치_유형.MEGAPHONE_SENDER, () => {
-              return activeMegaphoneMatchesAsSender != null ? (
-                <div className="flex w-full flex-col items-center gap-4">
-                  <ActiveMegaphoneMatchesSectionAsSenderResolved />
-                  <PastMegaphoneMatchesAsSenderSectionResolved />
-                </div>
-              ) : null;
-            })
-            .exhaustive()}
+          <div className="flex w-full flex-col items-center gap-4">
+            {matchPattern(matchType)
+              .with(조회용_매치_유형.BASIC, () => {
+                return (
+                  <>
+                    <ActiveBasicMatchesSectionResolved />
+                    <PastBasicMatchesSectionResolved />
+                  </>
+                );
+              })
+              .with(조회용_매치_유형.MEGAPHONE_RECEIVER, () => {
+                return (
+                  <>
+                    <ActiveMegaphoneMatchesSectionAsReceiverResolved />
+                    <PastMegaphoneMatchesAsReceiverSectionResolved />
+                  </>
+                );
+              })
+              .with(조회용_매치_유형.MEGAPHONE_SENDER, () => {
+                return activeMegaphoneMatchesAsSender != null ? (
+                  <>
+                    <ActiveMegaphoneMatchesSectionAsSenderResolved />
+                    <PastMegaphoneMatchesAsSenderSectionResolved />
+                  </>
+                ) : null;
+              })
+              .exhaustive()}
+          </div>
         </Suspense>
         <div className="my-4 flex justify-center">
           <TipsMenuLink />
