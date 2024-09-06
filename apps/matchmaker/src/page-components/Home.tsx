@@ -114,7 +114,7 @@ function Registered() {
 
   useEffect(() => {
     if (status === MemberStatus.INACTIVE) {
-      router.push("/my-status");
+      router.push("/settings");
     }
   }, []);
 

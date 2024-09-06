@@ -1,0 +1,31 @@
+import { ReactElement, Suspense } from "react";
+import Head from "next/head";
+
+import { Layout } from "~/components/Layout";
+import { MatchTypeSection } from "./_components/MatchTypeSection";
+import { StatusSection } from "./_components/StatusSection";
+
+export function SettingsPage() {
+  return (
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense>
+        <Resolved />
+      </Suspense>
+    </>
+  );
+}
+
+function Resolved() {
+  return (
+    <div className="flex flex-col gap-6">
+      <StatusSection />
+    </div>
+  );
+}
+
+SettingsPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout title="설정">{page}</Layout>;
+};
