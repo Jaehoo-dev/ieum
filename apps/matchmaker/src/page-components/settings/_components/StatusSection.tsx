@@ -24,7 +24,7 @@ export function StatusSectionResolved() {
 function Pending() {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold text-gray-700">내 상태</h2>
+      <Title />
       <p className="text-lg text-gray-700">심사 중</p>
     </div>
   );
@@ -33,7 +33,7 @@ function Pending() {
 function Active() {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold text-gray-700">내 상태</h2>
+      <Title />
       <p className="text-lg text-gray-700">활동 중</p>
     </div>
   );
@@ -54,7 +54,7 @@ function Inactive() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold text-gray-700">내 상태</h2>
+      <Title />
       <div className="flex items-center justify-between">
         <p className="text-lg text-gray-700">휴면</p>
         <button
@@ -76,4 +76,8 @@ function Inactive() {
       </div>
     </div>
   );
+}
+
+function Title() {
+  return <h2 className="text-xl font-semibold text-gray-700">내 계정 상태</h2>;
 }
