@@ -293,9 +293,14 @@ function Resolved() {
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <p className="text-sm text-gray-500">
-            ※ 조건 내용 변경은 호스트에게 요청해 주세요.
-          </p>
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-gray-500">
+              ※ 조건 내용 변경은 호스트에게 요청해 주세요.
+            </p>
+            <p className="text-sm text-gray-500">
+              ※ 이상형 조건은 상대방에게 공개하지 않습니다.
+            </p>
+          </div>
           <div className="flex flex-row items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-800">
               조건 우선순위
