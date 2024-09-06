@@ -52,11 +52,14 @@ export function Profile({
   return (
     <div className="flex w-full flex-col items-center gap-4" {...props}>
       {selfIntroduction != null ? (
-        <SelfIntroductionSection content={selfIntroduction} />
+        <SelfIntroductionSection
+          content={selfIntroduction}
+          defaultOpened={defaultOpened}
+        />
       ) : null}
       <PersonalInformationSection
         profile={profile}
-        defaultOpened={selfIntroduction == null || defaultOpened}
+        defaultOpened={defaultOpened}
       />
       {hasDatingStyleInfo ? (
         <DatingStyleSection profile={profile} defaultOpened={defaultOpened} />
@@ -165,9 +168,15 @@ function DatingStyleSection({
   );
 }
 
-function SelfIntroductionSection({ content }: { content: string }) {
+function SelfIntroductionSection({
+  content,
+  defaultOpened,
+}: {
+  content: string;
+  defaultOpened: boolean;
+}) {
   return (
-    <AccordionSection title="안녕하세요" defaultOpened={true}>
+    <AccordionSection title="안녕하세요" defaultOpened={defaultOpened}>
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
@@ -177,10 +186,10 @@ function SelfIntroductionSection({ content }: { content: string }) {
 
 function IdealTypeDescriptionSection({
   content,
-  defaultOpened = false,
+  defaultOpened,
 }: {
   content: string;
-  defaultOpened?: boolean;
+  defaultOpened: boolean;
 }) {
   return (
     <AccordionSection
@@ -196,10 +205,10 @@ function IdealTypeDescriptionSection({
 
 function AudioSection({
   audios,
-  defaultOpened = false,
+  defaultOpened,
 }: {
   audios: MemberAudio[];
-  defaultOpened?: boolean;
+  defaultOpened: boolean;
 }) {
   return (
     <AccordionSection
@@ -241,13 +250,13 @@ function VisualMediaSection({
   images,
   nameWatermark,
   numberWatermark,
-  defaultOpened = false,
+  defaultOpened,
 }: {
   videos: MemberVideoV2[];
   images: MemberImageV2[];
   nameWatermark: string;
   numberWatermark: string;
-  defaultOpened?: boolean;
+  defaultOpened: boolean;
 }) {
   return (
     <AccordionSection title="제 모습은요" defaultOpened={defaultOpened}>
