@@ -1,4 +1,7 @@
-import { BASIC_MATCH_DURATION_HOURS_EXTENDED } from "@ieum/constants";
+import {
+  BASIC_MATCH_DURATION_HOURS_EXTENDED,
+  MATCH_DISPLAY_DURATION_DAYS,
+} from "@ieum/constants";
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
 import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
@@ -124,7 +127,7 @@ export const basicMatchRouter = createTRPCRouter({
                 },
               },
               sentAt: {
-                gt: subDays(new Date(), 7),
+                gt: subDays(new Date(), MATCH_DISPLAY_DURATION_DAYS),
               },
             },
             orderBy: {
@@ -167,7 +170,7 @@ export const basicMatchRouter = createTRPCRouter({
                 },
               },
               sentAt: {
-                gt: subDays(new Date(), 7),
+                gt: subDays(new Date(), MATCH_DISPLAY_DURATION_DAYS),
               },
             },
             orderBy: {

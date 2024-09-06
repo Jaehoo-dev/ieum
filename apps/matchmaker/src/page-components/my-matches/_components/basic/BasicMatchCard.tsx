@@ -6,8 +6,8 @@ import { format } from "date-fns";
 
 import { Member } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { calculateRemainingHours } from "../utils/calculateRemainingHours";
-import { getStatusLabel } from "../utils/getStatusLabel";
+import { calculateRemainingHours } from "../../_utils/calculateRemainingHours";
+import { getStatusLabel } from "../../_utils/getStatusLabel";
 
 interface Props {
   match: Pick<BasicMatchV2, "id" | "sentAt" | "status">;
@@ -52,7 +52,7 @@ export function BasicMatchCard({
     >
       <div className="flex flex-col items-start gap-1">
         <p className="font-semibold text-gray-800">
-          {`💌 ${format(match.sentAt, "M월d일")} 발송`}
+          {`💌 ${format(match.sentAt, "M월d일")}`}
         </p>
         <p className="text-gray-600">{`⏰ ${남은_시간}시간 남음`}</p>
         {showLabel && displayStatus != null ? (

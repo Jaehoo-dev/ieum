@@ -6,6 +6,7 @@ import {
   MEGAPHONE_MATCH_SENDER_DURATION_HOURS,
   확성기_매치_참가자_유형,
 } from "@ieum/constants";
+import { MatchStatus } from "@ieum/prisma";
 import { Profile } from "@ieum/profile";
 import { assert, formatUniqueMemberName, krToKrHyphen } from "@ieum/utils";
 import { match } from "ts-pattern";
@@ -18,7 +19,8 @@ import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { KakaoBrowserFallback } from "../../components/KakaoBrowserFallback";
+import { KakaoBrowserFallback } from "../../_components/KakaoBrowserFallback";
+import { 조회용_매치_유형 } from "../../_enums";
 
 export function MegaphoneMatchPage() {
   return (
@@ -41,14 +43,21 @@ function Resolved() {
     return null;
   }
 
+  async function handleRouterReplace() {
+    return router.replace({
+      pathname: "/my-matches",
+      query: {
+        matchType:
+          selfMemberType === 확성기_매치_참가자_유형.SENDER
+            ? 조회용_매치_유형.MEGAPHONE_SENDER
+            : 조회용_매치_유형.MEGAPHONE_RECEIVER,
+      },
+    });
+  }
+
   const matchId = router.query.megaphoneMatchId as string;
   const [
-    {
-      selfMemberType,
-      isSelfMemberPending,
-      isMatchPending,
-      targetMemberProfile,
-    },
+    { selfMemberType, isSelfMemberPending, matchStatus, targetMemberProfile },
   ] = api.megaphoneMatchRouter.getMatchData.useSuspenseQuery({
     matchId,
     selfMemberId: member.id,
@@ -79,24 +88,25 @@ function Resolved() {
     });
   }, [matchId, member, sendMessage, targetMemberProfile]);
 
+  const forbidden =
+    matchStatus === MatchStatus.REJECTED ||
+    (matchStatus === MatchStatus.PENDING && !isSelfMemberPending);
+
   useEffect(() => {
-    if (isMatchPending && !isSelfMemberPending) {
+    if (forbidden) {
       void sendMessage({
         content: `${formatUniqueMemberName(
           member,
         )} - ${matchId} 확성기 매치 페이지 -> redirect to /my-matches`,
       });
 
-      router.replace("/my-matches");
+      handleRouterReplace();
     }
-  }, [
-    isMatchPending,
-    isSelfMemberPending,
-    matchId,
-    member,
-    router,
-    sendMessage,
-  ]);
+  }, [forbidden, isSelfMemberPending, matchId, member, router, sendMessage]);
+
+  if (forbidden) {
+    return null;
+  }
 
   return (
     <div className="flex w-full flex-col">
@@ -133,7 +143,7 @@ function Resolved() {
                 actionMemberId: member.id,
               });
               alert("거절하셨습니다. 더 잘 맞는 분을 찾아 드릴게요.");
-              router.replace("/my-matches");
+              await handleRouterReplace();
             },
             isPending: isRejecting,
           }}
@@ -176,7 +186,7 @@ function Resolved() {
                   })
                   .exhaustive(),
               );
-              router.replace("/my-matches");
+              await handleRouterReplace();
             },
             isPending: isAccepting,
           }}
@@ -218,14 +228,14 @@ function Buttons({
       </span>
       <div className="flex w-full gap-3">
         <button
-          className="flex-1 rounded-lg bg-gray-500 p-3 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-gray-500 p-3 text-lg text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={rejectButton.onClick}
           disabled={disabled}
         >
           {rejectButton.isPending ? "처리중.." : "거절"}
         </button>
         <button
-          className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-primary-500 p-3 text-lg text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
           onClick={acceptButton.onClick}
           disabled={disabled}
         >

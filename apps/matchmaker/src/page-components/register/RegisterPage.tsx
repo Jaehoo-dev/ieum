@@ -4,13 +4,13 @@ import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
 import { api } from "~/utils/api";
-import { Ending } from "./components/sections/Ending";
-import { IdealTypeSurvey } from "./components/sections/IdealTypeSurvey";
-import { PreIdealTypeSurvey } from "./components/sections/PreIdealTypeSurvey";
-import { PreSelfSurvey } from "./components/sections/PreSelfSurvey";
-import { SelfSurvey } from "./components/sections/SelfSurvey";
-import { Welcome } from "./components/sections/Welcome";
-import { WrapUp } from "./components/sections/WrapUp";
+import { Ending } from "./_components/sections/Ending";
+import { IdealTypeSurvey } from "./_components/sections/IdealTypeSurvey";
+import { PreIdealTypeSurvey } from "./_components/sections/PreIdealTypeSurvey";
+import { PreSelfSurvey } from "./_components/sections/PreSelfSurvey";
+import { SelfSurvey } from "./_components/sections/SelfSurvey";
+import { Welcome } from "./_components/sections/Welcome";
+import { WrapUp } from "./_components/sections/WrapUp";
 import { formToPayload, registerFormId, useRegisterForm } from "./RegisterForm";
 
 const steps = [

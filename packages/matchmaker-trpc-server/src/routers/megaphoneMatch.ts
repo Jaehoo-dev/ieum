@@ -1,4 +1,5 @@
 import {
+  MATCH_DISPLAY_DURATION_DAYS,
   MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED,
   MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED,
   확성기_매치_참가자_유형,
@@ -11,7 +12,7 @@ import {
 import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
-import { subHours } from "date-fns";
+import { subDays, subHours } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 import { z } from "zod";
 
@@ -20,13 +21,16 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const megaphoneMatchRouter = createTRPCRouter({
   findActiveMatchesAsReceiverByMemberId: protectedProcedure
     .input(z.object({ memberId: z.string() }))
-    .query(({ ctx: { prisma }, input: { memberId } }) => {
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
         where: {
-          status: MatchStatus.PENDING,
           receiverId: memberId,
+          status: MatchStatus.PENDING,
           sentToReceiverAt: {
-            gt: subHours(new Date(), 72),
+            gt: subHours(
+              new Date(),
+              MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED,
+            ),
           },
           receiverStatus: MegaphoneMatchMemberStatus.PENDING,
           receiver: {
@@ -49,8 +53,99 @@ export const megaphoneMatchRouter = createTRPCRouter({
           id: true,
           status: true,
           sentToReceiverAt: true,
-          receiverStatus: true,
-          receiverId: true,
+        },
+      });
+    }),
+  findPastMatchesAsReceiverByMemberId: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(({ ctx: { prisma }, input: { memberId } }) => {
+      return prisma.megaphoneMatch.findMany({
+        where: {
+          receiverId: memberId,
+          sentToReceiverAt: {
+            gt: subDays(new Date(), MATCH_DISPLAY_DURATION_DAYS),
+          },
+          receiverStatus: {
+            in: [
+              MegaphoneMatchMemberStatus.REJECTED,
+              MegaphoneMatchMemberStatus.ACCEPTED,
+            ],
+          },
+        },
+        orderBy: {
+          sentToReceiverAt: "desc",
+        },
+        select: {
+          id: true,
+          status: true,
+          sentToReceiverAt: true,
+        },
+      });
+    }),
+  findActiveMatchesAsSenderByMemberId: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(({ ctx: { prisma }, input: { memberId } }) => {
+      // TODO: 일단은 상대방이 수락한 매치만 보여줌. 먼저 보내고 응답 대기 중인 매치도 보여줄지 결정 필요.
+      return prisma.megaphoneMatch.findMany({
+        where: {
+          senderId: memberId,
+          status: MatchStatus.PENDING,
+          sentToSenderAt: {
+            gt: subHours(
+              new Date(),
+              MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED,
+            ),
+          },
+          senderStatus: MegaphoneMatchMemberStatus.PENDING,
+          receiverStatus: MegaphoneMatchMemberStatus.ACCEPTED,
+          sender: {
+            status: {
+              in: [
+                MemberStatus.PENDING,
+                MemberStatus.ACTIVE,
+                MemberStatus.INACTIVE,
+              ],
+            },
+          },
+          receiver: {
+            status: {
+              in: [MemberStatus.PENDING, MemberStatus.ACTIVE],
+            },
+          },
+        },
+        orderBy: {
+          sentToSenderAt: "desc",
+        },
+        select: {
+          id: true,
+          status: true,
+          sentToSenderAt: true,
+        },
+      });
+    }),
+  findPastMatchesAsSenderByMemberId: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(({ ctx: { prisma }, input: { memberId } }) => {
+      return prisma.megaphoneMatch.findMany({
+        where: {
+          senderId: memberId,
+          sentToSenderAt: {
+            gt: subDays(new Date(), MATCH_DISPLAY_DURATION_DAYS),
+          },
+          senderStatus: {
+            in: [
+              MegaphoneMatchMemberStatus.REJECTED,
+              MegaphoneMatchMemberStatus.ACCEPTED,
+            ],
+          },
+        },
+        orderBy: {
+          sentToSenderAt: "desc",
+        },
+        select: {
+          id: true,
+          status: true,
+          sentToSenderAt: true,
         },
       });
     }),
@@ -65,6 +160,9 @@ export const megaphoneMatchRouter = createTRPCRouter({
       const match = await prisma.megaphoneMatch.findUniqueOrThrow({
         where: {
           id: matchId,
+          status: {
+            in: [MatchStatus.PENDING, MatchStatus.ACCEPTED],
+          },
           sender: {
             status: {
               in: [
@@ -106,14 +204,6 @@ export const megaphoneMatchRouter = createTRPCRouter({
       } = match;
 
       assert(
-        matchStatus === MatchStatus.PENDING ||
-          matchStatus === MatchStatus.ACCEPTED,
-        new TRPCError({
-          message: "Match status must be PENDING or ACCEPTED",
-          code: "FORBIDDEN",
-        }),
-      );
-      assert(
         senderId === selfMemberId || receiverId === selfMemberId,
         new TRPCError({
           message: "Member must be sender or receiver",
@@ -138,7 +228,6 @@ export const megaphoneMatchRouter = createTRPCRouter({
       assert(
         (selfMemberType === 확성기_매치_참가자_유형.RECEIVER &&
           sentToReceiverAt != null &&
-          receiverStatus !== MegaphoneMatchMemberStatus.REJECTED &&
           subHours(
             new Date(),
             MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED,
@@ -210,7 +299,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
       return {
         selfMemberType,
         isSelfMemberPending,
-        isMatchPending: matchStatus === MatchStatus.PENDING,
+        matchStatus,
         targetMemberProfile,
       };
     }),

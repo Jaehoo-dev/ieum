@@ -323,6 +323,7 @@ export const 음식종류_라벨: Record<CuisineType, string> = {
 } as const;
 
 export const primary500 = "#ff8271";
+export const primary700 = "#ff6f5e";
 
 export const 매치_유형 = {
   기본: "BASIC",
@@ -338,6 +339,8 @@ export const 확성기_매치_참가자_유형 = {
 
 export type 확성기_매치_참가자_유형 =
   (typeof 확성기_매치_참가자_유형)[keyof typeof 확성기_매치_참가자_유형];
+
+export const MATCH_DISPLAY_DURATION_DAYS = 7;
 
 export const BASIC_MATCH_DURATION_HOURS = 24;
 export const BASIC_MATCH_DURATION_HOURS_EXTENDED =
