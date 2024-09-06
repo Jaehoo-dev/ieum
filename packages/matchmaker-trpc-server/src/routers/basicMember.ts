@@ -191,4 +191,23 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
+  updateIsMegaphoneUser: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        isMegaphoneUser: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input: { memberId, isMegaphoneUser } }) => {
+      await ctx.prisma.basicMemberV2.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          isMegaphoneUser,
+        },
+      });
+
+      return true;
+    }),
 });

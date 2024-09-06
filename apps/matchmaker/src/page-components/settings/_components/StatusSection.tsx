@@ -47,7 +47,7 @@ function Inactive() {
   const { mutateAsync: requestActivation, isPending: isRequesting } =
     api.basicMemberRouter.requestActivation.useMutation({
       onSuccess: () => {
-        return utils.basicMemberRouter.getStatus.invalidate();
+        return utils.basicMemberRouter.findByPhoneNumber.invalidate();
       },
     });
 
