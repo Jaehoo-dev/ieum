@@ -47,7 +47,7 @@ export function Sidebar({ open, onClose }: Props) {
               href="/referral"
               onClick={onClose}
             />
-            <MenuItem label="활성 상태" href="/my-status" onClick={onClose} />
+            <MenuItem label="설정" href="/settings" onClick={onClose} />
             <MenuItem
               label="자주 묻는 질문"
               href={`${HOMEPAGE_URL}/faq`}

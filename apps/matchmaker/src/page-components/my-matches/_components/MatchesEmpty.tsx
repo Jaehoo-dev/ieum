@@ -39,9 +39,10 @@ function BasicMatchesEmpty() {
         </Wrapper>
       );
     })
-    .otherwise(() => {
+    .with(MemberStatus.DELETED, () => {
       throw new Error("Invalid member status");
-    });
+    })
+    .exhaustive();
 }
 
 function MegaphoneMatchesAsReceiverEmpty() {

@@ -24,11 +24,13 @@ export function useConfirmDialog() {
         },
         cancellationButtonProps: {
           className: "bg-gray-500 text-white hover:bg-gray-600 flex-1 rounded",
+          disableRipple: true,
           ...cancellationButtonProps,
         },
         confirmationButtonProps: {
           className:
             "bg-primary-500 text-white hover:bg-primary-600 flex-1 rounded",
+          disableRipple: true,
           ...confirmationButtonProps,
         },
         ...options,
