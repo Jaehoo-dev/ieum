@@ -113,7 +113,7 @@ function ToggleButton({
     >
       <span className="text-sm">{text}</span>
       {notification ? (
-        <span className="mt-0.5 h-1 w-1 rounded-full bg-primary-900" />
+        <span className="h-1 w-1 rounded-full bg-primary-900" />
       ) : null}
     </_ToggleButton>
   );
