@@ -22,6 +22,8 @@ function Resolved() {
   return (
     <div className="flex flex-col gap-6">
       <StatusSection />
+      <hr />
+      <MatchTypeSection />
     </div>
   );
 }
