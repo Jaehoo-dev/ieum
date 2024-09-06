@@ -11,26 +11,21 @@ export function MatchTypeSection() {
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const utils = api.useUtils();
+  const { data: isMegaphoneUser } =
+    api.basicMemberRouter.isMegaphoneUser.useQuery({
+      memberId: member.id,
+    });
   const { mutate: updateIsMegaphoneUser } =
     api.basicMemberRouter.updateIsMegaphoneUser.useMutation({
       onMutate: async (variables) => {
-        await utils.basicMemberRouter.findByPhoneNumber.cancel();
-        utils.basicMemberRouter.findByPhoneNumber.setData(
-          { phoneNumber: member.phoneNumber },
-          (prev) => {
-            if (prev == null) {
-              return prev;
-            }
-
-            return {
-              ...prev,
-              isMegaphoneUser: variables.isMegaphoneUser,
-            };
-          },
+        await utils.basicMemberRouter.isMegaphoneUser.cancel();
+        utils.basicMemberRouter.isMegaphoneUser.setData(
+          { memberId: member.id },
+          variables.isMegaphoneUser,
         );
       },
       onSettled: () => {
-        return utils.basicMemberRouter.findByPhoneNumber.invalidate();
+        return utils.basicMemberRouter.isMegaphoneUser.invalidate();
       },
     });
 
@@ -53,7 +48,7 @@ export function MatchTypeSection() {
         <Checkbox
           id={조회용_매치_유형.MEGAPHONE_SENDER}
           label={`먼저 보내기 - ${member.name} 님의 이상형 조건에 부합하는 분에게 프로필을 먼저 보여줘요. 노출을 늘려 인연을 더 빨리 찾아요.`}
-          checked={member.isMegaphoneUser}
+          checked={Boolean(isMegaphoneUser)}
           onCheckedChange={(checked: boolean) => {
             updateIsMegaphoneUser({
               memberId: member.id,

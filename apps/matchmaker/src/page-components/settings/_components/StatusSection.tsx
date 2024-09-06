@@ -5,18 +5,19 @@ import { match } from "ts-pattern";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
-export function StatusSection() {
+export function StatusSectionResolved() {
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
-  return match(member.status)
+  const [memberStatus] = api.basicMemberRouter.getStatus.useSuspenseQuery({
+    memberId: member.id,
+  });
+
+  return match(memberStatus)
     .with(MemberStatus.PENDING, () => <Pending />)
     .with(MemberStatus.ACTIVE, () => <Active />)
     .with(MemberStatus.INACTIVE, () => <Inactive />)
-    .with(MemberStatus.DELETED, () => {
-      throw new Error("Invalid member status");
-    })
     .exhaustive();
 }
 
@@ -47,7 +48,7 @@ function Inactive() {
   const { mutateAsync: requestActivation, isPending: isRequesting } =
     api.basicMemberRouter.requestActivation.useMutation({
       onSuccess: () => {
-        return utils.basicMemberRouter.findByPhoneNumber.invalidate();
+        return utils.basicMemberRouter.getStatus.invalidate();
       },
     });
 

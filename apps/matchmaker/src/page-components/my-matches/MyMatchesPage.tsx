@@ -47,10 +47,14 @@ export function MyMatchesPage() {
     api.megaphoneMatchRouter.findActiveMatchesAsReceiverByMemberId.useQuery({
       memberId: member.id,
     });
+  const { data: isMegaphoneUser = false } =
+    api.basicMemberRouter.isMegaphoneUser.useQuery({
+      memberId: member.id,
+    });
   const { data: activeMegaphoneMatchesAsSender } =
     api.megaphoneMatchRouter.findActiveMatchesAsSenderByMemberId.useQuery(
       { memberId: member.id },
-      { enabled: member.isMegaphoneUser },
+      { enabled: isMegaphoneUser },
     );
 
   return (
@@ -69,7 +73,7 @@ export function MyMatchesPage() {
               },
             });
           }}
-          senderTab={member.isMegaphoneUser}
+          senderTab={isMegaphoneUser}
           basicMatchNotification={activeBasicMatches.length > 0}
           receiverNotification={activeMegaphoneMatchesAsReceiver.length > 0}
           senderNotification={
