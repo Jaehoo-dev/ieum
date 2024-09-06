@@ -8,8 +8,6 @@ import { api } from "~/utils/api";
 export function MatchTypeSection() {
   const { member } = useMemberAuthContext();
 
-  console.log(member);
-
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const utils = api.useUtils();
