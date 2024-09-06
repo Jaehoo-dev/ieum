@@ -4,6 +4,7 @@ import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
+import { api } from "~/utils/api";
 
 export const MatchesEmpty = {
   Basic: BasicMatchesEmpty,
@@ -16,8 +17,12 @@ function BasicMatchesEmpty() {
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
-  return match(member.status)
-    .with(MemberStatus.ACTIVE, () => {
+  const { data: memberStatus } = api.basicMemberRouter.getStatus.useQuery({
+    memberId: member.id,
+  });
+
+  return match(memberStatus)
+    .with(undefined, MemberStatus.ACTIVE, () => {
       return (
         <Wrapper>
           <Text>이상형을 찾고 있어요 💘</Text>
@@ -38,9 +43,6 @@ function BasicMatchesEmpty() {
           <Text>계정을 심사 중이에요 📝</Text>
         </Wrapper>
       );
-    })
-    .with(MemberStatus.DELETED, () => {
-      throw new Error("Invalid member status");
     })
     .exhaustive();
 }

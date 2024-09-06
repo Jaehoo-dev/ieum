@@ -32,8 +32,6 @@ export const basicMemberRouter = createTRPCRouter({
           id: true,
           name: true,
           phoneNumber: true,
-          status: true,
-          isMegaphoneUser: true,
         },
       });
     }),
@@ -190,6 +188,20 @@ export const basicMemberRouter = createTRPCRouter({
       });
 
       return true;
+    }),
+  isMegaphoneUser: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          isMegaphoneUser: true,
+        },
+      });
+
+      return member.isMegaphoneUser;
     }),
   updateIsMegaphoneUser: protectedProcedure
     .input(
