@@ -29,7 +29,7 @@ export function ActiveMegaphoneMatchesSectionAsReceiverResolved() {
             <div className="flex w-full items-start gap-1 text-sm">
               <p className="text-gray-500">※</p>
               <p className="text-gray-500">
-                {`${member.name} 님께서 상대방의 이상형 조건에 부합해 프로필을 먼저 받아본
+                {`${member.name} 님께서 상대방의 이상형 조건에 부합해 프로필을 먼저 받은
                 매칭입니다. 수락하시면 ${member.name} 님의 프로필을 상대방에게 전달합니다.`}
               </p>
             </div>

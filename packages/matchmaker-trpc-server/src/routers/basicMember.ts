@@ -32,6 +32,7 @@ export const basicMemberRouter = createTRPCRouter({
           id: true,
           name: true,
           phoneNumber: true,
+          status: true,
           isMegaphoneUser: true,
         },
       });

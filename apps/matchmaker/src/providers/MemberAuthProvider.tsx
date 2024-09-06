@@ -10,7 +10,7 @@ import { api } from "~/utils/api";
 
 export type Member = Pick<
   BasicMemberV2,
-  "id" | "name" | "phoneNumber" | "isMegaphoneUser"
+  "id" | "name" | "phoneNumber" | "status" | "isMegaphoneUser"
 >;
 
 interface MemberAuthContext {
