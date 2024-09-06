@@ -58,8 +58,8 @@ function MegaphoneMatchesAsReceiverEmpty() {
 function MegaphoneMatchesAsSenderEmpty() {
   return (
     <Wrapper>
-      <Text>선수락 받은 매칭이</Text>
-      <Text>아직 없어요 📭</Text>
+      <Text>이상형을 찾고 있어요 💘</Text>
+      <Text>조금만 기다려주세요 🙏</Text>
     </Wrapper>
   );
 }

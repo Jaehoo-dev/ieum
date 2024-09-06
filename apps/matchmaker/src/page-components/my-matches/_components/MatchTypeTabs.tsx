@@ -53,13 +53,13 @@ export function MatchTypeTabs({
         />
         <ToggleButton
           value={조회용_매치_유형.MEGAPHONE_RECEIVER}
-          text="먼저 받은"
+          text="나 우선"
           notification={receiverNotification}
         />
         {senderTab ? (
           <ToggleButton
             value={조회용_매치_유형.MEGAPHONE_SENDER}
-            text="먼저 보낸"
+            text="상대방 우선"
             notification={senderNotification}
           />
         ) : null}

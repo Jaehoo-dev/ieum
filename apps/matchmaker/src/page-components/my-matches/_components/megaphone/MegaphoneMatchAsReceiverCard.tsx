@@ -28,7 +28,7 @@ export function MegaphoneMatchAsReceiverCard({
 
   return (
     <button
-      className="flex w-full rounded-lg bg-gray-100 p-5 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
+      className="flex w-full rounded-lg bg-primary-100 p-5 shadow hover:bg-primary-300 disabled:cursor-not-allowed disabled:bg-gray-100"
       onClick={() => {
         onClick?.();
         void router.push(`/my-matches/megaphone/${match.id}`);
