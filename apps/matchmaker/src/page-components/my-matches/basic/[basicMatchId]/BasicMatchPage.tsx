@@ -14,7 +14,8 @@ import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
-import { KakaoBrowserFallback } from "../../components/KakaoBrowserFallback";
+import { KakaoBrowserFallback } from "../../_components/KakaoBrowserFallback";
+import { 조회용_매치_유형 } from "../../_enums";
 
 export function BasicMatchPage() {
   return (
@@ -73,7 +74,12 @@ function Resolved() {
       } 기본 매치 페이지 -> redirect to /my-matches`,
     });
 
-    router.replace("/my-matches");
+    router.replace({
+      pathname: "/my-matches",
+      query: {
+        matchType: 조회용_매치_유형.BASIC,
+      },
+    });
   }, [
     isPendingByMember,
     match.acceptedByV2.length,
@@ -149,7 +155,7 @@ function Buttons({
       </span>
       <div className="flex w-full gap-3">
         <button
-          className="flex-1 rounded-lg bg-gray-500 p-3 text-xl font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-gray-500 p-3 text-lg text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={async () => {
             onRejectClick();
 
@@ -174,7 +180,7 @@ function Buttons({
           {isRejecting ? "처리중.." : "거절"}
         </button>
         <button
-          className="flex-1 rounded-lg bg-primary-500 p-3 text-xl font-medium text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-primary-500 p-3 text-lg text-white enabled:hover:bg-primary-700 disabled:cursor-not-allowed"
           onClick={async () => {
             onAcceptClick();
 

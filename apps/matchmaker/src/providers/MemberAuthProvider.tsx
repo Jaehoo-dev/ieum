@@ -8,7 +8,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { api } from "~/utils/api";
 
-export type Member = Pick<BasicMemberV2, "id" | "name" | "phoneNumber">;
+export type Member = Pick<
+  BasicMemberV2,
+  "id" | "name" | "phoneNumber" | "isMegaphoneUser"
+>;
 
 interface MemberAuthContext {
   member: Member | null | undefined;

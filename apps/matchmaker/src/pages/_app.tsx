@@ -8,6 +8,8 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+import { primary700 } from "@ieum/constants";
+import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 
 import { AuthGuard } from "~/components/AuthGuard";
@@ -35,20 +37,30 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           crossOrigin="anonymous"
         />
       </Head>
-      <ConfirmProvider>
-        <MemberAuthProvider>
-          {Component.auth === false ? (
-            <Component {...pageProps} />
-          ) : (
-            <AuthGuard>
+      <MuiThemeProvider theme={muiTheme}>
+        <ConfirmProvider>
+          <MemberAuthProvider>
+            {Component.auth === false ? (
               <Component {...pageProps} />
-            </AuthGuard>
-          )}
-        </MemberAuthProvider>
-      </ConfirmProvider>
+            ) : (
+              <AuthGuard>
+                <Component {...pageProps} />
+              </AuthGuard>
+            )}
+          </MemberAuthProvider>
+        </ConfirmProvider>
+      </MuiThemeProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
     </ErrorBoundary>,
   );
 };
 
 export default api.withTRPC(MyApp);
+
+const muiTheme = createTheme({
+  palette: {
+    primary: {
+      main: primary700,
+    },
+  },
+});

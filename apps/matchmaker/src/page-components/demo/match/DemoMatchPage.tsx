@@ -62,7 +62,7 @@ function Buttons() {
       </span>
       <div className="flex w-full gap-4">
         <button
-          className="flex-1 rounded-lg bg-gray-500 p-3 text-lg font-medium text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
+          className="flex-1 rounded-lg bg-gray-500 p-3 text-lg text-white enabled:hover:bg-gray-600 disabled:cursor-not-allowed"
           onClick={async () => {
             alert("가입하시면 더 잘 맞는 분을 찾아드릴게요!");
           }}
@@ -70,7 +70,7 @@ function Buttons() {
           거절
         </button>
         <Link
-          className="flex-1 rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:bg-primary-700"
+          className="flex-1 rounded-lg bg-primary-500 p-3 text-center text-lg text-white hover:bg-primary-700"
           href={HOMEPAGE_URL}
         >
           소개받으러 가기
