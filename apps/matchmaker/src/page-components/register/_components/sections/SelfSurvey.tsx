@@ -87,7 +87,6 @@ export function SelfSurvey({ onBack, onNext }: Props) {
         />
         <TextInput
           label="어디에 거주하세요?"
-          description="서울, 인천, 경기도 거주자만 가입 가능합니다."
           required={true}
           placeholder="예) 서울시 강남구"
           error={errors.residence != null}
