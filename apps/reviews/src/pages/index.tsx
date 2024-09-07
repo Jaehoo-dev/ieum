@@ -13,7 +13,7 @@ export default function Home() {
   const router = useRouter();
   const [page, setPage] = useState(0);
   const [pageGroup, setPageGroup] = useState(0);
-  const [orderBy, setOrderBy] = useState<OrderBy>("PRIORITY");
+  const [orderBy, setOrderBy] = useState<OrderBy>("WRITTEN_AT");
   const { data } = api.reviewRouter.getFripReviews.useQuery({
     skip: page * 페이지당_후기_개수,
     take: 페이지당_후기_개수,
