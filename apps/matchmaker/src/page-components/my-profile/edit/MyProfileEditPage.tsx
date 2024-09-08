@@ -37,7 +37,7 @@ function Description() {
     <div className="flex w-full items-start gap-1">
       <p className="text-sm text-gray-700">※</p>
       <p className="text-sm text-gray-700">
-        인적사항과 사진은 호스트에게 수정을 요청해주세요.
+        인적사항 또는 사진 수정은 호스트에게 요청해주세요.
       </p>
     </div>
   );
