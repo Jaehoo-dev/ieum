@@ -35,9 +35,9 @@ export function BlacklistSection() {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-xl font-semibold text-gray-700">블랙리스트</h2>
-      <div className="flex flex-col gap-12">
+      <Description />
+      <div className="flex flex-col gap-8">
         <form
-          className="flex flex-col gap-4"
           onSubmit={handleSubmit(async ({ phoneNumber }) => {
             await add({
               memberId: member.id,
@@ -81,7 +81,6 @@ export function BlacklistSection() {
               </button>
             </div>
           </label>
-          <Description />
         </form>
         <Suspense>
           <Resolved />
@@ -119,30 +118,27 @@ function Resolved() {
     });
 
   return blacklist.length > 0 ? (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-semibold text-gray-700">블랙리스트</h2>
-      <div className="flex flex-col gap-3">
-        {blacklist.map((phoneNumber, index) => (
-          <>
-            <div
-              key={phoneNumber}
-              className="flex flex-row items-center justify-between"
+    <div className="flex flex-col gap-3">
+      {blacklist.map((phoneNumber, index) => (
+        <>
+          <div
+            key={phoneNumber}
+            className="flex flex-row items-center justify-between"
+          >
+            <p className="font-medium text-gray-700">
+              {krToKrHyphen(phoneNumber)}
+            </p>
+            <button
+              onClick={async () => {
+                await remove({ memberId: member.id, phoneNumber });
+              }}
             >
-              <p className="font-medium text-gray-700">
-                {krToKrHyphen(phoneNumber)}
-              </p>
-              <button
-                onClick={async () => {
-                  await remove({ memberId: member.id, phoneNumber });
-                }}
-              >
-                <DeleteIcon className="text-red-500" fontSize="small" />
-              </button>
-            </div>
-            {index < blacklist.length - 1 ? <hr /> : null}
-          </>
-        ))}
-      </div>
+              <DeleteIcon className="text-red-500" fontSize="small" />
+            </button>
+          </div>
+          {index < blacklist.length - 1 ? <hr /> : null}
+        </>
+      ))}
     </div>
   ) : null;
 }
