@@ -2,6 +2,7 @@ import { ReactElement, Suspense } from "react";
 import Head from "next/head";
 
 import { Layout } from "~/components/Layout";
+import { BlacklistSection } from "./_components/BlacklistSection";
 import { MatchTypeSection } from "./_components/MatchTypeSection";
 import { StatusSectionResolved } from "./_components/StatusSection";
 
@@ -24,6 +25,8 @@ function Resolved() {
       <StatusSectionResolved />
       <hr />
       <MatchTypeSection />
+      <hr />
+      <BlacklistSection />
     </div>
   );
 }

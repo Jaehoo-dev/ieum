@@ -13,7 +13,7 @@ import { Layout } from "~/components/Layout";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
-export function BlacklistPage() {
+export function BlacklistSection() {
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
@@ -33,10 +33,8 @@ export function BlacklistPage() {
   );
 
   return (
-    <>
-      <Head>
-        <meta name="robots" content="noindex" />
-      </Head>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-xl font-semibold text-gray-700">블랙리스트</h2>
       <div className="flex flex-col gap-12">
         <form
           className="flex flex-col gap-4"
@@ -49,9 +47,6 @@ export function BlacklistPage() {
             reset();
           })}
         >
-          <h2 className="text-lg font-semibold text-gray-700">
-            블랙리스트 추가
-          </h2>
           <label className="flex flex-col gap-1">
             <span className="text-sm text-gray-700">전화번호</span>
             <div className="flex flex-row gap-2">
@@ -92,7 +87,7 @@ export function BlacklistPage() {
           <Resolved />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -151,7 +146,3 @@ function Resolved() {
     </div>
   ) : null;
 }
-
-BlacklistPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="블랙리스트">{page}</Layout>;
-};

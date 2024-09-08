@@ -119,10 +119,10 @@ function Registered() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center gap-3 pb-10">
+    <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
       <Link
         href="/referral"
-        className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(
@@ -131,11 +131,11 @@ function Registered() {
           });
         }}
       >
-        10,000원 캐시백 받기
+        1만 원 캐시백 받기
       </Link>
       <Link
         href="/my-matches"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
@@ -146,7 +146,7 @@ function Registered() {
       </Link>
       <Link
         href="/my-profile"
-        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 내 프로필 보기 클릭`,
@@ -157,7 +157,7 @@ function Registered() {
       </Link>
       <Link
         href="/my-ideal-type"
-        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-3 md:text-xl"
+        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 내 이상형 조건 클릭`,
@@ -166,9 +166,20 @@ function Registered() {
       >
         내 이상형 조건
       </Link>
+      <Link
+        href="/settings"
+        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
+        onClick={() => {
+          void sendMessage({
+            content: `${formatUniqueMemberName(member)} - 설정 클릭`,
+          });
+        }}
+      >
+        설정
+      </Link>
       <TipsMenuLink style={{ marginTop: "4px" }} />
       <button
-        className="text-sm font-light text-gray-500 underline hover:text-gray-700 md:text-base"
+        className="text-sm font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 로그아웃 클릭`,
