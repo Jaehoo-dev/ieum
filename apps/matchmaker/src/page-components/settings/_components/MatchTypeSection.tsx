@@ -1,6 +1,8 @@
-import { assert } from "@ieum/utils";
+import { SLACK_USER_ID_MENTION } from "@ieum/slack";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { Checkbox as _Checkbox, Checkbox } from "~/components/ui/checkbox";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { 조회용_매치_유형 } from "~/page-components/my-matches/_enums";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
@@ -28,6 +30,7 @@ export function MatchTypeSection() {
         return utils.basicMemberRouter.isMegaphoneUser.invalidate();
       },
     });
+  const { sendMessage } = useSlackNotibot();
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,6 +53,12 @@ export function MatchTypeSection() {
           label={`먼저 보내기 - ${member.name} 님의 이상형 조건에 부합하는 분에게 프로필을 먼저 보여줘요. 노출을 늘려 인연을 더 빨리 찾아요.`}
           checked={Boolean(isMegaphoneUser)}
           onCheckedChange={(checked: boolean) => {
+            sendMessage({
+              channel: "폼_제출_알림",
+              content: `${formatUniqueMemberName(member)} - [먼저 보내기] ${
+                checked ? "켬" : "끔"
+              } ${SLACK_USER_ID_MENTION}`,
+            });
             updateIsMegaphoneUser({
               memberId: member.id,
               isMegaphoneUser: checked,

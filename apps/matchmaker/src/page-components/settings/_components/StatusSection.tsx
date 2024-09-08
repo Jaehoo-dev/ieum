@@ -1,4 +1,4 @@
-import { MemberStatus } from "@ieum/prisma";
+import { Gender, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 
@@ -16,7 +16,7 @@ export function StatusSectionResolved() {
 
   return match(memberStatus)
     .with(MemberStatus.PENDING, () => <Pending />)
-    .with(MemberStatus.ACTIVE, () => <Active />)
+    .with(MemberStatus.ACTIVE, () => <Active gender={member.gender} />)
     .with(MemberStatus.INACTIVE, () => <Inactive />)
     .exhaustive();
 }
@@ -25,16 +25,23 @@ function Pending() {
   return (
     <div className="flex flex-col gap-4">
       <Title />
-      <p className="text-lg text-gray-700">심사 중</p>
+      <p className="text-lg text-gray-700">심사 중 📃</p>
     </div>
   );
 }
 
-function Active() {
+function Active({ gender }: { gender: Gender }) {
   return (
     <div className="flex flex-col gap-4">
       <Title />
-      <p className="text-lg text-gray-700">활동 중</p>
+      <p className="text-lg text-gray-700">{`활동 중 ${match(gender)
+        .with(Gender.MALE, () => {
+          return "🏃‍♂️";
+        })
+        .with(Gender.FEMALE, () => {
+          return "🏃‍♀️";
+        })
+        .exhaustive()}`}</p>
     </div>
   );
 }
@@ -56,7 +63,7 @@ function Inactive() {
     <div className="flex flex-col gap-4">
       <Title />
       <div className="flex items-center justify-between">
-        <p className="text-lg text-gray-700">휴면</p>
+        <p className="text-lg text-gray-700">휴면 😴</p>
         <button
           className="rounded-lg bg-primary-500 px-3 py-2 text-center text-white hover:bg-primary-700 disabled:opacity-50"
           onClick={async () => {
