@@ -1,8 +1,9 @@
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { HOMEPAGE_URL, WORLDCUP_URL } from "@ieum/constants";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { FeedbackFormDialog } from "./FeedbackFormDialog";
@@ -41,7 +42,6 @@ export function Sidebar({ open, onClose }: Props) {
               href="/my-ideal-type"
               onClick={onClose}
             />
-            <MenuItem label="블랙리스트" href="/blacklist" onClick={onClose} />
             <MenuItem
               label="추천인 코드 - 캐시백 받기"
               href="/referral"
@@ -79,12 +79,13 @@ export function Sidebar({ open, onClose }: Props) {
 }
 
 interface MenuItemProps extends ComponentPropsWithoutRef<typeof Link> {
-  label: string;
+  label: ReactNode;
 }
 
-function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
+function MenuItem({ label, href, target, onClick, ...props }: MenuItemProps) {
   const router = useRouter();
   const isActive = router.pathname === href;
+  const isExternal = target === "_blank";
   const { sendMessage } = useSlackNotibot();
 
   return (
@@ -100,7 +101,12 @@ function MenuItem({ label, href, onClick, ...props }: MenuItemProps) {
         }}
         {...props}
       >
-        {label}
+        <div className="flex items-center gap-1">
+          <span>{label}</span>
+          {isExternal ? (
+            <OpenInNewRoundedIcon fontSize="small" className="text-gray-600" />
+          ) : null}
+        </div>
       </Link>
     </li>
   );
