@@ -158,7 +158,7 @@ function DatingStyleSection({
           <DataField label="데이트 스타일" value={datingStyle} />
         ) : null}
         {contactStyle != null ? (
-          <DataField label="연락" value={contactStyle} />
+          <DataField label="연락 빈도/형태" value={contactStyle} />
         ) : null}
         {marriagePlan != null ? (
           <DataField label="결혼관" value={marriagePlan} />
