@@ -45,9 +45,6 @@ export function MatchTypeTabs({
         <ToggleButton
           value={조회용_매치_유형.BASIC}
           text="맞교환"
-          onClick={() => {
-            onChange(조회용_매치_유형.BASIC);
-          }}
           notification={basicMatchNotification}
         />
         <ToggleButton
