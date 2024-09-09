@@ -625,33 +625,30 @@ export function SelfSurvey({ onBack, onNext }: Props) {
             },
           }}
         />
-        <TextareaInput
+        <TextInput
           label="어떤 데이트를 선호하시는지 적어주세요. 연인과 무엇을 하고 싶은지 적으셔도 좋아요."
           required={true}
           error={errors.datingStyle != null}
           errorText={errors.datingStyle?.message}
-          rows={2}
           {...register("datingStyle", {
             required: "데이트 스타일을 입력해주세요.",
           })}
         />
-        <TextareaInput
+        <TextInput
           label="연락은 얼마나 자주, 어떤 방식으로 주고받길 바라세요?"
           required={true}
           placeholder="예) 틈틈이 카카오톡, 자기 전에 전화, 최대한 자주, 연락을 신경쓰지 않아요 등"
           error={errors.contactStyle != null}
           errorText={errors.contactStyle?.message}
-          rows={2}
           {...register("contactStyle", {
             required: "연락 형태를 입력해주세요.",
           })}
         />
-        <TextareaInput
+        <TextInput
           label="결혼은 어떻게 생각하고 계세요?"
           placeholder="예) 2~3년 안에 결혼하고 싶어요, 먼 일이라고 생각해요, 아이도 낳고 싶어요, 딩크예요, 비혼주의자예요 등"
           error={errors.marriagePlan != null}
           errorText={errors.marriagePlan?.message}
-          rows={2}
           {...register("marriagePlan", {
             setValueAs: (value) => {
               if (isEmptyStringOrNil(value)) {
