@@ -149,10 +149,7 @@ function DatingStyleSection({
   const { datingStyle, contactStyle, marriagePlan } = profile;
 
   return (
-    <AccordionSection
-      title="연애할 땐 이런 유형이에요"
-      defaultOpened={defaultOpened}
-    >
+    <AccordionSection title="연애할 때는요" defaultOpened={defaultOpened}>
       <div className="flex flex-col gap-0.5">
         {datingStyle != null ? (
           <DataField label="데이트 스타일" value={datingStyle} />
