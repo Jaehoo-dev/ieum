@@ -35,7 +35,6 @@ export function MatchTypeTabs({
       <ToggleButtonGroup
         value={value}
         onChange={(_, value) => {
-          console.log(value);
           if (value == null) {
             return;
           }
