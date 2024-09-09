@@ -14,6 +14,7 @@ import {
   satisfiesDealBreakers,
 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
+import { match } from "ts-pattern";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -106,19 +107,43 @@ export const basicMatchIndexRouter = createTRPCRouter({
 
       const 비율 = filteredCandidatesCount / oppositeGenderCount;
 
-      if (비율 < 0.12) {
+      if (
+        비율 <
+        match(self.gender)
+          .with(Gender.MALE, () => 0.12)
+          .with(Gender.FEMALE, () => 0.09)
+          .exhaustive()
+      ) {
         return "LOW";
       }
 
-      if (비율 < 0.2) {
+      if (
+        비율 <
+        match(self.gender)
+          .with(Gender.MALE, () => 0.2)
+          .with(Gender.FEMALE, () => 0.15)
+          .exhaustive()
+      ) {
         return "MID_LOW";
       }
 
-      if (비율 > 0.62) {
+      if (
+        비율 >
+        match(self.gender)
+          .with(Gender.MALE, () => 0.62)
+          .with(Gender.FEMALE, () => 0.54)
+          .exhaustive()
+      ) {
         return "HIGH";
       }
 
-      if (비율 > 0.45) {
+      if (
+        비율 >
+        match(self.gender)
+          .with(Gender.MALE, () => 0.45)
+          .with(Gender.FEMALE, () => 0.4)
+          .exhaustive()
+      ) {
         return "MID_HIGH";
       }
 
