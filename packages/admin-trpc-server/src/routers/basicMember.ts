@@ -727,13 +727,13 @@ export const basicMemberRouter = createTRPCRouter({
                         ),
                       }
                     : undefined,
-                occupationStatus:
-                  dealBreakersSet.has(BasicCondition.OCCUPATION_STATUS) &&
-                  occupationStatuses.length > 0
-                    ? {
-                        in: occupationStatuses,
-                      }
-                    : undefined,
+                // occupationStatus:
+                //   dealBreakersSet.has(BasicCondition.OCCUPATION_STATUS) &&
+                //   occupationStatuses.length > 0
+                //     ? {
+                //         in: occupationStatuses,
+                //       }
+                //     : undefined,
               },
               {
                 mbti:

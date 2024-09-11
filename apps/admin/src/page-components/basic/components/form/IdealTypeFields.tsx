@@ -482,6 +482,14 @@ export function IdealTypeFields() {
           },
         })}
       />
+      <TextInput
+        label="취미/관심사"
+        {...register("idealType.hobby", {
+          setValueAs: (value: string) => {
+            return value === "" ? null : value;
+          },
+        })}
+      />
       <div>
         문신
         <Checkbox label="괜찮음" {...register("idealType.isTattooOk")} />
