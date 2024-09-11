@@ -21,6 +21,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         name: true,
         phoneNumber: true,
         gender: true,
+        residence: true,
       },
       orderBy: {
         createdAt: "asc",

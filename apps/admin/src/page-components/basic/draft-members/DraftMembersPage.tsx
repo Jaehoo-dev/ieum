@@ -44,6 +44,7 @@ function Resolved() {
             </span>
             <span>{draftMember.phoneNumber}</span>
           </div>
+          <span>{draftMember.residence}</span>
         </button>
       ))}
     </div>
