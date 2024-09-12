@@ -18,7 +18,7 @@ function _TextareaInput(
   const fieldId = `${label}-${nanoid(8)}`;
 
   return (
-    <label className="flex flex-col" htmlFor={fieldId}>
+    <label className="flex w-full flex-col" htmlFor={fieldId}>
       {label}
       <textarea
         id={fieldId}

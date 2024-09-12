@@ -85,6 +85,7 @@ function Resolved() {
       videos,
       audios,
       referrerCode,
+      memo,
     },
   ] = api.draftBasicMemberRouter.findOne.useSuspenseQuery({
     id: draftMemberId,
@@ -346,6 +347,12 @@ function Resolved() {
         label="추천 코드"
         value={referrerCode ?? "null"}
         disabled={true}
+      />
+      <TextareaInput
+        label="메모"
+        value={memo ?? "null"}
+        disabled={true}
+        rows={2}
       />
       <div className="flex flex-row gap-1">
         {images.map((image) => {
