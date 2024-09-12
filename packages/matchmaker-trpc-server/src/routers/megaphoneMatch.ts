@@ -178,7 +178,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         pendingByReceiverOrWaiting,
       };
     }),
-  findPastMatchesAsSenderByMemberId: protectedProcedure
+  findRespondedPastMatchesAsSenderByMemberId: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .query(({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
@@ -201,6 +201,27 @@ export const megaphoneMatchRouter = createTRPCRouter({
           id: true,
           status: true,
           sentToSenderAt: true,
+        },
+      });
+    }),
+  findRejectedPastMatchesAsSenderByMemberId: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(({ ctx: { prisma }, input: { memberId } }) => {
+      return prisma.megaphoneMatch.findMany({
+        where: {
+          senderId: memberId,
+          sentToReceiverAt: {
+            gt: subDays(new Date(), MATCH_DISPLAY_DURATION_DAYS),
+          },
+          receiverStatus: MegaphoneMatchMemberStatus.REJECTED,
+        },
+        orderBy: {
+          sentToReceiverAt: "desc",
+        },
+        select: {
+          id: true,
+          status: true,
+          sentToReceiverAt: true,
         },
       });
     }),

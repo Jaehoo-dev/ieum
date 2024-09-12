@@ -46,11 +46,9 @@ export function MegaphoneMatchAsSenderCard({
       disabled={disabled}
     >
       <div className="flex flex-col items-start gap-1">
-        {sentAt != null ? (
-          <p className="font-semibold text-gray-800">
-            {`💌 ${format(sentAt, "M월d일")}`}
-          </p>
-        ) : null}
+        <p className="font-semibold text-gray-800">
+          {`💌 ${format(sentAt, "M월d일")}`}
+        </p>
         {showRemainingHours ? (
           <p className="text-gray-600">
             {`⏰ ${calculateRemainingHours({
