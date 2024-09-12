@@ -83,7 +83,7 @@ function RejectedResolved() {
 
   return pastRejectedMegaphoneMatchesAsSender.length > 0 ? (
     <div className="flex w-full flex-col gap-2">
-      <h2 className="text-xl font-semibold text-gray-800">상대방 거절</h2>
+      <h2 className="text-xl font-semibold text-gray-800">제안 실패</h2>
       <div className="grid grid-cols-2 gap-3">
         {pastRejectedMegaphoneMatchesAsSender.map((match) => {
           return (
