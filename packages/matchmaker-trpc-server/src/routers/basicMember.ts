@@ -158,6 +158,37 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.status;
     }),
+  inactivate: protectedProcedure
+    .input(z.object({ memberId: z.string() }))
+    .mutation(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          name: true,
+          phoneNumber: true,
+        },
+      });
+
+      sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `${formatUniqueMemberName(
+          member,
+        )} - 휴면 신청 ${SLACK_USER_ID_MENTION}`,
+      });
+
+      await ctx.prisma.basicMemberV2.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          status: MemberStatus.INACTIVE,
+        },
+      });
+
+      return true;
+    }),
   requestActivation: protectedProcedure
     .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
@@ -175,7 +206,7 @@ export const basicMemberRouter = createTRPCRouter({
         channel: "폼_제출_알림",
         content: `${formatUniqueMemberName(
           member,
-        )} - 휴면 해제 요청 ${SLACK_USER_ID_MENTION}`,
+        )} - 활성화 요청 ${SLACK_USER_ID_MENTION}`,
         throwOnError: true,
       });
 

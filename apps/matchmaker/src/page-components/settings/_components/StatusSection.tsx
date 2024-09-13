@@ -16,7 +16,7 @@ export function StatusSectionResolved() {
 
   return match(memberStatus)
     .with(MemberStatus.PENDING, () => <Pending />)
-    .with(MemberStatus.ACTIVE, () => <Active gender={member.gender} />)
+    .with(MemberStatus.ACTIVE, () => <Active />)
     .with(MemberStatus.INACTIVE, () => <Inactive />)
     .exhaustive();
 }
@@ -30,18 +30,43 @@ function Pending() {
   );
 }
 
-function Active({ gender }: { gender: Gender }) {
+function Active() {
+  const { member } = useMemberAuthContext();
+
+  assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const utils = api.useUtils();
+  const { mutateAsync: inactivate, isPending: isInactivating } =
+    api.basicMemberRouter.inactivate.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberRouter.getStatus.invalidate();
+      },
+    });
+
   return (
     <div className="flex flex-col gap-4">
       <Title />
-      <p className="text-lg text-gray-700">{`활동 중 ${match(gender)
-        .with(Gender.MALE, () => {
-          return "🏃‍♂️";
-        })
-        .with(Gender.FEMALE, () => {
-          return "🏃‍♀️";
-        })
-        .exhaustive()}`}</p>
+      <div className="flex items-center justify-between">
+        <p className="text-lg text-gray-700">
+          {`활동 중 ${match(member.gender)
+            .with(Gender.MALE, () => {
+              return "🏃‍♂️";
+            })
+            .with(Gender.FEMALE, () => {
+              return "🏃‍♀️";
+            })
+            .exhaustive()}`}
+        </p>
+        <button
+          className="rounded-lg bg-gray-200 px-5 py-2 text-center text-gray-700 disabled:opacity-50"
+          onClick={async () => {
+            await inactivate({ memberId: member.id });
+          }}
+          disabled={isInactivating}
+        >
+          {isInactivating ? "처리 중.." : "휴면"}
+        </button>
+      </div>
     </div>
   );
 }
@@ -65,7 +90,7 @@ function Inactive() {
       <div className="flex items-center justify-between">
         <p className="text-lg text-gray-700">휴면 😴</p>
         <button
-          className="rounded-lg bg-primary-500 px-3 py-2 text-center text-white hover:bg-primary-700 disabled:opacity-50"
+          className="rounded-lg bg-primary-500 px-5 py-2 text-center text-white hover:bg-primary-700 disabled:opacity-50"
           onClick={async () => {
             try {
               await requestActivation({ memberId: member.id });
@@ -78,7 +103,7 @@ function Inactive() {
           }}
           disabled={isRequesting}
         >
-          {isRequesting ? "접수 중.." : "휴면 해제 요청"}
+          {isRequesting ? "접수 중.." : "활성화 요청"}
         </button>
       </div>
     </div>
