@@ -26,7 +26,7 @@ export function Ending() {
             긴 설문 완료해주셔서 감사합니다!
           </h1>
           <p className="text-lg text-gray-800">
-            3일 안에 연락드리겠습니다.
+            연휴가 끝난 뒤에 순차적으로 연락드리겠습니다.
             <br />
             행복한 하루 보내세요. 🙂
           </p>
