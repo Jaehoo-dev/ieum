@@ -7,10 +7,10 @@ import {
 } from "@ieum/utils";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedMatchmakerProcedure } from "../trpc";
 
 export const basicMemberRouter = createTRPCRouter({
-  findByPhoneNumber: protectedProcedure
+  findByPhoneNumber: protectedMatchmakerProcedure
     .input(
       z.object({
         phoneNumber: z.string(),
@@ -36,7 +36,7 @@ export const basicMemberRouter = createTRPCRouter({
         },
       });
     }),
-  getReferralCode: protectedProcedure
+  getReferralCode: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -50,7 +50,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.referralCode;
     }),
-  getDiscountCouponCount: protectedProcedure
+  getDiscountCouponCount: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -64,7 +64,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.discountCouponCount;
     }),
-  getBlacklist: protectedProcedure
+  getBlacklist: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -78,7 +78,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.blacklistedPhoneNumbers;
     }),
-  addToBlacklist: protectedProcedure
+  addToBlacklist: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -104,7 +104,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  removeFromBlacklist: protectedProcedure
+  removeFromBlacklist: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -137,7 +137,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  getStatus: protectedProcedure
+  getStatus: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -158,7 +158,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.status;
     }),
-  inactivate: protectedProcedure
+  inactivate: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -189,7 +189,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  requestActivation: protectedProcedure
+  requestActivation: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .mutation(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -221,7 +221,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return true;
     }),
-  isMegaphoneUser: protectedProcedure
+  isMegaphoneUser: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx, input: { memberId } }) => {
       const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
@@ -235,7 +235,7 @@ export const basicMemberRouter = createTRPCRouter({
 
       return member.isMegaphoneUser;
     }),
-  updateIsMegaphoneUser: protectedProcedure
+  updateIsMegaphoneUser: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),

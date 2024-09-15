@@ -1,5 +1,5 @@
 import { 매치_유형 } from "@ieum/constants";
-import { auth, FirebaseAuthError } from "@ieum/firebase-admin";
+import { auth, FirebaseAuthError } from "@ieum/matchmaker-firebase-admin";
 import {
   AnnualIncome,
   AssetsValue,
