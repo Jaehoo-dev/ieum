@@ -35,25 +35,9 @@ export function Sidebar({ open, onClose }: Props) {
         </div>
         <div className="flex-grow overflow-y-auto">
           <ul className="space-y-2 px-4">
-            <MenuItem label="매칭 목록" href="/my-matches" onClick={onClose} />
+            <MenuItem label="회원 목록" href="/members" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
-            <MenuItem
-              label="내 이상형 조건 (베타)"
-              href="/my-ideal-type"
-              onClick={onClose}
-            />
-            <MenuItem
-              label="추천인 코드 - 캐시백 받기"
-              href="/referral"
-              onClick={onClose}
-            />
             <MenuItem label="설정" href="/settings" onClick={onClose} />
-            <MenuItem
-              label="자주 묻는 질문"
-              href={`${HOMEPAGE_URL}/faq`}
-              target="_blank"
-              rel="noopener noreferrer"
-            />
             <hr />
             <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
             <MenuItem

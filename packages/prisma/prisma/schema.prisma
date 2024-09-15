@@ -105,7 +105,7 @@ enum Religion {
 }
 
 model BlindMember {
-  id          String          @id @default(cuid())
+  id          String       @id @default(cuid())
   nickname    String
   name        String
   phoneNumber String
@@ -117,8 +117,10 @@ model BlindMember {
   job         String
   status      MemberStatus
 
+  @@unique([phoneNumber])
   @@index([phoneNumber])
   @@index([gender])
+  @@index([birthYear])
   @@index([status])
 }
 

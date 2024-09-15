@@ -108,29 +108,16 @@ function Registered() {
 
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
-      {/* <Link
-        href="/referral"
-        className="border-blind-500 text-blind-700 hover:border-blind-700 hover:text-blind-700 w-full rounded-lg border p-2 text-center font-medium md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${formatUniqueMemberName(
-              member,
-            )} - 10,000원 캐시백 받기 클릭`,
-          });
-        }}
-      >
-        1만 원 캐시백 받기
-      </Link>
       <Link
-        href="/my-matches"
+        href="/members"
         className="border-blind-500 bg-blind-500 hover:border-blind-700 hover:bg-blind-700 w-full rounded-lg border p-2 text-center font-medium text-white md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
+            content: `${formatUniqueMemberName(member)} - 회원 목록 보기 클릭`,
           });
         }}
       >
-        매칭 목록 보기
+        회원 목록 보기
       </Link>
       <Link
         href="/my-profile"
@@ -144,17 +131,6 @@ function Registered() {
         내 프로필 보기
       </Link>
       <Link
-        href="/my-ideal-type"
-        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 내 이상형 조건 클릭`,
-          });
-        }}
-      >
-        내 이상형 조건
-      </Link>
-      <Link
         href="/settings"
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
         onClick={() => {
@@ -164,7 +140,7 @@ function Registered() {
         }}
       >
         설정
-      </Link> */}
+      </Link>
       <TipsMenuLink style={{ marginTop: "4px" }} />
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700"
