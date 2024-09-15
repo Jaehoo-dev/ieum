@@ -2,7 +2,6 @@ import {
   AnnualIncome,
   AssetsValue,
   BasicCondition,
-  BlindCondition,
   BodyShape,
   BooksReadPerYear,
   ContactFrequency,
@@ -73,17 +72,6 @@ export const 종교_라벨: Record<Religion, string> = {
   [Religion.CATHOLIC]: "천주교",
   [Religion.BUDDHIST]: "불교",
   [Religion.OTHER]: "기타",
-} as const;
-
-export const 블라인드_조건_라벨: Record<BlindCondition, string> = {
-  [BlindCondition.AGE]: "나이",
-  [BlindCondition.REGION]: "지역",
-  [BlindCondition.HEIGHT]: "키",
-  [BlindCondition.PREFERRED_BODY_SHAPES]: "체형",
-  [BlindCondition.PREFERRED_MBTIS]: "선호 MBTI",
-  [BlindCondition.NON_PREFERRED_MBTIS]: "기피 MBTI",
-  [BlindCondition.IS_SMOKER_OK]: "흡연 여부",
-  [BlindCondition.NON_PREFERRED_RELIGIONS]: "기피 종교",
 } as const;
 
 export const 상태_라벨: Record<MatchStatus, string> = {

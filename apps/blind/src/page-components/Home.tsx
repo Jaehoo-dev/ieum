@@ -95,10 +95,6 @@ function Registered() {
   const { member, signOut } = useMemberAuthContext();
 
   assert(member != null, "member should be defined");
-
-  const [status] = api.basicMemberRouter.getStatus.useSuspenseQuery({
-    memberId: member.id,
-  });
   const { sendMessage } = useSlackNotibot();
   const router = useRouter();
 
@@ -109,12 +105,6 @@ function Registered() {
       }`,
     });
   }, [member]);
-
-  useEffect(() => {
-    if (status === MemberStatus.INACTIVE) {
-      router.push("/settings");
-    }
-  }, []);
 
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
