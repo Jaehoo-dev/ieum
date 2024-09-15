@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ieum/constants": "*",
-    "@ieum/firebase-admin": "*",
+    "@ieum/matchmaker-firebase-admin": "*",
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
     "@ieum/utils": "*",

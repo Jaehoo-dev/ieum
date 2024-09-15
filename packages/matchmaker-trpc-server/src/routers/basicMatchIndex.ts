@@ -17,10 +17,10 @@ import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedMatchmakerProcedure } from "../trpc";
 
 export const basicMatchIndexRouter = createTRPCRouter({
-  getMatchIndex: protectedProcedure
+  getMatchIndex: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),

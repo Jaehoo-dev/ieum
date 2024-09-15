@@ -1,10 +1,10 @@
 import { BasicCondition } from "@ieum/prisma";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedMatchmakerProcedure } from "../trpc";
 
 export const basicMemberIdealTypeRouter = createTRPCRouter({
-  getIdealTypeById: protectedProcedure
+  getIdealTypeById: protectedMatchmakerProcedure
     .input(
       z.object({
         id: z.string(),
@@ -17,7 +17,7 @@ export const basicMemberIdealTypeRouter = createTRPCRouter({
         },
       });
     }),
-  updatePriorities: protectedProcedure
+  updatePriorities: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),

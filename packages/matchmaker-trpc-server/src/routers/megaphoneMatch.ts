@@ -16,10 +16,10 @@ import { subDays, subHours } from "date-fns";
 import { match as matchPattern } from "ts-pattern";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedMatchmakerProcedure } from "../trpc";
 
 export const megaphoneMatchRouter = createTRPCRouter({
-  findActiveMatchesAsReceiverByMemberId: protectedProcedure
+  findActiveMatchesAsReceiverByMemberId: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
@@ -56,7 +56,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         },
       });
     }),
-  findPastMatchesAsReceiverByMemberId: protectedProcedure
+  findPastMatchesAsReceiverByMemberId: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
@@ -82,7 +82,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         },
       });
     }),
-  findActiveMatchesAsSenderByMemberId: protectedProcedure
+  findActiveMatchesAsSenderByMemberId: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(async ({ ctx: { prisma }, input: { memberId } }) => {
       const [pendingBySender, pendingByReceiverOrWaiting] = await Promise.all([
@@ -178,7 +178,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         pendingByReceiverOrWaiting,
       };
     }),
-  findRespondedPastMatchesAsSenderByMemberId: protectedProcedure
+  findRespondedPastMatchesAsSenderByMemberId: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
@@ -204,7 +204,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         },
       });
     }),
-  findRejectedPastMatchesAsSenderByMemberId: protectedProcedure
+  findRejectedPastMatchesAsSenderByMemberId: protectedMatchmakerProcedure
     .input(z.object({ memberId: z.string() }))
     .query(({ ctx: { prisma }, input: { memberId } }) => {
       return prisma.megaphoneMatch.findMany({
@@ -225,7 +225,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         },
       });
     }),
-  getMatchData: protectedProcedure
+  getMatchData: protectedMatchmakerProcedure
     .input(
       z.object({
         matchId: z.string(),
@@ -379,7 +379,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         targetMemberProfile,
       };
     }),
-  reject: protectedProcedure
+  reject: protectedMatchmakerProcedure
     .input(
       z.object({
         matchId: z.string(),
@@ -459,7 +459,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
         return true;
       },
     ),
-  accept: protectedProcedure
+  accept: protectedMatchmakerProcedure
     .input(
       z.object({
         matchId: z.string(),

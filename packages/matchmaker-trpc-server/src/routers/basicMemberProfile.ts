@@ -4,10 +4,14 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { 테스트남성_아이디, 테스트여성_아이디 } from "../constants";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedMatchmakerProcedure,
+  publicProcedure,
+} from "../trpc";
 
 export const basicMemberProfileRouter = createTRPCRouter({
-  getProfileByMemberId: protectedProcedure
+  getProfileByMemberId: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),
@@ -93,7 +97,7 @@ export const basicMemberProfileRouter = createTRPCRouter({
         },
       });
     }),
-  updateProfile: protectedProcedure
+  updateProfile: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),
