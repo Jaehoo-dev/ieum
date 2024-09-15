@@ -3,13 +3,12 @@ import type { ReactElement } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Profile } from "@ieum/profile";
-import { assert } from "@ieum/utils";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyProfilePage() {
   return (

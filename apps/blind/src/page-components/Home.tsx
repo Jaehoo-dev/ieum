@@ -19,21 +19,20 @@ export function Home() {
   return (
     <>
       <Head>
-        <title>이음</title>
-        <meta name="description" content="나만을 위한 맞춤 소개, 이음" />
+        <title>이음 블라인드</title>
+        <meta name="description" content="직접 찾는 내 인연, 이음 블라인드" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="이음" />
+        <meta property="og:title" content="이음 블라인드" />
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
-        <meta property="og:description" content="나만을 위한 맞춤 소개, 이음" />
+        <meta
+          property="og:description"
+          content="직접 찾는 내 인연, 이음 블라인드"
+        />
         <meta property="og:locale" content="ko_KR" />
         <meta property="og:url" content={MATCHMAKER_URL} />
         <meta
           property="keywords"
-          content="소개팅,소개팅앱,소개팅어플,소개팅사이트,카톡소개팅,이음,소개팅서비스,직장인소개팅"
-        />
-        <meta
-          name="google-site-verification"
-          content="HRlaMCw3qEkNsohFD2phsygDAqpqyd86sig2CoDlXCY"
+          content="소개팅,소개팅앱,소개팅어플,소개팅사이트,카톡소개팅,이음블라인드,소개팅서비스,직장인소개팅"
         />
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
@@ -48,8 +47,8 @@ export function Home() {
         </div>
         <div className="flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center gap-4">
-            <h1 className="mt-4 text-3xl font-semibold text-primary-700 md:text-4xl">
-              이음
+            <h1 className="text-blind-500 mt-4 text-3xl font-semibold md:text-4xl">
+              이음 블라인드
             </h1>
             <Suspense fallback={<Loader />}>
               <Resolved />
@@ -119,9 +118,9 @@ function Registered() {
 
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
-      <Link
+      {/* <Link
         href="/referral"
-        className="w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-700 hover:border-primary-700 hover:text-primary-700 md:p-2.5 md:text-lg"
+        className="border-blind-500 text-blind-700 hover:border-blind-700 hover:text-blind-700 w-full rounded-lg border p-2 text-center font-medium md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(
@@ -134,7 +133,7 @@ function Registered() {
       </Link>
       <Link
         href="/my-matches"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-2.5 md:text-lg"
+        className="border-blind-500 bg-blind-500 hover:border-blind-700 hover:bg-blind-700 w-full rounded-lg border p-2 text-center font-medium text-white md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 매칭 목록 보기 클릭`,
@@ -175,7 +174,7 @@ function Registered() {
         }}
       >
         설정
-      </Link>
+      </Link> */}
       <TipsMenuLink style={{ marginTop: "4px" }} />
       <button
         className="text-sm font-light text-gray-500 underline hover:text-gray-700"
@@ -204,7 +203,7 @@ function Unregistered() {
     <div className="flex w-full flex-col items-center gap-4">
       <Link
         href={HOMEPAGE_URL}
-        className="w-full rounded-lg bg-primary-500 p-3 text-center text-xl font-medium text-white hover:bg-primary-700"
+        className="bg-blind-500 hover:bg-blind-700 w-full rounded-lg p-3 text-center text-xl font-medium text-white"
       >
         알아보기
       </Link>

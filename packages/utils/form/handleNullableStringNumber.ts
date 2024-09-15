@@ -1,4 +1,4 @@
-import { isEmptyStringOrNil } from "@ieum/utils";
+import { isEmptyStringOrNil } from "../isEmptyStringOrNil";
 
 export function handleNullableStringNumber(value: string | null) {
   if (isEmptyStringOrNil(value)) {

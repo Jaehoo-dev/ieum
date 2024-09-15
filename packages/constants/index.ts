@@ -324,6 +324,8 @@ export const 음식종류_라벨: Record<CuisineType, string> = {
 
 export const primary500 = "#ff8271";
 export const primary700 = "#ff6f5e";
+export const blind500 = "#5d3bc1";
+export const blind700 = "#382373";
 
 export const 매치_유형 = {
   기본: "BASIC",

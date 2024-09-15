@@ -1,13 +1,16 @@
 import { ReactElement, Suspense, useEffect } from "react";
 import { useRouter } from "next/router";
-import { assert, isEmptyStringOrNil } from "@ieum/utils";
+import {
+  assert,
+  formatUniqueMemberName,
+  isEmptyStringOrNil,
+} from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function MyProfileEditPage() {
   const { member } = useMemberAuthContext();

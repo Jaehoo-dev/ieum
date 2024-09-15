@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { BASIC_MATCH_DURATION_HOURS } from "@ieum/constants";
 import { Profile } from "@ieum/profile";
-import { assert, krToKrHyphen } from "@ieum/utils";
+import { assert, formatUniqueMemberName, krToKrHyphen } from "@ieum/utils";
 
 import { KakaoBrowserOnly } from "~/components/KakaoBrowserOnly";
 import { Layout } from "~/components/Layout";
@@ -13,7 +13,6 @@ import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 import { KakaoBrowserFallback } from "../../_components/KakaoBrowserFallback";
 import { 조회용_매치_유형 } from "../../_enums";
 
