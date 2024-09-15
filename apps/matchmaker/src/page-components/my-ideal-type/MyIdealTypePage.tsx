@@ -46,7 +46,7 @@ import {
   DrinkingFrequency,
   Religion,
 } from "@ieum/prisma";
-import { assert } from "@ieum/utils";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { keepPreviousData } from "@tanstack/react-query";
 import { match } from "ts-pattern";
@@ -55,7 +55,6 @@ import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 const unusedBasicConditions = new Set<BasicCondition>([
   BasicCondition.EYELID,

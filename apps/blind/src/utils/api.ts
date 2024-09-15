@@ -4,6 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
+import { getFirebaseIdToken } from "@ieum/firebase";
 import type { AppRouter } from "@ieum/matchmaker-trpc-server";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
@@ -13,7 +14,7 @@ import superjson from "superjson";
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  return `http://localhost:${process.env.PORT ?? 3003}`; // dev SSR should use localhost
+  return `http://localhost:${process.env.PORT ?? 3002}`; // dev SSR should use localhost
 };
 
 /** A set of type-safe react-query hooks for your tRPC API. */
@@ -39,6 +40,11 @@ export const api = createTRPCNext<AppRouter>({
            */
           transformer: superjson,
           url: `${getBaseUrl()}/api/trpc`,
+          headers: async () => {
+            const token = await getFirebaseIdToken();
+
+            return token != null ? { Authorization: `Bearer ${token}` } : {};
+          },
         }),
       ],
     };

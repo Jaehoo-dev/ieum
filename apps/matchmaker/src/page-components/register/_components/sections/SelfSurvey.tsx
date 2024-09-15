@@ -11,7 +11,11 @@ import {
   Religion,
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { assert, isEmptyStringOrNil } from "@ieum/utils";
+import {
+  assert,
+  handleNullableStringNumber,
+  isEmptyStringOrNil,
+} from "@ieum/utils";
 import AddIcon from "@mui/icons-material/Add";
 import { nanoid } from "nanoid";
 import { Controller, useFormContext } from "react-hook-form";
@@ -21,7 +25,6 @@ import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { handleNullableStringNumber } from "~/utils/form/handleNullableStringNumber";
 import { RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";

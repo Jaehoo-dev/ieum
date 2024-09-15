@@ -12,6 +12,7 @@ import {
   Region,
   Religion,
 } from "@ieum/prisma";
+import { handleNullableStringNumber } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 
 import { MultiSelect } from "~/components/form/MultiSelect";
@@ -19,7 +20,6 @@ import { Range } from "~/components/form/Range";
 import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
-import { handleNullableStringNumber } from "~/utils/form/handleNullableStringNumber";
 import { defaultDemoForm, DemoForm } from "../DemoForm";
 import { BackTextButton } from "./BackTextButton";
 

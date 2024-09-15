@@ -2,7 +2,7 @@ import { ReactElement, Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { HOMEPAGE_URL } from "@ieum/constants";
-import { assert } from "@ieum/utils";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import DiscountRoundedIcon from "@mui/icons-material/DiscountRounded";
 
@@ -10,7 +10,6 @@ import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 
 export function ReferralCodePage() {
   return (

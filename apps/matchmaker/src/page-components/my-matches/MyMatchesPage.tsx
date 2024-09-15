@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import type { ReactElement } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { assert } from "@ieum/utils";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { match as matchPattern } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
@@ -11,7 +11,6 @@ import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
-import { formatUniqueMemberName } from "~/utils/formatUniqueMemberName";
 import { ActiveBasicMatchesSectionResolved } from "./_components/basic/ActiveBasicMatchesSectionResolved";
 import { PastBasicMatchesSectionResolved } from "./_components/basic/PastBasicMatchesSectionResolved";
 import { MatchTypeTabs } from "./_components/MatchTypeTabs";
