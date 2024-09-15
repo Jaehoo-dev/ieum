@@ -32,5 +32,3 @@ export async function getFirebaseIdToken() {
 
   return token;
 }
-
-export * from "firebase/auth";
