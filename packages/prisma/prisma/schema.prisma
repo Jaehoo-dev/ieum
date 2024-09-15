@@ -104,19 +104,6 @@ enum Religion {
   OTHER
 }
 
-model BlindMember {
-  id        Int       @id @default(autoincrement())
-  nickname  String
-  gender    Gender
-  birthYear Int
-  residence String
-  height    Int
-  bodyShape BodyShape
-  mbti      MBTI
-  workplace String
-  job       String
-}
-
 enum MatchStatus {
   BACKLOG
   PREPARING
