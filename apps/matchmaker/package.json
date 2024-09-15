@@ -40,7 +40,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "firebase": "^10.13.1",
     "lucide-react": "^0.439.0",
     "material-ui-confirm": "^3.0.16",
     "nanoid": "^5.0.7",

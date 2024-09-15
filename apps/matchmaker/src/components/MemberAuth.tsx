@@ -1,13 +1,13 @@
 import { useState } from "react";
 import {
+  auth,
   browserSessionPersistence,
   PhoneAuthProvider,
   RecaptchaVerifier,
   setPersistence,
   signInWithCredential,
   signInWithPhoneNumber,
-} from "@firebase/auth";
-import { auth } from "@ieum/matchmaker-firebase";
+} from "@ieum/matchmaker-firebase";
 import { assert, formatPhoneNumberInput, krHyphenToGlobal } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";

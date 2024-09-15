@@ -1,10 +1,9 @@
 import { createContext, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/router";
-import { auth } from "@ieum/matchmaker-firebase";
+import { auth, signOut as signOutFirebase } from "@ieum/matchmaker-firebase";
 import type { BasicMemberV2 } from "@ieum/prisma";
 import { assert, globalKrToBasicKr } from "@ieum/utils";
-import { signOut as signOutFirebase } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { api } from "~/utils/api";
