@@ -7,7 +7,7 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import { getAuth } from "@ieum/matchmaker-firebase-admin";
+import { getAuth } from "@ieum/blind-firebase-admin";
 import { prisma } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
@@ -88,7 +88,7 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-const matchmakerFirebaseAuth = t.middleware(async ({ ctx, next }) => {
+const blindFirebaseAuth = t.middleware(async ({ ctx, next }) => {
   const authHeader = ctx.headers.authorization;
 
   if (authHeader == null) {
@@ -117,6 +117,4 @@ const matchmakerFirebaseAuth = t.middleware(async ({ ctx, next }) => {
   }
 });
 
-export const protectedMatchmakerProcedure = t.procedure.use(
-  matchmakerFirebaseAuth,
-);
+export const protectedBlindProcedure = t.procedure.use(blindFirebaseAuth);
