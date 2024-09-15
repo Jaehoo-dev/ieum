@@ -6,9 +6,9 @@ const config = {
   reactStrictMode: false,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
+    "@ieum/blind-trpc-server",
     "@ieum/prisma",
     "@ieum/supabase",
-    "@ieum/matchmaker-trpc-server",
     "@ieum/slack",
     "@ieum/utils",
     "@ieum/constants",

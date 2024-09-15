@@ -33,7 +33,7 @@ export function MemberAuthProvider({ children }: Props) {
   const [user, isAuthLoading, error] = useAuthState(auth);
   const utils = api.useUtils();
   const { data: member, isLoading: isMemberLoading } =
-    api.basicMemberRouter.findByPhoneNumber.useQuery(
+    api.blindMemberRouter.findByPhoneNumber.useQuery(
       {
         phoneNumber:
           user?.phoneNumber != null ? globalKrToBasicKr(user.phoneNumber) : "",
@@ -44,8 +44,8 @@ export function MemberAuthProvider({ children }: Props) {
 
   const signOut = useCallback(async () => {
     await signOutFirebase(auth);
-    await utils.basicMemberRouter.invalidate();
-  }, [utils.basicMemberRouter]);
+    await utils.blindMemberRouter.invalidate();
+  }, [utils.blindMemberRouter]);
 
   useEffect(() => {
     if (error != null) {

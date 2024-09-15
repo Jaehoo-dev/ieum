@@ -4,7 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
-import type { AppRouter } from "@ieum/matchmaker-trpc-server";
+import type { AppRouter } from "@ieum/blind-trpc-server";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";

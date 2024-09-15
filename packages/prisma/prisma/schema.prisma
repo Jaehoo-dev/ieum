@@ -105,41 +105,21 @@ enum Religion {
 }
 
 model BlindMember {
-  id        Int       @id @default(autoincrement())
-  nickname  String
-  gender    Gender
-  birthYear Int
-  residence String
-  height    Int
-  bodyShape BodyShape
-  mbti      MBTI
-  workplace String
-  job       String
-  isSmoker  Boolean
-  religion  Religion
+  id          String          @id @default(cuid())
+  nickname    String
+  name        String
+  phoneNumber String
+  gender      Gender
+  birthYear   Int
+  residence   String
+  height      Float
+  bodyShape   String
+  job         String
+  status      MemberStatus
 
-  idealMinAgeBirthYear       Int?
-  idealMaxAgeBirthYear       Int?
-  idealRegions               Region[]
-  idealMinHeight             Int?
-  idealMaxHeight             Int?
-  idealBodyShapes            BodyShape[]
-  idealPreferredMbtis        MBTI[]
-  idealNonPreferredMbtis     MBTI[]
-  idealIsSmokerOk            Boolean
-  idealNonPreferredReligions Religion[]
-
-  nonNegotiableConditions BlindCondition[]
-
-  matchHistory BlindMatch[]
-}
-
-model BlindMatch {
-  id        Int           @id @default(autoincrement())
-  members   BlindMember[]
-  status    MatchStatus
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  @@index([phoneNumber])
+  @@index([gender])
+  @@index([status])
 }
 
 enum MatchStatus {
@@ -149,17 +129,6 @@ enum MatchStatus {
   REJECTED
   ACCEPTED
   BROKEN_UP
-}
-
-enum BlindCondition {
-  AGE
-  REGION
-  HEIGHT
-  PREFERRED_BODY_SHAPES
-  PREFERRED_MBTIS
-  NON_PREFERRED_MBTIS
-  IS_SMOKER_OK
-  NON_PREFERRED_RELIGIONS
 }
 
 model BasicMemberV2 {
@@ -459,30 +428,30 @@ enum MemberStatus {
 }
 
 model BasicMemberProfileV2 {
-  id                   String        @id @default(cuid())
-  member               BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  memberId             String        @unique
+  id       String        @id @default(cuid())
+  member   BasicMemberV2 @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId String        @unique
 
-  birthYear            Int
-  residence            String
-  height               Float
-  education            String
-  job                  String
-  annualIncome         String?
-  assetsValue          String?
-  mbti                 String?
-  hobby                String?
-  characteristic       String?
-  lifePhilosophy       String?
-  isSmoker             String
-  religion             String
+  birthYear      Int
+  residence      String
+  height         Float
+  education      String
+  job            String
+  annualIncome   String?
+  assetsValue    String?
+  mbti           String?
+  hobby          String?
+  characteristic String?
+  lifePhilosophy String?
+  isSmoker       String
+  religion       String
 
   selfIntroduction     String?
   idealTypeDescription String?
 
-  datingStyle          String?
-  contactStyle         String?
-  marriagePlan         String?
+  datingStyle  String?
+  contactStyle String?
+  marriagePlan String?
 }
 
 model BasicMatchV2 {
