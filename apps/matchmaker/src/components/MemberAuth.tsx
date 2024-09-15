@@ -7,12 +7,12 @@ import {
   signInWithCredential,
   signInWithPhoneNumber,
 } from "@firebase/auth";
+import { auth } from "@ieum/matchmaker-firebase";
 import { assert, formatPhoneNumberInput, krHyphenToGlobal } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { auth } from "~/utils/firebase";
 import { TipsMenuLink } from "./TipsMenuLink";
 
 export function MemberAuth() {
