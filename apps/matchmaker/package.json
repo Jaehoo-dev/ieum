@@ -19,6 +19,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@ieum/constants": "*",
+    "@ieum/matchmaker-firebase": "*",
     "@ieum/matchmaker-trpc-server": "*",
     "@ieum/prisma": "*",
     "@ieum/profile": "*",
