@@ -92,6 +92,8 @@ export const publicProcedure = t.procedure;
 const matchmakerFirebaseAuth = t.middleware(async ({ ctx, next }) => {
   const authHeader = ctx.headers.authorization;
 
+  console.log("authHeader", authHeader);
+
   if (authHeader == null) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
