@@ -1,0 +1,41 @@
+{
+  "name": "@ieum/blind-trpc-server",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ieum/blind-firebase-admin": "*",
+    "@ieum/constants": "*",
+    "@ieum/prisma": "*",
+    "@ieum/slack": "*",
+    "@ieum/utils": "*",
+    "@trpc/client": "next",
+    "@trpc/server": "next",
+    "date-fns": "^3.6.0",
+    "superjson": "1.13.1",
+    "ts-pattern": "^5.3.1",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "^0.2.0",
+    "@acme/prettier-config": "^0.1.0",
+    "@acme/tsconfig": "^0.1.0",
+    "eslint": "^8.52.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@acme/eslint-config/base"
+    ]
+  },
+  "prettier": "@acme/prettier-config"
+}
