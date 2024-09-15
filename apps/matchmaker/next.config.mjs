@@ -6,7 +6,6 @@ const config = {
   reactStrictMode: false,
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@ieum/firebase",
     "@ieum/prisma",
     "@ieum/supabase",
     "@ieum/matchmaker-trpc-server",
