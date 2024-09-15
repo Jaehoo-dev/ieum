@@ -7,7 +7,6 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import { getAuth as getBlindAuth } from "@ieum/blind-firebase-admin";
 import { getAuth as getMatchmakerAuth } from "@ieum/matchmaker-firebase-admin";
 import { prisma } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
@@ -92,8 +91,6 @@ export const publicProcedure = t.procedure;
 const matchmakerFirebaseAuth = t.middleware(async ({ ctx, next }) => {
   const authHeader = ctx.headers.authorization;
 
-  console.log("authHeader", authHeader);
-
   if (authHeader == null) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -120,37 +117,6 @@ const matchmakerFirebaseAuth = t.middleware(async ({ ctx, next }) => {
   }
 });
 
-const blindFirebaseAuth = t.middleware(async ({ ctx, next }) => {
-  const authHeader = ctx.headers.authorization;
-
-  if (authHeader == null) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  if (token == null) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-
-  try {
-    const decodedToken = await getBlindAuth().verifyIdToken(token);
-
-    return next({
-      ctx: {
-        ...ctx,
-        session: {
-          user: decodedToken,
-        },
-      },
-    });
-  } catch (err) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-});
-
 export const protectedMatchmakerProcedure = t.procedure.use(
   matchmakerFirebaseAuth,
 );
-
-export const protectedBlindProcedure = t.procedure.use(blindFirebaseAuth);
