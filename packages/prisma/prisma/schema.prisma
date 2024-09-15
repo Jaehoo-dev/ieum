@@ -104,6 +104,44 @@ enum Religion {
   OTHER
 }
 
+model BlindMember {
+  id        Int       @id @default(autoincrement())
+  nickname  String
+  gender    Gender
+  birthYear Int
+  residence String
+  height    Int
+  bodyShape BodyShape
+  mbti      MBTI
+  workplace String
+  job       String
+  isSmoker  Boolean
+  religion  Religion
+
+  idealMinAgeBirthYear       Int?
+  idealMaxAgeBirthYear       Int?
+  idealRegions               Region[]
+  idealMinHeight             Int?
+  idealMaxHeight             Int?
+  idealBodyShapes            BodyShape[]
+  idealPreferredMbtis        MBTI[]
+  idealNonPreferredMbtis     MBTI[]
+  idealIsSmokerOk            Boolean
+  idealNonPreferredReligions Religion[]
+
+  nonNegotiableConditions BlindCondition[]
+
+  matchHistory BlindMatch[]
+}
+
+model BlindMatch {
+  id        Int           @id @default(autoincrement())
+  members   BlindMember[]
+  status    MatchStatus
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
 enum MatchStatus {
   BACKLOG
   PREPARING
@@ -111,6 +149,17 @@ enum MatchStatus {
   REJECTED
   ACCEPTED
   BROKEN_UP
+}
+
+enum BlindCondition {
+  AGE
+  REGION
+  HEIGHT
+  PREFERRED_BODY_SHAPES
+  PREFERRED_MBTIS
+  NON_PREFERRED_MBTIS
+  IS_SMOKER_OK
+  NON_PREFERRED_RELIGIONS
 }
 
 model BasicMemberV2 {
