@@ -17,7 +17,7 @@ export function useSlackNotibot() {
     try {
       await sendSlackMessage({
         channel,
-        content,
+        content: `[블라인드] ${content}`,
       });
     } catch {
       // ignore

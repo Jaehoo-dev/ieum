@@ -11,7 +11,7 @@ export const blindMemberRouter = createTRPCRouter({
       }),
     )
     .query(({ ctx, input: { phoneNumber } }) => {
-      return ctx.prisma.basicMemberV2.findUnique({
+      return ctx.prisma.blindMember.findUnique({
         where: {
           phoneNumber,
           status: {
