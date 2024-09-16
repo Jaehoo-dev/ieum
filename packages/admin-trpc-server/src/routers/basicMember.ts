@@ -345,17 +345,17 @@ export const basicMemberRouter = createTRPCRouter({
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
         matchType: z.nativeEnum(매치_유형),
-        limit: z.number().min(1).max(100).default(5),
+        take: z.number().min(1).max(100).default(5),
         cursor: z.string().optional(),
       }),
     )
     .query(
       async ({
         ctx,
-        input: { gender, status, sort, matchType, limit, cursor },
+        input: { gender, status, sort, matchType, take, cursor },
       }) => {
         const members = await ctx.prisma.basicMemberV2.findMany({
-          take: limit + 1,
+          take: take + 1,
           where: {
             gender,
             status,
@@ -381,7 +381,7 @@ export const basicMemberRouter = createTRPCRouter({
         });
 
         const nextCursor =
-          members.length > limit ? members.pop()!.id : undefined;
+          members.length > take ? members.pop()!.id : undefined;
 
         return {
           members,

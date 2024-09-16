@@ -22,7 +22,7 @@ export function Layout({
       <Head>
         <title>{`${title} | 이음 블라인드`}</title>
       </Head>
-      <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center shadow-xl">
+      <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center shadow-xl">
         <Header title={title} sidebar={sidebar} />
         <main className={`mt-14 w-full ${padding ? "p-6" : ""}`}>
           {children}
@@ -47,7 +47,7 @@ function Header({ title, sidebar = true }: HeaderProps) {
   return (
     <>
       <header className="shadow-xs fixed top-0 z-10 flex h-14 w-full items-center justify-center border-b border-b-gray-200 bg-white">
-        <div className="relative flex w-full max-w-lg items-center justify-center">
+        <div className="relative flex w-full max-w-2xl items-center justify-center">
           {sidebar ? <Hamburger onClick={toggleSidebar} /> : null}
           <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
         </div>

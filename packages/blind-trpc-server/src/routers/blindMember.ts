@@ -1,4 +1,4 @@
-import { MemberStatus } from "@ieum/prisma";
+import { Gender, MemberStatus } from "@ieum/prisma";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -29,5 +29,43 @@ export const blindMemberRouter = createTRPCRouter({
           gender: true,
         },
       });
+    }),
+  getInfiniteMembers: protectedBlindProcedure
+    .input(
+      z.object({
+        gender: z.nativeEnum(Gender),
+        take: z.number().min(1).max(100).default(20),
+        cursor: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input: { gender, take, cursor } }) => {
+      const members = await ctx.prisma.blindMember.findMany({
+        where: {
+          gender,
+          status: MemberStatus.ACTIVE,
+        },
+        take: take + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        select: {
+          id: true,
+          nickname: true,
+          birthYear: true,
+          gender: true,
+          height: true,
+          bodyShape: true,
+          job: true,
+          residence: true,
+        },
+        orderBy: {
+          birthYear: "asc",
+        },
+      });
+
+      const nextCursor = members.length > take ? members.pop()!.id : undefined;
+
+      return {
+        members,
+        nextCursor,
+      };
     }),
 });

@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
-import { blind700 } from "@ieum/constants";
+import { blind500 } from "@ieum/constants";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 
@@ -60,7 +60,7 @@ export default api.withTRPC(MyApp);
 const muiTheme = createTheme({
   palette: {
     primary: {
-      main: blind700,
+      main: blind500,
     },
   },
 });
