@@ -6,6 +6,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
+import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -49,6 +50,7 @@ export function MembersPage() {
       />
       <Members gender={gender} />
       <HorizontalInfeedAd />
+      <ResponsiveDisplayAd />
     </div>
   );
 }
