@@ -101,6 +101,11 @@ function Members({ gender }: { gender: Gender }) {
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto">
           {members.map((member, index) => (
             <Fragment key={member.id}>
+              {index % 20 === 0 ? (
+                <div className="w-[calc(100%-10px)]">
+                  <HorizontalInfeedAd />
+                </div>
+              ) : null}
               <div
                 className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
                   index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
@@ -113,11 +118,6 @@ function Members({ gender }: { gender: Gender }) {
                 <div className="truncate">{member.bodyShape}</div>
                 <div className="truncate">{member.job}</div>
               </div>
-              {index > 0 && index % 2 === 0 ? (
-                <div>
-                  <HorizontalInfeedAd />
-                </div>
-              ) : null}
             </Fragment>
           ))}
           <div className="col-span-6 flex p-2">
