@@ -98,11 +98,11 @@ function Members({ gender }: { gender: Gender }) {
           <div className="font-medium text-gray-900">체형</div>
           <div className="font-medium text-gray-900">직업</div>
         </div>
-        <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto">
+        <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => (
             <Fragment key={member.id}>
               {index % 20 === 0 ? (
-                <div className="w-[calc(100%-10px)]">
+                <div>
                   <HorizontalInfeedAd />
                 </div>
               ) : null}
