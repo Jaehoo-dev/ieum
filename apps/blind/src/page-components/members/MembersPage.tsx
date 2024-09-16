@@ -1,4 +1,9 @@
-import { ComponentPropsWithoutRef, ReactElement, useEffect } from "react";
+import {
+  ComponentPropsWithoutRef,
+  Fragment,
+  ReactElement,
+  useEffect,
+} from "react";
 import { useRouter } from "next/router";
 import { Gender } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
@@ -49,7 +54,6 @@ export function MembersPage() {
         }}
       />
       <Members gender={gender} />
-      <HorizontalInfeedAd />
       <ResponsiveDisplayAd />
     </div>
   );
@@ -96,19 +100,25 @@ function Members({ gender }: { gender: Gender }) {
         </div>
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto">
           {members.map((member, index) => (
-            <div
-              key={member.id + index}
-              className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
-                index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
-              }`}
-            >
-              <div className="truncate">{member.nickname}</div>
-              <div className="truncate">{member.birthYear}</div>
-              <div className="truncate">{member.residence}</div>
-              <div className="truncate">{member.height}</div>
-              <div className="truncate">{member.bodyShape}</div>
-              <div className="truncate">{member.job}</div>
-            </div>
+            <Fragment key={member.id}>
+              <div
+                className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
+                  index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
+                }`}
+              >
+                <div className="truncate">{member.nickname}</div>
+                <div className="truncate">{member.birthYear}</div>
+                <div className="truncate">{member.residence}</div>
+                <div className="truncate">{member.height}</div>
+                <div className="truncate">{member.bodyShape}</div>
+                <div className="truncate">{member.job}</div>
+              </div>
+              {index > 0 && index % 3 === 0 ? (
+                <div>
+                  <HorizontalInfeedAd />
+                </div>
+              ) : null}
+            </Fragment>
           ))}
           <div className="col-span-6 flex p-2">
             {hasNextPage ? (
