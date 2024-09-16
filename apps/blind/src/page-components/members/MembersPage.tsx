@@ -10,8 +10,8 @@ import { assert } from "@ieum/utils";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
-import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
+// import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
+// import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -54,7 +54,7 @@ export function MembersPage() {
         }}
       />
       <Members gender={gender} />
-      <ResponsiveDisplayAd />
+      {/* <ResponsiveDisplayAd /> */}
     </div>
   );
 }
@@ -101,11 +101,11 @@ function Members({ gender }: { gender: Gender }) {
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => (
             <Fragment key={member.id}>
-              {index % 20 === 0 ? (
+              {/* {index % 20 === 0 ? (
                 <div>
                   <HorizontalInfeedAd />
                 </div>
-              ) : null}
+              ) : null} */}
               <div
                 className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
                   index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
