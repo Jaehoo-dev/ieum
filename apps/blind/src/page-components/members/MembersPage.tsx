@@ -53,13 +53,13 @@ export function MembersPage() {
           });
         }}
       />
-      <Members gender={gender} />
+      <MembersTable gender={gender} />
       {/* <ResponsiveDisplayAd /> */}
     </div>
   );
 }
 
-function Members({ gender }: { gender: Gender }) {
+function MembersTable({ gender }: { gender: Gender }) {
   const {
     data,
     isPending,
@@ -80,7 +80,11 @@ function Members({ gender }: { gender: Gender }) {
   );
 
   if (isPending || data == null) {
-    return <Loader />;
+    return (
+      <div className="mt-10 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   const members = data.pages.flatMap((page) => {
@@ -90,7 +94,7 @@ function Members({ gender }: { gender: Gender }) {
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       <div className="w-[740px]">
-        <div className="sticky top-0 z-10 grid grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b bg-white p-2">
+        <div className="grid grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
           <div className="font-medium text-gray-900">닉네임</div>
           <div className="font-medium text-gray-900">출생연도</div>
           <div className="font-medium text-gray-900">거주지</div>
@@ -107,7 +111,7 @@ function Members({ gender }: { gender: Gender }) {
                 </div>
               ) : null} */}
               <div
-                className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
+                className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
                   index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
                 }`}
               >
