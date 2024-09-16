@@ -5,6 +5,7 @@ import { assert } from "@ieum/utils";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
+import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -47,6 +48,7 @@ export function MembersPage() {
         }}
       />
       <Members gender={gender} />
+      <HorizontalInfeedAd />
     </div>
   );
 }
@@ -75,10 +77,14 @@ function Members({ gender }: { gender: Gender }) {
     return <Loader />;
   }
 
+  const members = data.pages.flatMap((page) => {
+    return page.members;
+  });
+
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       <div className="w-[740px]">
-        <div className="sticky top-0 z-10 grid grid-cols-[1.5fr_1fr_2fr_1fr_2fr_2fr] gap-2 border-b bg-white p-2">
+        <div className="sticky top-0 z-10 grid grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b bg-white p-2">
           <div className="font-medium text-gray-900">닉네임</div>
           <div className="font-medium text-gray-900">출생연도</div>
           <div className="font-medium text-gray-900">거주지</div>
@@ -87,25 +93,21 @@ function Members({ gender }: { gender: Gender }) {
           <div className="font-medium text-gray-900">직업</div>
         </div>
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto">
-          {data.pages
-            .flatMap((page) => {
-              return page.members;
-            })
-            .map((member, index) => (
-              <div
-                key={member.id + index}
-                className={`grid cursor-pointer grid-cols-[1.5fr_1fr_2fr_1fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
-                  index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
-                }`}
-              >
-                <div className="truncate">{member.nickname}</div>
-                <div className="truncate">{member.birthYear}</div>
-                <div className="truncate">{member.residence}</div>
-                <div className="truncate">{member.height}</div>
-                <div className="truncate">{member.bodyShape}</div>
-                <div className="truncate">{member.job}</div>
-              </div>
-            ))}
+          {members.map((member, index) => (
+            <div
+              key={member.id + index}
+              className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 p-2 text-gray-700 hover:bg-blind-100 ${
+                index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
+              }`}
+            >
+              <div className="truncate">{member.nickname}</div>
+              <div className="truncate">{member.birthYear}</div>
+              <div className="truncate">{member.residence}</div>
+              <div className="truncate">{member.height}</div>
+              <div className="truncate">{member.bodyShape}</div>
+              <div className="truncate">{member.job}</div>
+            </div>
+          ))}
           <div className="col-span-6 flex p-2">
             {hasNextPage ? (
               <div className="flex w-full justify-around py-2">
