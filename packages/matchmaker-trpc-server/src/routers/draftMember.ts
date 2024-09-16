@@ -124,24 +124,20 @@ export const draftMemberRouter = createTRPCRouter({
           },
         });
 
-        try {
-          await Promise.all([
-            sendSlackMessage({
-              channel: "폼_제출_알림",
-              content: `*이음:cupid:베이직* 설문 제출\n${
-                data.name
-              } / ${krToKrHyphen(data.phoneNumber)} / ${
-                성별_라벨[data.gender]
-              }`,
-            }),
-            sendSlackMessage({
-              channel: "폼_백업",
-              content: JSON.stringify(data),
-            }),
-          ]);
-        } catch {
-          // ignore
-        }
+        await Promise.all([
+          sendSlackMessage({
+            channel: "폼_제출_알림",
+            content: `*이음:cupid:베이직* 설문 제출\n${
+              data.name
+            } / ${krToKrHyphen(data.phoneNumber)} / ${성별_라벨[data.gender]}`,
+            throwOnError: false,
+          }),
+          sendSlackMessage({
+            channel: "폼_백업",
+            content: JSON.stringify(data),
+            throwOnError: false,
+          }),
+        ]);
 
         return true;
       },

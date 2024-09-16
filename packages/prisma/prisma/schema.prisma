@@ -104,18 +104,40 @@ enum Religion {
   OTHER
 }
 
-model BlindMember {
-  id          String       @id @default(cuid())
-  nickname    String
+model DraftBlindMember {
+  id          String      @id @default(cuid())
   name        String
   phoneNumber String
-  gender      Gender
-  birthYear   Int
-  residence   String
-  height      Float
-  bodyShape   String
-  job         String
-  status      MemberStatus
+  status      DraftStatus @default(PENDING)
+
+  nickname  String
+  gender    Gender
+  birthYear Int
+  residence String
+  height    Float
+  bodyShape String
+  job       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlindMember {
+  id          String       @id @default(cuid())
+  name        String
+  phoneNumber String
+  status      MemberStatus @default(PENDING)
+
+  nickname  String
+  gender    Gender
+  birthYear Int
+  residence String
+  height    Float
+  bodyShape String
+  job       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([phoneNumber])
   @@index([phoneNumber])

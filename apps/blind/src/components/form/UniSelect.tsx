@@ -62,7 +62,7 @@ export function UniSelect<T extends string | number | boolean = string>({
               key={String(option.value)}
               className={`cursor-pointer rounded-lg border border-gray-300 px-4 py-2 outline-none ${
                 value === option.value
-                  ? "bg-blind-100 ring-blind-500 ring-2"
+                  ? "bg-blind-100 ring-2 ring-blind-500"
                   : ""
               }`}
               onClick={() => {

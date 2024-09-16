@@ -10,8 +10,8 @@ export const blindMemberRouter = createTRPCRouter({
         phoneNumber: z.string(),
       }),
     )
-    .query(({ ctx, input: { phoneNumber } }) => {
-      return ctx.prisma.blindMember.findUnique({
+    .query(({ ctx: { prisma }, input: { phoneNumber } }) => {
+      return prisma.blindMember.findUnique({
         where: {
           phoneNumber,
           status: {
@@ -38,8 +38,8 @@ export const blindMemberRouter = createTRPCRouter({
         cursor: z.string().optional(),
       }),
     )
-    .query(async ({ ctx, input: { gender, take, cursor } }) => {
-      const members = await ctx.prisma.blindMember.findMany({
+    .query(async ({ ctx: { prisma }, input: { gender, take, cursor } }) => {
+      const members = await prisma.blindMember.findMany({
         where: {
           gender,
           status: MemberStatus.ACTIVE,

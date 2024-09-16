@@ -38,7 +38,7 @@ function _TextInput(
       <input
         id={label}
         ref={ref}
-        className={`focus:ring-blind-500 mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 ${
+        className={`mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-blind-300 ${
           error ? "border-red-500" : "border-gray-300"
         }`}
         type={props.type ?? "text"}

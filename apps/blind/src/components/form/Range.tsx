@@ -22,7 +22,6 @@ export function Range({
 }: Props) {
   const hasErrorText = error && !isEmptyStringOrNil(errorText);
   const hasDescription = !isEmptyStringOrNil(description);
-  const hasSublabel = hasErrorText || hasDescription;
 
   return (
     <div className="flex flex-col gap-1 text-gray-800">
