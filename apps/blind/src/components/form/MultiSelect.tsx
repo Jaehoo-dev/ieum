@@ -30,7 +30,6 @@ export function MultiSelect<T extends string | number = string>({
 }: Props<T>) {
   const hasErrorText = error && !isEmptyStringOrNil(errorText);
   const hasDescription = !isEmptyStringOrNil(description);
-  const hasSublabel = hasErrorText || hasDescription;
 
   return (
     <div className="flex flex-col gap-1 text-gray-800">
@@ -64,7 +63,7 @@ export function MultiSelect<T extends string | number = string>({
               key={String(value)}
               className={`cursor-pointer rounded-lg border border-gray-300 px-4 py-2 outline-none ${
                 selectedValues.includes(value)
-                  ? "bg-blind-100 ring-blind-500 ring-2"
+                  ? "bg-blind-100 ring-2 ring-blind-500"
                   : ""
               }`}
               onClick={() => {

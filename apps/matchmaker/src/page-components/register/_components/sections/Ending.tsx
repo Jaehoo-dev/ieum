@@ -17,7 +17,7 @@ export function Ending() {
     <div className="flex w-full flex-col">
       <img
         src="/heart.webp"
-        alt="안녕하세요"
+        alt="하트 이미지"
         className="h-2/5 w-full object-cover object-center"
       />
       <div className="mt-2 flex w-full flex-col gap-8 p-8">

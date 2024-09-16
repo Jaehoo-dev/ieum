@@ -159,7 +159,7 @@ export function Welcome({ onNext }: Props) {
               );
             }}
             rules={{
-              required: "성별을 선택해주세요.",
+              required: "선택해주세요.",
               validate: (value) => {
                 if (value === "MARRIED") {
                   return "기혼자는 가입이 불가능합니다.";

@@ -39,7 +39,7 @@ function _TextareaInput(
       <textarea
         ref={ref}
         id={label}
-        className={`focus:ring-blind-500 mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 ${
+        className={`mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-blind-300 ${
           error ? "border-red-500" : "border-gray-300"
         }`}
         autoComplete={autoComplete}
