@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { assert, formatPhoneNumberInput, krHyphenToGlobal } from "@ieum/utils";
 import {
   browserSessionPersistence,
@@ -137,6 +138,7 @@ interface CodeStepProps {
 }
 
 function CodeStep({ verificationId, onReset }: CodeStepProps) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -169,6 +171,8 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
             }
 
             await signInWithCredential(auth, credential);
+
+            router.push("/members");
           } catch {
             alert("인증에 실패했습니다. 다시 시도해주세요.");
           }
