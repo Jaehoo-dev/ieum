@@ -95,12 +95,12 @@ function MembersTable({ gender }: { gender: Gender }) {
     <div className="flex flex-col gap-2 overflow-x-auto">
       <div className="w-[740px]">
         <div className="grid grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
-          <div className="font-medium text-gray-900">닉네임</div>
-          <div className="font-medium text-gray-900">출생연도</div>
-          <div className="font-medium text-gray-900">거주지</div>
-          <div className="font-medium text-gray-900">키</div>
-          <div className="font-medium text-gray-900">체형</div>
-          <div className="font-medium text-gray-900">직업</div>
+          <div className="font-medium text-gray-800">닉네임</div>
+          <div className="font-medium text-gray-800">출생연도</div>
+          <div className="font-medium text-gray-800">거주지</div>
+          <div className="font-medium text-gray-800">키</div>
+          <div className="font-medium text-gray-800">체형</div>
+          <div className="font-medium text-gray-800">직업</div>
         </div>
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => (
