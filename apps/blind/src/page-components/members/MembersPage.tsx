@@ -113,7 +113,7 @@ function Members({ gender }: { gender: Gender }) {
                 <div className="truncate">{member.bodyShape}</div>
                 <div className="truncate">{member.job}</div>
               </div>
-              {index > 0 && index % 3 === 0 ? (
+              {index > 0 && index % 2 === 0 ? (
                 <div>
                   <HorizontalInfeedAd />
                 </div>
