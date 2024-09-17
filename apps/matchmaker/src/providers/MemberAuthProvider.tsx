@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useEffect } from "react";
 import type { ReactNode } from "react";
-import { useRouter } from "next/router";
 import type { BasicMemberV2 } from "@ieum/prisma";
 import { assert, globalKrToBasicKr } from "@ieum/utils";
 import { signOut as signOutFirebase } from "firebase/auth";
@@ -29,7 +28,6 @@ interface Props {
 }
 
 export function MemberAuthProvider({ children }: Props) {
-  const router = useRouter();
   const [user, isAuthLoading, error] = useAuthState(auth);
   const utils = api.useUtils();
   const { data: member, isLoading: isMemberLoading } =
@@ -51,7 +49,7 @@ export function MemberAuthProvider({ children }: Props) {
     if (error != null) {
       void signOut();
     }
-  }, [error, router, signOut]);
+  }, [error, signOut]);
 
   const loggedIn = !isLoading && user != null;
 
