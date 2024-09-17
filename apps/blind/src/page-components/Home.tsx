@@ -1,9 +1,7 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
-import { MemberStatus } from "@ieum/prisma";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { FeedbackButton } from "~/components/FeedbackButton";
@@ -13,7 +11,6 @@ import { Spacing } from "~/components/Spacing";
 import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
-import { api } from "~/utils/api";
 
 export function Home() {
   return (
@@ -47,7 +44,7 @@ export function Home() {
         </div>
         <div className="flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center gap-4">
-            <h1 className="text-blind-500 mt-4 text-3xl font-semibold md:text-4xl">
+            <h1 className="mt-4 text-3xl font-semibold text-blind-500 md:text-4xl">
               이음 블라인드
             </h1>
             <Suspense fallback={<Loader />}>
@@ -96,7 +93,6 @@ function Registered() {
 
   assert(member != null, "member should be defined");
   const { sendMessage } = useSlackNotibot();
-  const router = useRouter();
 
   useEffect(() => {
     void sendMessage({
@@ -110,7 +106,7 @@ function Registered() {
     <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
       <Link
         href="/members"
-        className="border-blind-500 bg-blind-500 hover:border-blind-700 hover:bg-blind-700 w-full rounded-lg border p-2 text-center font-medium text-white md:p-2.5 md:text-lg"
+        className="w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
             content: `${formatUniqueMemberName(member)} - 회원 목록 보기 클릭`,
@@ -169,7 +165,7 @@ function Unregistered() {
     <div className="flex w-full flex-col items-center gap-4">
       <Link
         href={HOMEPAGE_URL}
-        className="bg-blind-500 hover:bg-blind-700 w-full rounded-lg p-3 text-center text-xl font-medium text-white"
+        className="w-full rounded-lg bg-blind-500 p-3 text-center text-xl font-medium text-white hover:bg-blind-700"
       >
         알아보기
       </Link>
