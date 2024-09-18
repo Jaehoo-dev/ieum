@@ -60,6 +60,10 @@ export function MembersPage() {
 }
 
 function MembersTable({ gender }: { gender: Gender }) {
+  const { member } = useMemberAuthContext();
+
+  assert(member != null, "Component should be used within MemberAuthGuard");
+
   const {
     data,
     isPending,
@@ -71,6 +75,7 @@ function MembersTable({ gender }: { gender: Gender }) {
     {
       gender,
       take: 20,
+      excludedIds: [member.id],
     },
     {
       getNextPageParam: (lastPage) => {
@@ -94,7 +99,7 @@ function MembersTable({ gender }: { gender: Gender }) {
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       <div className="w-[740px]">
-        <div className="grid grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
+        <div className="grid grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
           <div className="font-medium text-gray-800">닉네임</div>
           <div className="font-medium text-gray-800">출생연도</div>
           <div className="font-medium text-gray-800">거주지</div>
@@ -111,7 +116,7 @@ function MembersTable({ gender }: { gender: Gender }) {
                 </div>
               ) : null} */}
               <div
-                className={`grid cursor-pointer grid-cols-[1.2fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
+                className={`grid cursor-pointer grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
                   index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
                 }`}
               >
