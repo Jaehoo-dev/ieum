@@ -104,6 +104,18 @@ enum Religion {
   OTHER
 }
 
+model BlindPreRegisteredMember {
+  id          String      @id @default(cuid())
+  name        String
+  phoneNumber String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([phoneNumber])
+  @@index([phoneNumber])
+}
+
 model DraftBlindMember {
   id          String      @id @default(cuid())
   name        String

@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { Check } from "lucide-react";
 
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/cn";
 
 const _Checkbox = forwardRef<
   ElementRef<typeof CheckboxPrimitive.Root>,
