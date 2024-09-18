@@ -121,7 +121,7 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
         </label>
         <button
           id="sign-in-button"
-          className="border-blind-500 bg-blind-500 hover:border-blind-700 hover:bg-blind-700 disabled:bg-blind-300 mt-3 w-full rounded-lg border p-2 text-center font-medium text-white disabled:cursor-not-allowed md:p-3 md:text-xl"
+          className="mt-3 w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300 md:p-3 md:text-xl"
           disabled={isSubmitting || errors.phoneNumber != null}
         >
           {isSubmitting ? "전송중.." : "인증번호 전송"}
@@ -171,8 +171,6 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
             }
 
             await signInWithCredential(auth, credential);
-
-            router.push("/members");
           } catch {
             alert("인증에 실패했습니다. 다시 시도해주세요.");
           }
@@ -204,7 +202,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
           >
             <input
               type="checkbox"
-              className="before:content[''] checked:border-blind-500 checked:bg-blind-500 checked:before:bg-blind-500 peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-12 before:w-12 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity"
+              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-12 before:w-12 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-blind-500 checked:bg-blind-500 checked:before:bg-blind-500"
               id="shouldPersist"
               {...register("shouldPersist")}
             />
@@ -234,7 +232,7 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
         </div>
         <button
           id="sign-in-button"
-          className="border-blind-500 bg-blind-500 hover:border-blind-700 hover:bg-blind-700 disabled:bg-blind-300 mt-1 w-full rounded-lg border p-2 text-center font-medium text-white disabled:cursor-not-allowed md:p-3 md:text-xl"
+          className="mt-1 w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300 md:p-3 md:text-xl"
           disabled={isSubmitting}
         >
           {isSubmitting ? "인증중.." : "인증하기"}
