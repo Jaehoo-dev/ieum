@@ -3,6 +3,7 @@ import { basicMatchIndexRouter } from "./routers/basicMatchIndex";
 import { basicMemberRouter } from "./routers/basicMember";
 import { basicMemberIdealTypeRouter } from "./routers/basicMemberIdealType";
 import { basicMemberProfileRouter } from "./routers/basicMemberProfile";
+import { blindRouter } from "./routers/blind";
 import { draftMemberRouter } from "./routers/draftMember";
 import { megaphoneMatchRouter } from "./routers/megaphoneMatch";
 import { reviewRouter } from "./routers/review";
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   basicMemberIdealTypeRouter,
   basicMemberProfileRouter,
   basicMatchIndexRouter,
+  blindRouter,
   draftMemberRouter,
   megaphoneMatchRouter,
   reviewRouter,

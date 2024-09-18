@@ -6,6 +6,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
+import { cn } from "~/utils/cn";
 import { FeedbackFormDialog } from "./FeedbackFormDialog";
 
 interface Props {
@@ -47,6 +48,11 @@ export function Sidebar({ open, onClose }: Props) {
               href="/referral"
               onClick={onClose}
             />
+            <MenuItem
+              label="이음 블라인드 사전 신청"
+              href="/blind/pre-register"
+              onClick={onClose}
+            />
             <MenuItem label="설정" href="/settings" onClick={onClose} />
             <MenuItem
               label="자주 묻는 질문"
@@ -82,7 +88,14 @@ interface MenuItemProps extends ComponentPropsWithoutRef<typeof Link> {
   label: ReactNode;
 }
 
-function MenuItem({ label, href, target, onClick, ...props }: MenuItemProps) {
+function MenuItem({
+  label,
+  href,
+  target,
+  onClick,
+  className,
+  ...props
+}: MenuItemProps) {
   const router = useRouter();
   const isActive = router.pathname === href;
   const isExternal = target === "_blank";
@@ -92,9 +105,12 @@ function MenuItem({ label, href, target, onClick, ...props }: MenuItemProps) {
     <li>
       <Link
         href={href}
-        className={`block rounded-lg px-4 py-2 text-lg font-medium text-gray-700 hover:bg-gray-200 ${
-          isActive ? "bg-primary-200" : ""
-        }`}
+        className={cn(
+          `block rounded-lg px-4 py-2 text-lg font-medium text-gray-700 hover:bg-gray-200 ${
+            isActive ? "bg-primary-200 hover:bg-primary-200" : ""
+          }`,
+          className,
+        )}
         onClick={(e) => {
           sendMessage({ content: `메뉴 - ${label} 클릭` });
           onClick?.(e);
