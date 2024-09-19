@@ -57,7 +57,7 @@ export function BlindPreRegisterPage() {
         </div>
         <div className="flex flex-col gap-4">
           <h3 className="border-b border-blind-500 pb-2 text-lg font-semibold text-blind-500">
-            유의사항
+            안내사항
           </h3>
           <div className="flex flex-col gap-2">
             <Disclaimer text="이음 블라인드는 이음 베이직과 별도 회원 체계로 운영해요. 따라서 매칭이 겹칠 수도 있어요." />
