@@ -105,7 +105,7 @@ enum Religion {
 }
 
 model BlindPreRegisteredMember {
-  id          String      @id @default(cuid())
+  id          String @id @default(cuid())
   name        String
   phoneNumber String
 
@@ -175,6 +175,7 @@ model BasicMemberV2 {
   gender                  Gender
   birthYear               Int
   residence               String
+  region                  Region?
   height                  Float
   weight                  Float?
   bmi                     Float?
