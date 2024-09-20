@@ -1,9 +1,12 @@
 import { ReactElement, Suspense, useState } from "react";
 import { useRouter } from "next/router";
+import { 지역_라벨 } from "@ieum/constants";
+import { Region } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, getBmiLabel } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
+import { Select } from "~/components/Select";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
@@ -97,6 +100,7 @@ function Resolved() {
     api.draftBasicMemberRouter.reject.useMutation();
   const { mutateAsync: createBasicMember } =
     api.draftBasicMemberRouter.createBasicMemberFromDraft.useMutation();
+  const [region, setRegion] = useState<Region>();
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -132,6 +136,28 @@ function Resolved() {
           </div>
           <TextInput label="출생연도" value={birthYear} disabled={true} />
           <TextInput label="거주지" value={residence} disabled={true} />
+          <Select
+            label="지역"
+            defaultValue={region}
+            onChange={({ target: { value } }) => {
+              setRegion(value as Region);
+            }}
+          >
+            {[
+              undefined,
+              Region.SEOUL,
+              Region.SOUTH_GYEONGGI,
+              Region.NORTH_GYEONGGI,
+              Region.INCHEON_BUCHEON,
+              Region.CHUNGCHEONG,
+            ].map((region) => {
+              return (
+                <option key={String(region)} value={region}>
+                  {region == null ? undefined : 지역_라벨[region]}
+                </option>
+              );
+            })}
+          </Select>
           <div className="flex flex-row gap-1">
             <TextInput label="키" value={height} disabled={true} />
             <TextInput label="몸무게" value={weight} disabled={true} />
@@ -394,7 +420,16 @@ function Resolved() {
               return;
             }
 
-            const newMember = await createBasicMember({ draftMemberId });
+            if (region == null) {
+              alert("지역 누락");
+
+              return;
+            }
+
+            const newMember = await createBasicMember({
+              draftMemberId,
+              region,
+            });
 
             router.push(`/basic/members/${newMember.id}/update`);
           }}
