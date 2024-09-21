@@ -580,6 +580,7 @@ export const basicMemberRouter = createTRPCRouter({
       z.object({
         memberId: z.string(),
         data: z.object({
+          regions: z.array(z.nativeEnum(Region)),
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
           minHeight: z.number().nullable(),
@@ -613,12 +614,12 @@ export const basicMemberRouter = createTRPCRouter({
         input: {
           memberId,
           data: {
+            regions,
             minAgeBirthYear,
             maxAgeBirthYear,
             minHeight,
             maxHeight,
             minEducationLevel,
-            occupationStatuses,
             preferredMbtis,
             nonPreferredMbtis,
             isSmokerOk,
@@ -706,6 +707,11 @@ export const basicMemberRouter = createTRPCRouter({
             },
             AND: [
               {
+                region:
+                  dealBreakersSet.has(BasicCondition.REGION) &&
+                  regions.length > 0
+                    ? { in: regions }
+                    : undefined,
                 birthYear: dealBreakersSet.has(BasicCondition.AGE)
                   ? {
                       lte: minAgeBirthYear ?? undefined,
