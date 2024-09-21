@@ -13,13 +13,14 @@ import {
   자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
+  지역_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import type { BasicMemberIdealTypeV2 } from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
   BasicCondition,
+  BasicMemberIdealTypeV2,
   BooksReadPerYear,
   EducationLevel,
   ExercisePerWeek,
@@ -27,6 +28,7 @@ import {
   MatchStatus,
   MBTI,
   OccupationStatus,
+  Region,
   Religion,
   satisfiesDealBreakers,
 } from "@ieum/prisma";
@@ -51,6 +53,7 @@ import { CreateBasicMatchButton } from "./components/CreateBasicMatchButton";
 import { CreateMegaphoneButton } from "./components/CreateMegaphoneButton";
 
 interface CustomCanditatesSearchForm {
+  regions: { value: Region }[];
   minAgeBirthYear: number | null;
   maxAgeBirthYear: number | null;
   minHeight: number | null;
@@ -280,6 +283,14 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
   const { register, control, handleSubmit } =
     useFormContext<CustomCanditatesSearchForm>();
   const {
+    fields: regionFields,
+    append: appendRegion,
+    remove: removeRegion,
+  } = useFieldArray({
+    control,
+    name: "regions",
+  });
+  const {
     fields: occupationStatusFields,
     append: appendOccupationStatus,
     remove: removeOccupationStatus,
@@ -493,6 +504,37 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         >
           후보 검색
         </button>
+      </div>
+      <div>
+        지역
+        <div className="grid grid-cols-4 gap-1">
+          {[
+            Region.SEOUL,
+            Region.SOUTH_GYEONGGI,
+            Region.NORTH_GYEONGGI,
+            Region.INCHEON_BUCHEON,
+            Region.CHUNGCHEONG,
+          ].map((region) => {
+            return (
+              <Checkbox
+                key={region}
+                label={지역_라벨[region]}
+                checked={regionFields.some((field) => {
+                  return field.value === region;
+                })}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    appendRegion({ value: region });
+                  } else {
+                    removeRegion(
+                      regionFields.findIndex((field) => field.value === region),
+                    );
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
       <div className="flex gap-2">
         <TextInput
@@ -977,6 +1019,7 @@ function createCustomCandidatesSearchFormValues(
   idealType: BasicMemberIdealTypeV2,
 ): CustomCanditatesSearchForm {
   const {
+    regions,
     minAgeBirthYear,
     maxAgeBirthYear,
     minHeight,
@@ -1003,6 +1046,9 @@ function createCustomCandidatesSearchFormValues(
   } = idealType;
 
   return {
+    regions: regions.map((value) => {
+      return { value };
+    }),
     minAgeBirthYear,
     maxAgeBirthYear,
     minHeight,
@@ -1049,6 +1095,7 @@ function createCustomCandidatesSearchFormValues(
 
 function formToValues(form: CustomCanditatesSearchForm) {
   return {
+    regions: form.regions.map(({ value }) => value),
     minAgeBirthYear: form.minAgeBirthYear,
     maxAgeBirthYear: form.maxAgeBirthYear,
     minHeight: form.minHeight,
