@@ -135,29 +135,31 @@ function Resolved() {
             />
           </div>
           <TextInput label="출생연도" value={birthYear} disabled={true} />
-          <TextInput label="거주지" value={residence} disabled={true} />
-          <Select
-            label="지역"
-            defaultValue={region}
-            onChange={({ target: { value } }) => {
-              setRegion(value as Region);
-            }}
-          >
-            {[
-              undefined,
-              Region.SEOUL,
-              Region.SOUTH_GYEONGGI,
-              Region.NORTH_GYEONGGI,
-              Region.INCHEON_BUCHEON,
-              Region.CHUNGCHEONG,
-            ].map((region) => {
-              return (
-                <option key={String(region)} value={region}>
-                  {region == null ? undefined : 지역_라벨[region]}
-                </option>
-              );
-            })}
-          </Select>
+          <div className="flex gap-1">
+            <TextInput label="거주지" value={residence} disabled={true} />
+            <Select
+              label="지역"
+              defaultValue={region}
+              onChange={({ target: { value } }) => {
+                setRegion(value as Region);
+              }}
+            >
+              {[
+                undefined,
+                Region.SEOUL,
+                Region.SOUTH_GYEONGGI,
+                Region.NORTH_GYEONGGI,
+                Region.INCHEON_BUCHEON,
+                Region.CHUNGCHEONG,
+              ].map((region) => {
+                return (
+                  <option key={String(region)} value={region}>
+                    {region == null ? undefined : 지역_라벨[region]}
+                  </option>
+                );
+              })}
+            </Select>
+          </div>
           <div className="flex flex-row gap-1">
             <TextInput label="키" value={height} disabled={true} />
             <TextInput label="몸무게" value={weight} disabled={true} />
