@@ -4,6 +4,7 @@ import {
   자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
+  지역_라벨,
   학력_라벨,
 } from "@ieum/constants";
 import {
@@ -12,6 +13,7 @@ import {
   EducationLevel,
   ExercisePerWeek,
   Gender,
+  Region,
   Religion,
 } from "@ieum/prisma";
 import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
@@ -27,8 +29,6 @@ export function SelfFields() {
   const {
     register,
     control,
-    watch,
-    setValue,
     formState: { errors },
   } = useFormContext<BasicMemberForm>();
 
@@ -89,13 +89,43 @@ export function SelfFields() {
           },
         })}
       />
-      <TextInput
-        label="거주지"
-        error={errors.self?.residence != null}
-        {...register("self.residence", {
-          required: true,
-        })}
-      />
+      <div className="flex w-full gap-2">
+        <TextInput
+          label="거주지"
+          error={errors.self?.residence != null}
+          {...register("self.residence", {
+            required: true,
+          })}
+        />
+        <Controller
+          control={control}
+          name="self.region"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Select
+                label="지역"
+                error={errors.self?.region != null}
+                value={value ?? undefined}
+                onChange={onChange}
+              >
+                {[
+                  Region.SEOUL,
+                  Region.SOUTH_GYEONGGI,
+                  Region.NORTH_GYEONGGI,
+                  Region.INCHEON_BUCHEON,
+                  Region.CHUNGCHEONG,
+                ].map((region) => {
+                  return (
+                    <option key={region} value={region}>
+                      {지역_라벨[region]}
+                    </option>
+                  );
+                })}
+              </Select>
+            );
+          }}
+        />
+      </div>
       <TextInput
         label="키"
         error={errors.self?.height != null}
