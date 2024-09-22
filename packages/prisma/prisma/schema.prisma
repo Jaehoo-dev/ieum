@@ -140,13 +140,14 @@ model BlindMember {
   phoneNumber String
   status      MemberStatus @default(PENDING)
 
-  nickname  String
-  gender    Gender
-  birthYear Int
-  residence String
-  height    Float
-  bodyShape String
-  job       String
+  nickname         String
+  gender           Gender
+  birthYear        Int
+  residence        String
+  height           Float
+  bodyShape        String
+  job              String
+  selfIntroduction String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

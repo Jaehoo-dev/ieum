@@ -3,6 +3,7 @@ import { Gender } from "@ieum/prisma";
 import { handleNullableStringNumber } from "@ieum/utils";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
@@ -133,6 +134,16 @@ export function SurveySection({ onNext }: Props) {
             error={errors.job != null}
             errorText={errors.job?.message}
             {...register("job", {
+              required: true,
+            })}
+          />
+          <TextareaInput
+            label="자기소개를 적어주세요."
+            required={true}
+            error={errors.selfIntroduction != null}
+            errorText={errors.selfIntroduction?.message}
+            rows={3}
+            {...register("selfIntroduction", {
               required: true,
             })}
           />
