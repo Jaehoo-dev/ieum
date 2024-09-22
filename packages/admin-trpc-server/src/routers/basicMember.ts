@@ -29,6 +29,7 @@ import {
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert, hash, krToGlobal } from "@ieum/utils";
+import { match } from "ts-pattern";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
@@ -341,6 +342,7 @@ export const basicMemberRouter = createTRPCRouter({
   infiniteFindByGender: protectedAdminProcedure
     .input(
       z.object({
+        region: z.enum([Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG, "ALL"]),
         gender: z.nativeEnum(Gender),
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
@@ -352,11 +354,29 @@ export const basicMemberRouter = createTRPCRouter({
     .query(
       async ({
         ctx,
-        input: { gender, status, sort, matchType, take, cursor },
+        input: { region, gender, status, sort, matchType, take, cursor },
       }) => {
         const members = await ctx.prisma.basicMemberV2.findMany({
           take: take + 1,
           where: {
+            region: match(region)
+              .with(Region.SEOUL_OR_GYEONGGI, () => {
+                return {
+                  in: [
+                    Region.SEOUL,
+                    Region.INCHEON_BUCHEON,
+                    Region.SOUTH_GYEONGGI,
+                    Region.NORTH_GYEONGGI,
+                  ],
+                };
+              })
+              .with(Region.CHUNGCHEONG, () => {
+                return Region.CHUNGCHEONG;
+              })
+              .with("ALL", () => {
+                return undefined;
+              })
+              .exhaustive(),
             gender,
             status,
             isMegaphoneUser: matchType === 매치_유형.확성기 ? true : undefined,
