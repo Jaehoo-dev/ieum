@@ -600,7 +600,15 @@ export const basicMemberRouter = createTRPCRouter({
       z.object({
         memberId: z.string(),
         data: z.object({
-          regions: z.array(z.nativeEnum(Region)),
+          regions: z.array(
+            z.enum([
+              Region.SEOUL,
+              Region.SOUTH_GYEONGGI,
+              Region.NORTH_GYEONGGI,
+              Region.INCHEON_BUCHEON,
+              Region.CHUNGCHEONG,
+            ]),
+          ),
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
           minHeight: z.number().nullable(),

@@ -507,33 +507,35 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
       </div>
       <div>
         지역
-        <div className="grid grid-cols-4 gap-1">
-          {[
-            Region.SEOUL,
-            Region.SOUTH_GYEONGGI,
-            Region.NORTH_GYEONGGI,
-            Region.INCHEON_BUCHEON,
-            Region.CHUNGCHEONG,
-          ].map((region) => {
-            return (
-              <Checkbox
-                key={region}
-                label={지역_라벨[region]}
-                checked={regionFields.some((field) => {
-                  return field.value === region;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendRegion({ value: region });
-                  } else {
-                    removeRegion(
-                      regionFields.findIndex((field) => field.value === region),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
+        <div className="grid grid-cols-2 gap-1">
+          {Object.values(Region)
+            .filter((region) => {
+              return Object.values(쿼리_가능한_지역).includes(
+                region as 쿼리_가능한_지역,
+              );
+            })
+            .map((region) => {
+              return (
+                <Checkbox
+                  key={region}
+                  label={지역_라벨[region]}
+                  checked={regionFields.some((field) => {
+                    return field.value === region;
+                  })}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      appendRegion({ value: region });
+                    } else {
+                      removeRegion(
+                        regionFields.findIndex(
+                          (field) => field.value === region,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              );
+            })}
         </div>
       </div>
       <div className="flex gap-2">
@@ -1095,7 +1097,13 @@ function createCustomCandidatesSearchFormValues(
 
 function formToValues(form: CustomCanditatesSearchForm) {
   return {
-    regions: form.regions.map(({ value }) => value),
+    regions: form.regions
+      .map(({ value }) => value)
+      .filter((region) => {
+        return Object.values(쿼리_가능한_지역).includes(
+          region as 쿼리_가능한_지역,
+        );
+      }) as 쿼리_가능한_지역[],
     minAgeBirthYear: form.minAgeBirthYear,
     maxAgeBirthYear: form.maxAgeBirthYear,
     minHeight: form.minHeight,
@@ -1121,6 +1129,17 @@ function formToValues(form: CustomCanditatesSearchForm) {
     lowPriorities: form.lowPriorities.map(({ value }) => value),
   };
 }
+
+const 쿼리_가능한_지역 = {
+  서울: Region.SEOUL,
+  인천부천: Region.INCHEON_BUCHEON,
+  경기남부: Region.SOUTH_GYEONGGI,
+  경기북부: Region.NORTH_GYEONGGI,
+  충청: Region.CHUNGCHEONG,
+} as const;
+
+type 쿼리_가능한_지역 =
+  (typeof 쿼리_가능한_지역)[keyof typeof 쿼리_가능한_지역];
 
 BasicMemberMatchmakerPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
