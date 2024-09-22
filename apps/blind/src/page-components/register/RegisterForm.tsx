@@ -11,6 +11,7 @@ export type RegisterForm = {
   height: number | null;
   bodyShape: string;
   job: string;
+  selfIntroduction: string;
   name: string;
   phoneNumber: string;
   personalInfoConsent: boolean | null;
@@ -24,6 +25,7 @@ const defaultRegisterForm: RegisterForm = {
   height: null,
   bodyShape: "",
   job: "",
+  selfIntroduction: "",
   name: "",
   phoneNumber: "",
   personalInfoConsent: null,

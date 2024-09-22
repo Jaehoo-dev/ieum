@@ -9,6 +9,7 @@ import type { MemberAudio, MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
 import { AccordionSection } from "./components/AccordionSection";
+import { DataField } from "./components/DataField";
 import { Watermarks } from "./components/Watermarks";
 import { useSuspenseSignedUrl } from "./hooks/useSuspenseSignedUrl";
 import { BasicMemberProfileWithMediaSources } from "./types";
@@ -316,15 +317,6 @@ function VideoField({
         loop
       />
     </div>
-  );
-}
-
-function DataField({ label, value }: { label: string; value: string }) {
-  return (
-    <span className="flex gap-1">
-      <p className="text-lg text-gray-900">•</p>
-      <p className="text-lg text-gray-900">{`${label}: ${value}`}</p>
-    </span>
   );
 }
 

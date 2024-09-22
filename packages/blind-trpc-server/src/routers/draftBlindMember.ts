@@ -19,6 +19,7 @@ export const draftBlindMemberRouter = createTRPCRouter({
         height: z.number(),
         bodyShape: z.string(),
         job: z.string(),
+        selfIntroduction: z.string(),
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {

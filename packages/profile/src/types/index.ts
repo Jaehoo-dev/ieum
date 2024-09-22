@@ -1,5 +1,6 @@
 import {
   BasicMemberProfileV2,
+  BlindMember,
   MemberAudio,
   MemberImageV2,
   MemberVideoV2,
@@ -12,3 +13,13 @@ export type BasicMemberProfileWithMediaSources = BasicMemberProfileV2 & {
     audios: MemberAudio[];
   };
 };
+
+export type BlindMemberProfile = Pick<
+  BlindMember,
+  | "birthYear"
+  | "residence"
+  | "height"
+  | "bodyShape"
+  | "job"
+  | "selfIntroduction"
+>;

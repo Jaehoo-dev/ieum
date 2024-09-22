@@ -3,16 +3,26 @@ import { ReactNode, useState } from "react";
 import { Chevron } from "./Chevron";
 
 interface Props {
+  type?: "BASIC" | "BLIND";
   defaultOpened?: boolean;
   title: string;
   children: ReactNode;
 }
 
-export function AccordionSection({ defaultOpened, title, children }: Props) {
+export function AccordionSection({
+  type = "BASIC",
+  defaultOpened,
+  title,
+  children,
+}: Props) {
   const [isOpen, setIsOpen] = useState(defaultOpened ?? false);
 
   return (
-    <div className="flex w-full flex-col rounded-lg border-2 border-primary-500 p-4">
+    <div
+      className={`flex w-full flex-col rounded-lg border-2 ${
+        type === "BLIND" ? "border-blind-500" : "border-primary-500"
+      } p-4`}
+    >
       <div
         role="button"
         className="flex w-full items-center justify-between"
