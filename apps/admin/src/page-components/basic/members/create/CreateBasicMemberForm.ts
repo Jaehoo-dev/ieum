@@ -16,6 +16,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     gender: Gender.MALE,
     birthYear: 1990,
     residence: "",
+    region: null,
     height: 170,
     weight: null,
     bmi: null,
