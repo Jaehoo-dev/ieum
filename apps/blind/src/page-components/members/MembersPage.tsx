@@ -60,6 +60,7 @@ export function MembersPage() {
 }
 
 function MembersTable({ gender }: { gender: Gender }) {
+  const router = useRouter();
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
@@ -119,6 +120,9 @@ function MembersTable({ gender }: { gender: Gender }) {
                 className={`grid cursor-pointer grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
                   index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
                 }`}
+                onClick={() => {
+                  router.push(`/members/${member.id}`);
+                }}
               >
                 <div className="truncate">{member.nickname}</div>
                 <div className="truncate">{member.birthYear}</div>
@@ -207,5 +211,9 @@ function GenderTabs({
 }
 
 MembersPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="회원 목록">{page}</Layout>;
+  return (
+    <Layout title="회원 목록" width="lg">
+      {page}
+    </Layout>
+  );
 };

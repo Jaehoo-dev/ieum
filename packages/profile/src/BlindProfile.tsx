@@ -51,7 +51,7 @@ function PersonalInformationSection({
 
 function SelfIntroductionSection({ content }: { content: string }) {
   return (
-    <AccordionSection type="BLIND" title="안녕하세요" defaultOpened={true}>
+    <AccordionSection type="BLIND" title="자기소개" defaultOpened={true}>
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>
