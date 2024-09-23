@@ -46,27 +46,16 @@ function Active() {
   return (
     <div className="flex flex-col gap-4">
       <Title />
-      <div className="flex items-center justify-between">
-        <p className="text-lg text-gray-700">
-          {`활동 중 ${match(member.gender)
-            .with(Gender.MALE, () => {
-              return "🏃‍♂️";
-            })
-            .with(Gender.FEMALE, () => {
-              return "🏃‍♀️";
-            })
-            .exhaustive()}`}
-        </p>
-        <button
-          className="rounded-lg bg-gray-200 px-5 py-2 text-center text-gray-700 disabled:opacity-50"
-          onClick={async () => {
-            await inactivate({ memberId: member.id });
-          }}
-          disabled={isInactivating}
-        >
-          {isInactivating ? "처리 중.." : "휴면"}
-        </button>
-      </div>
+      <p className="text-lg text-gray-700">
+        {`활동 중 ${match(member.gender)
+          .with(Gender.MALE, () => {
+            return "🏃‍♂️";
+          })
+          .with(Gender.FEMALE, () => {
+            return "🏃‍♀️";
+          })
+          .exhaustive()}`}
+      </p>
     </div>
   );
 }
