@@ -5,7 +5,6 @@ import {
   krHyphenToKr,
   krToKrHyphen,
 } from "@ieum/utils";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Controller, useForm } from "react-hook-form";
 
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -22,10 +21,10 @@ export function BlacklistSection() {
     },
   });
   const utils = api.useUtils();
-  const { mutateAsync: add } = api.basicMemberRouter.addToBlacklist.useMutation(
+  const { mutateAsync: add } = api.blindMemberRouter.addToBlacklist.useMutation(
     {
       onSuccess: () => {
-        return utils.basicMemberRouter.getBlacklist.invalidate();
+        return utils.blindMemberRouter.getBlacklist.invalidate();
       },
     },
   );
@@ -56,7 +55,7 @@ export function BlacklistSection() {
                   fieldState: { error },
                 }) => (
                   <input
-                    className={`flex-1 rounded-lg border border-gray-300 px-3 py-2 outline-primary-500 ${
+                    className={`flex-1 rounded-lg border border-gray-300 px-3 py-2 outline-blind-500 ${
                       error ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="010-0000-0000"
@@ -74,7 +73,7 @@ export function BlacklistSection() {
                   },
                 }}
               />
-              <button className="rounded-lg bg-primary-500 px-5 py-2 font-medium text-white hover:bg-primary-700">
+              <button className="rounded-lg bg-blind-500 px-5 py-2 font-medium text-white hover:bg-blind-700">
                 등록
               </button>
             </div>
@@ -93,7 +92,7 @@ function Description() {
     <div className="flex w-full items-start gap-1">
       <p className="text-sm text-gray-500">※</p>
       <p className="text-sm text-gray-500">
-        블랙리스트에 추가한 전화번호의 주인은 소개 후보군에서 제외합니다.
+        블랙리스트에 추가하면 서로의 목록에서 제외합니다.
       </p>
     </div>
   );
@@ -104,36 +103,17 @@ function Resolved() {
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
-  const [blacklist] = api.basicMemberRouter.getBlacklist.useSuspenseQuery({
+  const [blacklist] = api.blindMemberRouter.getBlacklist.useSuspenseQuery({
     memberId: member.id,
   });
-  const utils = api.useUtils();
-  const { mutateAsync: remove } =
-    api.basicMemberRouter.removeFromBlacklist.useMutation({
-      onSuccess: () => {
-        return utils.basicMemberRouter.getBlacklist.invalidate();
-      },
-    });
 
   return blacklist.length > 0 ? (
     <div className="flex flex-col gap-3">
       {blacklist.map((phoneNumber, index) => (
         <>
-          <div
-            key={phoneNumber}
-            className="flex flex-row items-center justify-between"
-          >
-            <p className="font-medium text-gray-700">
-              {krToKrHyphen(phoneNumber)}
-            </p>
-            <button
-              onClick={async () => {
-                await remove({ memberId: member.id, phoneNumber });
-              }}
-            >
-              <DeleteIcon className="text-red-500" fontSize="small" />
-            </button>
-          </div>
+          <p className="font-medium text-gray-700">
+            {krToKrHyphen(phoneNumber)}
+          </p>
           {index < blacklist.length - 1 ? <hr /> : null}
         </>
       ))}

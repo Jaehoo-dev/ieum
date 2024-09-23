@@ -149,6 +149,8 @@ model BlindMember {
   job              String
   selfIntroduction String
 
+  blacklistedPhoneNumbers String[] @default([])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
