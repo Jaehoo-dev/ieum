@@ -74,9 +74,9 @@ function MembersTable({ gender }: { gender: Gender }) {
     isFetching,
   } = api.blindMemberRouter.getInfiniteMembers.useInfiniteQuery(
     {
+      selfMemberId: member.id,
       gender,
       take: 20,
-      excludedIds: [member.id],
     },
     {
       getNextPageParam: (lastPage) => {

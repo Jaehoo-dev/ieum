@@ -35,14 +35,6 @@ function Active() {
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
-  const utils = api.useUtils();
-  const { mutateAsync: inactivate, isPending: isInactivating } =
-    api.basicMemberRouter.inactivate.useMutation({
-      onSuccess: () => {
-        return utils.basicMemberRouter.getStatus.invalidate();
-      },
-    });
-
   return (
     <div className="flex flex-col gap-4">
       <Title />

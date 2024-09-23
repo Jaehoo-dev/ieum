@@ -1,4 +1,5 @@
 import { Gender, MemberStatus } from "@ieum/prisma";
+import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -33,23 +34,49 @@ export const blindMemberRouter = createTRPCRouter({
   getInfiniteMembers: protectedBlindProcedure
     .input(
       z.object({
+        selfMemberId: z.string(),
         gender: z.nativeEnum(Gender),
         take: z.number().min(1).max(100).default(20),
         cursor: z.string().optional(),
-        excludedIds: z.array(z.string()).optional(),
       }),
     )
     .query(
       async ({
         ctx: { prisma },
-        input: { gender, take, cursor, excludedIds },
+        input: { selfMemberId, gender, take, cursor },
       }) => {
+        const self = await prisma.blindMember.findUniqueOrThrow({
+          where: {
+            id: selfMemberId,
+            status: {
+              in: [
+                MemberStatus.ACTIVE,
+                MemberStatus.PENDING,
+                MemberStatus.INACTIVE,
+              ],
+            },
+          },
+          select: {
+            id: true,
+            phoneNumber: true,
+            blacklistedPhoneNumbers: true,
+          },
+        });
+
         const members = await prisma.blindMember.findMany({
           where: {
             gender,
             status: MemberStatus.ACTIVE,
             id: {
-              notIn: excludedIds,
+              not: self.id,
+            },
+            phoneNumber: {
+              notIn: self.blacklistedPhoneNumbers,
+            },
+            NOT: {
+              blacklistedPhoneNumbers: {
+                has: self.phoneNumber,
+              },
             },
           },
           take: take + 1,
@@ -100,5 +127,106 @@ export const blindMemberRouter = createTRPCRouter({
           selfIntroduction: true,
         },
       });
+    }),
+  getStatus: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const member = await prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      assert(
+        member.status === MemberStatus.PENDING ||
+          member.status === MemberStatus.ACTIVE ||
+          member.status === MemberStatus.INACTIVE,
+        "Invalid member status",
+      );
+
+      return member.status;
+    }),
+  inactivate: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input: { memberId } }) => {
+      await prisma.blindMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          status: MemberStatus.INACTIVE,
+        },
+      });
+
+      return true;
+    }),
+  activate: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input: { memberId } }) => {
+      await prisma.blindMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          status: MemberStatus.ACTIVE,
+        },
+      });
+
+      return true;
+    }),
+  addToBlacklist: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        phoneNumber: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input: { memberId, phoneNumber } }) => {
+      assert(
+        isKrPhoneNumberWithoutHyphens(phoneNumber),
+        "Invalid phone number",
+      );
+
+      await prisma.blindMember.update({
+        where: {
+          id: memberId,
+        },
+        data: {
+          blacklistedPhoneNumbers: {
+            push: phoneNumber,
+          },
+        },
+      });
+
+      return true;
+    }),
+  getBlacklist: protectedBlindProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const member = await prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          blacklistedPhoneNumbers: true,
+        },
+      });
+
+      return member.blacklistedPhoneNumbers;
     }),
 });
