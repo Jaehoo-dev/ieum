@@ -78,4 +78,27 @@ export const blindMemberRouter = createTRPCRouter({
         };
       },
     ),
+  getProfile: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .query(({ ctx: { prisma }, input: { memberId } }) => {
+      return prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          id: true,
+          nickname: true,
+          birthYear: true,
+          residence: true,
+          height: true,
+          bodyShape: true,
+          job: true,
+          selfIntroduction: true,
+        },
+      });
+    }),
 });
