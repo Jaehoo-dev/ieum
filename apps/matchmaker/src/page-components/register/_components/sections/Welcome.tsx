@@ -142,7 +142,7 @@ export function Welcome({ onNext }: Props) {
             render={({ field: { onChange, value }, fieldState: { error } }) => {
               return (
                 <UniSelect
-                  label="기혼은 아니겠죠?"
+                  label="기혼은 아니시겠죠?"
                   options={[
                     { label: "미혼", value: MarriageStatus.SINGLE },
                     { label: "기혼", value: MarriageStatus.MARRIED },
