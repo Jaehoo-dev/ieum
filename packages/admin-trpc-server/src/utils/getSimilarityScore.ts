@@ -13,7 +13,6 @@ import { match } from "ts-pattern";
 /**
  * target이 idealType의 필수 조건은 만족했다고 가정한다.
  */
-// TODO: priorities를 직접 받아야 함
 export function getSimilarityScore({
   idealType,
   target,
