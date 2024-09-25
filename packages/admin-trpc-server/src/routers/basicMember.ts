@@ -589,8 +589,14 @@ export const basicMemberRouter = createTRPCRouter({
       return candidates.sort((a, b) => {
         assert(self.idealType != null, "idealType is null");
 
-        const aIdealTypeSimilarity = getSimilarityScore(self.idealType, a);
-        const bIdealTypeSimilarity = getSimilarityScore(self.idealType, b);
+        const aIdealTypeSimilarity = getSimilarityScore({
+          idealType: self.idealType,
+          target: a,
+        });
+        const bIdealTypeSimilarity = getSimilarityScore({
+          idealType: self.idealType,
+          target: b,
+        });
 
         return bIdealTypeSimilarity - aIdealTypeSimilarity;
       });
@@ -908,8 +914,24 @@ export const basicMemberRouter = createTRPCRouter({
         return candidates.sort((a, b) => {
           assert(self.idealType != null, "idealType is null");
 
-          const aIdealTypeSimilarity = getSimilarityScore(self.idealType, a);
-          const bIdealTypeSimilarity = getSimilarityScore(self.idealType, b);
+          const aIdealTypeSimilarity = getSimilarityScore({
+            idealType: self.idealType,
+            target: a,
+            customPriorities: {
+              highPriorities,
+              mediumPriorities,
+              lowPriorities,
+            },
+          });
+          const bIdealTypeSimilarity = getSimilarityScore({
+            idealType: self.idealType,
+            target: b,
+            customPriorities: {
+              highPriorities,
+              mediumPriorities,
+              lowPriorities,
+            },
+          });
 
           return bIdealTypeSimilarity - aIdealTypeSimilarity;
         });

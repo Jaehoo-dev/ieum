@@ -13,14 +13,29 @@ import { match } from "ts-pattern";
 /**
  * target이 idealType의 필수 조건은 만족했다고 가정한다.
  */
-export function getSimilarityScore(
-  idealType: BasicMemberIdealTypeV2,
-  target: BasicMemberV2,
-) {
-  const { highPriorities, mediumPriorities, lowPriorities } = idealType;
-  const highPrioritiesSet = new Set(highPriorities);
-  const mediumPrioritiesSet = new Set(mediumPriorities);
-  const lowPrioritiesSet = new Set(lowPriorities);
+// TODO: priorities를 직접 받아야 함
+export function getSimilarityScore({
+  idealType,
+  target,
+  customPriorities,
+}: {
+  idealType: BasicMemberIdealTypeV2;
+  target: BasicMemberV2;
+  customPriorities?: {
+    highPriorities: BasicCondition[];
+    mediumPriorities: BasicCondition[];
+    lowPriorities: BasicCondition[];
+  };
+}) {
+  const highPrioritiesSet = new Set(
+    customPriorities?.highPriorities ?? idealType.highPriorities,
+  );
+  const mediumPrioritiesSet = new Set(
+    customPriorities?.mediumPriorities ?? idealType.mediumPriorities,
+  );
+  const lowPrioritiesSet = new Set(
+    customPriorities?.lowPriorities ?? idealType.lowPriorities,
+  );
   const prioritySets = {
     highPriorities: highPrioritiesSet,
     mediumPriorities: mediumPrioritiesSet,
