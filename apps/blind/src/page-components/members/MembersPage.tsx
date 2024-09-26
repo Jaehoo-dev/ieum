@@ -66,30 +66,32 @@ function MembersTable() {
           <div className="font-medium text-gray-800">직업</div>
         </div>
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto overflow-x-hidden">
-          {members.map((member, index) => (
-            <Fragment key={member.id}>
-              {/* {index % 20 === 0 ? (
+          {members.map((member, index) => {
+            return (
+              <Fragment key={member.id}>
+                {/* {index % 20 === 0 ? (
                 <div>
                   <HorizontalInfeedAd />
                 </div>
               ) : null} */}
-              <div
-                className={`grid cursor-pointer grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
-                  index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
-                }`}
-                onClick={() => {
-                  router.push(`/members/${member.id}`);
-                }}
-              >
-                <div className="truncate">{member.nickname}</div>
-                <div className="truncate">{member.birthYear}</div>
-                <div className="truncate">{member.residence}</div>
-                <div className="truncate">{member.height}</div>
-                <div className="truncate">{member.bodyShape}</div>
-                <div className="truncate">{member.job}</div>
-              </div>
-            </Fragment>
-          ))}
+                <div
+                  className={`grid cursor-pointer grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
+                    index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
+                  }`}
+                  onClick={() => {
+                    router.push(`/members/${member.id}`);
+                  }}
+                >
+                  <div className="truncate">{member.nickname}</div>
+                  <div className="truncate">{member.birthYear}</div>
+                  <div className="truncate">{member.residence}</div>
+                  <div className="truncate">{member.height}</div>
+                  <div className="truncate">{member.bodyShape}</div>
+                  <div className="truncate">{member.job}</div>
+                </div>
+              </Fragment>
+            );
+          })}
           <div className="col-span-6 flex p-2">
             {hasNextPage ? (
               <div className="flex w-full justify-around py-2">
