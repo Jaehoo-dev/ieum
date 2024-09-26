@@ -1,16 +1,17 @@
 import { ReactNode, useState } from "react";
+import { Theme } from "src/types";
 
 import { Chevron } from "./Chevron";
 
 interface Props {
-  type?: "BASIC" | "BLIND";
   defaultOpened?: boolean;
   title: string;
   children: ReactNode;
+  theme?: Theme;
 }
 
 export function AccordionSection({
-  type = "BASIC",
+  theme = "BASIC",
   defaultOpened,
   title,
   children,
@@ -20,7 +21,7 @@ export function AccordionSection({
   return (
     <div
       className={`flex w-full flex-col rounded-lg border-2 ${
-        type === "BLIND" ? "border-blind-500" : "border-primary-500"
+        theme === "BLIND" ? "border-blind-500" : "border-primary-500"
       } p-4`}
     >
       <div

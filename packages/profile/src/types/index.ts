@@ -22,4 +22,8 @@ export type BlindMemberProfile = Pick<
   | "bodyShape"
   | "job"
   | "selfIntroduction"
+  | "idVerified"
+  | "jobVerified"
 >;
+
+export type Theme = "BASIC" | "BLIND";
