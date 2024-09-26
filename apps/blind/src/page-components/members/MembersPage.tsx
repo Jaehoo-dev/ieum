@@ -1,16 +1,7 @@
-import {
-  ComponentPropsWithoutRef,
-  Fragment,
-  ReactElement,
-  useEffect,
-} from "react";
+import { ComponentPropsWithoutRef, Fragment, ReactElement } from "react";
 import { useRouter } from "next/router";
-import { Gender } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-// import { HorizontalInfeedAd } from "~/components/adsense/HorizontalInfeedAd";
 // import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
@@ -18,48 +9,15 @@ import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MembersPage() {
-  const router = useRouter();
-  const { member } = useMemberAuthContext();
-
-  assert(member != null, "Component should be used within MemberAuthGuard");
-
-  const gender = router.query.gender as Gender | undefined;
-
-  useEffect(() => {
-    if (router.query.gender == null) {
-      router.replace({
-        query: {
-          ...router.query,
-          gender: member.gender === Gender.MALE ? Gender.FEMALE : Gender.MALE,
-        },
-      });
-    }
-  }, [router.query.gender]);
-
-  if (gender == null) {
-    return null;
-  }
-
   return (
     <div className="flex flex-col gap-6">
-      <GenderTabs
-        value={gender}
-        onChange={(value) => {
-          router.replace({
-            query: {
-              ...router.query,
-              gender: value,
-            },
-          });
-        }}
-      />
-      <MembersTable gender={gender} />
+      <MembersTable />
       {/* <ResponsiveDisplayAd /> */}
     </div>
   );
 }
 
-function MembersTable({ gender }: { gender: Gender }) {
+function MembersTable() {
   const router = useRouter();
   const { member } = useMemberAuthContext();
 
@@ -72,10 +30,9 @@ function MembersTable({ gender }: { gender: Gender }) {
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
-  } = api.blindMemberRouter.getInfiniteMembers.useInfiniteQuery(
+  } = api.blindMemberRouter.getInfiniteCandidates.useInfiniteQuery(
     {
       selfMemberId: member.id,
-      gender,
       take: 20,
     },
     {
@@ -175,38 +132,6 @@ function FetchMoreButton({
     >
       {loading ? <Loader size={6} color="white" /> : "더 보기"}
     </button>
-  );
-}
-
-function GenderTabs({
-  value,
-  onChange,
-}: {
-  value: Gender;
-  onChange: (value: Gender) => void;
-}) {
-  return (
-    <ToggleButtonGroup
-      color="primary"
-      value={value}
-      exclusive={true}
-      fullWidth={true}
-      size="small"
-      onChange={(_, value) => {
-        if (value == null) {
-          return;
-        }
-
-        onChange(value);
-      }}
-    >
-      <ToggleButton value={Gender.MALE} disableRipple={true}>
-        <span className="text-sm">남성</span>
-      </ToggleButton>
-      <ToggleButton value={Gender.FEMALE} disableRipple={true}>
-        <span className="text-sm">여성</span>
-      </ToggleButton>
-    </ToggleButtonGroup>
   );
 }
 

@@ -1,5 +1,6 @@
 import { Gender, MemberStatus } from "@ieum/prisma";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
+import { match } from "ts-pattern";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -31,20 +32,16 @@ export const blindMemberRouter = createTRPCRouter({
         },
       });
     }),
-  getInfiniteMembers: protectedBlindProcedure
+  getInfiniteCandidates: protectedBlindProcedure
     .input(
       z.object({
         selfMemberId: z.string(),
-        gender: z.nativeEnum(Gender),
         take: z.number().min(1).max(100).default(20),
         cursor: z.string().optional(),
       }),
     )
     .query(
-      async ({
-        ctx: { prisma },
-        input: { selfMemberId, gender, take, cursor },
-      }) => {
+      async ({ ctx: { prisma }, input: { selfMemberId, take, cursor } }) => {
         const self = await prisma.blindMember.findUniqueOrThrow({
           where: {
             id: selfMemberId,
@@ -58,6 +55,7 @@ export const blindMemberRouter = createTRPCRouter({
           },
           select: {
             id: true,
+            gender: true,
             phoneNumber: true,
             blacklistedPhoneNumbers: true,
           },
@@ -65,11 +63,11 @@ export const blindMemberRouter = createTRPCRouter({
 
         const members = await prisma.blindMember.findMany({
           where: {
-            gender,
+            gender: match(self.gender)
+              .with(Gender.MALE, () => Gender.FEMALE)
+              .with(Gender.FEMALE, () => Gender.MALE)
+              .exhaustive(),
             status: MemberStatus.ACTIVE,
-            id: {
-              not: self.id,
-            },
             phoneNumber: {
               notIn: self.blacklistedPhoneNumbers,
             },

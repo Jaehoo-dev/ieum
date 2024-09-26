@@ -151,6 +151,9 @@ model BlindMember {
 
   blacklistedPhoneNumbers String[] @default([])
 
+  matchesAsProposer   BlindMatch[] @relation(name: "proposer")
+  matchesAsRespondent BlindMatch[] @relation(name: "respondent")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -159,6 +162,27 @@ model BlindMember {
   @@index([gender])
   @@index([birthYear])
   @@index([status])
+}
+
+model BlindMatch {
+  id           String           @id @default(cuid())
+  proposer     BlindMember      @relation(fields: [proposerId], references: [id], onDelete: Cascade, name: "proposer")
+  proposerId   String
+  respondent   BlindMember      @relation(fields: [respondentId], references: [id], onDelete: Cascade, name: "respondent")
+  respondentId String
+  status       BlindMatchStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum BlindMatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum MatchStatus {

@@ -10,25 +10,20 @@ import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MemberProfilePage() {
-  return (
+  const router = useRouter();
+  const memberId = router.query.memberId;
+
+  return memberId != null ? (
     <Suspense fallback={null}>
-      <Resolved />
+      <Resolved memberId={memberId as string} />
     </Suspense>
-  );
+  ) : null;
 }
 
-function Resolved() {
-  const { member } = useMemberAuthContext();
+function Resolved({ memberId }: { memberId: string }) {
+  const { member: self } = useMemberAuthContext();
 
-  assert(member != null, "Component should be used within MemberAuthGuard");
-
-  const router = useRouter();
-
-  if (router.query.memberId == null) {
-    return null;
-  }
-
-  const memberId = router.query.memberId as string;
+  assert(self != null, "Component should be used within MemberAuthGuard");
 
   const [profile] = api.blindMemberRouter.getProfile.useSuspenseQuery({
     memberId,
@@ -38,9 +33,9 @@ function Resolved() {
 
   useEffect(() => {
     void sendMessage({
-      content: `${formatUniqueMemberName(member)} - ${profile.id} 프로필 조회`,
+      content: `${formatUniqueMemberName(self)} - ${profile.id} 프로필 조회`,
     });
-  }, [member, profile.id, sendMessage]);
+  }, [self, profile.id, sendMessage]);
 
   return (
     <div className="flex w-full flex-col">
