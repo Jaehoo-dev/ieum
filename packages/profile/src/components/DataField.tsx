@@ -21,7 +21,7 @@ export function DataField({
         {`${label}: ${value}`}
         {verified ? (
           <VerifiedIcon
-            className={`ml-0.5 text-sm ${
+            className={`mb-0.5 ml-0.5 text-sm ${
               theme === "BLIND" ? "text-blind-300" : "text-primary-300"
             }`}
           />
