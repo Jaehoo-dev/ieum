@@ -4,6 +4,7 @@ import { BlindProfile } from "@ieum/profile";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
+import { Loader } from "~/components/Loader";
 import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
@@ -14,7 +15,13 @@ export function MemberProfilePage() {
   const memberId = router.query.memberId;
 
   return memberId != null ? (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className="flex h-screen w-full items-center justify-center">
+          <Loader />
+        </div>
+      }
+    >
       <Resolved memberId={memberId as string} />
     </Suspense>
   ) : null;

@@ -123,6 +123,8 @@ export const blindMemberRouter = createTRPCRouter({
           bodyShape: true,
           job: true,
           selfIntroduction: true,
+          idVerified: true,
+          jobVerified: true,
         },
       });
     }),

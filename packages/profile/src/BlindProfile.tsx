@@ -23,8 +23,8 @@ export function BlindProfile({ profile, ...props }: Props) {
 
   return (
     <div className="flex w-full flex-col items-center gap-4" {...props}>
-      <PersonalInformationSection profile={profile} />
       <SelfIntroductionSection content={profile.selfIntroduction} />
+      <PersonalInformationSection profile={profile} />
     </div>
   );
 }
@@ -34,16 +34,34 @@ function PersonalInformationSection({
 }: {
   profile: BlindMemberProfile;
 }) {
-  const { birthYear, residence, height, bodyShape, job } = profile;
+  const {
+    birthYear,
+    residence,
+    height,
+    bodyShape,
+    job,
+    idVerified,
+    jobVerified,
+  } = profile;
 
   return (
-    <AccordionSection type="BLIND" title="인적사항" defaultOpened={true}>
+    <AccordionSection theme="BLIND" title="인적사항" defaultOpened={true}>
       <div className="flex flex-col gap-0.5">
-        <DataField label="나이" value={`${birthYear}년생`} />
-        <DataField label="사는 곳" value={`${residence}`} />
-        <DataField label="키" value={`${height}cm`} />
-        <DataField label="체형" value={bodyShape} />
-        <DataField label="직업" value={job} />
+        <DataField
+          theme="BLIND"
+          label="나이"
+          value={`${birthYear}년생`}
+          verified={idVerified}
+        />
+        <DataField theme="BLIND" label="사는 곳" value={`${residence}`} />
+        <DataField theme="BLIND" label="키" value={`${height}cm`} />
+        <DataField theme="BLIND" label="체형" value={bodyShape} />
+        <DataField
+          theme="BLIND"
+          label="직업"
+          value={job}
+          verified={jobVerified}
+        />
       </div>
     </AccordionSection>
   );
@@ -51,7 +69,7 @@ function PersonalInformationSection({
 
 function SelfIntroductionSection({ content }: { content: string }) {
   return (
-    <AccordionSection type="BLIND" title="자기소개" defaultOpened={true}>
+    <AccordionSection theme="BLIND" title="자기소개" defaultOpened={true}>
       <p className="whitespace-pre-wrap break-words text-lg text-gray-900">
         {content}
       </p>

@@ -149,6 +149,9 @@ model BlindMember {
   job              String
   selfIntroduction String
 
+  idVerified  Boolean // 신분증(이름 및 나이)
+  jobVerified Boolean
+
   blacklistedPhoneNumbers String[] @default([])
 
   matchesAsProposer   BlindMatch[] @relation(name: "proposer")
