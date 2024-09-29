@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { WORLDCUP_URL } from "@ieum/constants";
 
 export function EndingSection() {
   return (
@@ -14,24 +13,23 @@ export function EndingSection() {
           <h1 className="text-xl font-medium text-gray-800">
             설문 완료해주셔서 감사합니다!
           </h1>
-          <p className="text-gray-800">
-            호스트가 곧 연락드리겠습니다.
-            <br />
-            행복한 하루 보내세요. 🙂
-          </p>
+          {/* TODO */}
+          {/* <p className="text-gray-800">
+            각종 인증을 진행하시면 성사율이 올라갑니다.
+          </p> */}
         </div>
         <div className="flex flex-col gap-1">
-          <Link
+          {/* <Link
             href="/tips"
             className="text-center text-blind-500 underline hover:text-blind-700"
           >
             소개팅 꿀팁 보러 가기
-          </Link>
+          </Link> */}
           <Link
-            href={WORLDCUP_URL}
+            href="/members"
             className="text-center text-blind-500 underline hover:text-blind-700"
           >
-            AI 이상형 월드컵 하러 가기
+            회원 목록 보러 가기
           </Link>
         </div>
       </div>

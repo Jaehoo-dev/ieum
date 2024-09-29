@@ -1,8 +1,9 @@
 import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { HOMEPAGE_URL, MATCHMAKER_URL } from "@ieum/constants";
-import { assert, formatUniqueMemberName } from "@ieum/utils";
+import { useRouter } from "next/router";
+import { MATCHMAKER_URL } from "@ieum/constants";
+import { assert } from "@ieum/utils";
 
 import { FeedbackButton } from "~/components/FeedbackButton";
 import { Loader } from "~/components/Loader";
@@ -83,9 +84,16 @@ function Loading() {
 }
 
 function LoggedIn() {
+  const router = useRouter();
   const { registered } = useMemberAuthContext();
 
-  return registered ? <Registered /> : <Unregistered />;
+  useEffect(() => {
+    if (!registered) {
+      router.push("/register");
+    }
+  }, [registered, router]);
+
+  return registered ? <Registered /> : null;
 }
 
 function Registered() {
@@ -96,9 +104,7 @@ function Registered() {
 
   useEffect(() => {
     void sendMessage({
-      content: `${formatUniqueMemberName(member)} - 홈 진입\n${
-        navigator.userAgent
-      }`,
+      content: `${member.id} - 홈 진입\n${navigator.userAgent}`,
     });
   }, [member]);
 
@@ -109,7 +115,7 @@ function Registered() {
         className="w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 회원 목록 보기 클릭`,
+            content: `${member.id} - 회원 목록 보기 클릭`,
           });
         }}
       >
@@ -120,7 +126,7 @@ function Registered() {
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 내 프로필 보기 클릭`,
+            content: `${member.id} - 내 프로필 보기 클릭`,
           });
         }}
       >
@@ -131,7 +137,7 @@ function Registered() {
         className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 설정 클릭`,
+            content: `${member.id} - 설정 클릭`,
           });
         }}
       >
@@ -142,7 +148,7 @@ function Registered() {
         className="text-sm font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
           void sendMessage({
-            content: `${formatUniqueMemberName(member)} - 로그아웃 클릭`,
+            content: `${member.id} - 로그아웃 클릭`,
           });
           void signOut();
         }}
@@ -150,26 +156,6 @@ function Registered() {
         로그아웃
       </button>
       <FeedbackButton />
-    </div>
-  );
-}
-
-function Unregistered() {
-  const { sendMessage } = useSlackNotibot();
-
-  useEffect(() => {
-    void sendMessage({ content: `미가입자 - 홈 진입` });
-  }, [sendMessage]);
-
-  return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <Link
-        href={HOMEPAGE_URL}
-        className="w-full rounded-lg bg-blind-500 p-3 text-center text-xl font-medium text-white hover:bg-blind-700"
-      >
-        알아보기
-      </Link>
-      <TipsMenuLink />
     </div>
   );
 }

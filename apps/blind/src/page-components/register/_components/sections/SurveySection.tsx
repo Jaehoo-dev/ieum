@@ -1,29 +1,46 @@
-import { 성별_라벨 } from "@ieum/constants";
-import { Gender } from "@ieum/prisma";
+import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
+import { Gender, Region } from "@ieum/prisma";
 import { handleNullableStringNumber } from "@ieum/utils";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 
 import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm } from "../../RegisterForm";
+import { api } from "~/utils/api";
+import { formToPayload, useRegisterForm } from "../../RegisterForm";
 
 interface Props {
-  onNext: () => void;
+  phoneNumber: string;
+  onSubmitSuccess: () => void;
 }
 
-export function SurveySection({ onNext }: Props) {
+export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
   const {
-    formState: { errors },
+    clearCache,
+    formState: { errors, isSubmitting },
     register,
     control,
-    trigger,
-  } = useFormContext<RegisterForm>();
-  const { sendMessage } = useSlackNotibot();
+    watch,
+    handleSubmit,
+  } = useRegisterForm();
+  const { mutateAsync: createMember } =
+    api.blindMemberRouter.create.useMutation();
 
   return (
-    <div className="flex w-full flex-col">
+    <form
+      className="flex w-full flex-col"
+      onSubmit={handleSubmit(async (fields) => {
+        const payload = formToPayload(fields);
+
+        await createMember({
+          phoneNumber,
+          ...payload,
+        });
+
+        clearCache();
+        onSubmitSuccess();
+      })}
+    >
       <img
         src="/hello.jpg"
         alt="안녕하세요"
@@ -85,15 +102,41 @@ export function SurveySection({ onNext }: Props) {
               setValueAs: handleNullableStringNumber,
             })}
           />
-          <TextInput
-            label="어디에 거주하세요?"
-            required={true}
-            placeholder="예) 서울시 강남구"
-            error={errors.residence != null}
-            errorText={errors.residence?.message}
-            {...register("residence", {
+          <Controller
+            control={control}
+            name="region"
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
+              return (
+                <UniSelect
+                  label="어디에 거주하세요?"
+                  options={[
+                    Region.SEOUL,
+                    Region.SOUTH_GYEONGGI,
+                    Region.NORTH_GYEONGGI,
+                    Region.INCHEON_BUCHEON,
+                    Region.CHUNGCHEONG,
+                    Region.GYEONGSANG,
+                    Region.JEOLLA,
+                    Region.GANGWON,
+                    Region.JEJU,
+                  ].map((region) => {
+                    return {
+                      label: 지역_라벨[region],
+                      value: region,
+                    };
+                  })}
+                  value={value}
+                  required={true}
+                  onChange={onChange}
+                  error={error != null}
+                  errorText={error?.message}
+                  cols={3}
+                />
+              );
+            }}
+            rules={{
               required: true,
-            })}
+            }}
           />
           <TextInput
             label="키는 몇 센티미터인가요?"
@@ -142,42 +185,49 @@ export function SurveySection({ onNext }: Props) {
             required={true}
             error={errors.selfIntroduction != null}
             errorText={errors.selfIntroduction?.message}
-            rows={3}
+            rows={6}
             {...register("selfIntroduction", {
               required: true,
             })}
           />
+          <Controller
+            control={control}
+            name="personalInfoConsent"
+            render={({ field: { onChange, value }, fieldState: { error } }) => {
+              return (
+                <UniSelect
+                  label="서비스를 제공하기 위해 개인정보를 수집하는 데 동의하십니까?"
+                  options={[
+                    { label: "아니요", value: false },
+                    { label: "예", value: true },
+                  ]}
+                  value={value}
+                  onChange={onChange}
+                  required={true}
+                  error={error != null}
+                  errorText={error?.message}
+                  cols={2}
+                />
+              );
+            }}
+            rules={{
+              validate: (value) => {
+                return (
+                  value === true ||
+                  "개인정보 수집에 동의하지 않으시면 서비스를 제공해드릴 수 없습니다."
+                );
+              },
+            }}
+          />
         </div>
         <button
-          onClick={async () => {
-            sendMessage({
-              content: "설문 페이지 다음 클릭",
-            });
-
-            const isValid = await trigger(
-              [
-                "nickname",
-                "birthYear",
-                "bodyShape",
-                "gender",
-                "height",
-                "job",
-                "residence",
-              ],
-              {
-                shouldFocus: true,
-              },
-            );
-
-            if (isValid) {
-              onNext();
-            }
-          }}
-          className="mt-6 w-full rounded-lg bg-blind-500 px-4 py-2 text-lg font-medium text-white hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300"
+          type="submit"
+          className="flex-1 rounded-lg bg-blind-500 px-4 py-2 text-lg font-medium text-white hover:bg-blind-700 disabled:opacity-50"
+          disabled={!watch("personalInfoConsent") || isSubmitting}
         >
-          다음
+          {isSubmitting ? "제출 중.." : "제출"}
         </button>
       </div>
-    </div>
+    </form>
   );
 }
