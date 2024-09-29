@@ -16,8 +16,10 @@ export type BasicMemberProfileWithMediaSources = BasicMemberProfileV2 & {
 
 export type BlindMemberProfile = Pick<
   BlindMember,
+  | "nickname"
+  | "gender"
   | "birthYear"
-  | "residence"
+  | "region"
   | "height"
   | "bodyShape"
   | "job"

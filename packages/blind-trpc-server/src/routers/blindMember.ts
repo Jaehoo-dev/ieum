@@ -1,4 +1,6 @@
-import { Gender, MemberStatus } from "@ieum/prisma";
+import { 성별_라벨 } from "@ieum/constants";
+import { Gender, MemberStatus, Region } from "@ieum/prisma";
+import { sendSlackMessage } from "@ieum/slack";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
@@ -6,6 +8,40 @@ import { z } from "zod";
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
 
 export const blindMemberRouter = createTRPCRouter({
+  create: protectedBlindProcedure
+    .input(
+      z.object({
+        phoneNumber: z.string(),
+        nickname: z.string(),
+        gender: z.nativeEnum(Gender),
+        birthYear: z.number(),
+        region: z.nativeEnum(Region),
+        height: z.number(),
+        bodyShape: z.string(),
+        job: z.string(),
+        selfIntroduction: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input }) => {
+      await prisma.blindMember.create({
+        data: {
+          ...input,
+          status: MemberStatus.ACTIVE,
+          idVerified: false,
+          jobVerified: false,
+        },
+      });
+
+      sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `*이음:cupid:블라인드* 설문 제출\n${input.nickname} / ${
+          성별_라벨[input.gender]
+        }`,
+        throwOnError: false,
+      });
+
+      return true;
+    }),
   findByPhoneNumber: protectedBlindProcedure
     .input(
       z.object({
@@ -26,7 +62,6 @@ export const blindMemberRouter = createTRPCRouter({
         },
         select: {
           id: true,
-          name: true,
           phoneNumber: true,
           gender: true,
         },
@@ -76,6 +111,7 @@ export const blindMemberRouter = createTRPCRouter({
                 has: self.phoneNumber,
               },
             },
+            // TODO: filter out matched members
           },
           take: take + 1,
           cursor: cursor ? { id: cursor } : undefined,
@@ -87,7 +123,7 @@ export const blindMemberRouter = createTRPCRouter({
             height: true,
             bodyShape: true,
             job: true,
-            residence: true,
+            region: true,
           },
           orderBy: {
             birthYear: "asc",
@@ -117,8 +153,9 @@ export const blindMemberRouter = createTRPCRouter({
         select: {
           id: true,
           nickname: true,
+          gender: true,
           birthYear: true,
-          residence: true,
+          region: true,
           height: true,
           bodyShape: true,
           job: true,

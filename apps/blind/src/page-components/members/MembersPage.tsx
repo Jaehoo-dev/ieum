@@ -1,5 +1,6 @@
 import { ComponentPropsWithoutRef, Fragment, ReactElement } from "react";
 import { useRouter } from "next/router";
+import { 지역_라벨 } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 
 // import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
@@ -57,10 +58,10 @@ function MembersTable() {
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       <div className="w-[740px]">
-        <div className="grid grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
+        <div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
           <div className="font-medium text-gray-800">닉네임</div>
+          <div className="font-medium text-gray-800">지역</div>
           <div className="font-medium text-gray-800">출생연도</div>
-          <div className="font-medium text-gray-800">거주지</div>
           <div className="font-medium text-gray-800">키</div>
           <div className="font-medium text-gray-800">체형</div>
           <div className="font-medium text-gray-800">직업</div>
@@ -75,7 +76,7 @@ function MembersTable() {
                 </div>
               ) : null} */}
                 <div
-                  className={`grid cursor-pointer grid-cols-[1fr_0.8fr_1.6fr_0.6fr_2fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
+                  className={`grid cursor-pointer grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
                     index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
                   }`}
                   onClick={() => {
@@ -83,8 +84,8 @@ function MembersTable() {
                   }}
                 >
                   <div className="truncate">{member.nickname}</div>
+                  <div className="truncate">{지역_라벨[member.region]}</div>
                   <div className="truncate">{member.birthYear}</div>
-                  <div className="truncate">{member.residence}</div>
                   <div className="truncate">{member.height}</div>
                   <div className="truncate">{member.bodyShape}</div>
                   <div className="truncate">{member.job}</div>

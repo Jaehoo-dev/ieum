@@ -58,7 +58,7 @@ function Active() {
             .exhaustive()}`}
         </p>
         <button
-          className="rounded-lg bg-blind-500 px-5 py-2 text-center text-white hover:bg-blind-700 disabled:opacity-50"
+          className="rounded-lg bg-gray-300 px-5 py-2 text-center text-gray-800 hover:bg-gray-400 disabled:opacity-50"
           onClick={async () => {
             try {
               await inactivate({ memberId: member.id });

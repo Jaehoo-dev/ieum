@@ -10,16 +10,24 @@ interface Props {
 
 export function AuthGuard({ children }: Props) {
   const router = useRouter();
-  const { member, loading, signOut, registered } = useMemberAuthContext();
+  const { member, loading, signOut, loggedIn, registered } =
+    useMemberAuthContext();
 
   useEffect(() => {
     if (loading) {
       return;
     }
 
+    if (!loggedIn) {
+      signOut();
+      router.push("/");
+
+      return;
+    }
+
     if (!registered) {
-      void signOut();
-      void router.push("/");
+      signOut();
+      router.push("/register");
     }
   }, [loading, registered, router, signOut]);
 

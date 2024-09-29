@@ -36,6 +36,7 @@ export function Sidebar({ open, onClose }: Props) {
         <div className="flex-grow overflow-y-auto">
           <ul className="space-y-2 px-4">
             <MenuItem label="회원 목록" href="/members" onClick={onClose} />
+            <MenuItem label="매칭 목록" href="/matches" onClick={onClose} />
             <MenuItem label="내 프로필" href="/my-profile" onClick={onClose} />
             <MenuItem label="설정" href="/settings" onClick={onClose} />
             <hr />

@@ -1,19 +1,17 @@
 import { useEffect } from "react";
-import { Gender } from "@ieum/prisma";
-import { assert, krHyphenToKr } from "@ieum/utils";
+import { Gender, Region } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
-export type RegisterForm = {
+type RegisterForm = {
   nickname: string;
   gender: Gender | null;
   birthYear: number | null;
-  residence: string;
+  region: Region | null;
   height: number | null;
   bodyShape: string;
   job: string;
   selfIntroduction: string;
-  name: string;
-  phoneNumber: string;
   personalInfoConsent: boolean | null;
 };
 
@@ -21,17 +19,13 @@ const defaultRegisterForm: RegisterForm = {
   nickname: "",
   gender: null,
   birthYear: null,
-  residence: "",
+  region: null,
   height: null,
   bodyShape: "",
   job: "",
   selfIntroduction: "",
-  name: "",
-  phoneNumber: "",
   personalInfoConsent: null,
 };
-
-export const registerFormId = "BLIND_MEMBER_REGISTER_FORM";
 
 const STORAGE_KEY = "@ieum-blind/register/values";
 const EXPIRY_KEY = "@ieum-blind/register/expiresAt";
@@ -90,12 +84,14 @@ export function useRegisterForm() {
 export function formToPayload({
   gender,
   birthYear,
+  region,
   height,
   personalInfoConsent,
   ...form
 }: RegisterForm) {
   assert(gender != null, "gender should not be null");
   assert(birthYear != null, "birthYear should not be null");
+  assert(region != null, "region should not be null");
   assert(height != null, "height should not be null");
   assert(personalInfoConsent != null, "personalInfoConsent should not be null");
 
@@ -103,8 +99,8 @@ export function formToPayload({
     ...form,
     gender,
     birthYear,
+    region,
     height,
     personalInfoConsent,
-    phoneNumber: krHyphenToKr(form.phoneNumber),
   };
 }

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
-import { Theme } from "src/types";
 
+import { Theme } from "../types";
 import { Chevron } from "./Chevron";
 
 interface Props {

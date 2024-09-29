@@ -116,34 +116,15 @@ model BlindPreRegisteredMember {
   @@index([phoneNumber])
 }
 
-model DraftBlindMember {
-  id          String      @id @default(cuid())
-  name        String
-  phoneNumber String
-  status      DraftStatus @default(PENDING)
-
-  nickname  String
-  gender    Gender
-  birthYear Int
-  residence String
-  height    Float
-  bodyShape String
-  job       String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model BlindMember {
   id          String       @id @default(cuid())
-  name        String
   phoneNumber String
-  status      MemberStatus @default(PENDING)
+  status      MemberStatus
 
   nickname         String
   gender           Gender
   birthYear        Int
-  residence        String
+  region           Region
   height           Float
   bodyShape        String
   job              String

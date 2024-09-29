@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef, useEffect } from "react";
+import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { DataField } from "./components/DataField";
@@ -22,9 +23,25 @@ export function BlindProfile({ profile, ...props }: Props) {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center gap-4" {...props}>
+    <div className="flex w-full flex-col items-center gap-4">
+      <Summary profile={profile} />
       <SelfIntroductionSection content={profile.selfIntroduction} />
       <PersonalInformationSection profile={profile} />
+    </div>
+  );
+}
+
+function Summary({ profile }: { profile: BlindMemberProfile }) {
+  const { gender, birthYear, nickname } = profile;
+
+  return (
+    <div className="flex w-full flex-col gap-0.5">
+      <div className="flex items-center gap-0.5 text-sm text-gray-500">
+        <span>{성별_라벨[gender]}</span>
+        <span>&#8729;</span>
+        <span>{birthYear}년생</span>
+      </div>
+      <span className="text-xl font-semibold text-gray-800">{nickname}</span>
     </div>
   );
 }
@@ -34,15 +51,8 @@ function PersonalInformationSection({
 }: {
   profile: BlindMemberProfile;
 }) {
-  const {
-    birthYear,
-    residence,
-    height,
-    bodyShape,
-    job,
-    idVerified,
-    jobVerified,
-  } = profile;
+  const { birthYear, region, height, bodyShape, job, idVerified, jobVerified } =
+    profile;
 
   return (
     <AccordionSection theme="BLIND" title="인적사항" defaultOpened={true}>
@@ -53,7 +63,7 @@ function PersonalInformationSection({
           value={`${birthYear}년생`}
           verified={idVerified}
         />
-        <DataField theme="BLIND" label="사는 곳" value={`${residence}`} />
+        <DataField theme="BLIND" label="사는 곳" value={지역_라벨[region]} />
         <DataField theme="BLIND" label="키" value={`${height}cm`} />
         <DataField theme="BLIND" label="체형" value={bodyShape} />
         <DataField

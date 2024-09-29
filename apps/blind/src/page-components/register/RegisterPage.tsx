@@ -1,48 +1,59 @@
-import { ReactElement, useState } from "react";
-import { FormProvider } from "react-hook-form";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { assert, globalKrToBasicKr } from "@ieum/utils";
+import { signOut as signOutFirebase } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
+import { Loader } from "~/components/Loader";
 import { api } from "~/utils/api";
+import { auth } from "~/utils/firebase";
 import { EndingSection } from "./_components/sections/EndingSection";
-import { PersonalInfoSection } from "./_components/sections/PersonalInfoSection";
 import { SurveySection } from "./_components/sections/SurveySection";
-import { formToPayload, registerFormId, useRegisterForm } from "./RegisterForm";
 
-const steps = ["설문", "개인정보", "끝"] as const;
+const steps = ["설문", "끝"] as const;
 
 export function RegisterPage() {
-  const { clearCache, ...methods } = useRegisterForm();
+  const router = useRouter();
+  const [user, isAuthLoading, error] = useAuthState(auth);
+  const utils = api.useUtils();
   const [step, setStep] = useState<(typeof steps)[number]>("설문");
-  const { mutateAsync: createMember } =
-    api.draftBlindMemberRouter.create.useMutation();
 
-  return (
-    <FormProvider {...methods}>
-      <form
-        id={registerFormId}
-        onSubmit={methods.handleSubmit(async (fields) => {
-          const payload = formToPayload(fields);
+  const abort = useCallback(async () => {
+    await signOutFirebase(auth);
+    await utils.blindMemberRouter.invalidate();
+    await router.replace("/");
+  }, [router, utils.blindMemberRouter]);
 
-          await createMember(payload);
+  useEffect(() => {
+    if (error != null || (!isAuthLoading && user?.phoneNumber == null)) {
+      abort();
+    }
+  }, [error, user, isAuthLoading, abort]);
 
-          clearCache();
-          setStep("끝");
-        })}
-      >
-        {match(step)
-          .with("설문", () => {
-            return <SurveySection onNext={() => setStep("개인정보")} />;
-          })
-          .with("개인정보", () => {
-            return <PersonalInfoSection onBack={() => setStep("설문")} />;
-          })
-          .with("끝", () => {
-            return <EndingSection />;
-          })
-          .exhaustive()}
-      </form>
-    </FormProvider>
+  return isAuthLoading ? (
+    <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
+      <Loader />
+    </div>
+  ) : (
+    match(step)
+      .with("설문", () => {
+        assert(user?.phoneNumber != null, "User should have phone number");
+
+        return (
+          <SurveySection
+            phoneNumber={globalKrToBasicKr(user.phoneNumber)}
+            onSubmitSuccess={() => {
+              setStep("끝");
+            }}
+          />
+        );
+      })
+      .with("끝", () => {
+        return <EndingSection />;
+      })
+      .exhaustive()
   );
 }
 
