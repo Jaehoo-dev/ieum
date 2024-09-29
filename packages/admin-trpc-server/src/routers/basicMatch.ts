@@ -1,4 +1,4 @@
-import { MatchStatus, MemberStatus } from "@ieum/prisma";
+import { MatchStatus, MemberStatus, Region } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { endOfDay, startOfDay } from "date-fns";
 import { z } from "zod";
@@ -9,13 +9,14 @@ export const basicMatchRouter = createTRPCRouter({
   findAll: protectedAdminProcedure
     .input(
       z.object({
+        region: z.enum([Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG]),
         statuses: z.nativeEnum(MatchStatus).array(),
         from: z.string(),
         to: z.string(),
         name: z.string().optional(),
       }),
     )
-    .query(({ ctx, input: { statuses, name, from, to } }) => {
+    .query(({ ctx, input: { region, statuses, name, from, to } }) => {
       const 상태_필터가_있는가 =
         statuses.length > 0 &&
         statuses.length < Object.values(MatchStatus).length;
@@ -26,13 +27,80 @@ export const basicMatchRouter = createTRPCRouter({
           AND: [
             {
               status: 상태_필터가_있는가 ? { in: statuses } : undefined,
-              OR: 이름_필터가_있는가
-                ? [
-                    { pendingByV2: { some: { name: { equals: name } } } },
-                    { rejectedByV2: { some: { name: { equals: name } } } },
-                    { acceptedByV2: { some: { name: { equals: name } } } },
-                  ]
-                : undefined,
+              OR: [
+                {
+                  pendingByV2: {
+                    some: {
+                      AND: [
+                        {
+                          name: 이름_필터가_있는가
+                            ? { equals: name }
+                            : undefined,
+                          region:
+                            region === Region.CHUNGCHEONG
+                              ? { equals: region }
+                              : {
+                                  in: [
+                                    Region.SEOUL,
+                                    Region.INCHEON_BUCHEON,
+                                    Region.SOUTH_GYEONGGI,
+                                    Region.NORTH_GYEONGGI,
+                                  ],
+                                },
+                        },
+                      ],
+                    },
+                  },
+                },
+                {
+                  rejectedByV2: {
+                    some: {
+                      AND: [
+                        {
+                          name: 이름_필터가_있는가
+                            ? { equals: name }
+                            : undefined,
+                          region:
+                            region === Region.CHUNGCHEONG
+                              ? { equals: region }
+                              : {
+                                  in: [
+                                    Region.SEOUL,
+                                    Region.INCHEON_BUCHEON,
+                                    Region.SOUTH_GYEONGGI,
+                                    Region.NORTH_GYEONGGI,
+                                  ],
+                                },
+                        },
+                      ],
+                    },
+                  },
+                },
+                {
+                  acceptedByV2: {
+                    some: {
+                      AND: [
+                        {
+                          name: 이름_필터가_있는가
+                            ? { equals: name }
+                            : undefined,
+                          region:
+                            region === Region.CHUNGCHEONG
+                              ? { equals: region }
+                              : {
+                                  in: [
+                                    Region.SEOUL,
+                                    Region.INCHEON_BUCHEON,
+                                    Region.SOUTH_GYEONGGI,
+                                    Region.NORTH_GYEONGGI,
+                                  ],
+                                },
+                        },
+                      ],
+                    },
+                  },
+                },
+              ],
             },
           ],
           OR: [
