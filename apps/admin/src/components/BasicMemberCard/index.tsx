@@ -2,9 +2,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { 매치_유형 } from "@ieum/constants";
-import type { BasicMatchV2 } from "@ieum/prisma";
+import type { BasicMatchV2, MemberImageV2 } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
+import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
+import { HoverCardArrow, HoverCardTrigger } from "@radix-ui/react-hover-card";
 import { differenceInCalendarDays } from "date-fns";
 
 import { isBasicMemberWithBasicMatchesJoined } from "~/domains/basic/isBasicMemberWithBasicMatchesJoined";
@@ -13,6 +15,7 @@ import type {
   BasicMemberWithMegaphoneMatchesJoined,
 } from "~/domains/basic/types";
 import { Avatar } from "../Avatar";
+import { HoverCard, HoverCardContent } from "../ui/hover-card";
 import { DetailedSelfFields } from "./DetailedSelfFields";
 import { IdealTypeFields } from "./IdealTypeFields";
 import { SimpleSelfFields } from "./SimpleSelfFields";
@@ -26,8 +29,41 @@ interface Props {
   defaultMode?: Mode;
 }
 
+function HoverAvatar({ images }: { images: MemberImageV2[] }) {
+  assert(images[0] != null, "images[0] is required");
+
+  return (
+    <HoverCard openDelay={0}>
+      <HoverCardTrigger>
+        <Avatar image={images[0]} style={{ marginRight: "4px" }} />
+      </HoverCardTrigger>
+      <HoverCardContent
+        className="HoverCardContent flex w-80 flex-col gap-2 overflow-auto"
+        side="right"
+      >
+        <HoverCardArrow />
+        {images.map((image) => {
+          return <PreviewImage key={image.id} image={image} />;
+        })}
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+
+function PreviewImage({ image }: { image: MemberImageV2 }) {
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
+    .getPublicUrl(image.bucketPath);
+
+  return <img src={publicUrl} alt="미리보기 사진" loading="lazy" />;
+}
+
 export function BasicMemberCard({ member, defaultMode }: Props) {
   assert(member.idealType != null, "idealType is required");
+
+  console.log(member);
 
   const router = useRouter();
   const [folded, setFolded] = useState(false);
@@ -38,13 +74,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {member.images[0] != null ? (
-            <Avatar
-              image={member.images[0]}
-              style={{ marginRight: "4px", cursor: "pointer" }}
-              onClick={() => {
-                router.push(`/basic/members/${member.id}/update`);
-              }}
-            />
+            <HoverAvatar images={member.images} />
           ) : null}
           <div className="flex flex-col gap-0.5">
             <Link
