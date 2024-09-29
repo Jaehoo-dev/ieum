@@ -1,6 +1,8 @@
+import { 지역_쿼리 } from "@ieum/constants";
 import { MatchStatus, MemberStatus, Region } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { endOfDay, startOfDay } from "date-fns";
+import { match } from "ts-pattern";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedAdminProcedure } from "../trpc";
@@ -9,7 +11,7 @@ export const basicMatchRouter = createTRPCRouter({
   findAll: protectedAdminProcedure
     .input(
       z.object({
-        region: z.enum([Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG]),
+        region: z.nativeEnum(지역_쿼리),
         statuses: z.nativeEnum(MatchStatus).array(),
         from: z.string(),
         to: z.string(),
@@ -17,10 +19,34 @@ export const basicMatchRouter = createTRPCRouter({
       }),
     )
     .query(({ ctx, input: { region, statuses, name, from, to } }) => {
+      const 지역_필터 = match(region)
+        .with(지역_쿼리.수도권, () => {
+          return {
+            in: [
+              Region.SEOUL,
+              Region.INCHEON_BUCHEON,
+              Region.SOUTH_GYEONGGI,
+              Region.NORTH_GYEONGGI,
+            ],
+          };
+        })
+        .with(지역_쿼리.충청, () => {
+          return { equals: Region.CHUNGCHEONG };
+        })
+        .with(지역_쿼리.전체, () => {
+          return undefined;
+        })
+        .exhaustive();
+      const 이름_필터 = match(name)
+        .with(undefined, "", () => {
+          return undefined;
+        })
+        .otherwise(() => {
+          return { equals: name };
+        });
       const 상태_필터가_있는가 =
         statuses.length > 0 &&
         statuses.length < Object.values(MatchStatus).length;
-      const 이름_필터가_있는가 = name != null && name !== "";
 
       return ctx.prisma.basicMatchV2.findMany({
         where: {
@@ -33,20 +59,8 @@ export const basicMatchRouter = createTRPCRouter({
                     some: {
                       AND: [
                         {
-                          name: 이름_필터가_있는가
-                            ? { equals: name }
-                            : undefined,
-                          region:
-                            region === Region.CHUNGCHEONG
-                              ? { equals: region }
-                              : {
-                                  in: [
-                                    Region.SEOUL,
-                                    Region.INCHEON_BUCHEON,
-                                    Region.SOUTH_GYEONGGI,
-                                    Region.NORTH_GYEONGGI,
-                                  ],
-                                },
+                          name: 이름_필터,
+                          region: 지역_필터,
                         },
                       ],
                     },
@@ -57,20 +71,8 @@ export const basicMatchRouter = createTRPCRouter({
                     some: {
                       AND: [
                         {
-                          name: 이름_필터가_있는가
-                            ? { equals: name }
-                            : undefined,
-                          region:
-                            region === Region.CHUNGCHEONG
-                              ? { equals: region }
-                              : {
-                                  in: [
-                                    Region.SEOUL,
-                                    Region.INCHEON_BUCHEON,
-                                    Region.SOUTH_GYEONGGI,
-                                    Region.NORTH_GYEONGGI,
-                                  ],
-                                },
+                          name: 이름_필터,
+                          region: 지역_필터,
                         },
                       ],
                     },
@@ -81,20 +83,8 @@ export const basicMatchRouter = createTRPCRouter({
                     some: {
                       AND: [
                         {
-                          name: 이름_필터가_있는가
-                            ? { equals: name }
-                            : undefined,
-                          region:
-                            region === Region.CHUNGCHEONG
-                              ? { equals: region }
-                              : {
-                                  in: [
-                                    Region.SEOUL,
-                                    Region.INCHEON_BUCHEON,
-                                    Region.SOUTH_GYEONGGI,
-                                    Region.NORTH_GYEONGGI,
-                                  ],
-                                },
+                          name: 이름_필터,
+                          region: 지역_필터,
                         },
                       ],
                     },

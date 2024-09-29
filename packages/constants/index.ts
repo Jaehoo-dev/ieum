@@ -343,3 +343,11 @@ export const MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS_EXTENDED =
 export const MEGAPHONE_MATCH_SENDER_DURATION_HOURS = 24;
 export const MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED =
   MEGAPHONE_MATCH_SENDER_DURATION_HOURS + 1;
+
+export const 지역_쿼리 = {
+  수도권: Region.수도권,
+  충청: Region.충청,
+  전체: "ALL",
+} as const;
+
+export type 지역_쿼리 = (typeof 지역_쿼리)[keyof typeof 지역_쿼리];
