@@ -1,12 +1,12 @@
 import { useEffect, type ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 매치_유형, 상태_라벨 } from "@ieum/constants";
-import { MatchStatus } from "@ieum/prisma";
+import { 매치_유형, 상태_라벨, 지역_라벨 } from "@ieum/constants";
+import { MatchStatus, Region } from "@ieum/prisma";
+import { assert } from "@ieum/utils";
 import { format, subDays } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { MegaphoneMatchWithMembers } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 import { BasicMatchField } from "./components/BasicMatchField";
 import { MegaphoneMatchField } from "./components/MegaphoneMatchField";
@@ -17,6 +17,7 @@ interface Form {
   name: string;
   from: Date;
   to: Date;
+  region: Region;
 }
 
 function formToParams(form: Form) {
@@ -32,10 +33,13 @@ function formToParams(form: Form) {
 }
 
 function formToPayload(form: Form) {
-  const { statuses, name, from, to, ...fields } = form;
+  const { region, statuses, name, from, to, ...fields } = form;
+
+  assert(region === Region.SEOUL_OR_GYEONGGI || region === Region.CHUNGCHEONG);
 
   return {
     ...fields,
+    region,
     statuses,
     name: name !== "" ? name : undefined,
     from: from.toISOString(),
@@ -51,6 +55,7 @@ export function MatchHistoryPage() {
       router.replace({
         query: {
           ...router.query,
+          region: Region.SEOUL_OR_GYEONGGI,
           matchType: 매치_유형.기본,
           statuses: MatchStatus.PENDING,
           from: format(subDays(new Date(), 1), "yyyy-MM-dd"),
@@ -62,6 +67,7 @@ export function MatchHistoryPage() {
 
   const { control, getValues, register, handleSubmit } = useForm<Form>({
     defaultValues: {
+      region: (router.query.region ?? Region.SEOUL_OR_GYEONGGI) as Region,
       matchType: (router.query.matchType ?? 매치_유형.기본) as 매치_유형,
       statuses:
         router.query.statuses != null
@@ -99,31 +105,61 @@ export function MatchHistoryPage() {
           });
         })}
       >
-        <div className="flex items-center gap-2">
-          <span>유형</span>
-          <Controller
-            control={control}
-            name="matchType"
-            render={({ field: { value, onChange } }) => {
-              return (
-                <select
-                  className="rounded-lg border border-gray-200 px-1.5 py-1"
-                  value={value}
-                  onChange={(e) => {
-                    onChange(e.target.value as 매치_유형);
-                  }}
-                >
-                  {Object.values(매치_유형).map((matchType) => {
-                    return (
-                      <option key={matchType} value={matchType}>
-                        {matchType}
-                      </option>
-                    );
-                  })}
-                </select>
-              );
-            }}
-          />
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2">
+            <span>유형</span>
+            <Controller
+              control={control}
+              name="matchType"
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <select
+                    className="rounded-lg border border-gray-200 px-1.5 py-1"
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value as 매치_유형);
+                    }}
+                  >
+                    {Object.values(매치_유형).map((matchType) => {
+                      return (
+                        <option key={matchType} value={matchType}>
+                          {matchType}
+                        </option>
+                      );
+                    })}
+                  </select>
+                );
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span>지역</span>
+            <Controller
+              control={control}
+              name="region"
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <select
+                    className="rounded-lg border border-gray-200 px-1.5 py-1"
+                    value={value}
+                    onChange={(e) => {
+                      onChange(e.target.value as 매치_유형);
+                    }}
+                  >
+                    {[Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG].map(
+                      (region) => {
+                        return (
+                          <option key={region} value={region}>
+                            {지역_라벨[region]}
+                          </option>
+                        );
+                      },
+                    )}
+                  </select>
+                );
+              }}
+            />
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span>상태</span>
