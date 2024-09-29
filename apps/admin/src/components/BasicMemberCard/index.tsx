@@ -88,7 +88,13 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
               </div>
             )}
             {isBasicMemberWithBasicMatchesJoined(member) ? (
-              <Count member={member} />
+              <>
+                <Count member={member} />
+                <span className="text-xs">{`${differenceInCalendarDays(
+                  new Date(),
+                  member.lastMatchedAt,
+                )}일 전`}</span>
+              </>
             ) : null}
           </div>
         </div>
@@ -137,7 +143,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
                     setMode(mode === "DETAILED" ? "SIMPLE" : "DETAILED");
                   }}
                 >
-                  {mode === "DETAILED" ? "간략 보기" : "상세 보기"}
+                  {mode === "DETAILED" ? "간략" : "상세"}
                 </button>
                 <span>|</span>
               </>
@@ -178,18 +184,15 @@ function Count({ member }: { member: BasicMemberWithBasicMatchesJoined }) {
   ]);
 
   return (
-    <span>{`백로그 ${matchesCountByStatus[MatchStatus.BACKLOG]} / 준비중 ${
-      matchesCountByStatus[MatchStatus.PREPARING]
-    } / 진행중 ${
+    <span className="text-xs">{`백로그 ${
+      matchesCountByStatus[MatchStatus.BACKLOG]
+    } / 준비중 ${matchesCountByStatus[MatchStatus.PREPARING]} / 진행중 ${
       matchesCountByStatus[MatchStatus.PENDING] +
       matchesCountByStatus[MatchStatus.ACCEPTED]
     } / 완료 ${
       matchesCountByStatus[MatchStatus.REJECTED] +
       matchesCountByStatus[MatchStatus.BROKEN_UP]
-    } / ${differenceInCalendarDays(
-      new Date(),
-      member.lastMatchedAt,
-    )}일 전`}</span>
+    }`}</span>
   );
 }
 
