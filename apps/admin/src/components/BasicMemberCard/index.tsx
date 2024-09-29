@@ -93,7 +93,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
             {isBasicMemberWithBasicMatchesJoined(member) ? (
               <>
                 <Count member={member} />
-                <span className="text-xs">{`${differenceInCalendarDays(
+                <span className="text-sm">{`${differenceInCalendarDays(
                   new Date(),
                   member.lastMatchedAt,
                 )}일 전`}</span>
@@ -187,7 +187,7 @@ function Count({ member }: { member: BasicMemberWithBasicMatchesJoined }) {
   ]);
 
   return (
-    <span className="text-xs">{`백로그 ${
+    <span className="text-sm">{`백로그 ${
       matchesCountByStatus[MatchStatus.BACKLOG]
     } / 준비중 ${matchesCountByStatus[MatchStatus.PREPARING]} / 진행중 ${
       matchesCountByStatus[MatchStatus.PENDING] +
