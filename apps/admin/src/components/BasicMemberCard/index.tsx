@@ -33,7 +33,7 @@ function HoverAvatar({ images }: { images: MemberImageV2[] }) {
   assert(images[0] != null, "images[0] is required");
 
   return (
-    <HoverCard openDelay={0}>
+    <HoverCard openDelay={0} closeDelay={100}>
       <HoverCardTrigger>
         <Avatar image={images[0]} style={{ marginRight: "4px" }} />
       </HoverCardTrigger>
