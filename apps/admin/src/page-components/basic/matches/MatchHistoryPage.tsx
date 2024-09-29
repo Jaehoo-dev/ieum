@@ -1,8 +1,7 @@
 import { useEffect, type ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 매치_유형, 상태_라벨, 지역_라벨 } from "@ieum/constants";
+import { 매치_유형, 상태_라벨, 지역_쿼리 } from "@ieum/constants";
 import { MatchStatus, Region } from "@ieum/prisma";
-import { assert } from "@ieum/utils";
 import { format, subDays } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 
@@ -13,11 +12,11 @@ import { MegaphoneMatchField } from "./components/MegaphoneMatchField";
 
 interface Form {
   matchType: 매치_유형;
+  region: 지역_쿼리;
   statuses: MatchStatus[];
   name: string;
   from: Date;
   to: Date;
-  region: Region;
 }
 
 function formToParams(form: Form) {
@@ -34,8 +33,6 @@ function formToParams(form: Form) {
 
 function formToPayload(form: Form) {
   const { region, statuses, name, from, to, ...fields } = form;
-
-  assert(region === Region.SEOUL_OR_GYEONGGI || region === Region.CHUNGCHEONG);
 
   return {
     ...fields,
@@ -55,7 +52,7 @@ export function MatchHistoryPage() {
       router.replace({
         query: {
           ...router.query,
-          region: Region.SEOUL_OR_GYEONGGI,
+          region: 지역_쿼리.수도권,
           matchType: 매치_유형.기본,
           statuses: MatchStatus.PENDING,
           from: format(subDays(new Date(), 1), "yyyy-MM-dd"),
@@ -67,7 +64,7 @@ export function MatchHistoryPage() {
 
   const { control, getValues, register, handleSubmit } = useForm<Form>({
     defaultValues: {
-      region: (router.query.region ?? Region.SEOUL_OR_GYEONGGI) as Region,
+      region: (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리,
       matchType: (router.query.matchType ?? 매치_유형.기본) as 매치_유형,
       statuses:
         router.query.statuses != null
@@ -146,15 +143,9 @@ export function MatchHistoryPage() {
                       onChange(e.target.value as 매치_유형);
                     }}
                   >
-                    {[Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG].map(
-                      (region) => {
-                        return (
-                          <option key={region} value={region}>
-                            {지역_라벨[region]}
-                          </option>
-                        );
-                      },
-                    )}
+                    <option value={지역_쿼리.수도권}>수도권</option>
+                    <option value={지역_쿼리.충청}>충청</option>
+                    <option value={지역_쿼리.전체}>전체</option>
                   </select>
                 );
               }}

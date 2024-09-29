@@ -1,6 +1,6 @@
 import { Suspense, type ReactElement } from "react";
 import { useRouter } from "next/router";
-import { 매치_유형 } from "@ieum/constants";
+import { 매치_유형, 지역_쿼리 } from "@ieum/constants";
 import { Gender, MemberStatus, Region } from "@ieum/prisma";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
@@ -15,14 +15,6 @@ const 정렬 = {
 } as const;
 
 type 정렬 = (typeof 정렬)[keyof typeof 정렬];
-
-const 지역_쿼리 = {
-  수도권: Region.SEOUL_OR_GYEONGGI,
-  충청: Region.CHUNGCHEONG,
-  전체: "ALL",
-} as const;
-
-type 지역_쿼리 = (typeof 지역_쿼리)[keyof typeof 지역_쿼리];
 
 export function BasicMembersPage() {
   const router = useRouter();
@@ -95,8 +87,7 @@ function Filter({
   onMatchTypeChange: (matchType: 매치_유형) => void;
 }) {
   const router = useRouter();
-  const regionQuery = (router.query.region ??
-    Region.SEOUL_OR_GYEONGGI) as 지역_쿼리;
+  const regionQuery = (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리;
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
