@@ -31,7 +31,7 @@ export function CreateBasicMatchButton({
     <button
       className={`rounded-lg ${
         targetStatus === MatchStatus.BACKLOG ? "bg-yellow-400" : "bg-green-500"
-      } p-2 text-xs font-medium text-white`}
+      } px-2 py-1 text-xs font-medium text-white`}
       onClick={async () => {
         await createMatch({
           member1Id,

@@ -146,128 +146,116 @@ function Resolved() {
   }, [shouldCrossCheck, basicMember, matchCandidates]);
 
   return (
-    <div className="mr-28 min-h-screen">
-      <div className="flex w-full">
-        <div className="flex flex-1 flex-col items-center gap-4">
-          <h1 className="text-2xl font-semibold">
-            {basicMember != null ? (
-              <span
-                className={`${
-                  basicMember.gender === Gender.MALE
-                    ? "text-blue-500"
-                    : "text-pink-500"
-                }`}
-              >
-                {basicMember.name}
-              </span>
-            ) : null}
-            <span>{` 님 ${match(matchType)
-              .with(매치_유형.기본, () => {
-                return "기본";
-              })
-              .with(매치_유형.확성기, () => {
-                return "확성기";
-              })
-              .exhaustive()} 매칭`}</span>
-          </h1>
-          <div className="flex w-full justify-center gap-3">
-            <div className="flex w-5/12 max-w-3xl flex-col items-end gap-2">
-              <h2 className="text-xl font-semibold">본인</h2>
-              <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
-            </div>
-            <FormProvider {...methods}>
-              <CustomSearchForm
-                onReset={() => {
-                  methods.reset();
-                }}
-                onSubmit={(fields) => {
-                  setCustomSearchQueryParams(formToValues(fields));
+    <div className="min-h-screen">
+      <div className="flex flex-1 flex-col items-center gap-2">
+        <h1 className="text-lg font-semibold">
+          {basicMember != null ? (
+            <span
+              className={`${
+                basicMember.gender === Gender.MALE
+                  ? "text-blue-500"
+                  : "text-pink-500"
+              }`}
+            >
+              {basicMember.name}
+            </span>
+          ) : null}
+          <span>{` 님 ${match(matchType)
+            .with(매치_유형.기본, () => {
+              return "기본";
+            })
+            .with(매치_유형.확성기, () => {
+              return "확성기";
+            })
+            .exhaustive()} 매칭`}</span>
+        </h1>
+        <div className="flex w-full justify-center gap-2">
+          <div className="flex w-1/2 max-w-3xl flex-col items-end gap-1">
+            <h2 className="text-lg font-semibold">본인</h2>
+            <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
+          </div>
+          <FormProvider {...methods}>
+            <CustomSearchForm
+              onReset={() => {
+                methods.reset();
+              }}
+              onSubmit={(fields) => {
+                setCustomSearchQueryParams(formToValues(fields));
+              }}
+            />
+          </FormProvider>
+          <div className="flex w-1/2 flex-col items-start gap-1">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg font-semibold">{`상대방 (${list.length}명)`}</h2>
+              <Checkbox
+                label="필수 조건 적용"
+                checked={shouldCrossCheck}
+                onChange={(e) => {
+                  setShouldCrossCheck(e.target.checked);
                 }}
               />
-            </FormProvider>
-            <div className="flex w-5/12 flex-col items-start gap-2">
-              <div className="flex items-center gap-4">
-                <h2 className="text-xl font-semibold">{`상대방 (${list.length}명)`}</h2>
-                <Checkbox
-                  label="필수 조건 적용"
-                  checked={shouldCrossCheck}
-                  onChange={(e) => {
-                    setShouldCrossCheck(e.target.checked);
-                  }}
-                />
-              </div>
-              <div className="flex h-[calc(100vh-120px)] w-full flex-col gap-4 overflow-y-auto pr-3">
-                {list.map((member) => {
-                  return (
-                    <div key={member.id} className="flex w-full gap-3">
-                      <BasicMemberCard
-                        member={member as BasicMemberWithBasicMatchesJoined}
-                      />
-                      <div className="flex flex-col gap-2">
-                        <button
-                          className="rounded-lg bg-red-500 p-2 text-xs font-medium text-white"
-                          disabled={isAddingToBlacklist}
-                          onClick={async () => {
-                            await addToBlacklist({
-                              actionMemberId: basicMemberId,
-                              targetMemberId: member.id,
-                            });
+            </div>
+            <div className="flex h-[calc(100vh-92px)] w-full flex-col gap-2 overflow-y-auto pr-1.5">
+              {list.map((member) => {
+                return (
+                  <div key={member.id} className="flex w-full flex-col gap-1">
+                    <BasicMemberCard
+                      member={member as BasicMemberWithBasicMatchesJoined}
+                    />
+                    <div className="flex justify-center gap-2">
+                      <button
+                        className="rounded-lg bg-red-500 px-2 py-1 text-xs font-medium text-white"
+                        disabled={isAddingToBlacklist}
+                        onClick={async () => {
+                          await addToBlacklist({
+                            actionMemberId: basicMemberId,
+                            targetMemberId: member.id,
+                          });
+                        }}
+                      >
+                        블랙리스트
+                      </button>
+                      {matchType === 매치_유형.확성기 ? (
+                        <CreateMegaphoneButton
+                          payload={{
+                            senderId: basicMemberId,
+                            receiverId: member.id,
+                            targetStatus: MatchStatus.BACKLOG,
                           }}
-                        >
-                          Blacklist
-                        </button>
-                        {matchType === 매치_유형.확성기 ? (
-                          <CreateMegaphoneButton
-                            payload={{
-                              senderId: basicMemberId,
-                              receiverId: member.id,
-                              targetStatus: MatchStatus.BACKLOG,
-                            }}
-                          />
-                        ) : (
-                          <CreateBasicMatchButton
-                            payload={{
-                              member1Id: basicMemberId,
-                              member2Id: member.id,
-                              targetStatus: MatchStatus.BACKLOG,
-                            }}
-                          />
-                        )}
-                        {matchType === 매치_유형.확성기 ? (
-                          <CreateMegaphoneButton
-                            payload={{
-                              senderId: basicMemberId,
-                              receiverId: member.id,
-                              targetStatus: MatchStatus.PREPARING,
-                            }}
-                          />
-                        ) : (
-                          <CreateBasicMatchButton
-                            payload={{
-                              member1Id: basicMemberId,
-                              member2Id: member.id,
-                              targetStatus: MatchStatus.PREPARING,
-                            }}
-                          />
-                        )}
-                      </div>
+                        />
+                      ) : (
+                        <CreateBasicMatchButton
+                          payload={{
+                            member1Id: basicMemberId,
+                            member2Id: member.id,
+                            targetStatus: MatchStatus.BACKLOG,
+                          }}
+                        />
+                      )}
+                      {matchType === 매치_유형.확성기 ? (
+                        <CreateMegaphoneButton
+                          payload={{
+                            senderId: basicMemberId,
+                            receiverId: member.id,
+                            targetStatus: MatchStatus.PREPARING,
+                          }}
+                        />
+                      ) : (
+                        <CreateBasicMatchButton
+                          payload={{
+                            member1Id: basicMemberId,
+                            member2Id: member.id,
+                            targetStatus: MatchStatus.PREPARING,
+                          }}
+                        />
+                      )}
                     </div>
-                  );
-                })}
-              </div>
+                    <hr className="mb-1" />
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
-        <div className="fixed right-4 top-20 w-24 text-sm">
-          <h2 className="mb-1 font-semibold">※ 체크리스트</h2>
-          <p>- 지역</p>
-          <p>- 나이</p>
-          <p>- 체형</p>
-          <p>- 같은 직장</p>
-          <p>- 기피 직장/직무</p>
-          <p>- 양쪽 상세 내용</p>
-          <p>- 양쪽 메모</p>
-          <p>- 사진</p>
         </div>
       </div>
     </div>
@@ -427,108 +415,244 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         throw new Error("Invalid containerId");
     }
   }
+  const [hide, setHide] = useState(false);
 
   return (
-    <form
-      className="flex flex-col gap-2 text-sm"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div>
-        우선순위
-        <DndContext
-          onDragOver={({ active, over }) => {
-            if (over == null) {
-              return;
-            }
-
-            const activeContainerId: 우선순위 =
-              active.data.current?.sortable.containerId;
-            const overContainerId: 우선순위 =
-              over.data.current?.sortable.containerId ?? over.id;
-
-            removeFromContainer(active.id as BasicCondition, activeContainerId);
-            appendToContainer(active.id as BasicCondition, overContainerId);
+    <div>
+      <div className="flex flex-col gap-1">
+        <span>우선순위</span>
+        <Checkbox
+          label="숨김"
+          checked={hide}
+          onChange={({ target: { checked } }) => {
+            setHide(checked);
           }}
-        >
-          <div className="flex flex-col gap-2">
-            {[
-              {
-                id: 우선순위.필수,
-                label: "필수",
-                conditions: dealBreakerFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.높음,
-                label: "높음",
-                conditions: highPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.중간,
-                label: "중",
-                conditions: mediumPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.낮음,
-                label: "하",
-                conditions: lowPriorityFields.map((field) => field.value),
-              },
-              {
-                id: 우선순위.미지정,
-                label: "미지정",
-                conditions: noPriorities,
-              },
-            ].map((section) => {
-              return (
-                <PrioritySection
-                  key={section.id}
-                  id={section.id}
-                  label={section.label}
-                  conditions={section.conditions}
-                />
+        />
+      </div>
+      <form
+        className={`flex flex-col gap-1 text-xs ${hide ? "hidden" : ""}`}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div>
+          <DndContext
+            onDragOver={({ active, over }) => {
+              if (over == null) {
+                return;
+              }
+
+              const activeContainerId: 우선순위 =
+                active.data.current?.sortable.containerId;
+              const overContainerId: 우선순위 =
+                over.data.current?.sortable.containerId ?? over.id;
+
+              removeFromContainer(
+                active.id as BasicCondition,
+                activeContainerId,
               );
-            })}
+              appendToContainer(active.id as BasicCondition, overContainerId);
+            }}
+          >
+            <div className="flex flex-col gap-1">
+              {[
+                {
+                  id: 우선순위.필수,
+                  label: "필수",
+                  conditions: dealBreakerFields.map((field) => field.value),
+                },
+                {
+                  id: 우선순위.높음,
+                  label: "높음",
+                  conditions: highPriorityFields.map((field) => field.value),
+                },
+                {
+                  id: 우선순위.중간,
+                  label: "중",
+                  conditions: mediumPriorityFields.map((field) => field.value),
+                },
+                {
+                  id: 우선순위.낮음,
+                  label: "하",
+                  conditions: lowPriorityFields.map((field) => field.value),
+                },
+                {
+                  id: 우선순위.미지정,
+                  label: "미지정",
+                  conditions: noPriorities,
+                },
+              ].map((section) => {
+                return (
+                  <PrioritySection
+                    key={section.id}
+                    id={section.id}
+                    label={section.label}
+                    conditions={section.conditions}
+                  />
+                );
+              })}
+            </div>
+          </DndContext>
+        </div>
+        <div className="my-1 flex w-full gap-1">
+          <button
+            className="w-12 rounded-lg bg-gray-300 py-1.5"
+            type="button"
+            onClick={onReset}
+          >
+            초기화
+          </button>
+          <button
+            className="flex-1 rounded-lg bg-blue-500 py-1.5 text-white"
+            type="submit"
+          >
+            후보 검색
+          </button>
+        </div>
+        <div>
+          지역
+          <div className="grid grid-cols-2 gap-1">
+            {Object.values(Region)
+              .filter((region) => {
+                return Object.values(쿼리_가능한_지역).includes(
+                  region as 쿼리_가능한_지역,
+                );
+              })
+              .map((region) => {
+                return (
+                  <Checkbox
+                    key={region}
+                    label={지역_라벨[region]}
+                    checked={regionFields.some((field) => {
+                      return field.value === region;
+                    })}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        appendRegion({ value: region });
+                      } else {
+                        removeRegion(
+                          regionFields.findIndex(
+                            (field) => field.value === region,
+                          ),
+                        );
+                      }
+                    }}
+                  />
+                );
+              })}
           </div>
-        </DndContext>
-      </div>
-      <div className="my-2 flex w-full gap-2">
-        <button
-          className="w-32 rounded-lg bg-gray-300 px-4 py-2"
-          type="button"
-          onClick={onReset}
-        >
-          초기화
-        </button>
-        <button
-          className="flex-1 rounded-lg bg-blue-500 px-4 py-2 text-white"
-          type="submit"
-        >
-          후보 검색
-        </button>
-      </div>
-      <div>
-        지역
-        <div className="grid grid-cols-2 gap-1">
-          {Object.values(Region)
-            .filter((region) => {
-              return Object.values(쿼리_가능한_지역).includes(
-                region as 쿼리_가능한_지역,
-              );
-            })
-            .map((region) => {
+        </div>
+        <div className="flex gap-1">
+          <TextInput
+            label="최소 나이 출생연도"
+            style={{ width: "100px" }}
+            {...register("minAgeBirthYear", {
+              setValueAs: (value: string | null) => {
+                if (isEmptyStringOrNil(value)) {
+                  return null;
+                }
+
+                const valueAsNumber = Number(value);
+
+                return isNaN(valueAsNumber) ? null : valueAsNumber;
+              },
+            })}
+          />
+          <TextInput
+            label="최대 나이 출생연도"
+            style={{ width: "100px" }}
+            {...register("maxAgeBirthYear", {
+              setValueAs: (value: string | null) => {
+                if (isEmptyStringOrNil(value)) {
+                  return null;
+                }
+
+                const valueAsNumber = Number(value);
+
+                return isNaN(valueAsNumber) ? null : valueAsNumber;
+              },
+            })}
+          />
+        </div>
+        <div className="flex gap-1">
+          <TextInput
+            label="최소 키"
+            style={{ width: "100px" }}
+            {...register("minHeight", {
+              setValueAs: (value: string | null) => {
+                if (isEmptyStringOrNil(value)) {
+                  return null;
+                }
+
+                const valueAsNumber = Number(value);
+
+                return isNaN(valueAsNumber) ? null : valueAsNumber;
+              },
+            })}
+          />
+          <TextInput
+            label="최대 키"
+            style={{ width: "100px" }}
+            {...register("maxHeight", {
+              setValueAs: (value: string | null) => {
+                if (isEmptyStringOrNil(value)) {
+                  return null;
+                }
+
+                const valueAsNumber = Number(value);
+
+                return isNaN(valueAsNumber) ? null : valueAsNumber;
+              },
+            })}
+          />
+        </div>
+        <Controller
+          control={control}
+          name="minEducationLevel"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Select
+                label="최소 학력"
+                style={{ width: "100px" }}
+                value={value ?? 상관없음}
+                onChange={({ target: { value } }) => {
+                  onChange(value === 상관없음 ? null : value);
+                }}
+              >
+                {[상관없음, ...Object.values(EducationLevel)].map(
+                  (educationLevelOption) => {
+                    return (
+                      <option
+                        key={educationLevelOption}
+                        value={educationLevelOption}
+                      >
+                        {educationLevelOption === 상관없음
+                          ? 상관없음
+                          : 학력_라벨[educationLevelOption as EducationLevel]}
+                      </option>
+                    );
+                  },
+                )}
+              </Select>
+            );
+          }}
+        />
+        <div>
+          신분
+          <div className="grid grid-cols-2 gap-1">
+            {Object.values(OccupationStatus).map((occupationStatus) => {
               return (
                 <Checkbox
-                  key={region}
-                  label={지역_라벨[region]}
-                  checked={regionFields.some((field) => {
-                    return field.value === region;
+                  key={occupationStatus}
+                  label={신분_라벨[occupationStatus]}
+                  checked={occupationStatusFields.some((field) => {
+                    return field.value === occupationStatus;
                   })}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      appendRegion({ value: region });
+                      appendOccupationStatus({ value: occupationStatus });
                     } else {
-                      removeRegion(
-                        regionFields.findIndex(
-                          (field) => field.value === region,
+                      removeOccupationStatus(
+                        occupationStatusFields.findIndex(
+                          (field) => field.value === occupationStatus,
                         ),
                       );
                     }
@@ -536,307 +660,192 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
                 />
               );
             })}
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <TextInput
-          label="최소 나이 출생연도"
-          {...register("minAgeBirthYear", {
-            setValueAs: (value: string | null) => {
-              if (isEmptyStringOrNil(value)) {
-                return null;
-              }
-
-              const valueAsNumber = Number(value);
-
-              return isNaN(valueAsNumber) ? null : valueAsNumber;
-            },
-          })}
-        />
-        <TextInput
-          label="최대 나이 출생연도"
-          {...register("maxAgeBirthYear", {
-            setValueAs: (value: string | null) => {
-              if (isEmptyStringOrNil(value)) {
-                return null;
-              }
-
-              const valueAsNumber = Number(value);
-
-              return isNaN(valueAsNumber) ? null : valueAsNumber;
-            },
-          })}
-        />
-      </div>
-      <div className="flex gap-2">
-        <TextInput
-          label="최소 키"
-          {...register("minHeight", {
-            setValueAs: (value: string | null) => {
-              if (isEmptyStringOrNil(value)) {
-                return null;
-              }
-
-              const valueAsNumber = Number(value);
-
-              return isNaN(valueAsNumber) ? null : valueAsNumber;
-            },
-          })}
-        />
-        <TextInput
-          label="최대 키"
-          {...register("maxHeight", {
-            setValueAs: (value: string | null) => {
-              if (isEmptyStringOrNil(value)) {
-                return null;
-              }
-
-              const valueAsNumber = Number(value);
-
-              return isNaN(valueAsNumber) ? null : valueAsNumber;
-            },
-          })}
-        />
-      </div>
-      <Controller
-        control={control}
-        name="minEducationLevel"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Select
-              label="최소 학력"
-              value={value ?? 상관없음}
-              onChange={({ target: { value } }) => {
-                onChange(value === 상관없음 ? null : value);
-              }}
-            >
-              {[상관없음, ...Object.values(EducationLevel)].map(
-                (educationLevelOption) => {
-                  return (
-                    <option
-                      key={educationLevelOption}
-                      value={educationLevelOption}
-                    >
-                      {educationLevelOption === 상관없음
-                        ? 상관없음
-                        : 학력_라벨[educationLevelOption as EducationLevel]}
-                    </option>
-                  );
-                },
-              )}
-            </Select>
-          );
-        }}
-      />
-      <div>
-        신분
-        <div className="grid grid-cols-2 gap-1">
-          {Object.values(OccupationStatus).map((occupationStatus) => {
-            return (
-              <Checkbox
-                key={occupationStatus}
-                label={신분_라벨[occupationStatus]}
-                checked={occupationStatusFields.some((field) => {
-                  return field.value === occupationStatus;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendOccupationStatus({ value: occupationStatus });
-                  } else {
-                    removeOccupationStatus(
-                      occupationStatusFields.findIndex(
-                        (field) => field.value === occupationStatus,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div>
-        선호 MBTI
-        <div className="grid grid-cols-4 gap-1">
-          {Object.values(MBTI).map((mbti) => {
-            return (
-              <Checkbox
-                key={mbti}
-                label={mbti}
-                checked={preferredMbtisFields.some((field) => {
-                  return field.value === mbti;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendPreferredMbtis({ value: mbti });
-                  } else {
-                    removePreferredMbtis(
-                      preferredMbtisFields.findIndex(
-                        (field) => field.value === mbti,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div>
-        비선호 MBTI
-        <div className="grid grid-cols-4 gap-1">
-          {Object.values(MBTI).map((mbti) => {
-            return (
-              <Checkbox
-                key={mbti}
-                label={mbti}
-                checked={nonPreferredMbtisFields.some((field) => {
-                  return field.value === mbti;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendNonPreferredMbtis({ value: mbti });
-                  } else {
-                    removeNonPreferredMbtis(
-                      nonPreferredMbtisFields.findIndex(
-                        (field) => field.value === mbti,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className="flex gap-4">
-        <div>
-          흡연
-          <Checkbox label="허용" {...register("isSmokerOk")} />
+          </div>
         </div>
         <div>
-          문신
-          <Checkbox label="허용" {...register("isTattooOk")} />
-        </div>
-      </div>
-      <div>
-        선호 종교
-        <div className="grid grid-cols-3 gap-1">
-          {Object.values(Religion).map((religion) => {
-            return (
-              <Checkbox
-                key={religion}
-                label={종교_라벨[religion]}
-                checked={preferredReligionFields.some((field) => {
-                  return field.value === religion;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendPreferredReligion({ value: religion });
-                  } else {
-                    removePreferredReligion(
-                      preferredReligionFields.findIndex(
-                        (field) => field.value === religion,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div>
-        기피 종교
-        <div className="grid grid-cols-3 gap-1">
-          {Object.values(Religion).map((religion) => {
-            return (
-              <Checkbox
-                key={religion}
-                label={종교_라벨[religion]}
-                checked={nonPreferredReligionFields.some((field) => {
-                  return field.value === religion;
-                })}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    appendNonPreferredReligion({ value: religion });
-                  } else {
-                    removeNonPreferredReligion(
-                      nonPreferredReligionFields.findIndex(
-                        (field) => field.value === religion,
-                      ),
-                    );
-                  }
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-      <div className="flex gap-4">
-        <Controller
-          control={control}
-          name="minAnnualIncome"
-          render={({ field: { onChange, value } }) => {
-            return (
-              <Select
-                label="최소 연간 벌이 수준"
-                value={value ?? 상관없음}
-                onChange={({ target: { value } }) => {
-                  onChange(value === 상관없음 ? null : value);
-                }}
-              >
-                {[상관없음, ...Object.values(AnnualIncome)]
-                  .filter((item) => {
-                    return item !== AnnualIncome.LT_30M;
-                  })
-                  .map((annualIncomeOption) => {
-                    return (
-                      <option
-                        key={annualIncomeOption}
-                        value={annualIncomeOption}
-                      >
-                        {annualIncomeOption === 상관없음
-                          ? 상관없음
-                          : 연간_벌이_라벨[annualIncomeOption as AnnualIncome]}
-                      </option>
-                    );
+          선호 MBTI
+          <div className="grid grid-cols-4 gap-1">
+            {Object.values(MBTI).map((mbti) => {
+              return (
+                <Checkbox
+                  key={mbti}
+                  label={mbti}
+                  checked={preferredMbtisFields.some((field) => {
+                    return field.value === mbti;
                   })}
-              </Select>
-            );
-          }}
-        />
-        <Controller
-          control={control}
-          name="minAssetsValue"
-          render={({ field: { onChange, value } }) => {
-            return (
-              <Select
-                label="최소 자산 수준"
-                value={value ?? 상관없음}
-                onChange={({ target: { value } }) => {
-                  onChange(value === 상관없음 ? null : value);
-                }}
-              >
-                {[상관없음, ...Object.values(AssetsValue)]
-                  .filter((item) => {
-                    return item !== AssetsValue.LT_30M;
-                  })
-                  .map((assetsValueOption) => {
-                    return (
-                      <option key={assetsValueOption} value={assetsValueOption}>
-                        {assetsValueOption === 상관없음
-                          ? 상관없음
-                          : 자산_라벨[assetsValueOption as AssetsValue]}
-                      </option>
-                    );
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      appendPreferredMbtis({ value: mbti });
+                    } else {
+                      removePreferredMbtis(
+                        preferredMbtisFields.findIndex(
+                          (field) => field.value === mbti,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          비선호 MBTI
+          <div className="grid grid-cols-4 gap-1">
+            {Object.values(MBTI).map((mbti) => {
+              return (
+                <Checkbox
+                  key={mbti}
+                  label={mbti}
+                  checked={nonPreferredMbtisFields.some((field) => {
+                    return field.value === mbti;
                   })}
-              </Select>
-            );
-          }}
-        />
-      </div>
-      <div className="flex gap-4">
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      appendNonPreferredMbtis({ value: mbti });
+                    } else {
+                      removeNonPreferredMbtis(
+                        nonPreferredMbtisFields.findIndex(
+                          (field) => field.value === mbti,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <div>
+            흡연
+            <Checkbox label="허용" {...register("isSmokerOk")} />
+          </div>
+          <div>
+            문신
+            <Checkbox label="허용" {...register("isTattooOk")} />
+          </div>
+        </div>
+        <div>
+          선호 종교
+          <div className="grid grid-cols-2 gap-1">
+            {Object.values(Religion).map((religion) => {
+              return (
+                <Checkbox
+                  key={religion}
+                  label={종교_라벨[religion]}
+                  checked={preferredReligionFields.some((field) => {
+                    return field.value === religion;
+                  })}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      appendPreferredReligion({ value: religion });
+                    } else {
+                      removePreferredReligion(
+                        preferredReligionFields.findIndex(
+                          (field) => field.value === religion,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          기피 종교
+          <div className="grid grid-cols-2 gap-1">
+            {Object.values(Religion).map((religion) => {
+              return (
+                <Checkbox
+                  key={religion}
+                  label={종교_라벨[religion]}
+                  checked={nonPreferredReligionFields.some((field) => {
+                    return field.value === religion;
+                  })}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      appendNonPreferredReligion({ value: religion });
+                    } else {
+                      removeNonPreferredReligion(
+                        nonPreferredReligionFields.findIndex(
+                          (field) => field.value === religion,
+                        ),
+                      );
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+          <Controller
+            control={control}
+            name="minAnnualIncome"
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Select
+                  label="최소 연간 벌이 수준"
+                  value={value ?? 상관없음}
+                  onChange={({ target: { value } }) => {
+                    onChange(value === 상관없음 ? null : value);
+                  }}
+                >
+                  {[상관없음, ...Object.values(AnnualIncome)]
+                    .filter((item) => {
+                      return item !== AnnualIncome.LT_30M;
+                    })
+                    .map((annualIncomeOption) => {
+                      return (
+                        <option
+                          key={annualIncomeOption}
+                          value={annualIncomeOption}
+                        >
+                          {annualIncomeOption === 상관없음
+                            ? 상관없음
+                            : 연간_벌이_라벨[
+                                annualIncomeOption as AnnualIncome
+                              ]}
+                        </option>
+                      );
+                    })}
+                </Select>
+              );
+            }}
+          />
+          <Controller
+            control={control}
+            name="minAssetsValue"
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Select
+                  label="최소 자산 수준"
+                  value={value ?? 상관없음}
+                  onChange={({ target: { value } }) => {
+                    onChange(value === 상관없음 ? null : value);
+                  }}
+                >
+                  {[상관없음, ...Object.values(AssetsValue)]
+                    .filter((item) => {
+                      return item !== AssetsValue.LT_30M;
+                    })
+                    .map((assetsValueOption) => {
+                      return (
+                        <option
+                          key={assetsValueOption}
+                          value={assetsValueOption}
+                        >
+                          {assetsValueOption === 상관없음
+                            ? 상관없음
+                            : 자산_라벨[assetsValueOption as AssetsValue]}
+                        </option>
+                      );
+                    })}
+                </Select>
+              );
+            }}
+          />
+        </div>
         <Controller
           control={control}
           name="minBooksReadPerYear"
@@ -901,22 +910,22 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
             );
           }}
         />
-      </div>
-      <div className="flex gap-4">
-        <div>
-          자차
-          <Checkbox label="보유" {...register("shouldHaveCar")} />
+        <div className="flex gap-4">
+          <div>
+            자차
+            <Checkbox label="보유" {...register("shouldHaveCar")} />
+          </div>
+          <div>
+            게임
+            <Checkbox label="괜찮음" {...register("isGamingOk")} />
+          </div>
+          <div>
+            반려동물
+            <Checkbox label="괜찮음" {...register("isPetOk")} />
+          </div>
         </div>
-        <div>
-          게임
-          <Checkbox label="괜찮음" {...register("isGamingOk")} />
-        </div>
-        <div>
-          반려동물
-          <Checkbox label="괜찮음" {...register("isPetOk")} />
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 
@@ -940,7 +949,7 @@ function PrioritySection({
   conditions: BasicCondition[];
 }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-0.5">
       <span className={`${id === "DEAL_BREAKER" ? "text-red-500" : ""}`}>
         {label}
       </span>
@@ -961,7 +970,7 @@ function DroppablePriorityContainer({
   return (
     <SortableContext id={id} items={conditions}>
       {conditions.length > 0 ? (
-        <div className="grid grid-cols-3 gap-1" ref={setNodeRef}>
+        <div className="grid grid-cols-2 gap-0.5" ref={setNodeRef}>
           {conditions.map((condition) => {
             return <SortableItem key={condition} condition={condition} />;
           })}
@@ -983,7 +992,7 @@ function SortableItem({ condition }: { condition: BasicCondition }) {
 
   return (
     <div
-      className="cursor-grab rounded border border-gray-300 px-2 py-1"
+      className="cursor-grab rounded border border-gray-300 px-1.5 py-1"
       ref={setNodeRef}
       {...attributes}
       {...listeners}
