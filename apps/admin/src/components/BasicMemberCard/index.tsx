@@ -2,11 +2,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { 매치_유형 } from "@ieum/constants";
-import type { BasicMatchV2, MemberImageV2 } from "@ieum/prisma";
+import type { BasicMatchV2 } from "@ieum/prisma";
 import { Gender, MatchStatus, MemberStatus } from "@ieum/prisma";
-import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
-import { HoverCardArrow, HoverCardTrigger } from "@radix-ui/react-hover-card";
 import { differenceInCalendarDays } from "date-fns";
 
 import { isBasicMemberWithBasicMatchesJoined } from "~/domains/basic/isBasicMemberWithBasicMatchesJoined";
@@ -14,9 +12,7 @@ import type {
   BasicMemberWithBasicMatchesJoined,
   BasicMemberWithMegaphoneMatchesJoined,
 } from "~/domains/basic/types";
-import { Avatar } from "../Avatar";
 import { HoverAvatar } from "../HoverAvatar";
-import { HoverCard, HoverCardContent } from "../ui/hover-card";
 import { DetailedSelfFields } from "./DetailedSelfFields";
 import { IdealTypeFields } from "./IdealTypeFields";
 import { SimpleSelfFields } from "./SimpleSelfFields";
