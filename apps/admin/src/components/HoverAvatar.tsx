@@ -15,11 +15,11 @@ export function HoverAvatar({ images, onClick }: Props) {
   assert(images[0] != null, "images[0] is required");
 
   return (
-    <HoverCard openDelay={0} closeDelay={100}>
+    <HoverCard openDelay={500} closeDelay={50}>
       <HoverCardTrigger>
         <Avatar
           image={images[0]}
-          style={{ marginRight: "4px" }}
+          style={{ marginRight: "4px", cursor: "pointer" }}
           onClick={onClick}
         />
       </HoverCardTrigger>
