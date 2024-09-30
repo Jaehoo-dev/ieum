@@ -21,10 +21,10 @@ interface Props {
 export function DetailedSelfFields({ member }: Props) {
   return (
     <div className="flex w-1/2 flex-col gap-0.5">
-      <div>{member.birthYear}년생</div>
-      <div>{member.residence}</div>
-      <div>{member.height}cm</div>
-      <div>{member.weight}kg</div>
+      <div>출생연도: {member.birthYear}</div>
+      <div>거주지: {member.residence}</div>
+      <div>키: {member.height}cm</div>
+      <div>몸무게: {member.weight}kg</div>
       <div>
         BMI:{" "}
         {member.bmi != null
