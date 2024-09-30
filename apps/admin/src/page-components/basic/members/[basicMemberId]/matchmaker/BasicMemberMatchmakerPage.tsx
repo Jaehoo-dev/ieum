@@ -147,113 +147,114 @@ function Resolved() {
 
   return (
     <div className="min-h-screen">
-      <div className="flex flex-1 flex-col items-center gap-2">
-        <h1 className="text-lg font-semibold">
-          {basicMember != null ? (
-            <span
-              className={`${
-                basicMember.gender === Gender.MALE
-                  ? "text-blue-500"
-                  : "text-pink-500"
-              }`}
-            >
-              {basicMember.name}
-            </span>
-          ) : null}
-          <span>{` 님 ${match(matchType)
-            .with(매치_유형.기본, () => {
-              return "기본";
-            })
-            .with(매치_유형.확성기, () => {
-              return "확성기";
-            })
-            .exhaustive()} 매칭`}</span>
-        </h1>
-        <div className="flex w-full justify-center gap-2">
-          <div className="flex w-1/2 max-w-3xl flex-col items-end gap-1">
-            <h2 className="text-lg font-semibold">본인</h2>
-            <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
-          </div>
-          <FormProvider {...methods}>
-            <CustomSearchForm
-              onReset={() => {
-                methods.reset();
-              }}
-              onSubmit={(fields) => {
-                setCustomSearchQueryParams(formToValues(fields));
-              }}
-            />
-          </FormProvider>
-          <div className="flex w-1/2 flex-col items-start gap-1">
-            <div className="flex items-center gap-3">
-              <h2 className="text-lg font-semibold">{`상대방 (${list.length}명)`}</h2>
-              <Checkbox
-                label="필수 조건 적용"
-                checked={shouldCrossCheck}
-                onChange={(e) => {
-                  setShouldCrossCheck(e.target.checked);
+      <div className="flex w-full justify-center">
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-lg font-semibold">
+            {basicMember != null ? (
+              <span
+                className={`${
+                  basicMember.gender === Gender.MALE
+                    ? "text-blue-500"
+                    : "text-pink-500"
+                }`}
+              >
+                {basicMember.name}
+              </span>
+            ) : null}
+            <span>{` 님 ${match(matchType)
+              .with(매치_유형.기본, () => {
+                return "기본";
+              })
+              .with(매치_유형.확성기, () => {
+                return "확성기";
+              })
+              .exhaustive()} 매칭`}</span>
+          </h1>
+          <div className="flex w-full justify-center gap-2">
+            <div className="flex w-1/2 max-w-3xl flex-col items-end gap-1">
+              <h2 className="text-lg font-semibold">본인</h2>
+              <BasicMemberCard member={basicMember} defaultMode="DETAILED" />
+            </div>
+            <FormProvider {...methods}>
+              <CustomSearchForm
+                onReset={() => {
+                  methods.reset();
+                }}
+                onSubmit={(fields) => {
+                  setCustomSearchQueryParams(formToValues(fields));
                 }}
               />
-            </div>
-            <div className="flex h-[calc(100vh-92px)] w-full flex-col gap-2 overflow-y-auto pr-1.5">
-              {list.map((member) => {
-                return (
-                  <div key={member.id} className="flex w-full flex-col gap-1">
-                    <BasicMemberCard
-                      member={member as BasicMemberWithBasicMatchesJoined}
-                    />
-                    <div className="flex justify-center gap-2">
-                      <button
-                        className="rounded-lg bg-red-500 px-2 py-1 text-xs font-medium text-white"
-                        disabled={isAddingToBlacklist}
-                        onClick={async () => {
-                          await addToBlacklist({
-                            actionMemberId: basicMemberId,
-                            targetMemberId: member.id,
-                          });
-                        }}
-                      >
-                        블랙리스트
-                      </button>
-                      {matchType === 매치_유형.확성기 ? (
-                        <CreateMegaphoneButton
-                          payload={{
-                            senderId: basicMemberId,
-                            receiverId: member.id,
-                            targetStatus: MatchStatus.BACKLOG,
+            </FormProvider>
+            <div className="flex w-1/2 max-w-3xl flex-col items-start gap-1">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-semibold">{`상대방 (${list.length}명)`}</h2>
+                <Checkbox
+                  label="필수 조건 적용"
+                  checked={shouldCrossCheck}
+                  onChange={(e) => {
+                    setShouldCrossCheck(e.target.checked);
+                  }}
+                />
+              </div>
+              <div className="flex h-[calc(100vh-92px)] w-full flex-col gap-2 overflow-y-auto pr-1.5">
+                {list.map((member) => {
+                  return (
+                    <div key={member.id} className="flex w-full gap-1">
+                      <BasicMemberCard
+                        member={member as BasicMemberWithBasicMatchesJoined}
+                      />
+                      <div className="flex flex-col gap-2">
+                        <button
+                          className="rounded-lg bg-red-500 p-2 text-sm font-medium text-white"
+                          disabled={isAddingToBlacklist}
+                          onClick={async () => {
+                            await addToBlacklist({
+                              actionMemberId: basicMemberId,
+                              targetMemberId: member.id,
+                            });
                           }}
-                        />
-                      ) : (
-                        <CreateBasicMatchButton
-                          payload={{
-                            member1Id: basicMemberId,
-                            member2Id: member.id,
-                            targetStatus: MatchStatus.BACKLOG,
-                          }}
-                        />
-                      )}
-                      {matchType === 매치_유형.확성기 ? (
-                        <CreateMegaphoneButton
-                          payload={{
-                            senderId: basicMemberId,
-                            receiverId: member.id,
-                            targetStatus: MatchStatus.PREPARING,
-                          }}
-                        />
-                      ) : (
-                        <CreateBasicMatchButton
-                          payload={{
-                            member1Id: basicMemberId,
-                            member2Id: member.id,
-                            targetStatus: MatchStatus.PREPARING,
-                          }}
-                        />
-                      )}
+                        >
+                          블랙
+                        </button>
+                        {matchType === 매치_유형.확성기 ? (
+                          <CreateMegaphoneButton
+                            payload={{
+                              senderId: basicMemberId,
+                              receiverId: member.id,
+                              targetStatus: MatchStatus.BACKLOG,
+                            }}
+                          />
+                        ) : (
+                          <CreateBasicMatchButton
+                            payload={{
+                              member1Id: basicMemberId,
+                              member2Id: member.id,
+                              targetStatus: MatchStatus.BACKLOG,
+                            }}
+                          />
+                        )}
+                        {matchType === 매치_유형.확성기 ? (
+                          <CreateMegaphoneButton
+                            payload={{
+                              senderId: basicMemberId,
+                              receiverId: member.id,
+                              targetStatus: MatchStatus.PREPARING,
+                            }}
+                          />
+                        ) : (
+                          <CreateBasicMatchButton
+                            payload={{
+                              member1Id: basicMemberId,
+                              member2Id: member.id,
+                              targetStatus: MatchStatus.PREPARING,
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <hr className="mb-1" />
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

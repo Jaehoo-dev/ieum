@@ -38,7 +38,7 @@ export function BasicMemberCard({ member, defaultMode }: Props) {
   const [mode, setMode] = useState<Mode>(defaultMode ?? "SIMPLE");
 
   return (
-    <div className="flex w-full max-w-3xl flex-col gap-2 rounded-lg border border-gray-200 p-3 text-sm">
+    <div className="flex w-full max-w-4xl flex-col gap-2 rounded-lg border border-gray-200 p-3 text-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {member.images[0] != null ? (

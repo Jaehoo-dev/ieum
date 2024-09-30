@@ -31,7 +31,7 @@ export function CreateBasicMatchButton({
     <button
       className={`rounded-lg ${
         targetStatus === MatchStatus.BACKLOG ? "bg-yellow-400" : "bg-green-500"
-      } px-2 py-1 text-xs font-medium text-white`}
+      } p-2 text-sm font-medium text-white`}
       onClick={async () => {
         await createMatch({
           member1Id,
@@ -44,7 +44,7 @@ export function CreateBasicMatchButton({
     >
       {match(targetStatus)
         .with(MatchStatus.BACKLOG, () => "백로그")
-        .with(MatchStatus.PREPARING, () => "준비중")
+        .with(MatchStatus.PREPARING, () => "준비")
         .exhaustive()}
     </button>
   );
