@@ -72,13 +72,15 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           );
 
           try {
-            void sendMessage({ content: `인증번호 전송: ${phoneNumber}` });
+            sendMessage({ content: `${phoneNumber} - 인증번호 전송 요청` });
 
             const result = await signInWithPhoneNumber(
               auth,
               krHyphenToGlobal(phoneNumber),
               recaptchaVerifier,
             );
+
+            sendMessage({ content: `${phoneNumber} - 인증번호 전송` });
 
             onSignIn(result.verificationId);
             alert("인증번호를 전송했습니다.");
