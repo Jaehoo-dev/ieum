@@ -72,7 +72,9 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
           );
 
           try {
-            sendMessage({ content: `${phoneNumber} - 인증번호 전송 요청` });
+            sendMessage({
+              content: `${phoneNumber} - 인증번호 전송 요청\n${navigator.userAgent}`,
+            });
 
             const result = await signInWithPhoneNumber(
               auth,
