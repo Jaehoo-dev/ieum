@@ -18,11 +18,11 @@ import { 조회용_매치_유형 } from "../../_enums";
 
 export function BasicMatchPage() {
   return (
-    <KakaoBrowserOnly fallback={<KakaoBrowserFallback />}>
-      <Suspense fallback={null}>
-        <Resolved />
-      </Suspense>
-    </KakaoBrowserOnly>
+    // <KakaoBrowserOnly fallback={<KakaoBrowserFallback />}>
+    <Suspense fallback={null}>
+      <Resolved />
+    </Suspense>
+    // </KakaoBrowserOnly>
   );
 }
 
