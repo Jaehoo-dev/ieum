@@ -1,10 +1,10 @@
 import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps, AppType } from "next/app";
-import type { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 
 import "~/styles/globals.css";
+
+import { Session, SessionProvider } from "@ieum/admin-auth";
 
 import { AuthGuard } from "~/components/AuthGuard";
 import { api } from "~/utils/api";

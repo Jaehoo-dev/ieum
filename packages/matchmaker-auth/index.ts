@@ -1,7 +1,6 @@
 import type { GetServerSidePropsContext } from "next";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma, UserType } from "@ieum/prisma";
-import { format } from "date-fns";
 import NextAuth, { getServerSession } from "next-auth";
 import type { DefaultSession, NextAuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
@@ -19,14 +18,12 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
-      username: string | null;
       phoneNumber: string;
       type: UserType;
     };
   }
 
   interface User {
-    username: string | null;
     phoneNumber: string;
     type: UserType;
   }
@@ -47,22 +44,16 @@ export const authOptions: NextAuthOptions = {
       return {
         ...token,
         id: user.id,
-        username: user.username,
         phoneNumber: user.phoneNumber,
         type: user.type,
       };
     },
     session: ({ session, token }) => {
-      if (token.type !== UserType.ADMIN) {
-        return null as any;
-      }
-
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          username: token.username,
           phoneNumber: token.phoneNumber,
           type: token.type,
         },
@@ -72,49 +63,113 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
     CredentialsProvider({
-      name: "Credentials",
       credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-        },
-        password: { label: "Password", type: "password" },
+        verificationId: { type: "text" },
+        phoneNumber: { type: "text" },
+        otp: { type: "text" },
       },
       authorize: async (credentials) => {
         if (credentials == null) {
           return null;
         }
 
-        const [_password, secret] = credentials.password.split("-");
-        const currentMinute = format(new Date(), "mm");
-
-        const user = await prisma.user.findUnique({
-          where: {
-            username: credentials.username,
-            password: _password,
-            type: UserType.ADMIN,
-          },
+        const isOtpValid = await verifyOtp({
+          verificationId: credentials.verificationId,
+          phoneNumber: credentials.phoneNumber,
+          code: credentials.otp,
         });
 
-        if (user == null || secret !== currentMinute) {
+        if (!isOtpValid) {
           return null;
         }
 
+        const existingUser = await prisma.user.findUnique({
+          where: {
+            phoneNumber_type: {
+              phoneNumber: credentials.phoneNumber,
+              type: UserType.BASIC_MEMBER,
+            },
+          },
+          select: {
+            id: true,
+            phoneNumber: true,
+            type: true,
+          },
+        });
+
+        if (existingUser != null) {
+          return {
+            id: existingUser.id,
+            phoneNumber: existingUser.phoneNumber,
+            type: existingUser.type,
+          };
+        }
+
+        const newUser = await prisma.user.create({
+          data: {
+            phoneNumber: credentials.phoneNumber,
+            type: UserType.BASIC_MEMBER,
+          },
+          select: {
+            id: true,
+            phoneNumber: true,
+            type: true,
+          },
+        });
+
         return {
-          id: user.id,
-          username: user.username,
-          phoneNumber: user.phoneNumber,
-          type: user.type,
+          id: newUser.id,
+          phoneNumber: newUser.phoneNumber,
+          type: newUser.type,
         };
       },
     }),
   ],
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+async function verifyOtp({
+  verificationId,
+  phoneNumber,
+  code,
+}: {
+  verificationId: string;
+  phoneNumber: string;
+  code: string;
+}) {
+  const otp = await prisma.otp.findUnique({
+    where: {
+      id: verificationId,
+      phoneNumber_code: {
+        phoneNumber,
+        code,
+      },
+      isUsed: false,
+      expiresAt: {
+        gte: new Date(),
+      },
+    },
+  });
+
+  if (otp == null) {
+    return false;
+  }
+
+  await prisma.otp.update({
+    where: {
+      id: otp.id,
+    },
+    data: {
+      isUsed: true,
+    },
+  });
+
+  return true;
+}
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
@@ -127,13 +182,16 @@ export const getServerAuthSession = async (ctx: {
 }) => {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
-  if (session?.user.type !== UserType.ADMIN) {
-    return null;
+  if (
+    session?.user.type === UserType.BASIC_MEMBER ||
+    session?.user.type === UserType.ADMIN
+  ) {
+    return session;
   }
 
-  return session;
+  return null;
 };
 
-export const AdminNextAuth = NextAuth(authOptions);
+export const MatchmakerNextAuth = NextAuth(authOptions);
 
 export * from "next-auth/react";

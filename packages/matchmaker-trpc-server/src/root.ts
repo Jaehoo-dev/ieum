@@ -6,6 +6,7 @@ import { basicMemberProfileRouter } from "./routers/basicMemberProfile";
 import { blindRouter } from "./routers/blind";
 import { draftMemberRouter } from "./routers/draftMember";
 import { megaphoneMatchRouter } from "./routers/megaphoneMatch";
+import { otpRouter } from "./routers/otp";
 import { reviewRouter } from "./routers/review";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   blindRouter,
   draftMemberRouter,
   megaphoneMatchRouter,
+  otpRouter,
   reviewRouter,
 });
 
