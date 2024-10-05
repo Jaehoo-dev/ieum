@@ -801,6 +801,7 @@ model FripReview {
 }
 
 enum FripRating {
-  FOUR_POINT_FIVE
   FIVE
+  FOUR_POINT_FIVE
+  FOUR
 }

@@ -55,6 +55,7 @@ export function FripReviewsRegistrationPage() {
             <Select label="별점" {...field}>
               <option value={FripRating.FIVE}>5</option>
               <option value={FripRating.FOUR_POINT_FIVE}>4.5</option>
+              <option value={FripRating.FOUR}>4</option>
             </Select>
           )}
         />
