@@ -21,6 +21,7 @@ export const otpRouter = createTRPCRouter({
       const latestOtp = await prisma.otp.findFirst({
         where: {
           phoneNumber,
+          type: UserType.BLIND_MEMBER,
           expiresAt: {
             gte: new Date(),
           },
