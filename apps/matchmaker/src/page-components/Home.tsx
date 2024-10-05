@@ -207,6 +207,7 @@ function Registered() {
 }
 
 function Unregistered() {
+  const { signOut } = useMemberAuthContext();
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
@@ -221,7 +222,18 @@ function Unregistered() {
       >
         알아보기
       </Link>
-      <TipsMenuLink />
+      <TipsMenuLink style={{ marginTop: "4px" }} />
+      <button
+        className="text-sm font-light text-gray-500 underline hover:text-gray-700"
+        onClick={() => {
+          void sendMessage({
+            content: `미가입자 - 로그아웃 클릭`,
+          });
+          void signOut();
+        }}
+      >
+        로그아웃
+      </button>
     </div>
   );
 }
