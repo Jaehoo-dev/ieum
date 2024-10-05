@@ -6285,6 +6285,11 @@ ts-pattern@^5.3.1:
   resolved "https://registry.yarnpkg.com/ts-pattern/-/ts-pattern-5.3.1.tgz#ec098665841b1e6a7f7cb2c01bb270b79a2e2858"
   integrity sha512-1RUMKa8jYQdNfmnK4jyzBK3/PS/tnjcZ1CW0v1vWDeYe5RBklc/nquw03MEoB66hVBm4BnlCfmOqDVxHyT1DpA==
 
+ts-pattern@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/ts-pattern/-/ts-pattern-5.4.0.tgz#efbe74d1ffbb63b80298dbc89b6ec442eab095fa"
+  integrity sha512-hgfOMfjlrARCnYtGD/xEAkFHDXuSyuqjzFSltyQCbN689uNvoQL20TVN2XFcLMjfNuwSsQGU+xtH6MrjIwhwUg==
+
 tsconfig-paths@^3.14.2:
   version "3.14.2"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.14.2.tgz#6e32f1f79412decd261f92d633a9dc1cfa99f088"
