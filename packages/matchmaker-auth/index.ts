@@ -111,7 +111,7 @@ export const authOptions: NextAuthOptions = {
           prisma.user.create({
             data: {
               phoneNumber: credentials.phoneNumber,
-              type: UserType.BLIND_MEMBER,
+              type: UserType.BASIC_MEMBER,
             },
             select: {
               id: true,
