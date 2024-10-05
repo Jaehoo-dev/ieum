@@ -1,7 +1,6 @@
 import { FripRating } from "@ieum/prisma";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
-import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { match } from "ts-pattern";
 
 interface Props {
@@ -41,7 +40,6 @@ export function Stars({ rating }: Props) {
               <FullStar />
               <FullStar />
               <FullStar />
-              <EmptyStar />
             </>
           );
         })
@@ -56,8 +54,4 @@ function FullStar() {
 
 function HalfStar() {
   return <StarHalfIcon className="text-frip-primary-500" fontSize="small" />;
-}
-
-function EmptyStar() {
-  return <StarOutlineIcon className="text-frip-primary-500" fontSize="small" />;
 }
