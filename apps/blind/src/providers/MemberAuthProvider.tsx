@@ -1,12 +1,10 @@
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext } from "react";
 import type { ReactNode } from "react";
+import { signOut as signOutSession, useSession } from "@ieum/blind-auth";
 import type { BasicMemberV2 } from "@ieum/prisma";
-import { assert, globalKrToBasicKr } from "@ieum/utils";
-import { signOut as signOutFirebase } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { assert } from "@ieum/utils";
 
 import { api } from "~/utils/api";
-import { auth } from "~/utils/firebase";
 
 export type Member = Pick<BasicMemberV2, "id" | "phoneNumber" | "gender">;
 
@@ -25,30 +23,27 @@ interface Props {
 }
 
 export function MemberAuthProvider({ children }: Props) {
-  const [user, isAuthLoading, error] = useAuthState(auth);
+  const { data: session, status } = useSession();
   const utils = api.useUtils();
   const { data: member, isLoading: isMemberLoading } =
     api.blindMemberRouter.findByPhoneNumber.useQuery(
       {
         phoneNumber:
-          user?.phoneNumber != null ? globalKrToBasicKr(user.phoneNumber) : "",
+          session?.user.phoneNumber != null ? session.user.phoneNumber : "",
       },
-      { enabled: user != null },
+      { enabled: session?.user != null },
     );
-  const isLoading = isAuthLoading || isMemberLoading;
+  const isLoading = status === "loading" || isMemberLoading;
 
   const signOut = useCallback(async () => {
-    await signOutFirebase(auth);
+    await signOutSession({
+      callbackUrl: "/",
+      redirect: true,
+    });
     await utils.blindMemberRouter.invalidate();
   }, [utils.blindMemberRouter]);
 
-  useEffect(() => {
-    if (error != null) {
-      void signOut();
-    }
-  }, [error, signOut]);
-
-  const loggedIn = !isLoading && user != null;
+  const loggedIn = !isLoading && session?.user != null;
 
   return (
     <MemberAuthContext.Provider

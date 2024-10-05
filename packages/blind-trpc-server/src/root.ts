@@ -1,10 +1,12 @@
 import { blindMatchRouter } from "./routers/blindMatch";
 import { blindMemberRouter } from "./routers/blindMember";
+import { otpRouter } from "./routers/otp";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   blindMatchRouter,
   blindMemberRouter,
+  otpRouter,
 });
 
 // export type definition of API

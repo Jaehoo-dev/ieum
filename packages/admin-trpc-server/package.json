@@ -13,7 +13,6 @@
   "dependencies": {
     "@ieum/admin-auth": "*",
     "@ieum/constants": "*",
-    "@ieum/matchmaker-firebase-admin": "*",
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
     "@ieum/solapi": "*",

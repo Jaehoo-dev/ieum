@@ -1,6 +1,8 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "@ieum/admin-auth";
+import { UserType } from "@ieum/prisma";
+import { match } from "ts-pattern";
 
 interface Props {
   children: ReactNode;
@@ -8,16 +10,22 @@ interface Props {
 
 export function AuthGuard({ children }: Props) {
   const router = useRouter();
-  const { status } = useSession({
+  const { data: session, status } = useSession({
     required: true,
-    onUnauthenticated() {
-      void router.push("/login");
+    onUnauthenticated: () => {
+      router.push("/login");
     },
   });
 
-  if (status === "loading") {
-    return null;
-  }
+  useEffect(() => {
+    if (status !== "loading" && session.user.type !== UserType.ADMIN) {
+      signOut();
+      router.push("/login");
+    }
+  }, [status, session?.user.type]);
 
-  return <>{children}</>;
+  return match(status)
+    .with("loading", () => null)
+    .with("authenticated", () => <>{children}</>)
+    .exhaustive();
 }

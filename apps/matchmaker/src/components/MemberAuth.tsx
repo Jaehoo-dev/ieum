@@ -1,22 +1,16 @@
 import { useState } from "react";
-import { assert, formatPhoneNumberInput, krHyphenToGlobal } from "@ieum/utils";
-import {
-  browserSessionPersistence,
-  PhoneAuthProvider,
-  RecaptchaVerifier,
-  setPersistence,
-  signInWithCredential,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+import { signIn } from "@ieum/matchmaker-auth";
+import { assert, formatPhoneNumberInput, krHyphenToKr } from "@ieum/utils";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { auth } from "~/utils/firebase";
+import { api } from "~/utils/api";
 import { TipsMenuLink } from "./TipsMenuLink";
 
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
+  const [phoneNumber, setPhoneNumber] = useState<string>();
   const [verificationId, setVerificationId] = useState<string>();
 
   return (
@@ -24,7 +18,8 @@ export function MemberAuth() {
       {match(step)
         .with("PHONE", () => (
           <PhoneStep
-            onSignIn={(verificationId) => {
+            onSignIn={({ phoneNumber, verificationId }) => {
+              setPhoneNumber(phoneNumber);
               setVerificationId(verificationId);
               setStep("CODE");
             }}
@@ -32,10 +27,12 @@ export function MemberAuth() {
         ))
         .with("CODE", () => (
           <CodeStep
+            phoneNumber={phoneNumber}
             verificationId={verificationId}
             onReset={() => {
-              setStep("PHONE");
+              setPhoneNumber(undefined);
               setVerificationId(undefined);
+              setStep("PHONE");
             }}
           />
         ))
@@ -45,7 +42,7 @@ export function MemberAuth() {
 }
 
 interface PhoneStepProps {
-  onSignIn: (verificationId: string) => void;
+  onSignIn: (payload: { phoneNumber: string; verificationId: string }) => void;
 }
 
 function PhoneStep({ onSignIn }: PhoneStepProps) {
@@ -59,37 +56,35 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
     },
   });
   const { sendMessage } = useSlackNotibot();
+  const { mutateAsync: createOtp } = api.otpRouter.create.useMutation();
 
   return (
     <div className="flex flex-col items-center gap-6">
       <form
         className="flex w-full flex-col"
         onSubmit={handleSubmit(async ({ phoneNumber }) => {
-          const recaptchaVerifier = new RecaptchaVerifier(
-            auth,
-            "sign-in-button",
-            { size: "invisible" },
-          );
+          sendMessage({
+            content: `${phoneNumber} - 인증번호 전송 요청\n${navigator.userAgent}`,
+          });
 
-          try {
-            sendMessage({
-              content: `${phoneNumber} - 인증번호 전송 요청\n${navigator.userAgent}`,
-            });
+          const hyphenRemovedPhoneNumber = krHyphenToKr(phoneNumber);
 
-            const result = await signInWithPhoneNumber(
-              auth,
-              krHyphenToGlobal(phoneNumber),
-              recaptchaVerifier,
+          const { verificationId, isReused } = await createOtp({
+            phoneNumber: hyphenRemovedPhoneNumber,
+          });
+
+          if (isReused) {
+            alert(
+              "이미 인증번호를 전송했습니다. 문자로 받은 인증번호를 입력하거나 잠시 후 다시 시도해주세요.",
             );
+            onSignIn({ phoneNumber: hyphenRemovedPhoneNumber, verificationId });
 
-            sendMessage({ content: `${phoneNumber} - 인증번호 전송` });
-
-            onSignIn(result.verificationId);
-            alert("인증번호를 전송했습니다.");
-          } catch (err) {
-            alert(`인증번호 전송에 실패했습니다. 잠시 후 다시 시도해주세요.`);
-            recaptchaVerifier.clear();
+            return;
           }
+
+          sendMessage({ content: `${phoneNumber} - 인증번호 전송` });
+          onSignIn({ phoneNumber: hyphenRemovedPhoneNumber, verificationId });
+          alert("인증번호를 전송했습니다.");
         })}
       >
         <label className="flex flex-col" htmlFor="phoneNumber">
@@ -136,18 +131,18 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
 }
 
 interface CodeStepProps {
+  phoneNumber: string | undefined;
   verificationId: string | undefined;
   onReset: () => void;
 }
 
-function CodeStep({ verificationId, onReset }: CodeStepProps) {
+function CodeStep({ phoneNumber, verificationId, onReset }: CodeStepProps) {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      shouldPersist: true,
       verificationCode: "",
     },
   });
@@ -157,25 +152,17 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
     <div className="w-full">
       <form
         className="flex flex-col items-center gap-1"
-        onSubmit={handleSubmit(async ({ shouldPersist, verificationCode }) => {
+        onSubmit={handleSubmit(async ({ verificationCode }) => {
           assert(verificationId != null, "verificationId must be set");
 
-          const credential = PhoneAuthProvider.credential(
+          void sendMessage({ content: "로그인 시도" });
+
+          await signIn("credentials", {
             verificationId,
-            verificationCode,
-          );
-
-          try {
-            void sendMessage({ content: "로그인 시도" });
-
-            if (!shouldPersist) {
-              await setPersistence(auth, browserSessionPersistence);
-            }
-
-            await signInWithCredential(auth, credential);
-          } catch {
-            alert("인증에 실패했습니다. 다시 시도해주세요.");
-          }
+            phoneNumber,
+            otp: verificationCode,
+            redirect: false,
+          });
         })}
       >
         <label className="flex w-full flex-col">
@@ -197,41 +184,6 @@ function CodeStep({ verificationId, onReset }: CodeStepProps) {
             autoFocus={true}
           />
         </label>
-        <div className="inline-flex items-center">
-          <label
-            className="relative flex cursor-pointer items-center rounded-full p-3"
-            htmlFor="shouldPersist"
-          >
-            <input
-              type="checkbox"
-              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border transition-all before:absolute before:left-2/4 before:top-2/4 before:block before:h-12 before:w-12 before:-translate-x-2/4 before:-translate-y-2/4 before:rounded-full before:opacity-0 before:transition-opacity checked:border-primary-500 checked:bg-primary-500 checked:before:bg-primary-500"
-              id="shouldPersist"
-              {...register("shouldPersist")}
-            />
-            <span className="pointer-events-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-          </label>
-          <label
-            className="mt-[2px] cursor-pointer select-none text-gray-500"
-            htmlFor="shouldPersist"
-          >
-            로그인 유지
-          </label>
-        </div>
         <button
           id="sign-in-button"
           className="mt-1 w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 disabled:cursor-not-allowed disabled:bg-primary-300 md:p-3 md:text-xl"

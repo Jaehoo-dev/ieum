@@ -9,7 +9,7 @@
 
 import type { Session } from "@ieum/admin-auth";
 import { getServerAuthSession } from "@ieum/admin-auth";
-import { prisma, Role } from "@ieum/prisma";
+import { prisma, UserType } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
@@ -111,7 +111,7 @@ export const createTRPCRouter = t.router;
 // export const publicProcedure = t.procedure;
 
 const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
-  if (ctx.session?.user == null || ctx.session.user.role !== Role.ADMIN) {
+  if (ctx.session?.user == null || ctx.session.user.type !== UserType.ADMIN) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 

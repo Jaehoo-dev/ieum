@@ -26,10 +26,10 @@ export function EndingSection() {
             소개팅 꿀팁 보러 가기
           </Link> */}
           <Link
-            href="/members"
+            href="/"
             className="text-center text-blind-500 underline hover:text-blind-700"
           >
-            회원 목록 보러 가기
+            홈으로
           </Link>
         </div>
       </div>

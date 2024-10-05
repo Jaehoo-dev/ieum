@@ -7,15 +7,15 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import { getAuth } from "@ieum/blind-firebase-admin";
-import { prisma } from "@ieum/prisma";
+import { getServerAuthSession, Session } from "@ieum/blind-auth";
+import { prisma, UserType } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 interface CreateContextOptions {
-  session: null;
+  session: Session | null;
   headers: CreateNextContextOptions["req"]["headers"];
 }
 
@@ -31,9 +31,14 @@ export async function createContextInner(opts: CreateContextOptions) {
   };
 }
 
-export async function createTRPCContext({ req }: CreateNextContextOptions) {
+export async function createTRPCContext({
+  req,
+  res,
+}: CreateNextContextOptions) {
+  const session = await getServerAuthSession({ req, res });
+
   return await createContextInner({
-    session: null,
+    session,
     headers: req.headers,
   });
 }
@@ -88,33 +93,21 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-const blindFirebaseAuth = t.middleware(async ({ ctx, next }) => {
-  const authHeader = ctx.headers.authorization;
-
-  if (authHeader == null) {
+const auth = t.middleware(async ({ ctx, next }) => {
+  if (
+    ctx.session?.user == null ||
+    (ctx.session.user.type !== UserType.BLIND_MEMBER &&
+      ctx.session.user.type !== UserType.ADMIN)
+  ) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  const token = authHeader.split(" ")[1];
-
-  if (token == null) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-
-  try {
-    const decodedToken = await getAuth().verifyIdToken(token);
-
-    return next({
-      ctx: {
-        ...ctx,
-        session: {
-          user: decodedToken,
-        },
-      },
-    });
-  } catch (err) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
 });
 
-export const protectedBlindProcedure = t.procedure.use(blindFirebaseAuth);
+export const protectedBlindProcedure = t.procedure.use(auth);

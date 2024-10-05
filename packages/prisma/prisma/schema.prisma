@@ -11,6 +11,18 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Otp {
+  id          String   @id @default(cuid())
+  phoneNumber String
+  code        String
+  type        UserType
+  expiresAt   DateTime
+  isUsed      Boolean
+  createdAt   DateTime @default(now())
+
+  @@unique([phoneNumber, code, type])
+}
+
 model Account {
   id                 String    @id @default(cuid())
   userId             String
@@ -39,21 +51,24 @@ model Session {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  username  String    @unique
-  password  String
-  role      Role
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  accounts  Account[]
-  sessions  Session[]
+  id          String    @id @default(cuid())
+  username    String?   @unique
+  password    String?
+  phoneNumber String
+  type        UserType
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  accounts    Account[]
+  sessions    Session[]
 
-  @@index([username])
+  @@unique([phoneNumber, type])
+  @@index([phoneNumber])
 }
 
-enum Role {
+enum UserType {
   ADMIN
-  MEMBER
+  BASIC_MEMBER
+  BLIND_MEMBER
 }
 
 model VerificationToken {

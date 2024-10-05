@@ -1,5 +1,4 @@
 import { 매치_유형 } from "@ieum/constants";
-import { auth, FirebaseAuthError } from "@ieum/matchmaker-firebase-admin";
 import {
   AnnualIncome,
   AssetsValue,
@@ -26,6 +25,7 @@ import {
   PlannedNumberOfChildren,
   Region,
   Religion,
+  UserType,
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert, hash, krToGlobal } from "@ieum/utils";
@@ -1018,19 +1018,14 @@ export const basicMemberRouter = createTRPCRouter({
           });
         }
 
-        try {
-          const firebaseUser = await auth.getUserByPhoneNumber(
-            krToGlobal(member.phoneNumber),
-          );
-          await auth.deleteUser(firebaseUser.uid);
-        } catch (error) {
-          if (
-            !(error instanceof FirebaseAuthError) ||
-            error.code !== "auth/user-not-found"
-          ) {
-            throw error;
-          }
-        }
+        await tx.user.delete({
+          where: {
+            phoneNumber_type: {
+              phoneNumber: member.phoneNumber,
+              type: UserType.BASIC_MEMBER,
+            },
+          },
+        });
 
         return tx.basicMemberV2.update({
           where: {
@@ -1124,6 +1119,15 @@ export const basicMemberRouter = createTRPCRouter({
             },
           });
         }
+
+        await tx.user.delete({
+          where: {
+            phoneNumber_type: {
+              phoneNumber: member.phoneNumber,
+              type: UserType.BASIC_MEMBER,
+            },
+          },
+        });
 
         return tx.basicMemberV2.delete({
           where: {
