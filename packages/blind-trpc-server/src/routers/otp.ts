@@ -48,7 +48,7 @@ export const otpRouter = createTRPCRouter({
           code: Math.floor(Math.random() * 1000000)
             .toString()
             .padStart(6, "0"),
-          type: UserType.BASIC_MEMBER,
+          type: UserType.BLIND_MEMBER,
           expiresAt: new Date(Date.now() + OTP_DURATION),
           isUsed: false,
         },

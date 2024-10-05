@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+import { Session, SessionProvider } from "@ieum/blind-auth";
 import { blind500 } from "@ieum/constants";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -23,35 +24,43 @@ export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
 
 interface AppPropsWithLayout extends AppProps {
   Component: NextPageWithLayout;
+  pageProps: {
+    session: Session | null;
+  };
 }
 
-const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <ErrorBoundary>
-      <Head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
-          crossOrigin="anonymous"
-        />
-      </Head>
-      <MuiThemeProvider theme={muiTheme}>
-        <ConfirmProvider>
-          <MemberAuthProvider>
-            {Component.auth === false ? (
-              <Component {...pageProps} />
-            ) : (
-              <AuthGuard>
+    <SessionProvider session={session}>
+      <ErrorBoundary>
+        <Head>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2182485735586891"
+            crossOrigin="anonymous"
+          />
+        </Head>
+        <MuiThemeProvider theme={muiTheme}>
+          <ConfirmProvider>
+            <MemberAuthProvider>
+              {Component.auth === false ? (
                 <Component {...pageProps} />
-              </AuthGuard>
-            )}
-          </MemberAuthProvider>
-        </ConfirmProvider>
-      </MuiThemeProvider>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
-    </ErrorBoundary>,
+              ) : (
+                <AuthGuard>
+                  <Component {...pageProps} />
+                </AuthGuard>
+              )}
+            </MemberAuthProvider>
+          </ConfirmProvider>
+        </MuiThemeProvider>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MATCH_GA_ID!} />
+      </ErrorBoundary>
+    </SessionProvider>,
   );
 };
 

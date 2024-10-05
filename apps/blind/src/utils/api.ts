@@ -10,8 +10,6 @@ import { createTRPCNext } from "@trpc/next";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-import { getFirebaseIdToken } from "./firebase";
-
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
@@ -41,11 +39,6 @@ export const api = createTRPCNext<AppRouter>({
            */
           transformer: superjson,
           url: `${getBaseUrl()}/api/trpc`,
-          headers: async () => {
-            const token = await getFirebaseIdToken();
-
-            return token != null ? { Authorization: `Bearer ${token}` } : {};
-          },
         }),
       ],
     };

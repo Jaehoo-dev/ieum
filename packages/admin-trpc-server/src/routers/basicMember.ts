@@ -1120,6 +1120,15 @@ export const basicMemberRouter = createTRPCRouter({
           });
         }
 
+        await tx.user.delete({
+          where: {
+            phoneNumber_type: {
+              phoneNumber: member.phoneNumber,
+              type: UserType.BASIC_MEMBER,
+            },
+          },
+        });
+
         return tx.basicMemberV2.delete({
           where: {
             id,

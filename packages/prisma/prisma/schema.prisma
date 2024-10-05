@@ -15,11 +15,12 @@ model Otp {
   id          String   @id @default(cuid())
   phoneNumber String
   code        String
+  type        UserType
   expiresAt   DateTime
   isUsed      Boolean
   createdAt   DateTime @default(now())
 
-  @@unique([phoneNumber, code])
+  @@unique([phoneNumber, code, type])
 }
 
 model Account {

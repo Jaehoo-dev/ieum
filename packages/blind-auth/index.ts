@@ -87,7 +87,7 @@ export const authOptions: NextAuthOptions = {
           where: {
             phoneNumber_type: {
               phoneNumber: credentials.phoneNumber,
-              type: UserType.BASIC_MEMBER,
+              type: UserType.BLIND_MEMBER,
             },
           },
           select: {
@@ -152,7 +152,7 @@ async function verifyOtp({
       phoneNumber_code_type: {
         phoneNumber,
         code,
-        type: UserType.BASIC_MEMBER,
+        type: UserType.BLIND_MEMBER,
       },
       isUsed: false,
       expiresAt: {
@@ -187,7 +187,7 @@ export const getServerAuthSession = async (ctx: {
   const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
   if (
-    session?.user.type === UserType.BASIC_MEMBER ||
+    session?.user.type === UserType.BLIND_MEMBER ||
     session?.user.type === UserType.ADMIN
   ) {
     return session;
@@ -196,6 +196,6 @@ export const getServerAuthSession = async (ctx: {
   return null;
 };
 
-export const MatchmakerNextAuth = NextAuth(authOptions);
+export const BlindNextAuth = NextAuth(authOptions);
 
 export * from "next-auth/react";

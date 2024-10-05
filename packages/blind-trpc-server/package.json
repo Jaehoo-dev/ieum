@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ieum/blind-firebase-admin": "*",
+    "@ieum/blind-auth": "*",
     "@ieum/constants": "*",
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
