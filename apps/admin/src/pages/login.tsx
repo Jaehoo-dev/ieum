@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn } from "@ieum/admin-auth";
 import { useForm } from "react-hook-form";
 
 import { TextInput } from "~/components/TextInput";
