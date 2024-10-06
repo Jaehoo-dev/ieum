@@ -140,7 +140,7 @@ function FetchMoreButton({
 
 MembersPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <Layout title="회원 목록" width="lg" bottomNav={true}>
+    <Layout title="이성 회원 목록" width="lg" bottomNav={true}>
       {page}
     </Layout>
   );
