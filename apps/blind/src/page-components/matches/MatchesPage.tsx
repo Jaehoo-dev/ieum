@@ -4,12 +4,19 @@ import { assert } from "@ieum/utils";
 import { addDays, differenceInDays } from "date-fns";
 
 import { Layout } from "~/components/Layout";
+import { Loader } from "~/components/Loader";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MatchesPage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="flex h-[calc(100vh-120px)] w-full items-center justify-center">
+          <Loader />
+        </div>
+      }
+    >
       <Resolved />
     </Suspense>
   );
@@ -30,7 +37,12 @@ function Resolved() {
     selfMemberId: member.id,
   });
 
-  return (
+  const isEmpty =
+    accepted.length === 0 && proposed.length === 0 && received.length === 0;
+
+  return isEmpty ? (
+    <Empty />
+  ) : (
     <div className="flex flex-col gap-6">
       {accepted.length > 0 ? (
         <>
@@ -98,6 +110,20 @@ function Resolved() {
           </div>
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function Empty() {
+  return (
+    <div className="my-4 flex w-full flex-col items-center">
+      <p className="text-center text-xl font-medium text-blind-500">
+        매칭이 없어요.
+        <br />
+        회원 목록에서 호감이 가는 상대에게
+        <br />
+        하트를 보내보세요. 💌
+      </p>
     </div>
   );
 }

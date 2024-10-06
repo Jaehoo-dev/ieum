@@ -6,15 +6,18 @@ import { assert } from "@ieum/utils";
 // import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
+import { StatusGuard } from "~/components/StatusGuard";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MembersPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <MembersTable />
-      {/* <ResponsiveDisplayAd /> */}
-    </div>
+    <StatusGuard>
+      <div className="flex flex-col gap-6">
+        <MembersTable />
+        {/* <ResponsiveDisplayAd /> */}
+      </div>
+    </StatusGuard>
   );
 }
 
