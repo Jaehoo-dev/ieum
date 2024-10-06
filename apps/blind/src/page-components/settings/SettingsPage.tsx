@@ -29,5 +29,9 @@ function Resolved() {
 }
 
 SettingsPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="설정">{page}</Layout>;
+  return (
+    <Layout title="설정" bottomNav={true}>
+      {page}
+    </Layout>
+  );
 };

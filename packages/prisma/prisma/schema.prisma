@@ -171,11 +171,14 @@ model BlindMatch {
   respondentId String
   status       BlindMatchStatus
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  acceptedAt DateTime?
 
   @@index([status])
   @@index([createdAt])
+  @@index([proposerId])
+  @@index([respondentId])
 }
 
 enum BlindMatchStatus {
