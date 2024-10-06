@@ -25,7 +25,7 @@ export function MemberProfilePage() {
   return memberId != null ? (
     <Suspense
       fallback={
-        <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
           <Loader />
         </div>
       }
