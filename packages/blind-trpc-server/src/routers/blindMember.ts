@@ -111,7 +111,16 @@ export const blindMemberRouter = createTRPCRouter({
                 has: self.phoneNumber,
               },
             },
-            // TODO: filter out matched members
+            matchesAsProposer: {
+              none: {
+                respondentId: selfMemberId,
+              },
+            },
+            matchesAsRespondent: {
+              none: {
+                proposerId: selfMemberId,
+              },
+            },
           },
           take: take + 1,
           cursor: cursor ? { id: cursor } : undefined,
