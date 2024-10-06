@@ -1,6 +1,7 @@
 import { BlindMatchStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
+import { subDays } from "date-fns";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -72,6 +73,7 @@ export const blindMatchRouter = createTRPCRouter({
         },
         data: {
           status: BlindMatchStatus.ACCEPTED,
+          acceptedAt: new Date(),
         },
       });
 
@@ -106,5 +108,121 @@ export const blindMatchRouter = createTRPCRouter({
           createdAt: true,
         },
       });
+    }),
+  getMatches: protectedBlindProcedure
+    .input(
+      z.object({
+        selfMemberId: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { selfMemberId } }) => {
+      const matches = await prisma.blindMatch.findMany({
+        where: {
+          OR: [
+            {
+              proposerId: selfMemberId,
+            },
+            {
+              respondentId: selfMemberId,
+            },
+          ],
+          createdAt: {
+            gte: subDays(new Date(), 7),
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          acceptedAt: true,
+          status: true,
+          proposerId: true,
+          respondentId: true,
+          proposer: {
+            select: {
+              id: true,
+              nickname: true,
+            },
+          },
+          respondent: {
+            select: {
+              id: true,
+              nickname: true,
+            },
+          },
+        },
+      });
+
+      const pendingMatches = matches.filter((match) => {
+        return match.status === BlindMatchStatus.PENDING;
+      });
+      const acceptedMatches = matches.filter((match) => {
+        return match.status === BlindMatchStatus.ACCEPTED;
+      });
+
+      const result = {
+        pending: {
+          proposed: pendingMatches
+            .filter((match) => {
+              return match.proposerId === selfMemberId;
+            })
+            .map(
+              ({
+                proposer,
+                respondent,
+                proposerId,
+                respondentId,
+                ...match
+              }) => {
+                return {
+                  ...match,
+                  target: {
+                    id: respondent.id,
+                    nickname: respondent.nickname,
+                  },
+                };
+              },
+            ),
+          received: pendingMatches
+            .filter((match) => {
+              return match.respondentId === selfMemberId;
+            })
+            .map(
+              ({
+                proposer,
+                respondent,
+                proposerId,
+                respondentId,
+                ...match
+              }) => {
+                return {
+                  ...match,
+                  target: {
+                    id: proposer.id,
+                    nickname: proposer.nickname,
+                  },
+                };
+              },
+            ),
+        },
+        accepted: acceptedMatches.map(
+          ({ proposer, respondent, proposerId, respondentId, ...match }) => {
+            return {
+              ...match,
+              target: {
+                id: selfMemberId === proposerId ? respondent.id : proposer.id,
+                nickname:
+                  selfMemberId === proposerId
+                    ? respondent.nickname
+                    : proposer.nickname,
+              },
+            };
+          },
+        ),
+      };
+
+      return result;
     }),
 });
