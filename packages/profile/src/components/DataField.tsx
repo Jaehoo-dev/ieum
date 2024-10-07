@@ -23,7 +23,7 @@ export function DataField({
         {verified ? (
           <VerifiedIcon
             className={`mb-0.5 ml-0.5 text-sm ${
-              theme === "BLIND" ? "text-blind-300" : "text-primary-300"
+              theme === "BLIND" ? "text-blind-400" : "text-primary-500"
             }`}
           />
         ) : null}
