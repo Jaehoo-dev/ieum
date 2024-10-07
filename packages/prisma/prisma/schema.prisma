@@ -160,7 +160,9 @@ model BlindMember {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([nickname])
   @@unique([phoneNumber])
+  @@index([nickname])
   @@index([phoneNumber])
   @@index([gender])
   @@index([birthYear])
