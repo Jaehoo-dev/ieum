@@ -351,3 +351,5 @@ export const 지역_쿼리 = {
 } as const;
 
 export type 지역_쿼리 = (typeof 지역_쿼리)[keyof typeof 지역_쿼리];
+
+export const DEFAULT_HEART_COUNT = 3;
