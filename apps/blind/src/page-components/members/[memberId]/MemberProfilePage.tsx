@@ -4,6 +4,7 @@ import {
   Suspense,
   useEffect,
 } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { BlindProfile } from "@ieum/profile";
@@ -22,17 +23,24 @@ export function MemberProfilePage() {
   const router = useRouter();
   const memberId = router.query.memberId;
 
-  return memberId != null ? (
-    <Suspense
-      fallback={
-        <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
-          <Loader />
-        </div>
-      }
-    >
-      <Resolved memberId={memberId as string} />
-    </Suspense>
-  ) : null;
+  return (
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      {memberId != null ? (
+        <Suspense
+          fallback={
+            <div className="flex h-[calc(100vh-56px)] w-full items-center justify-center">
+              <Loader />
+            </div>
+          }
+        >
+          <Resolved memberId={memberId as string} />
+        </Suspense>
+      ) : null}
+    </>
+  );
 }
 
 function Resolved({ memberId: targetMemberId }: { memberId: string }) {

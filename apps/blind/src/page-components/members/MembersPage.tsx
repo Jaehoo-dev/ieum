@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef, Fragment, ReactElement } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { 지역_라벨 } from "@ieum/constants";
 import { assert } from "@ieum/utils";
@@ -12,12 +13,17 @@ import { api } from "~/utils/api";
 
 export function MembersPage() {
   return (
-    <StatusGuard>
-      <div className="flex flex-col gap-6">
-        <MembersTable />
-        {/* <ResponsiveDisplayAd /> */}
-      </div>
-    </StatusGuard>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <StatusGuard>
+        <div className="flex flex-col gap-6">
+          <MembersTable />
+          {/* <ResponsiveDisplayAd /> */}
+        </div>
+      </StatusGuard>
+    </>
   );
 }
 
