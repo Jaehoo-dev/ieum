@@ -1,6 +1,7 @@
 import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
 import { Gender, Region } from "@ieum/prisma";
 import { handleNullableStringNumber } from "@ieum/utils";
+import { TRPCClientError } from "@trpc/client";
 import { Controller } from "react-hook-form";
 
 import { TextareaInput } from "~/components/form/TextareaInput";
@@ -22,6 +23,8 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
     control,
     watch,
     handleSubmit,
+    getValues,
+    setError,
   } = useRegisterForm();
   const utils = api.useUtils();
   const { mutateAsync: createMember } =
@@ -35,12 +38,31 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
     <form
       className="flex w-full flex-col"
       onSubmit={handleSubmit(async (fields) => {
+        console.log(fields);
         const payload = formToPayload(fields);
 
-        await createMember({
-          phoneNumber,
-          ...payload,
-        });
+        try {
+          await createMember({
+            phoneNumber,
+            ...payload,
+          });
+        } catch (err) {
+          if (
+            err instanceof TRPCClientError &&
+            err.data.code === "CONFLICT" &&
+            err.message === "Nickname already exists"
+          ) {
+            setError("nickname", {
+              message: "이미 사용 중인 닉네임입니다.",
+            });
+
+            alert("닉네임이 이미 사용 중입니다.");
+
+            return;
+          }
+
+          throw err;
+        }
 
         clearCache();
         onSubmitSuccess();
@@ -56,15 +78,39 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
           안녕하세요! 이음 블라인드입니다.
         </h1>
         <div className="flex flex-col gap-8">
-          <TextInput
-            label="닉네임을 무엇으로 쓰시겠어요?"
-            required={true}
-            error={errors.nickname != null}
-            errorText={errors.nickname?.message}
-            {...register("nickname", {
-              required: true,
-            })}
-          />
+          <div className="flex w-full flex-row items-end gap-2">
+            <TextInput
+              label="닉네임을 무엇으로 쓰시겠어요?"
+              required={true}
+              error={errors.nickname != null}
+              errorText={errors.nickname?.message}
+              {...register("nickname", {
+                required: true,
+              })}
+            />
+            <button
+              type="button"
+              className="rounded-lg border border-blind-500 px-4 py-2 font-medium text-blind-500"
+              onClick={async () => {
+                const isAvailable =
+                  await utils.blindMemberRouter.isNicknameAvailable.fetch({
+                    nickname: getValues("nickname"),
+                  });
+
+                if (!isAvailable) {
+                  setError("nickname", {
+                    message: "이미 사용 중인 닉네임입니다.",
+                  });
+
+                  return;
+                }
+
+                alert("사용 가능한 닉네임입니다.");
+              }}
+            >
+              중복 확인
+            </button>
+          </div>
           <Controller
             control={control}
             name="gender"

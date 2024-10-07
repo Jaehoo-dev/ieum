@@ -2,6 +2,7 @@ import { ReactElement, Suspense } from "react";
 import { useRouter } from "next/router";
 import { 지역_라벨 } from "@ieum/constants";
 import { assert, handleNullableStringNumber } from "@ieum/utils";
+import { TRPCClientError } from "@trpc/client";
 import { useForm } from "react-hook-form";
 
 import { TextareaInput } from "~/components/form/TextareaInput";
@@ -30,6 +31,9 @@ function Resolved() {
   const {
     register,
     formState: { errors, isDirty, dirtyFields, isSubmitting },
+    getValues,
+    setError,
+    clearErrors,
     handleSubmit,
   } = useForm({
     defaultValues: {
@@ -54,30 +58,78 @@ function Resolved() {
       className="mb-24 flex flex-col gap-5"
       onSubmit={handleSubmit(
         async ({ nickname, height, bodyShape, job, selfIntroduction }) => {
-          await updateProfile({
-            memberId: member.id,
-            data: {
-              nickname: dirtyFields.nickname ? nickname : undefined,
-              height: dirtyFields.height ? height : undefined,
-              bodyShape: dirtyFields.bodyShape ? bodyShape : undefined,
-              job: dirtyFields.job ? job : undefined,
-              selfIntroduction: dirtyFields.selfIntroduction
-                ? selfIntroduction
-                : undefined,
-            },
-          });
+          try {
+            await updateProfile({
+              memberId: member.id,
+              data: {
+                nickname: dirtyFields.nickname ? nickname : undefined,
+                height: dirtyFields.height ? height : undefined,
+                bodyShape: dirtyFields.bodyShape ? bodyShape : undefined,
+                job: dirtyFields.job ? job : undefined,
+                selfIntroduction: dirtyFields.selfIntroduction
+                  ? selfIntroduction
+                  : undefined,
+              },
+            });
+          } catch (err) {
+            if (
+              err instanceof TRPCClientError &&
+              err.data.code === "CONFLICT" &&
+              err.message === "Nickname already exists"
+            ) {
+              setError("nickname", {
+                message: "이미 사용 중인 닉네임입니다.",
+              });
+
+              alert("닉네임이 이미 사용 중입니다.");
+
+              return;
+            }
+
+            throw err;
+          }
 
           router.push("/my-profile");
         },
       )}
     >
-      <TextInput
-        label="닉네임"
-        {...register("nickname", {
-          required: true,
-        })}
-        required={true}
-      />
+      <div className="flex w-full flex-row items-end gap-2">
+        <TextInput
+          label="닉네임"
+          {...register("nickname", {
+            required: true,
+            onChange: () => {
+              clearErrors("nickname");
+            },
+          })}
+          error={errors.nickname != null}
+          errorText={errors.nickname?.message}
+          required={true}
+        />
+        <button
+          type="button"
+          className="rounded-lg border border-blind-500 px-4 py-2 font-medium text-blind-500 disabled:cursor-not-allowed disabled:border-blind-300 disabled:text-blind-300"
+          onClick={async () => {
+            const isAvailable =
+              await utils.blindMemberRouter.isNicknameAvailable.fetch({
+                nickname: getValues("nickname"),
+              });
+
+            if (!isAvailable) {
+              setError("nickname", {
+                message: "이미 사용 중인 닉네임입니다.",
+              });
+
+              return;
+            }
+
+            alert("사용 가능한 닉네임입니다.");
+          }}
+          disabled={!dirtyFields.nickname}
+        >
+          중복 확인
+        </button>
+      </div>
       <div className="flex gap-2">
         <TextInput
           label="출생연도"

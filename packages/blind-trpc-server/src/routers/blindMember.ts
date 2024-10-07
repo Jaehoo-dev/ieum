@@ -2,10 +2,15 @@ import { 성별_라벨 } from "@ieum/constants";
 import { Gender, MemberStatus, Region } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
+import { TRPCError } from "@trpc/server";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  protectedBlindProcedure,
+  publicProcedure,
+} from "../trpc";
 
 export const blindMemberRouter = createTRPCRouter({
   create: protectedBlindProcedure
@@ -23,6 +28,19 @@ export const blindMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
+      const count = await prisma.blindMember.count({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+
+      if (count > 0) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Nickname already exists",
+        });
+      }
+
       await prisma.blindMember.create({
         data: {
           ...input,
@@ -293,6 +311,24 @@ export const blindMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx: { prisma }, input: { memberId, data } }) => {
+      if (data.nickname != null) {
+        const count = await prisma.blindMember.count({
+          where: {
+            id: {
+              not: memberId,
+            },
+            nickname: data.nickname,
+          },
+        });
+
+        if (count > 0) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Nickname already exists",
+          });
+        }
+      }
+
       await prisma.blindMember.update({
         where: {
           id: memberId,
@@ -330,5 +366,20 @@ export const blindMemberRouter = createTRPCRouter({
         age: member.ageVerified,
         job: member.jobVerified,
       };
+    }),
+  isNicknameAvailable: publicProcedure
+    .input(
+      z.object({
+        nickname: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { nickname } }) => {
+      const count = await prisma.blindMember.count({
+        where: {
+          nickname,
+        },
+      });
+
+      return count === 0;
     }),
 });
