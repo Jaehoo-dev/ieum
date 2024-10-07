@@ -1,4 +1,5 @@
 import { ComponentPropsWithoutRef, ReactElement, Suspense } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { assert } from "@ieum/utils";
 import { addDays, differenceInDays } from "date-fns";
@@ -10,15 +11,20 @@ import { api } from "~/utils/api";
 
 export function MatchesPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex h-[calc(100vh-120px)] w-full items-center justify-center">
-          <Loader />
-        </div>
-      }
-    >
-      <Resolved />
-    </Suspense>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense
+        fallback={
+          <div className="flex h-[calc(100vh-120px)] w-full items-center justify-center">
+            <Loader />
+          </div>
+        }
+      >
+        <Resolved />
+      </Suspense>
+    </>
   );
 }
 

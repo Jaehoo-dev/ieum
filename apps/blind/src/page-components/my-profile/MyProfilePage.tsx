@@ -1,4 +1,5 @@
 import { ReactElement, Suspense } from "react";
+import Head from "next/head";
 import { BlindProfile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
 
@@ -9,15 +10,20 @@ import { api } from "~/utils/api";
 
 export function MyProfilePage() {
   return (
-    <Suspense
-      fallback={
-        <div className="mt-4 flex items-center justify-center">
-          <Loader />
-        </div>
-      }
-    >
-      <Resolved />
-    </Suspense>
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <Suspense
+        fallback={
+          <div className="mt-4 flex items-center justify-center">
+            <Loader />
+          </div>
+        }
+      >
+        <Resolved />
+      </Suspense>
+    </>
   );
 }
 
