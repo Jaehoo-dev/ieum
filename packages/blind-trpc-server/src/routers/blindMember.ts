@@ -49,6 +49,7 @@ export const blindMemberRouter = createTRPCRouter({
           genderVerified: false,
           ageVerified: false,
           jobVerified: false,
+          heartsLeft: 3,
         },
       });
 
@@ -381,5 +382,23 @@ export const blindMemberRouter = createTRPCRouter({
       });
 
       return count === 0;
+    }),
+  getHeartCount: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const member = await prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          heartsLeft: true,
+        },
+      });
+
+      return member.heartsLeft;
     }),
 });
