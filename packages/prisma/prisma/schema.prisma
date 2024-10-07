@@ -181,6 +181,7 @@ model BlindMatch {
 
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  expiresAt  DateTime
   acceptedAt DateTime?
 
   @@index([status])

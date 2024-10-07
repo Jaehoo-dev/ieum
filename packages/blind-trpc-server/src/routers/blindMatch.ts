@@ -1,7 +1,8 @@
+import { BLIND_MATCH_DURATION_DAYS } from "@ieum/constants";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
-import { subDays } from "date-fns";
+import { addDays, endOfDay } from "date-fns";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -43,6 +44,7 @@ export const blindMatchRouter = createTRPCRouter({
             proposerId,
             respondentId,
             status: BlindMatchStatus.PENDING,
+            expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
           },
         });
 
@@ -74,6 +76,7 @@ export const blindMatchRouter = createTRPCRouter({
         data: {
           status: BlindMatchStatus.ACCEPTED,
           acceptedAt: new Date(),
+          expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
         },
       });
 
@@ -106,6 +109,7 @@ export const blindMatchRouter = createTRPCRouter({
           proposerId: true,
           respondentId: true,
           createdAt: true,
+          expiresAt: true,
         },
       });
     }),
@@ -126,8 +130,8 @@ export const blindMatchRouter = createTRPCRouter({
               respondentId: selfMemberId,
             },
           ],
-          createdAt: {
-            gte: subDays(new Date(), 7),
+          expiresAt: {
+            gte: new Date(),
           },
         },
         orderBy: {
@@ -135,8 +139,7 @@ export const blindMatchRouter = createTRPCRouter({
         },
         select: {
           id: true,
-          createdAt: true,
-          acceptedAt: true,
+          expiresAt: true,
           status: true,
           proposerId: true,
           respondentId: true,
