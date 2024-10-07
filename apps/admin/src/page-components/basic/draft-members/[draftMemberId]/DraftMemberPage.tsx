@@ -1,6 +1,15 @@
 import { ReactElement, Suspense, useState } from "react";
 import { useRouter } from "next/router";
-import { 지역_라벨 } from "@ieum/constants";
+import {
+  연간_벌이_라벨,
+  종교_라벨,
+  주간_운동량_라벨,
+  지역_라벨,
+  체형_라벨,
+  최소_연간_벌이_라벨,
+  최소_학력_라벨,
+  학력_라벨,
+} from "@ieum/constants";
 import { Region } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, getBmiLabel } from "@ieum/utils";
@@ -177,7 +186,11 @@ function Resolved() {
             disabled={true}
           />
           <div className="flex flex-row gap-1">
-            <TextInput label="학력" value={educationLevel} disabled={true} />
+            <TextInput
+              label="학력"
+              value={학력_라벨[educationLevel]}
+              disabled={true}
+            />
             <TextInput
               label="졸업 학교"
               value={graduatedUniversity ?? "null"}
@@ -195,7 +208,9 @@ function Resolved() {
           <div className="flex flex-row gap-1">
             <TextInput
               label="연간 수입"
-              value={annualIncome ?? "null"}
+              value={
+                annualIncome == null ? "null" : 연간_벌이_라벨[annualIncome]
+              }
               disabled={true}
             />
             <TextInput
@@ -214,7 +229,11 @@ function Resolved() {
           </div>
           <TextInput label="취미/관심사" value={hobby} disabled={true} />
           <div className="flex flex-row gap-1">
-            <TextInput label="운동량" value={exercisePerWeek} disabled={true} />
+            <TextInput
+              label="운동량"
+              value={주간_운동량_라벨[exercisePerWeek]}
+              disabled={true}
+            />
             <TextInput
               label="운동 종류"
               value={exerciseType ?? "null"}
@@ -238,7 +257,7 @@ function Resolved() {
               disabled={true}
             />
           </div>
-          <TextInput label="종교" value={religion} disabled={true} />
+          <TextInput label="종교" value={종교_라벨[religion]} disabled={true} />
           <TextInput label="자차" value={String(hasCar)} disabled={true} />
           <TextInput label="반려동물" value={String(hasPet)} disabled={true} />
           <TextInput
@@ -278,7 +297,11 @@ function Resolved() {
           </div>
           <TextInput
             label="선호 지역"
-            value={idealRegions.join(", ")}
+            value={idealRegions
+              .map((region) => {
+                return 지역_라벨[region];
+              })
+              .join(", ")}
             disabled={true}
           />
           <div className="flex flex-row gap-1">
@@ -295,7 +318,11 @@ function Resolved() {
           </div>
           <TextInput
             label="선호 체형"
-            value={idealBodyShapes.join(", ")}
+            value={idealBodyShapes
+              .map((bodyShape) => {
+                return 체형_라벨[bodyShape];
+              })
+              .join(", ")}
             disabled={true}
           />
           <TextInput
@@ -305,7 +332,11 @@ function Resolved() {
           />
           <TextInput
             label="최소 학력"
-            value={idealEducationLevel ?? "null"}
+            value={
+              idealEducationLevel == null
+                ? "null"
+                : 최소_학력_라벨[idealEducationLevel]
+            }
             disabled={true}
           />
           <TextInput
@@ -325,7 +356,11 @@ function Resolved() {
           />
           <TextInput
             label="최소 연간 수입"
-            value={idealMinAnnualIncome ?? "null"}
+            value={
+              idealMinAnnualIncome == null
+                ? "null"
+                : 최소_연간_벌이_라벨[idealMinAnnualIncome]
+            }
             disabled={true}
           />
           <TextInput
@@ -350,12 +385,20 @@ function Resolved() {
           />
           <TextInput
             label="선호 종교"
-            value={idealPreferredReligions.join(", ")}
+            value={idealPreferredReligions
+              .map((religion) => {
+                return 종교_라벨[religion];
+              })
+              .join(", ")}
             disabled={true}
           />
           <TextInput
             label="기피 종교"
-            value={idealNonPreferredReligions.join(", ")}
+            value={idealNonPreferredReligions
+              .map((religion) => {
+                return 종교_라벨[religion];
+              })
+              .join(", ")}
             disabled={true}
           />
           <TextInput
