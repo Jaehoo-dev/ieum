@@ -124,7 +124,7 @@ function Resolved() {
       />
       <TextInput
         label="직장/직무"
-        description="가능한 구체적으로 입력해주세요."
+        description="수정하면 직장 인증이 초기화됩니다."
         required={true}
         placeholder="예) 삼성전자 해외영업, 자동차기업 엔지니어"
         error={errors.job != null}

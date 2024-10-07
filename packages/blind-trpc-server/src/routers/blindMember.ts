@@ -293,7 +293,10 @@ export const blindMemberRouter = createTRPCRouter({
         where: {
           id: memberId,
         },
-        data,
+        data: {
+          ...data,
+          jobVerified: data.job != null ? false : undefined,
+        },
       });
 
       return true;
