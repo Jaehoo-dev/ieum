@@ -28,7 +28,7 @@ import {
   UserType,
 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { assert, hash, krToGlobal } from "@ieum/utils";
+import { assert, hash } from "@ieum/utils";
 import { match } from "ts-pattern";
 import { z } from "zod";
 
@@ -1018,14 +1018,25 @@ export const basicMemberRouter = createTRPCRouter({
           });
         }
 
-        await tx.user.delete({
+        const user = await tx.user.findUnique({
           where: {
             phoneNumber_type: {
               phoneNumber: member.phoneNumber,
               type: UserType.BASIC_MEMBER,
             },
           },
+          select: {
+            id: true,
+          },
         });
+
+        if (user != null) {
+          await tx.user.delete({
+            where: {
+              id: user.id,
+            },
+          });
+        }
 
         return tx.basicMemberV2.update({
           where: {
@@ -1120,14 +1131,25 @@ export const basicMemberRouter = createTRPCRouter({
           });
         }
 
-        await tx.user.delete({
+        const user = await tx.user.findUnique({
           where: {
             phoneNumber_type: {
               phoneNumber: member.phoneNumber,
               type: UserType.BASIC_MEMBER,
             },
           },
+          select: {
+            id: true,
+          },
         });
+
+        if (user != null) {
+          await tx.user.delete({
+            where: {
+              id: user.id,
+            },
+          });
+        }
 
         return tx.basicMemberV2.delete({
           where: {
