@@ -21,7 +21,7 @@ export function VerificationSection() {
       <div className="flex w-full items-start gap-1">
         <p className="text-sm text-gray-500">※</p>
         <p className="text-sm text-gray-500">
-          인증을 하시면 프로필에 인증 배지가 표시됩니다.
+          인증을 하면 프로필에 인증 배지가 표시됩니다.
         </p>
       </div>
       <div className="flex flex-col gap-1.5">

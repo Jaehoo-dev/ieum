@@ -92,7 +92,7 @@ function Description() {
     <div className="flex w-full items-start gap-1">
       <p className="text-sm text-gray-500">※</p>
       <p className="text-sm text-gray-500">
-        블랙리스트에 추가하면 서로의 목록에서 제외합니다.
+        블랙리스트에 추가하면 서로의 목록에서 제외됩니다.
       </p>
     </div>
   );
