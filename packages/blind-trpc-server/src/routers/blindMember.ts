@@ -28,13 +28,13 @@ export const blindMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
-      const count = await prisma.blindMember.count({
+      const existingMember = await prisma.blindMember.findFirst({
         where: {
           nickname: input.nickname,
         },
       });
 
-      if (count > 0) {
+      if (existingMember != null) {
         throw new TRPCError({
           code: "CONFLICT",
           message: "Nickname already exists",
@@ -313,7 +313,7 @@ export const blindMemberRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx: { prisma }, input: { memberId, data } }) => {
       if (data.nickname != null) {
-        const count = await prisma.blindMember.count({
+        const existingMember = await prisma.blindMember.findFirst({
           where: {
             id: {
               not: memberId,
@@ -322,7 +322,7 @@ export const blindMemberRouter = createTRPCRouter({
           },
         });
 
-        if (count > 0) {
+        if (existingMember != null) {
           throw new TRPCError({
             code: "CONFLICT",
             message: "Nickname already exists",
