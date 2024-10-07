@@ -120,7 +120,7 @@ function MatchInfo({ targetMemberId }: { targetMemberId: string }) {
         <p>
           성사되었어요. 🎉
           <br />
-          좋은 인연으로 이어지시길 기대할게요. 💘
+          좋은 인연으로 이어지길 기대할게요. 💘
         </p>
       ) : isRespondent ? (
         <p>
