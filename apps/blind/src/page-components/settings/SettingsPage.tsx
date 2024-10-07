@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Layout } from "~/components/Layout";
 import { BlacklistSection } from "./_components/BlacklistSection";
 import { StatusSectionResolved } from "./_components/StatusSection";
+import { VerificationSection } from "./_components/VerificationSection";
 
 export function SettingsPage() {
   return (
@@ -22,6 +23,8 @@ function Resolved() {
   return (
     <div className="flex flex-col gap-6">
       <StatusSectionResolved />
+      <hr />
+      <VerificationSection />
       <hr />
       <BlacklistSection />
     </div>

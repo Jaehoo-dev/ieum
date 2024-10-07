@@ -1,4 +1,4 @@
-import VerifiedRoundedIcon from "@mui/icons-material/VerifiedRounded";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 import { Theme } from "../types";
 
@@ -21,7 +21,7 @@ export function DataField({
       <p className="text-lg text-gray-900">
         {`${label}: ${value}`}
         {verified ? (
-          <VerifiedRoundedIcon
+          <VerifiedIcon
             className={`mb-0.5 ml-0.5 text-sm ${
               theme === "BLIND" ? "text-blind-300" : "text-primary-300"
             }`}
