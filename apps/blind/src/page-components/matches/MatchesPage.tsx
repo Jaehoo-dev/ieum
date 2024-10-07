@@ -55,14 +55,12 @@ function Resolved() {
           <div className="flex flex-col gap-2">
             <h2 className="text-lg font-semibold text-gray-800">성사된 회원</h2>
             <div className="grid grid-cols-2 gap-4">
-              {accepted.map(({ id, target, acceptedAt }) => {
-                assert(acceptedAt != null, "acceptedAt should not be null");
-
+              {accepted.map(({ id, target, expiresAt }) => {
                 return (
                   <Card
                     key={id}
                     target={target}
-                    sentAt={acceptedAt}
+                    expiresAt={expiresAt}
                     onClick={() => {
                       router.push(`/members/${target.id}`);
                     }}
@@ -80,12 +78,12 @@ function Resolved() {
             내가 하트를 보낸 회원
           </h2>
           <div className="grid grid-cols-2 gap-4">
-            {proposed.map(({ id, target, createdAt }) => {
+            {proposed.map(({ id, target, expiresAt }) => {
               return (
                 <Card
                   key={id}
                   target={target}
-                  sentAt={createdAt}
+                  expiresAt={expiresAt}
                   onClick={() => {
                     router.push(`/members/${target.id}`);
                   }}
@@ -101,12 +99,12 @@ function Resolved() {
             나에게 하트를 보낸 회원
           </h2>
           <div className="grid grid-cols-2 gap-4">
-            {received.map(({ id, target, createdAt }) => {
+            {received.map(({ id, target, expiresAt }) => {
               return (
                 <Card
                   key={id}
                   target={target}
-                  sentAt={createdAt}
+                  expiresAt={expiresAt}
                   onClick={() => {
                     router.push(`/members/${target.id}`);
                   }}
@@ -136,10 +134,10 @@ function Empty() {
 
 interface CardProps extends ComponentPropsWithoutRef<"button"> {
   target: { id: string; nickname: string };
-  sentAt: Date;
+  expiresAt: Date;
 }
 
-function Card({ target, sentAt, ...props }: CardProps) {
+function Card({ target, expiresAt, ...props }: CardProps) {
   return (
     <button
       className="flex w-full rounded-lg bg-blind-100 p-4 shadow hover:bg-blind-200 disabled:cursor-not-allowed disabled:bg-gray-100"
@@ -147,7 +145,7 @@ function Card({ target, sentAt, ...props }: CardProps) {
     >
       <div className="flex flex-col items-start gap-1">
         <span className="font-semibold text-gray-800">{target.nickname}</span>
-        <span>{`D - ${differenceInDays(addDays(sentAt, 7), new Date())}`}</span>
+        <span>{`D - ${differenceInDays(expiresAt, new Date())}`}</span>
       </div>
     </button>
   );

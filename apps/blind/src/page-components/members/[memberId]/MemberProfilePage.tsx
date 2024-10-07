@@ -61,18 +61,26 @@ function Resolved({ memberId: targetMemberId }: { memberId: string }) {
     targetMemberId,
   });
 
-  // TODO: assert expiration
+  useEffect(() => {
+    if (match == null) {
+      return;
+    }
+
+    if (match.expiresAt < new Date()) {
+      router.replace("/members");
+    }
+  }, [match?.expiresAt, router]);
 
   useEffect(() => {
     if (match?.status === BlindMatchStatus.REJECTED) {
-      void router.replace("/members");
+      router.replace("/members");
     }
   }, [match, router]);
 
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
-    void sendMessage({
+    sendMessage({
       content: `${self.id} - ${profile.id} 프로필 조회`,
     });
   }, [self, profile.id, sendMessage]);
