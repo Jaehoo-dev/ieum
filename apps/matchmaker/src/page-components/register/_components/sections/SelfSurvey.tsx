@@ -101,7 +101,6 @@ export function SelfSurvey({ onBack, onNext }: Props) {
         <TextInput
           label="키는 몇 센티미터인가요?"
           required={true}
-          type="number"
           placeholder={`예) ${gender === Gender.MALE ? "175" : "160"}`}
           error={errors.height != null}
           errorText={errors.height?.message}
@@ -123,7 +122,6 @@ export function SelfSurvey({ onBack, onNext }: Props) {
           label="몸무게는요?"
           description="절대 공개하지 않아요. 체형을 파악하는 데만 참고합니다."
           required={true}
-          type="number"
           error={errors.weight != null}
           errorText={errors.weight?.message}
           {...register("weight", {

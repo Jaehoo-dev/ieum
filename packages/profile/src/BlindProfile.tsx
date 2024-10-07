@@ -23,7 +23,7 @@ export function BlindProfile({ profile, ...props }: Props) {
   }, []);
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex w-full flex-col items-center gap-4" {...props}>
       <Summary profile={profile} />
       <SelfIntroductionSection content={profile.selfIntroduction} />
       <PersonalInformationSection profile={profile} />

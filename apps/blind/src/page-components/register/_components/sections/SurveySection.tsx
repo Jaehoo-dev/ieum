@@ -23,8 +23,13 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
     watch,
     handleSubmit,
   } = useRegisterForm();
+  const utils = api.useUtils();
   const { mutateAsync: createMember } =
-    api.blindMemberRouter.create.useMutation();
+    api.blindMemberRouter.create.useMutation({
+      onSuccess: () => {
+        return utils.invalidate();
+      },
+    });
 
   return (
     <form
@@ -141,7 +146,6 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
           <TextInput
             label="키는 몇 센티미터인가요?"
             required={true}
-            type="number"
             placeholder="예) 175"
             error={errors.height != null}
             errorText={errors.height?.message}
