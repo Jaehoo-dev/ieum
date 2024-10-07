@@ -145,8 +145,12 @@ model BlindMember {
   job              String
   selfIntroduction String
 
-  idVerified  Boolean // 신분증(이름 및 나이)
-  jobVerified Boolean
+  verificationDocuments BlindVerificationDocument[]
+
+  nameVerified   Boolean
+  genderVerified Boolean
+  ageVerified    Boolean
+  jobVerified    Boolean
 
   blacklistedPhoneNumbers String[] @default([])
 
@@ -185,6 +189,13 @@ enum BlindMatchStatus {
   PENDING
   ACCEPTED
   REJECTED
+}
+
+model BlindVerificationDocument {
+  id         String      @id @default(cuid())
+  member     BlindMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId   String
+  bucketPath String
 }
 
 enum MatchStatus {

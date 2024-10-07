@@ -24,7 +24,9 @@ export type BlindMemberProfile = Pick<
   | "bodyShape"
   | "job"
   | "selfIntroduction"
-  | "idVerified"
+  | "nameVerified"
+  | "genderVerified"
+  | "ageVerified"
   | "jobVerified"
 >;
 

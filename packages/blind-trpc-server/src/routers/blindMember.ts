@@ -27,7 +27,9 @@ export const blindMemberRouter = createTRPCRouter({
         data: {
           ...input,
           status: MemberStatus.ACTIVE,
-          idVerified: false,
+          nameVerified: false,
+          genderVerified: false,
+          ageVerified: false,
           jobVerified: false,
         },
       });
@@ -169,7 +171,9 @@ export const blindMemberRouter = createTRPCRouter({
           bodyShape: true,
           job: true,
           selfIntroduction: true,
-          idVerified: true,
+          nameVerified: true,
+          genderVerified: true,
+          ageVerified: true,
           jobVerified: true,
         },
       });
@@ -313,13 +317,17 @@ export const blindMemberRouter = createTRPCRouter({
           id: memberId,
         },
         select: {
-          idVerified: true,
+          nameVerified: true,
+          genderVerified: true,
+          ageVerified: true,
           jobVerified: true,
         },
       });
 
       return {
-        id: member.idVerified,
+        name: member.nameVerified,
+        gender: member.genderVerified,
+        age: member.ageVerified,
         job: member.jobVerified,
       };
     }),

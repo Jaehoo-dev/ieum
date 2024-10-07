@@ -51,8 +51,15 @@ function PersonalInformationSection({
 }: {
   profile: BlindMemberProfile;
 }) {
-  const { birthYear, region, height, bodyShape, job, idVerified, jobVerified } =
-    profile;
+  const {
+    birthYear,
+    region,
+    height,
+    bodyShape,
+    job,
+    ageVerified,
+    jobVerified,
+  } = profile;
 
   return (
     <AccordionSection theme="BLIND" title="인적사항" defaultOpened={true}>
@@ -61,7 +68,7 @@ function PersonalInformationSection({
           theme="BLIND"
           label="나이"
           value={`${birthYear}년생`}
-          verified={idVerified}
+          verified={ageVerified}
         />
         <DataField theme="BLIND" label="사는 곳" value={지역_라벨[region]} />
         <DataField theme="BLIND" label="키" value={`${height}cm`} />
