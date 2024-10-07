@@ -2,6 +2,7 @@ import { ReactElement, Suspense, useState } from "react";
 import { useRouter } from "next/router";
 import {
   연간_벌이_라벨,
+  자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
   지역_라벨,
@@ -215,7 +216,7 @@ function Resolved() {
             />
             <TextInput
               label="자산"
-              value={assetsValue ?? "null"}
+              value={assetsValue == null ? "null" : 자산_라벨[assetsValue]}
               disabled={true}
             />
           </div>
