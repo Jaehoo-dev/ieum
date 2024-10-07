@@ -2,6 +2,7 @@ import { ReactElement, Suspense } from "react";
 import Head from "next/head";
 
 import { Layout } from "~/components/Layout";
+import { Loader } from "~/components/Loader";
 import { BlacklistSection } from "./_components/BlacklistSection";
 import { HeartSection } from "./_components/HeartSection";
 import { StatusSectionResolved } from "./_components/StatusSection";
@@ -13,7 +14,13 @@ export function SettingsPage() {
       <Head>
         <meta name="robots" content="noindex" />
       </Head>
-      <Suspense>
+      <Suspense
+        fallback={
+          <div className="flex h-[calc(100vh-60px)] w-full items-center justify-center">
+            <Loader />
+          </div>
+        }
+      >
         <Resolved />
       </Suspense>
     </>
