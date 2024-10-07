@@ -1,4 +1,4 @@
-import { 성별_라벨 } from "@ieum/constants";
+import { DEFAULT_HEART_COUNT, 성별_라벨 } from "@ieum/constants";
 import { Gender, MemberStatus, Region } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
@@ -49,7 +49,7 @@ export const blindMemberRouter = createTRPCRouter({
           genderVerified: false,
           ageVerified: false,
           jobVerified: false,
-          heartsLeft: 3,
+          heartsLeft: DEFAULT_HEART_COUNT,
         },
       });
 
