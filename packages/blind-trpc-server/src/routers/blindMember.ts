@@ -275,4 +275,27 @@ export const blindMemberRouter = createTRPCRouter({
 
       return member.blacklistedPhoneNumbers;
     }),
+  updateProfile: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        data: z.object({
+          nickname: z.string().optional(),
+          height: z.number().optional(),
+          bodyShape: z.string().optional(),
+          job: z.string().optional(),
+          selfIntroduction: z.string().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input: { memberId, data } }) => {
+      await prisma.blindMember.update({
+        where: {
+          id: memberId,
+        },
+        data,
+      });
+
+      return true;
+    }),
 });

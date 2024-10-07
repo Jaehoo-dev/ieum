@@ -73,8 +73,13 @@ function Resolved() {
       marriagePlan: profile.marriagePlan,
     },
   });
+  const utils = api.useUtils();
   const { mutateAsync: updateProfile } =
-    api.basicMemberProfileRouter.updateProfile.useMutation();
+    api.basicMemberProfileRouter.updateProfile.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberProfileRouter.getProfileByMemberId.invalidate();
+      },
+    });
   const router = useRouter();
 
   return (
@@ -109,7 +114,7 @@ function Resolved() {
             },
           });
 
-          router.replace("/my-profile");
+          router.push("/my-profile");
         },
       )}
     >

@@ -36,11 +36,15 @@ export function UniSelect<T extends string | number | boolean = string>({
         {label}
         {required ? <span className="text-blind-500">*</span> : null}
       </span>
-      {hasDescription ? (
-        <span className="text-sm text-gray-500">{description}</span>
-      ) : null}
-      {hasErrorText ? (
-        <span className="text-sm text-red-500">{errorText}</span>
+      {hasDescription || hasErrorText ? (
+        <div className="mb-0.5 flex flex-col gap-1">
+          {hasDescription ? (
+            <span className="text-sm text-gray-500">{description}</span>
+          ) : null}
+          {hasErrorText ? (
+            <span className="text-sm text-red-500">{errorText}</span>
+          ) : null}
+        </div>
       ) : null}
       <div
         className={`mt-1 grid gap-1.5 ${
