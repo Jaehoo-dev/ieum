@@ -19,7 +19,7 @@ export function VerificationSection() {
 
   return (
     <div className="flex flex-col gap-4 text-gray-700">
-      <h2 className="text-xl font-semibold">인증 상태</h2>
+      <h2 className="text-xl font-semibold">인증</h2>
       <div className="flex flex-col gap-0.5">
         <Description>인증을 하면 프로필에 인증 배지를 표시합니다.</Description>
         <Description>

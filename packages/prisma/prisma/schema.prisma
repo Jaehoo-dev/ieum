@@ -154,6 +154,8 @@ model BlindMember {
 
   blacklistedPhoneNumbers String[] @default([])
 
+  heartsLeft Int
+
   matchesAsProposer   BlindMatch[] @relation(name: "proposer")
   matchesAsRespondent BlindMatch[] @relation(name: "respondent")
 

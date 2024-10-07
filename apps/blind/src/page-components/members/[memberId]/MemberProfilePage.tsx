@@ -196,7 +196,9 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
                 respondentId: targetMemberId,
               });
 
-              // TODO: alert
+              alert(
+                "하트를 보냈어요. 알림은 매일 오전 9시와 오후 9시에 보냅니다.",
+              );
             }}
           >
             <FavoriteIcon className="mb-0.5" />
