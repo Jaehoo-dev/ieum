@@ -52,7 +52,7 @@ export function MatchHistoryPage() {
       router.replace({
         query: {
           ...router.query,
-          region: 지역_쿼리.수도권,
+          region: 지역_쿼리.전체,
           matchType: 매치_유형.기본,
           statuses: MatchStatus.PENDING,
           from: format(subDays(new Date(), 1), "yyyy-MM-dd"),
@@ -64,7 +64,7 @@ export function MatchHistoryPage() {
 
   const { control, getValues, register, handleSubmit } = useForm<Form>({
     defaultValues: {
-      region: (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리,
+      region: (router.query.region ?? 지역_쿼리.전체) as 지역_쿼리,
       matchType: (router.query.matchType ?? 매치_유형.기본) as 매치_유형,
       statuses:
         router.query.statuses != null
@@ -143,9 +143,9 @@ export function MatchHistoryPage() {
                       onChange(e.target.value as 매치_유형);
                     }}
                   >
+                    <option value={지역_쿼리.전체}>전체</option>
                     <option value={지역_쿼리.수도권}>수도권</option>
                     <option value={지역_쿼리.충청}>충청</option>
-                    <option value={지역_쿼리.전체}>전체</option>
                   </select>
                 );
               }}
