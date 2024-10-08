@@ -7,7 +7,7 @@ import type {
   FashionStyle,
   MBTI,
   OccupationStatus,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 
@@ -16,6 +16,7 @@ export type BasicMemberForm = {
     BasicMemberV2,
     | "id"
     | "legacyId"
+    | "region"
     | "fashionStyles"
     | "createdAt"
     | "updatedAt"
@@ -23,6 +24,7 @@ export type BasicMemberForm = {
     | "referralCode"
     | "discountCouponCount"
   > & {
+    regionV2: RegionV2;
     fashionStyles: { value: FashionStyle }[];
     imageBucketPaths: { value: string }[];
     videoBucketPaths: { value: string }[];
@@ -31,7 +33,7 @@ export type BasicMemberForm = {
   idealType: Omit<
     BasicMemberIdealTypeV2,
     | "memberId"
-    | "regions"
+    | "regionsV2"
     | "bodyShapes"
     | "fashionStyles"
     | "eyelids"
@@ -45,7 +47,7 @@ export type BasicMemberForm = {
     | "mediumPriorities"
     | "lowPriorities"
   > & {
-    regions: { value: Region }[];
+    regionsV2: { value: RegionV2 }[];
     bodyShapes: { value: BodyShape }[];
     fashionStyles: { value: FashionStyle }[];
     eyelids: { value: Eyelid }[];

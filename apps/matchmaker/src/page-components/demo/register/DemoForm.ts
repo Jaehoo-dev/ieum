@@ -3,14 +3,14 @@ import {
   BodyShape,
   EducationLevel,
   MBTI,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 
 export type DemoForm = {
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
-  idealRegions: Region[];
+  idealRegions: RegionV2[];
   idealMinHeight: number | null;
   idealMaxHeight: number | null;
   idealBodyShapes: BodyShape[];

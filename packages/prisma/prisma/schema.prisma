@@ -139,7 +139,7 @@ model BlindMember {
   nickname         String
   gender           Gender
   birthYear        Int
-  region           Region
+  region           RegionV2
   height           Float
   bodyShape        String
   job              String
@@ -224,6 +224,7 @@ model BasicMemberV2 {
   birthYear               Int
   residence               String
   region                  Region?
+  regionV2                RegionV2?
   height                  Float
   weight                  Float?
   bmi                     Float?
@@ -342,6 +343,7 @@ model BasicMemberIdealTypeV2 {
   maxAgeBirthYear         Int?
   regions                 Region[]
   customRegion            String?
+  regionsV2               RegionV2[]
   minHeight               Int?
   maxHeight               Int?
   bodyShapes              BodyShape[]
@@ -420,6 +422,7 @@ model DraftBasicMember {
   idealMinAgeBirthYear       Int?
   idealMaxAgeBirthYear       Int?
   idealRegions               Region[]
+  idealRegionsV2             RegionV2[]
   idealMinHeight             Float?
   idealMaxHeight             Float?
   idealBodyShapes            BodyShape[]
@@ -605,6 +608,18 @@ enum Region {
   JEJU
   WITHIN_ONE_HOUR
   OTHER
+}
+
+enum RegionV2 {
+  SEOUL
+  INCHEON_BUCHEON
+  SOUTH_GYEONGGI
+  NORTH_GYEONGGI
+  GYEONGSANG
+  CHUNGCHEONG
+  JEOLLA
+  GANGWON
+  JEJU
 }
 
 enum FashionStyle {

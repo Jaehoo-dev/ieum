@@ -8,7 +8,7 @@ import {
   Gender,
   MarriageStatus,
   MBTI,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
@@ -58,7 +58,7 @@ export const draftMemberRouter = createTRPCRouter({
         audioBucketPaths: z.string().array(),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
-        idealRegions: z.nativeEnum(Region).array(),
+        idealRegions: z.nativeEnum(RegionV2).array(),
         idealMinHeight: z.number().nullable(),
         idealMaxHeight: z.number().nullable(),
         idealBodyShapes: z.nativeEnum(BodyShape).array(),

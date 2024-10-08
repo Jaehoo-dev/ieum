@@ -20,6 +20,7 @@ export function satisfiesDealBreakers({
     dealBreakers,
     minAgeBirthYear,
     maxAgeBirthYear,
+    regionsV2,
     minHeight,
     maxHeight,
     educationLevel,
@@ -46,6 +47,13 @@ export function satisfiesDealBreakers({
           (minAgeBirthYear == null || target.birthYear <= minAgeBirthYear) &&
           (maxAgeBirthYear == null || target.birthYear >= maxAgeBirthYear)
         );
+      })
+      .with("REGION", () => {
+        if (regionsV2.length === 0 || target.regionV2 == null) {
+          return true;
+        }
+
+        return regionsV2.includes(target.regionV2);
       })
       .with("HEIGHT", () => {
         return (

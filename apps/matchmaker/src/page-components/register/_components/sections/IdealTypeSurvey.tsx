@@ -10,7 +10,7 @@ import {
   BodyShape,
   EducationLevel,
   MBTI,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 import { handleNullableStringNumber } from "@ieum/utils";
@@ -127,16 +127,12 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
               <MultiSelect
                 label="상대방이 어디에 거주하길 바라세요?"
                 description="여러 개 선택 가능"
-                options={Object.values(Region)
-                  .filter((value) => {
-                    return value !== Region.OTHER;
-                  })
-                  .map((region) => {
-                    return {
-                      label: 지역_라벨[region],
-                      value: region,
-                    };
-                  })}
+                options={Object.values(RegionV2).map((region) => {
+                  return {
+                    label: 지역_라벨[region],
+                    value: region,
+                  };
+                })}
                 selectedValues={value}
                 onChange={onChange}
               />

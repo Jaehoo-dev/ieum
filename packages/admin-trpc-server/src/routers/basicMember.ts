@@ -1,4 +1,4 @@
-import { 매치_유형 } from "@ieum/constants";
+import { 매치_유형, 지역_쿼리 } from "@ieum/constants";
 import {
   AnnualIncome,
   AssetsValue,
@@ -23,7 +23,7 @@ import {
   orderedEducationLevels,
   orderedExercisePerWeeks,
   PlannedNumberOfChildren,
-  Region,
+  RegionV2,
   Religion,
   UserType,
 } from "@ieum/prisma";
@@ -116,7 +116,6 @@ export const basicMemberRouter = createTRPCRouter({
         idealType: z.object({
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
-          regions: z.array(z.nativeEnum(Region)),
           customRegion: z.string().nullable(),
           minHeight: z.number().nullable(),
           maxHeight: z.number().nullable(),
@@ -215,6 +214,7 @@ export const basicMemberRouter = createTRPCRouter({
             phoneNumber: z.string(),
             gender: z.nativeEnum(Gender),
             birthYear: z.number(),
+            regionV2: z.nativeEnum(RegionV2),
             residence: z.string(),
             height: z.number(),
             weight: z.number().nullable(),
@@ -271,8 +271,8 @@ export const basicMemberRouter = createTRPCRouter({
           idealType: z.object({
             minAgeBirthYear: z.number().nullable(),
             maxAgeBirthYear: z.number().nullable(),
-            regions: z.array(z.nativeEnum(Region)),
             customRegion: z.string().nullable(),
+            regionsV2: z.array(z.nativeEnum(RegionV2)),
             minHeight: z.number().nullable(),
             maxHeight: z.number().nullable(),
             bodyShapes: z.array(z.nativeEnum(BodyShape)),
@@ -342,7 +342,7 @@ export const basicMemberRouter = createTRPCRouter({
   infiniteFindByGender: protectedAdminProcedure
     .input(
       z.object({
-        region: z.enum([Region.SEOUL_OR_GYEONGGI, Region.CHUNGCHEONG, "ALL"]),
+        region: z.nativeEnum(지역_쿼리),
         gender: z.nativeEnum(Gender),
         status: z.nativeEnum(MemberStatus),
         sort: z.enum(["desc", "asc", "lastMatchedAt"]),
@@ -359,21 +359,21 @@ export const basicMemberRouter = createTRPCRouter({
         const members = await ctx.prisma.basicMemberV2.findMany({
           take: take + 1,
           where: {
-            region: match(region)
-              .with(Region.SEOUL_OR_GYEONGGI, () => {
+            regionV2: match(region)
+              .with(지역_쿼리.수도권, () => {
                 return {
                   in: [
-                    Region.SEOUL,
-                    Region.INCHEON_BUCHEON,
-                    Region.SOUTH_GYEONGGI,
-                    Region.NORTH_GYEONGGI,
+                    RegionV2.SEOUL,
+                    RegionV2.INCHEON_BUCHEON,
+                    RegionV2.SOUTH_GYEONGGI,
+                    RegionV2.NORTH_GYEONGGI,
                   ],
                 };
               })
-              .with(Region.CHUNGCHEONG, () => {
-                return Region.CHUNGCHEONG;
+              .with(지역_쿼리.충청, () => {
+                return RegionV2.CHUNGCHEONG;
               })
-              .with("ALL", () => {
+              .with(지역_쿼리.전체, () => {
                 return undefined;
               })
               .exhaustive(),
@@ -606,15 +606,7 @@ export const basicMemberRouter = createTRPCRouter({
       z.object({
         memberId: z.string(),
         data: z.object({
-          regions: z.array(
-            z.enum([
-              Region.SEOUL,
-              Region.SOUTH_GYEONGGI,
-              Region.NORTH_GYEONGGI,
-              Region.INCHEON_BUCHEON,
-              Region.CHUNGCHEONG,
-            ]),
-          ),
+          regionsV2: z.nativeEnum(RegionV2).array(),
           minAgeBirthYear: z.number().nullable(),
           maxAgeBirthYear: z.number().nullable(),
           minHeight: z.number().nullable(),
@@ -648,7 +640,7 @@ export const basicMemberRouter = createTRPCRouter({
         input: {
           memberId,
           data: {
-            regions,
+            regionsV2,
             minAgeBirthYear,
             maxAgeBirthYear,
             minHeight,
@@ -741,10 +733,10 @@ export const basicMemberRouter = createTRPCRouter({
             },
             AND: [
               {
-                region:
+                regionV2:
                   dealBreakersSet.has(BasicCondition.REGION) &&
-                  regions.length > 0
-                    ? { in: regions }
+                  regionsV2.length > 0
+                    ? { in: regionsV2 }
                     : undefined,
                 birthYear: dealBreakersSet.has(BasicCondition.AGE)
                   ? {

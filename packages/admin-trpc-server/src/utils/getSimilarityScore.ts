@@ -63,6 +63,19 @@ export function getSimilarityScore({
               ? acc + getConditionScore(BasicCondition.AGE, prioritySets)
               : acc;
           })
+          .with(BasicCondition.REGION, () => {
+            if (idealType.regionsV2.length === 0 || target.regionV2 == null) {
+              return acc;
+            }
+
+            const 지역_부합하는가 = idealType.regionsV2.includes(
+              target.regionV2,
+            );
+
+            return 지역_부합하는가
+              ? acc + getConditionScore(BasicCondition.REGION, prioritySets)
+              : acc;
+          })
           .with(BasicCondition.HEIGHT, () => {
             const 키_부합하는가 =
               (idealType.minHeight == null ||
@@ -320,7 +333,6 @@ export function getSimilarityScore({
             return acc;
           })
           .with(
-            BasicCondition.REGION,
             BasicCondition.BODY_SHAPES,
             BasicCondition.CHARACTERISTICS,
             BasicCondition.DRINKING_FREQUENCY,

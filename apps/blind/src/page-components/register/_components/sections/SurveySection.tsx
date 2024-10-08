@@ -1,5 +1,5 @@
 import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
-import { Gender, Region } from "@ieum/prisma";
+import { Gender, RegionV2 } from "@ieum/prisma";
 import { handleNullableStringNumber } from "@ieum/utils";
 import { TRPCClientError } from "@trpc/client";
 import { Controller } from "react-hook-form";
@@ -159,17 +159,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
               return (
                 <UniSelect
                   label="어디에 거주하세요?"
-                  options={[
-                    Region.SEOUL,
-                    Region.SOUTH_GYEONGGI,
-                    Region.NORTH_GYEONGGI,
-                    Region.INCHEON_BUCHEON,
-                    Region.CHUNGCHEONG,
-                    Region.GYEONGSANG,
-                    Region.JEOLLA,
-                    Region.GANGWON,
-                    Region.JEJU,
-                  ].map((region) => {
+                  options={Object.values(RegionV2).map((region) => {
                     return {
                       label: 지역_라벨[region],
                       value: region,

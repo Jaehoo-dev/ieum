@@ -24,6 +24,7 @@ export function IdealTypeFields({ idealType }: Props) {
     maxAgeBirthYear,
     regions,
     customRegion,
+    regionsV2,
     minHeight,
     maxHeight,
     bodyShapes,
@@ -68,6 +69,15 @@ export function IdealTypeFields({ idealType }: Props) {
               return 지역_라벨[region];
             })
             .join(", ")}${customRegion != null ? `, ${customRegion}` : ""}`}
+        </Field>
+      ) : null}
+      {regionsV2.length > 0 ? (
+        <Field label="지역v2" nonNegotiable={dealBreakers.includes("REGION")}>
+          {regionsV2
+            .map((region) => {
+              return 지역_라벨[region];
+            })
+            .join(", ")}
         </Field>
       ) : null}
       {minHeight != null || maxHeight != null ? (

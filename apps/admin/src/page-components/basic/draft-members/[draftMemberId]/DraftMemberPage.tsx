@@ -11,7 +11,7 @@ import {
   최소_학력_라벨,
   학력_라벨,
 } from "@ieum/constants";
-import { Region } from "@ieum/prisma";
+import { RegionV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, getBmiLabel } from "@ieum/utils";
 
@@ -76,7 +76,7 @@ function Resolved() {
       selfIntroduction,
       idealMinAgeBirthYear,
       idealMaxAgeBirthYear,
-      idealRegions,
+      idealRegionsV2,
       idealMinHeight,
       idealMaxHeight,
       idealBodyShapes,
@@ -110,7 +110,7 @@ function Resolved() {
     api.draftBasicMemberRouter.reject.useMutation();
   const { mutateAsync: createBasicMember } =
     api.draftBasicMemberRouter.createBasicMemberFromDraft.useMutation();
-  const [region, setRegion] = useState<Region>();
+  const [region, setRegion] = useState<RegionV2>();
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -151,16 +151,16 @@ function Resolved() {
               label="지역"
               defaultValue={region}
               onChange={({ target: { value } }) => {
-                setRegion(value as Region);
+                setRegion(value as RegionV2);
               }}
             >
               {[
                 undefined,
-                Region.SEOUL,
-                Region.SOUTH_GYEONGGI,
-                Region.NORTH_GYEONGGI,
-                Region.INCHEON_BUCHEON,
-                Region.CHUNGCHEONG,
+                RegionV2.SEOUL,
+                RegionV2.SOUTH_GYEONGGI,
+                RegionV2.NORTH_GYEONGGI,
+                RegionV2.INCHEON_BUCHEON,
+                RegionV2.CHUNGCHEONG,
               ].map((region) => {
                 return (
                   <option key={String(region)} value={region}>
@@ -298,7 +298,7 @@ function Resolved() {
           </div>
           <TextInput
             label="선호 지역"
-            value={idealRegions
+            value={idealRegionsV2
               .map((region) => {
                 return 지역_라벨[region];
               })

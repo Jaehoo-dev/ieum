@@ -17,7 +17,10 @@ import { ImagesField } from "./components/ImagesField";
 import { VideosField } from "./components/VideosField";
 
 interface BasicMemberUpdateForm {
-  self: Omit<BasicMemberForm["self"], "imageBucketPaths" | "videoBucketPaths">;
+  self: Omit<
+    BasicMemberForm["self"],
+    "imageBucketPaths" | "videoBucketPaths" | "audioBucketPaths"
+  >;
   idealType: BasicMemberForm["idealType"];
 }
 
@@ -118,18 +121,22 @@ function memberToForm({
   idealType,
   ...member
 }: BasicMemberWithBasicMatchesJoined) {
+  const { regionV2, ...self } = member;
+
   assert(idealType != null, "idealType must not be null");
+  assert(regionV2 != null, "regionV2 must not be null");
 
   return {
     self: {
-      ...member,
+      ...self,
+      regionV2,
       fashionStyles: member.fashionStyles.map((style) => {
         return { value: style };
       }),
     },
     idealType: {
       ...idealType,
-      regions: idealType.regions.map((region) => {
+      regionsV2: idealType.regionsV2.map((region) => {
         return { value: region };
       }),
       bodyShapes: idealType.bodyShapes.map((shape) => {
@@ -184,7 +191,7 @@ function formToPayload({ self, idealType }: BasicMemberUpdateForm) {
     },
     idealType: {
       ...idealType,
-      regions: idealType.regions.map((region) => region.value),
+      regionsV2: idealType.regionsV2.map((region) => region.value),
       bodyShapes: idealType.bodyShapes.map((shape) => shape.value),
       fashionStyles: idealType.fashionStyles.map((style) => style.value),
       eyelids: idealType.eyelids.map((eyelid) => eyelid.value),
