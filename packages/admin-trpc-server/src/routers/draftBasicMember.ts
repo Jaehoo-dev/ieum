@@ -1,4 +1,9 @@
-import { DraftStatus, MemberStatus, PrismaPromise, Region } from "@ieum/prisma";
+import {
+  DraftStatus,
+  MemberStatus,
+  PrismaPromise,
+  RegionV2,
+} from "@ieum/prisma";
 import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, formatUniqueMemberName, hash } from "@ieum/utils";
@@ -76,7 +81,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
     }),
   createBasicMemberFromDraft: protectedAdminProcedure
     .input(
-      z.object({ draftMemberId: z.string(), region: z.nativeEnum(Region) }),
+      z.object({ draftMemberId: z.string(), region: z.nativeEnum(RegionV2) }),
     )
     .mutation(async ({ ctx, input: { draftMemberId, region } }) => {
       const draftMember = await ctx.prisma.draftBasicMember.findUniqueOrThrow({
@@ -125,6 +130,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         idealMinAgeBirthYear,
         idealMaxAgeBirthYear,
         idealRegions,
+        idealRegionsV2,
         idealMinHeight,
         idealMaxHeight,
         idealBodyShapes,
@@ -223,7 +229,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
         ctx.prisma.basicMemberV2.create({
           data: {
             ...self,
-            region,
+            regionV2: region,
             bmi: calculateBmi(self.height, self.weight),
             status: MemberStatus.PENDING,
             referralCode: generateReferralCode(),
@@ -262,7 +268,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
               create: {
                 minAgeBirthYear: idealMinAgeBirthYear,
                 maxAgeBirthYear: idealMaxAgeBirthYear,
-                regions: idealRegions,
+                regionsV2: idealRegionsV2,
                 minHeight: idealMinHeight,
                 maxHeight: idealMaxHeight,
                 bodyShapes: idealBodyShapes,

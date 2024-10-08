@@ -12,7 +12,7 @@ import {
   EducationLevel,
   ExercisePerWeek,
   MBTI,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 import { isEmptyStringOrNil } from "@ieum/utils";
@@ -39,7 +39,7 @@ export function IdealTypeFields() {
     remove: removeIdealRegion,
   } = useFieldArray({
     control,
-    name: "idealType.regions",
+    name: "idealType.regionsV2",
   });
   const {
     fields: preferredBodyShapeFields,
@@ -138,7 +138,7 @@ export function IdealTypeFields() {
       <div>
         지역
         <div className="grid grid-cols-4 gap-1">
-          {Object.values(Region).map((region) => {
+          {Object.values(RegionV2).map((region) => {
             return (
               <label key={region} className="flex gap-2">
                 <input
@@ -153,10 +153,6 @@ export function IdealTypeFields() {
                     if (e.target.checked) {
                       appendIdealRegion({ value: region });
                     } else {
-                      if (region !== "OTHER") {
-                        setValue("idealType.customRegion", null);
-                      }
-
                       removeIdealRegion(
                         idealRegionFields.findIndex(
                           (field) => field.value === region,
@@ -170,18 +166,6 @@ export function IdealTypeFields() {
             );
           })}
         </div>
-        {watch("idealType.regions").some(({ value }) => {
-          return value === "OTHER";
-        }) ? (
-          <TextInput
-            error={errors.idealType?.customRegion != null}
-            {...register("idealType.customRegion", {
-              setValueAs: (value: string) => {
-                return value === "" ? null : value;
-              },
-            })}
-          />
-        ) : null}
       </div>
       <TextInput
         label="최소 키"

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Gender, Region } from "@ieum/prisma";
+import { Gender, RegionV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
@@ -7,7 +7,7 @@ type RegisterForm = {
   nickname: string;
   gender: Gender | null;
   birthYear: number | null;
-  region: Region | null;
+  region: RegionV2 | null;
   height: number | null;
   bodyShape: string;
   job: string;

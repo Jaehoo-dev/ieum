@@ -28,7 +28,7 @@ import {
   MatchStatus,
   MBTI,
   OccupationStatus,
-  Region,
+  RegionV2,
   Religion,
   satisfiesDealBreakers,
 } from "@ieum/prisma";
@@ -53,7 +53,7 @@ import { CreateBasicMatchButton } from "./components/CreateBasicMatchButton";
 import { CreateMegaphoneButton } from "./components/CreateMegaphoneButton";
 
 interface CustomCanditatesSearchForm {
-  regions: { value: Region }[];
+  regionsV2: { value: RegionV2 }[];
   minAgeBirthYear: number | null;
   maxAgeBirthYear: number | null;
   minHeight: number | null;
@@ -277,7 +277,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
     remove: removeRegion,
   } = useFieldArray({
     control,
-    name: "regions",
+    name: "regionsV2",
   });
   const {
     fields: occupationStatusFields,
@@ -511,7 +511,7 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         <div>
           지역
           <div className="grid grid-cols-2 gap-1">
-            {Object.values(Region)
+            {Object.values(RegionV2)
               .filter((region) => {
                 return Object.values(쿼리_가능한_지역).includes(
                   region as 쿼리_가능한_지역,
@@ -1031,7 +1031,7 @@ function createCustomCandidatesSearchFormValues(
   idealType: BasicMemberIdealTypeV2,
 ): CustomCanditatesSearchForm {
   const {
-    regions,
+    regionsV2,
     minAgeBirthYear,
     maxAgeBirthYear,
     minHeight,
@@ -1058,7 +1058,7 @@ function createCustomCandidatesSearchFormValues(
   } = idealType;
 
   return {
-    regions: regions.map((value) => {
+    regionsV2: regionsV2.map((value) => {
       return { value };
     }),
     minAgeBirthYear,
@@ -1107,13 +1107,7 @@ function createCustomCandidatesSearchFormValues(
 
 function formToValues(form: CustomCanditatesSearchForm) {
   return {
-    regions: form.regions
-      .map(({ value }) => value)
-      .filter((region) => {
-        return Object.values(쿼리_가능한_지역).includes(
-          region as 쿼리_가능한_지역,
-        );
-      }) as 쿼리_가능한_지역[],
+    regionsV2: form.regionsV2.map(({ value }) => value),
     minAgeBirthYear: form.minAgeBirthYear,
     maxAgeBirthYear: form.maxAgeBirthYear,
     minHeight: form.minHeight,
@@ -1141,11 +1135,11 @@ function formToValues(form: CustomCanditatesSearchForm) {
 }
 
 const 쿼리_가능한_지역 = {
-  서울: Region.SEOUL,
-  인천부천: Region.INCHEON_BUCHEON,
-  경기남부: Region.SOUTH_GYEONGGI,
-  경기북부: Region.NORTH_GYEONGGI,
-  충청: Region.CHUNGCHEONG,
+  서울: RegionV2.SEOUL,
+  인천부천: RegionV2.INCHEON_BUCHEON,
+  경기남부: RegionV2.SOUTH_GYEONGGI,
+  경기북부: RegionV2.NORTH_GYEONGGI,
+  충청: RegionV2.CHUNGCHEONG,
 } as const;
 
 type 쿼리_가능한_지역 =

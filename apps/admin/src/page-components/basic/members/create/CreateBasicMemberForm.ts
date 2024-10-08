@@ -4,6 +4,7 @@ import {
   Gender,
   MBTI,
   MemberStatus,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 
@@ -16,7 +17,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     gender: Gender.MALE,
     birthYear: 1990,
     residence: "",
-    region: null,
+    regionV2: RegionV2.SEOUL,
     height: 170,
     weight: null,
     bmi: null,
@@ -81,6 +82,7 @@ export const createBasicMemberFormDefaultValues: BasicMemberForm = {
     maxAgeBirthYear: null,
     regions: [],
     customRegion: null,
+    regionsV2: [],
     minHeight: null,
     maxHeight: null,
     bodyShapes: [],

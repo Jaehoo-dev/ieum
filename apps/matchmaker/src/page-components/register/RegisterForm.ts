@@ -8,7 +8,7 @@ import {
   Gender,
   MarriageStatus,
   MBTI,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 import { assert, krHyphenToKr } from "@ieum/utils";
@@ -53,7 +53,7 @@ export type RegisterForm = {
 
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
-  idealRegions: Region[];
+  idealRegions: RegionV2[];
   idealMinHeight: number | null;
   idealMaxHeight: number | null;
   idealBodyShapes: BodyShape[];

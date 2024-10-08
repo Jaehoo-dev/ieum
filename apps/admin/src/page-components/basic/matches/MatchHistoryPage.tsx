@@ -1,7 +1,7 @@
 import { useEffect, type ReactElement } from "react";
 import { useRouter } from "next/router";
 import { 매치_유형, 상태_라벨, 지역_쿼리 } from "@ieum/constants";
-import { MatchStatus, Region } from "@ieum/prisma";
+import { MatchStatus } from "@ieum/prisma";
 import { format, subDays } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 

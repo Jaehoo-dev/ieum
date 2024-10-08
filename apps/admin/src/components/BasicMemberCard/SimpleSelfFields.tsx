@@ -3,6 +3,7 @@ import {
   연간_벌이_라벨,
   자산_라벨,
   종교_라벨,
+  지역_라벨,
   체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
@@ -17,6 +18,10 @@ export function SimpleSelfFields({ member }: Props) {
   return (
     <div className="flex w-1/2 flex-col gap-0.5">
       <div>출생연도: {member.birthYear}</div>
+      <div>
+        지역:{" "}
+        {member.regionV2 != null ? 지역_라벨[member.regionV2] : "regionV2 누락"}
+      </div>
       <div>거주지: {member.residence}</div>
       <div>키: {member.height}cm</div>
       <div>몸무게: {member.weight}kg</div>

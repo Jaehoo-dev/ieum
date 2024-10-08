@@ -1,7 +1,7 @@
 import { Suspense, type ReactElement } from "react";
 import { useRouter } from "next/router";
 import { 매치_유형, 지역_쿼리 } from "@ieum/constants";
-import { Gender, MemberStatus, Region } from "@ieum/prisma";
+import { Gender, MemberStatus } from "@ieum/prisma";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
 import { Layout } from "~/components/Layout";
@@ -18,8 +18,7 @@ type 정렬 = (typeof 정렬)[keyof typeof 정렬];
 
 export function BasicMembersPage() {
   const router = useRouter();
-  const regionQuery = (router.query.region ??
-    Region.SEOUL_OR_GYEONGGI) as 지역_쿼리;
+  const regionQuery = (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리;
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
@@ -81,7 +80,7 @@ function Filter({
   onSortChange,
   onMatchTypeChange,
 }: {
-  onRegionChange: (region: Region) => void;
+  onRegionChange: (region: 지역_쿼리) => void;
   onStatusChange: (status: MemberStatus) => void;
   onSortChange: (sort: 정렬) => void;
   onMatchTypeChange: (matchType: 매치_유형) => void;
@@ -100,7 +99,7 @@ function Filter({
         label="지역"
         value={regionQuery}
         onChange={({ target: { value } }) => {
-          onRegionChange(value as Region);
+          onRegionChange(value as 지역_쿼리);
         }}
         style={{ width: "100px" }}
       >

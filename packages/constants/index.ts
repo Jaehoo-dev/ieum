@@ -17,6 +17,7 @@ import {
   MatchStatus,
   OccupationStatus,
   PlannedNumberOfChildren,
+  RegionV2,
   Religion,
   SeoulDistrict,
 } from "@ieum/prisma";
@@ -345,8 +346,8 @@ export const MEGAPHONE_MATCH_SENDER_DURATION_HOURS_EXTENDED =
   MEGAPHONE_MATCH_SENDER_DURATION_HOURS + 1;
 
 export const 지역_쿼리 = {
-  수도권: Region.수도권,
-  충청: Region.충청,
+  수도권: "SEOUL_INCHEON_GYEONGGI",
+  충청: RegionV2.CHUNGCHEONG,
   전체: "ALL",
 } as const;
 
