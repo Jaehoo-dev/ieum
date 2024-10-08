@@ -53,7 +53,7 @@ export type RegisterForm = {
 
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
-  idealRegions: RegionV2[];
+  idealRegionsV2: RegionV2[];
   idealMinHeight: number | null;
   idealMaxHeight: number | null;
   idealBodyShapes: BodyShape[];
@@ -116,7 +116,7 @@ const defaultRegisterForm: RegisterForm = {
   audioBucketPaths: [],
   idealMinAgeBirthYear: null,
   idealMaxAgeBirthYear: null,
-  idealRegions: [],
+  idealRegionsV2: [],
   idealMinHeight: null,
   idealMaxHeight: null,
   idealBodyShapes: [],

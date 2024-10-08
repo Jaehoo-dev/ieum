@@ -76,6 +76,7 @@ function Resolved() {
       selfIntroduction,
       idealMinAgeBirthYear,
       idealMaxAgeBirthYear,
+      idealRegions,
       idealRegionsV2,
       idealMinHeight,
       idealMaxHeight,

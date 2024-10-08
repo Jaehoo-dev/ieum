@@ -58,7 +58,7 @@ export const draftMemberRouter = createTRPCRouter({
         audioBucketPaths: z.string().array(),
         idealMinAgeBirthYear: z.number().nullable(),
         idealMaxAgeBirthYear: z.number().nullable(),
-        idealRegions: z.nativeEnum(RegionV2).array(),
+        idealRegionsV2: z.nativeEnum(RegionV2).array(),
         idealMinHeight: z.number().nullable(),
         idealMaxHeight: z.number().nullable(),
         idealBodyShapes: z.nativeEnum(BodyShape).array(),

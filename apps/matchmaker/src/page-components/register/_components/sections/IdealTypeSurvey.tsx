@@ -121,7 +121,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         />
         <Controller
           control={control}
-          name="idealRegions"
+          name="idealRegionsV2"
           render={({ field: { onChange, value }, fieldState: { error } }) => {
             return (
               <MultiSelect
@@ -552,7 +552,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
               [
                 "idealMinAgeBirthYear",
                 "idealMaxAgeBirthYear",
-                "idealRegions",
+                "idealRegionsV2",
                 "idealMinHeight",
                 "idealMaxHeight",
                 "idealBodyShapes",
