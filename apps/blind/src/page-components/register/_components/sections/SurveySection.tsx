@@ -38,7 +38,6 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
     <form
       className="flex w-full flex-col"
       onSubmit={handleSubmit(async (fields) => {
-        console.log(fields);
         const payload = formToPayload(fields);
 
         try {
@@ -237,6 +236,16 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
             errorText={errors.selfIntroduction?.message}
             rows={6}
             {...register("selfIntroduction", {
+              required: true,
+            })}
+          />
+          <TextInput
+            label="카카오톡 아이디를 입력해주세요."
+            description="성사됐을 때 서로에게 공개합니다."
+            required={true}
+            error={errors.kakaotalkId != null}
+            errorText={errors.kakaotalkId?.message}
+            {...register("kakaotalkId", {
               required: true,
             })}
           />

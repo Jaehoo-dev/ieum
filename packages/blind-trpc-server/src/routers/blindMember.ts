@@ -25,6 +25,7 @@ export const blindMemberRouter = createTRPCRouter({
         bodyShape: z.string(),
         job: z.string(),
         selfIntroduction: z.string(),
+        kakaotalkId: z.string(),
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
