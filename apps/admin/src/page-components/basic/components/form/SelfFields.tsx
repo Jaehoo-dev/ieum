@@ -13,7 +13,7 @@ import {
   EducationLevel,
   ExercisePerWeek,
   Gender,
-  Region,
+  RegionV2,
   Religion,
 } from "@ieum/prisma";
 import { isEmptyStringOrNil, isMbti } from "@ieum/utils";
@@ -99,21 +99,21 @@ export function SelfFields() {
         />
         <Controller
           control={control}
-          name="self.region"
+          name="self.regionV2"
           render={({ field: { onChange, value } }) => {
             return (
               <Select
                 label="지역"
-                error={errors.self?.region != null}
+                error={errors.self?.regionV2 != null}
                 value={value ?? undefined}
                 onChange={onChange}
               >
                 {[
-                  Region.SEOUL,
-                  Region.SOUTH_GYEONGGI,
-                  Region.NORTH_GYEONGGI,
-                  Region.INCHEON_BUCHEON,
-                  Region.CHUNGCHEONG,
+                  RegionV2.SEOUL,
+                  RegionV2.SOUTH_GYEONGGI,
+                  RegionV2.NORTH_GYEONGGI,
+                  RegionV2.INCHEON_BUCHEON,
+                  RegionV2.CHUNGCHEONG,
                 ].map((region) => {
                   return (
                     <option key={region} value={region}>

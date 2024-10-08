@@ -286,7 +286,7 @@ function formToPayload({ self, idealType }: BasicMemberForm) {
     },
     idealType: {
       ...idealType,
-      regions: idealType.regions.map((region) => region.value),
+      regionsV2: idealType.regionsV2.map((region) => region.value),
       bodyShapes: idealType.bodyShapes.map((shape) => shape.value),
       fashionStyles: idealType.fashionStyles.map((style) => style.value),
       eyelids: idealType.eyelids.map((eyelid) => eyelid.value),

@@ -1,5 +1,5 @@
 import { 지역_쿼리 } from "@ieum/constants";
-import { MatchStatus, MemberStatus, Region } from "@ieum/prisma";
+import { MatchStatus, MemberStatus, RegionV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { endOfDay, startOfDay } from "date-fns";
 import { match } from "ts-pattern";
@@ -23,15 +23,15 @@ export const basicMatchRouter = createTRPCRouter({
         .with(지역_쿼리.수도권, () => {
           return {
             in: [
-              Region.SEOUL,
-              Region.INCHEON_BUCHEON,
-              Region.SOUTH_GYEONGGI,
-              Region.NORTH_GYEONGGI,
+              RegionV2.SEOUL,
+              RegionV2.INCHEON_BUCHEON,
+              RegionV2.SOUTH_GYEONGGI,
+              RegionV2.NORTH_GYEONGGI,
             ],
           };
         })
         .with(지역_쿼리.충청, () => {
-          return { equals: Region.CHUNGCHEONG };
+          return { equals: RegionV2.CHUNGCHEONG };
         })
         .with(지역_쿼리.전체, () => {
           return undefined;

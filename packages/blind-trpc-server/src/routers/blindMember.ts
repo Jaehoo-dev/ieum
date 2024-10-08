@@ -1,5 +1,5 @@
 import { DEFAULT_HEART_COUNT, 성별_라벨 } from "@ieum/constants";
-import { Gender, MemberStatus, Region } from "@ieum/prisma";
+import { Gender, MemberStatus, RegionV2 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
@@ -20,7 +20,7 @@ export const blindMemberRouter = createTRPCRouter({
         nickname: z.string(),
         gender: z.nativeEnum(Gender),
         birthYear: z.number(),
-        region: z.nativeEnum(Region),
+        region: z.nativeEnum(RegionV2),
         height: z.number(),
         bodyShape: z.string(),
         job: z.string(),
