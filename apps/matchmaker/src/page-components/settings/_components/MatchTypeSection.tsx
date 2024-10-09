@@ -1,4 +1,4 @@
-import { SLACK_USER_ID_MENTION } from "@ieum/slack";
+import { SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { Checkbox as _Checkbox, Checkbox } from "~/components/ui/checkbox";
@@ -57,7 +57,7 @@ export function MatchTypeSection() {
               channel: "폼_제출_알림",
               content: `${formatUniqueMemberName(member)} - [먼저 보내기] ${
                 checked ? "켬" : "끔"
-              } ${SLACK_USER_ID_MENTION}`,
+              } ${SLACK_MANAGER1_ID_MENTION}`,
             });
             updateIsMegaphoneUser({
               memberId: member.id,
