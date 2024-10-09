@@ -1,5 +1,9 @@
 import { MemberStatus } from "@ieum/prisma";
-import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
+import {
+  sendSlackMessage,
+  SLACK_MANAGER1_ID_MENTION,
+  SLACK_MANAGER2_ID_MENTION,
+} from "@ieum/slack";
 import {
   assert,
   formatUniqueMemberName,
@@ -175,7 +179,7 @@ export const basicMemberRouter = createTRPCRouter({
         channel: "폼_제출_알림",
         content: `${formatUniqueMemberName(
           member,
-        )} - 휴면 신청 ${SLACK_USER_ID_MENTION}`,
+        )} - 휴면 신청 ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
       });
 
       await ctx.prisma.basicMemberV2.update({
@@ -206,7 +210,7 @@ export const basicMemberRouter = createTRPCRouter({
         channel: "폼_제출_알림",
         content: `${formatUniqueMemberName(
           member,
-        )} - 활성화 요청 ${SLACK_USER_ID_MENTION}`,
+        )} - 활성화 요청 ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
         throwOnError: true,
       });
 

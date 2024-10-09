@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<
 
     sendSlackMessage({
       channel: "에러_알림",
-      content: `${SLACK_USER_ID_MENTION} ErrorBoundary caught an error\n${error}\n${errorInfo.componentStack}\n${errorInfo.digest}`,
+      content: `${SLACK_MANAGER1_ID_MENTION} ErrorBoundary caught an error\n${error}\n${errorInfo.componentStack}\n${errorInfo.digest}`,
     });
   }
 

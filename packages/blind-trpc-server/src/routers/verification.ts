@@ -1,6 +1,4 @@
-import { UserType } from "@ieum/prisma";
-import { sendSlackMessage, SLACK_USER_ID_MENTION } from "@ieum/slack";
-import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedBlindProcedure } from "../trpc";
@@ -36,7 +34,7 @@ export const verificationRouter = createTRPCRouter({
 
       sendSlackMessage({
         channel: "폼_제출_알림",
-        content: `${member.nickname}(${member.phoneNumber}) 인증 자료 제출 ${SLACK_USER_ID_MENTION}`,
+        content: `${member.nickname}(${member.phoneNumber}) 인증 자료 제출 ${SLACK_MANAGER1_ID_MENTION}`,
       });
 
       return true;
