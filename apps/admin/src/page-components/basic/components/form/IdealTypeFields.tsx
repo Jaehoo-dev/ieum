@@ -143,7 +143,7 @@ export function IdealTypeFields() {
               <label key={region} className="flex gap-2">
                 <input
                   className={`rounded border border-gray-300 ${
-                    errors.idealType?.regions ? "border-2 border-red-500" : ""
+                    errors.idealType?.regionsV2 ? "border-2 border-red-500" : ""
                   }`}
                   type="checkbox"
                   checked={idealRegionFields.some((field) => {
