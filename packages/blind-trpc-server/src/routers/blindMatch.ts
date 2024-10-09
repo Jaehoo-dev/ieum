@@ -17,20 +17,30 @@ export const blindMatchRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx: { prisma }, input: { proposerId, respondentId } }) => {
-        const existingMatch = await prisma.blindMatch.findFirst({
-          where: {
-            OR: [
-              {
-                proposerId,
-                respondentId,
-              },
-              {
-                proposerId: respondentId,
-                respondentId: proposerId,
-              },
-            ],
-          },
-        });
+        const [existingMatch, member] = await Promise.all([
+          prisma.blindMatch.findFirst({
+            where: {
+              OR: [
+                {
+                  proposerId,
+                  respondentId,
+                },
+                {
+                  proposerId: respondentId,
+                  respondentId: proposerId,
+                },
+              ],
+            },
+          }),
+          prisma.blindMember.findUniqueOrThrow({
+            where: {
+              id: proposerId,
+            },
+            select: {
+              heartsLeft: true,
+            },
+          }),
+        ]);
 
         assert(
           existingMatch == null,
@@ -38,15 +48,36 @@ export const blindMatchRouter = createTRPCRouter({
             code: "CONFLICT",
           }),
         );
+        assert(
+          member.heartsLeft > 0,
+          new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Not enough hearts",
+          }),
+        );
 
-        await prisma.blindMatch.create({
-          data: {
-            proposerId,
-            respondentId,
-            status: BlindMatchStatus.PENDING,
-            expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
-          },
-        });
+        await prisma.$transaction([
+          prisma.blindMatch.create({
+            data: {
+              proposerId,
+              respondentId,
+              status: BlindMatchStatus.PENDING,
+              expiresAt: endOfDay(
+                addDays(new Date(), BLIND_MATCH_DURATION_DAYS),
+              ),
+            },
+          }),
+          prisma.blindMember.update({
+            where: {
+              id: proposerId,
+            },
+            data: {
+              heartsLeft: {
+                decrement: 1,
+              },
+            },
+          }),
+        ]);
 
         return true;
       },
@@ -59,26 +90,57 @@ export const blindMatchRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx: { prisma }, input: { selfMemberId, matchId } }) => {
-      const match = await prisma.blindMatch.findUniqueOrThrow({
-        where: {
-          id: matchId,
-          respondentId: selfMemberId,
-        },
-        select: {
-          id: true,
-        },
-      });
+      const [member, match] = await Promise.all([
+        prisma.blindMember.findUniqueOrThrow({
+          where: {
+            id: selfMemberId,
+          },
+          select: {
+            heartsLeft: true,
+          },
+        }),
+        // NOTE: validate member is respondent of match
+        prisma.blindMatch.findUniqueOrThrow({
+          where: {
+            id: matchId,
+            respondentId: selfMemberId,
+          },
+          select: {
+            id: true,
+          },
+        }),
+      ]);
 
-      await prisma.blindMatch.update({
-        where: {
-          id: match.id,
-        },
-        data: {
-          status: BlindMatchStatus.ACCEPTED,
-          acceptedAt: new Date(),
-          expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
-        },
-      });
+      assert(
+        member.heartsLeft > 0,
+        new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Not enough hearts",
+        }),
+      );
+
+      await prisma.$transaction([
+        prisma.blindMember.update({
+          where: {
+            id: selfMemberId,
+          },
+          data: {
+            heartsLeft: {
+              decrement: 1,
+            },
+          },
+        }),
+        prisma.blindMatch.update({
+          where: {
+            id: match.id,
+          },
+          data: {
+            status: BlindMatchStatus.ACCEPTED,
+            acceptedAt: new Date(),
+            expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
+          },
+        }),
+      ]);
 
       return true;
     }),
