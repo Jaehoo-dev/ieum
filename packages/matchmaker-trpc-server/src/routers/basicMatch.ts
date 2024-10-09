@@ -8,7 +8,7 @@ import {
   SLACK_MANAGER1_ID_MENTION,
   SLACK_MANAGER2_ID_MENTION,
 } from "@ieum/slack";
-import { assert } from "@ieum/utils";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
 import { z } from "zod";
@@ -506,13 +506,13 @@ export const basicMatchRouter = createTRPCRouter({
           content: `[제안 실패]${
             result.acceptedByV2.length > 0
               ? `\n수락: ${result.acceptedByV2
-                  .map((member) => member.name)
+                  .map((member) => formatUniqueMemberName(member))
                   .join(", ")}`
               : ""
           }${
             result.rejectedByV2.length > 0
               ? `\n거절: ${result.rejectedByV2
-                  .map((member) => member.name)
+                  .map((member) => formatUniqueMemberName(member))
                   .join(", ")}`
               : ""
           }
@@ -626,9 +626,11 @@ export const basicMatchRouter = createTRPCRouter({
       if (hasOtherReplied) {
         void sendSlackMessage({
           channel: "매칭_결과_알림",
-          content: `[제안 ${hasOtherAccepted ? "성공" : "실패"}] ${
-            members[0].name
-          } - ${members[1].name}${
+          content: `[제안 ${
+            hasOtherAccepted ? "성공" : "실패"
+          }] ${formatUniqueMemberName(members[0])} - ${formatUniqueMemberName(
+            members[1],
+          )}${
             hasOtherAccepted
               ? ` 🙌 ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`
               : ""
