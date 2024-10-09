@@ -588,16 +588,12 @@ function createFieldData(
       return {
         label: "지역",
         value:
-          idealType.regions.length > 0 || idealType.customRegion != null
-            ? `${idealType.regions
+          idealType.regionsV2.length > 0
+            ? `${idealType.regionsV2
                 .map((region) => {
                   return 지역_라벨[region];
                 })
-                .join(", ")}${
-                idealType.customRegion != null
-                  ? `(${idealType.customRegion})`
-                  : ""
-              }`
+                .join(", ")}`
             : "상관없음",
       };
     })
