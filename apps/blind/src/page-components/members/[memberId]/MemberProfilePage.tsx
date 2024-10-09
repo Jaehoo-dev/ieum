@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { BlindProfile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
+import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import { Layout } from "~/components/Layout";
@@ -86,18 +87,58 @@ function Resolved({ memberId: targetMemberId }: { memberId: string }) {
   }, [self, profile.id, sendMessage]);
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col gap-4">
       {match != null ? (
-        <>
+        <div className="flex flex-col gap-4">
           <MatchInfo targetMemberId={targetMemberId} />
-          <Spacing size={16} />
+          {match.status === BlindMatchStatus.ACCEPTED ? (
+            <KakaotalkIdSection
+              selfMemberId={self.id}
+              targetMemberId={targetMemberId}
+            />
+          ) : null}
           <hr />
-          <Spacing size={16} />
-        </>
+        </div>
       ) : null}
       <BlindProfile profile={profile} />
       <Spacing size={108} />
       <ButtonsField targetMemberId={targetMemberId} />
+    </div>
+  );
+}
+
+function KakaotalkIdSection({
+  selfMemberId,
+  targetMemberId,
+}: {
+  selfMemberId: string;
+  targetMemberId: string;
+}) {
+  const [match] = api.blindMatchRouter.getMatchInfo.useSuspenseQuery({
+    selfMemberId,
+    targetMemberId,
+  });
+
+  assert(match != null, "Should have been matched");
+  assert(match.status === BlindMatchStatus.ACCEPTED, "Should be accepted");
+
+  const [kakaotalkId] = api.blindMemberRouter.getKakaotalkId.useSuspenseQuery({
+    memberId: targetMemberId,
+  });
+
+  return (
+    <div className="flex items-center justify-between">
+      <span className="font-semibold text-gray-700">카카오톡 ID</span>
+      <span
+        className="flex cursor-pointer items-center gap-0.5 rounded-lg bg-gray-200 px-4 py-2 text-lg font-semibold text-blind-500"
+        onClick={() => {
+          navigator.clipboard.writeText(kakaotalkId);
+          alert("카카오톡 아이디를 복사했어요.");
+        }}
+      >
+        <span>{kakaotalkId}</span>
+        <ContentCopyRoundedIcon fontSize="small" />
+      </span>
     </div>
   );
 }
