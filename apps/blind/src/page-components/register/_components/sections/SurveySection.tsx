@@ -247,15 +247,14 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
                 <UniSelect
                   label="서비스를 제공하기 위해 개인정보를 수집하는 데 동의하십니까?"
                   options={[
-                    { label: "아니요", value: false },
                     { label: "예", value: true },
+                    { label: "아니요", value: false },
                   ]}
                   value={value}
                   onChange={onChange}
                   required={true}
                   error={error != null}
                   errorText={error?.message}
-                  cols={2}
                 />
               );
             }}
