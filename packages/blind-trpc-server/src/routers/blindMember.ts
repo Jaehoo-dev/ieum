@@ -402,4 +402,22 @@ export const blindMemberRouter = createTRPCRouter({
 
       return member.heartsLeft;
     }),
+  getKakaotalkId: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const member = await prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          kakaotalkId: true,
+        },
+      });
+
+      return member.kakaotalkId;
+    }),
 });
