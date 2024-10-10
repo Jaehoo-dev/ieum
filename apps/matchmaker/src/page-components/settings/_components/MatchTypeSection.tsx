@@ -57,7 +57,7 @@ export function MatchTypeSection() {
               channel: "폼_제출_알림",
               content: `${formatUniqueMemberName(member)} - [먼저 보내기] ${
                 checked ? "켬" : "끔"
-              } ${SLACK_MANAGER1_ID_MENTION}`,
+              }`,
             });
             updateIsMegaphoneUser({
               memberId: member.id,
