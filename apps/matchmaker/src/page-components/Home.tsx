@@ -139,11 +139,11 @@ function Registered() {
           void sendMessage({
             content: `${formatUniqueMemberName(
               member,
-            )} - 이음 블라인드 사전 신청 클릭`,
+            )} - 내 인연 직접 찾기 클릭`,
           });
         }}
       >
-        이음 블라인드 사전 신청
+        내 인연 직접 찾기
       </Link>
       <Link
         href="/my-matches"
