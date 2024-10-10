@@ -127,16 +127,16 @@ function KakaotalkIdSection({
   });
 
   return (
-    <div className="flex items-center justify-between rounded-lg border-2 border-blind-500 p-4">
-      <span className="text-lg font-semibold text-gray-800">카카오톡 ID</span>
+    <div className="flex items-center justify-between">
+      <span className="font-semibold text-gray-800">카카오톡 ID</span>
       <span
-        className="flex cursor-pointer items-center gap-1 text-lg font-semibold text-blind-500"
+        className="flex cursor-pointer items-center gap-1 text-blind-500"
         onClick={async () => {
           await navigator.clipboard.writeText(kakaotalkId);
           alert("카카오톡 아이디를 복사했어요.");
         }}
       >
-        <span>{kakaotalkId}</span>
+        <span className="text-lg font-semibold underline">{kakaotalkId}</span>
         <ContentCopyRoundedIcon fontSize="small" className="mb-0.5" />
       </span>
     </div>
