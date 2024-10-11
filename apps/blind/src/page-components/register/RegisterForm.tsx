@@ -31,7 +31,7 @@ const defaultRegisterForm: RegisterForm = {
 
 const STORAGE_KEY = "@ieum-blind/register/values";
 const EXPIRY_KEY = "@ieum-blind/register/expiresAt";
-const EXPIRY_DURATION = 1000 * 60 * 60 * 24;
+const EXPIRY_DURATION = 1000 * 60 * 40; // 40 minutes
 
 export function useRegisterForm() {
   const form = useForm<RegisterForm>({
