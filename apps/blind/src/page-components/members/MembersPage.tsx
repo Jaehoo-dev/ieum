@@ -1,5 +1,6 @@
 import { ComponentPropsWithoutRef, Fragment, ReactElement } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { 지역_라벨 } from "@ieum/constants";
 import { assert } from "@ieum/utils";
@@ -20,6 +21,7 @@ export function MembersPage() {
       <StatusGuard>
         <div className="flex flex-col gap-6">
           <MembersTable />
+          <BasicPromotion />
           {/* <ResponsiveDisplayAd /> */}
         </div>
       </StatusGuard>
@@ -144,6 +146,24 @@ function FetchMoreButton({
     >
       {loading ? <Loader size={6} color="white" /> : "더 보기"}
     </button>
+  );
+}
+
+function BasicPromotion() {
+  return (
+    <div className="text-center">
+      <p>
+        더 꼼꼼한 조건으로
+        <br />
+        이상형을 소개받고 싶다면?
+      </p>
+      <Link
+        href="/basic"
+        className="text-primary-500 underline hover:text-primary-700"
+      >
+        이음 베이직 알아보기
+      </Link>
+    </div>
   );
 }
 

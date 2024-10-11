@@ -266,9 +266,12 @@ export const IMWEB_HOMEPAGE_URL = "https://ieum-love.imweb.me";
 export const HOMEPAGE_URL = "https://ieum.love";
 export const WWW_HOMEPAGE_URL = "https://www.ieum.love";
 export const PRODUCT_URL = "https://ieum.love/shop_view/?idx=1";
+export const PRICING_URL = "https://www.ieum.love/pricing";
 export const MATCHMAKER_URL = "https://match.ieum.love";
 export const WORLDCUP_URL = "https://worldcup.ieum.love";
 export const KAKAOTALK_CHANNEL_CHAT_URL = "https://pf.kakao.com/_nxdxcLG/chat";
+export const BASIC_REGISTER_DEMO_URL = "https://match.ieum.love/demo/register";
+export const BASIC_PROFILE_DEMO_URL = "https://match.ieum.love/demo";
 
 export const 구_라벨: Record<SeoulDistrict, string> = {
   [SeoulDistrict.GANGNAM]: "강남구",
