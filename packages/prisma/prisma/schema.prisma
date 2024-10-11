@@ -132,6 +132,25 @@ model BlindPreRegisteredMember {
   @@index([phoneNumber])
 }
 
+model DraftBlindMember {
+  id          String  @id @default(cuid())
+  phoneNumber String
+
+  nickname         String
+  gender           Gender
+  birthYear        Int
+  region           RegionV2
+  height           Float
+  bodyShape        String
+  job              String
+  selfIntroduction String
+
+  kakaotalkId String
+
+  @@unique([phoneNumber])
+  @@unique([nickname])
+}
+
 model BlindMember {
   id          String       @id @default(cuid())
   phoneNumber String

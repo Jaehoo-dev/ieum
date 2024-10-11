@@ -13,6 +13,7 @@ interface MemberAuthContext {
   loading: boolean;
   loggedIn: boolean;
   registered: boolean;
+  preRegistered: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -33,7 +34,16 @@ export function MemberAuthProvider({ children }: Props) {
       },
       { enabled: session?.user != null },
     );
-  const isLoading = status === "loading" || isMemberLoading;
+  const { data: draftMember, isLoading: isDraftMemberLoading } =
+    api.blindMemberRouter.findDraftByPhoneNumber.useQuery(
+      {
+        phoneNumber:
+          session?.user.phoneNumber != null ? session.user.phoneNumber : "",
+      },
+      { enabled: session?.user != null },
+    );
+  const isLoading =
+    status === "loading" || isMemberLoading || isDraftMemberLoading;
 
   const signOut = useCallback(async () => {
     await signOutSession({
@@ -52,6 +62,7 @@ export function MemberAuthProvider({ children }: Props) {
         loading: isLoading,
         loggedIn,
         registered: loggedIn && member != null,
+        preRegistered: loggedIn && draftMember != null,
         signOut,
       }}
     >

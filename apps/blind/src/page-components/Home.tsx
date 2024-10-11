@@ -86,15 +86,40 @@ function Loading() {
 
 function LoggedIn() {
   const router = useRouter();
-  const { registered } = useMemberAuthContext();
+  const { registered, preRegistered } = useMemberAuthContext();
 
   useEffect(() => {
-    if (!registered) {
-      router.push("/register");
+    if (!preRegistered) {
+      router.push("/pre-register");
     }
-  }, [registered, router]);
+  }, [preRegistered, router]);
+
+  if (preRegistered) {
+    return <PreRegistered />;
+  }
 
   return registered ? <Registered /> : null;
+}
+
+function PreRegistered() {
+  const { signOut } = useMemberAuthContext();
+
+  return (
+    <div className="mt-2 flex w-full flex-col gap-8 p-8">
+      <div className="flex flex-col items-center gap-4 text-gray-800">
+        <h1 className="text-xl font-medium">사전 신청을 완료했어요.</h1>
+        <p>곧 만나요!</p>
+      </div>
+      <button
+        className="text-sm font-light text-gray-500 underline hover:text-gray-700"
+        onClick={() => {
+          void signOut();
+        }}
+      >
+        로그아웃
+      </button>
+    </div>
+  );
 }
 
 function Registered() {

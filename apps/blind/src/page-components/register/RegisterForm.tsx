@@ -3,7 +3,7 @@ import { Gender, RegionV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
-type RegisterForm = {
+export type RegisterForm = {
   nickname: string;
   gender: Gender | null;
   birthYear: number | null;
