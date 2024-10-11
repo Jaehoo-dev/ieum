@@ -112,15 +112,10 @@ function Registered() {
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">
       <Link
-        href="/matches"
-        className="w-full rounded-lg border border-blind-500 p-2 text-center font-medium text-blind-500 hover:border-blind-600 hover:text-blind-600 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 회원 목록 보기 클릭`,
-          });
-        }}
+        href="/basic"
+        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-2.5 md:text-lg"
       >
-        매칭 목록 보기
+        이음 베이직 알아보기
       </Link>
       <Link
         href="/members"
@@ -132,6 +127,17 @@ function Registered() {
         }}
       >
         회원 목록 보기
+      </Link>
+      <Link
+        href="/matches"
+        className="w-full rounded-lg border border-blind-500 p-2 text-center font-medium text-blind-500 hover:border-blind-600 hover:text-blind-600 md:p-2.5 md:text-lg"
+        onClick={() => {
+          void sendMessage({
+            content: `${member.id} - 회원 목록 보기 클릭`,
+          });
+        }}
+      >
+        매칭 목록 보기
       </Link>
       <Link
         href="/my-profile"
@@ -155,9 +161,8 @@ function Registered() {
       >
         설정
       </Link>
-      <TipsMenuLink style={{ marginTop: "4px" }} />
       <button
-        className="text-sm font-light text-gray-500 underline hover:text-gray-700"
+        className="mt-1 text-sm font-light text-gray-500 underline hover:text-gray-700"
         onClick={() => {
           void sendMessage({
             content: `${member.id} - 로그아웃 클릭`,
