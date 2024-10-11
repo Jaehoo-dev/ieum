@@ -23,6 +23,9 @@ export function BlindPreRegisterPage() {
 
   return (
     <div className="mb-10 flex flex-col gap-10 text-gray-700">
+      <Suspense>
+        <ResolvedPreRegisterSection />
+      </Suspense>
       <div className="flex flex-col gap-4">
         <h2 className="border-b border-blind-500 pb-2 text-lg font-semibold text-blind-500">
           이음 블라인드란?
@@ -63,9 +66,6 @@ export function BlindPreRegisterPage() {
           <Disclaimer text="추후 유료화할 수 있어요. 미리 고지할 테니 걱정마세요!" />
         </div>
       </div>
-      <Suspense>
-        <ResolvedPreRegisterSection />
-      </Suspense>
     </div>
   );
 }
