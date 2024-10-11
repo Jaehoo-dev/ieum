@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { MATCHMAKER_URL } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 
-import { FeedbackButton } from "~/components/FeedbackButton";
+import { KakaotalkChatButton } from "~/components/KakaotalkChatButton";
 import { Loader } from "~/components/Loader";
 import { MemberAuth } from "~/components/MemberAuth";
 import { Spacing } from "~/components/Spacing";
@@ -53,6 +53,7 @@ export function Home() {
             </Suspense>
           </div>
         </div>
+        <KakaotalkChatButton />
       </div>
     </>
   );
@@ -109,7 +110,7 @@ function Registered() {
   }, [member]);
 
   return (
-    <div className="flex w-full flex-col items-center gap-2.5 pb-10 md:gap-3">
+    <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">
       <Link
         href="/matches"
         className="w-full rounded-lg border border-blind-500 p-2 text-center font-medium text-blind-500 hover:border-blind-600 hover:text-blind-600 md:p-2.5 md:text-lg"
@@ -166,7 +167,6 @@ function Registered() {
       >
         로그아웃
       </button>
-      <FeedbackButton />
     </div>
   );
 }

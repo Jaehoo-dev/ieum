@@ -1,13 +1,16 @@
 import { ComponentPropsWithoutRef, ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { HOMEPAGE_URL, WORLDCUP_URL } from "@ieum/constants";
+import {
+  HOMEPAGE_URL,
+  KAKAOTALK_CHANNEL_CHAT_URL,
+  WORLDCUP_URL,
+} from "@ieum/constants";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { cn } from "~/utils/cn";
-import { FeedbackFormDialog } from "./FeedbackFormDialog";
 
 interface Props {
   open: boolean;
@@ -60,6 +63,12 @@ export function Sidebar({ open, onClose }: Props) {
               target="_blank"
               rel="noopener noreferrer"
             />
+            <MenuItem
+              label="고객센터"
+              href={KAKAOTALK_CHANNEL_CHAT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            />
             <hr />
             <MenuItem label="소개팅 꿀팁 모음" href="/tips" onClick={onClose} />
             <MenuItem
@@ -74,9 +83,6 @@ export function Sidebar({ open, onClose }: Props) {
               rel="noopener"
             />
           </ul>
-        </div>
-        <div className="px-4 py-4">
-          <FeedbackButton />
         </div>
       </aside>
       {open ? <Overlay onClick={onClose} /> : null}
@@ -115,12 +121,16 @@ function MenuItem({
           sendMessage({ content: `메뉴 - ${label} 클릭` });
           onClick?.(e);
         }}
+        target={target}
         {...props}
       >
         <div className="flex items-center gap-1">
           <span>{label}</span>
           {isExternal ? (
-            <OpenInNewRoundedIcon fontSize="small" className="text-gray-600" />
+            <OpenInNewRoundedIcon
+              fontSize="small"
+              className="mb-0.5 text-gray-600"
+            />
           ) : null}
         </div>
       </Link>
@@ -131,28 +141,5 @@ function MenuItem({
 function Overlay({ onClick }: { onClick: () => void }) {
   return (
     <div className="fixed inset-0 z-40 bg-black opacity-50" onClick={onClick} />
-  );
-}
-
-function FeedbackButton() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        className="w-full rounded-md bg-gray-200 py-2 text-gray-700 hover:bg-gray-300"
-        onClick={() => {
-          setIsDialogOpen(true);
-        }}
-      >
-        의견 보내기
-      </button>
-      <FeedbackFormDialog
-        open={isDialogOpen}
-        onClose={() => {
-          setIsDialogOpen(false);
-        }}
-      />
-    </>
   );
 }
