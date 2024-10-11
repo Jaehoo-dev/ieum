@@ -64,7 +64,7 @@ function NonRegistered() {
     >
       <TextInput
         label="카카오톡 ID"
-        description="이음 블라인드는 성사됐을 때 카카오톡 ID를 공유합니다."
+        description="이음 블라인드는 성사됐을 때 카카오톡 ID를 공유합니다. 카카오톡 계정(이메일)이 아닌 카카오톡 ID를 입력해주세요!"
         placeholder="ieum_love"
         {...register("kakaotalkId", {
           required: true,
@@ -118,7 +118,7 @@ function KakaoTalkIdMissing() {
     >
       <TextInput
         label="카카오톡 ID"
-        description="이음 블라인드는 성사됐을 때 카카오톡 ID를 공유합니다. 카카오톡 ID를 입력하고 출시 후 바로 이용하세요!"
+        description="이음 블라인드는 성사됐을 때 카카오톡 ID를 공유합니다. 카카오톡 ID를 입력하고 출시 후 바로 이용하세요! 카카오톡 계정(이메일)이 아닌 카카오톡 ID를 입력해주세요."
         placeholder="ieum_love"
         {...register("kakaotalkId", {
           required: true,
