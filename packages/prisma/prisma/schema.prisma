@@ -120,7 +120,7 @@ enum Religion {
 }
 
 model BlindPreRegisteredMember {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   phoneNumber String
   kakaotalkId String?
@@ -128,7 +128,6 @@ model BlindPreRegisteredMember {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([kakaotalkId])
   @@unique([phoneNumber])
   @@index([phoneNumber])
 }
@@ -168,7 +167,6 @@ model BlindMember {
 
   @@unique([phoneNumber])
   @@unique([nickname])
-  @@unique([kakaotalkId])
   @@index([nickname])
   @@index([phoneNumber])
   @@index([gender])
