@@ -268,6 +268,7 @@ export const WWW_HOMEPAGE_URL = "https://www.ieum.love";
 export const PRODUCT_URL = "https://ieum.love/shop_view/?idx=1";
 export const MATCHMAKER_URL = "https://match.ieum.love";
 export const WORLDCUP_URL = "https://worldcup.ieum.love";
+export const KAKAOTALK_CHANNEL_CHAT_URL = "https://pf.kakao.com/_nxdxcLG/chat";
 
 export const 구_라벨: Record<SeoulDistrict, string> = {
   [SeoulDistrict.GANGNAM]: "강남구",
