@@ -221,6 +221,7 @@ export function PreSurveySection({ phoneNumber, onSubmitSuccess }: Props) {
           />
           <TextareaInput
             label="자기소개"
+            description="자세히 작성할수록 수락률이 높아져요. 하는 일, 성격, 취미, 관심사 등을 소개해주세요. 외모 묘사도 좋아요."
             required={true}
             error={errors.selfIntroduction != null}
             errorText={errors.selfIntroduction?.message}
