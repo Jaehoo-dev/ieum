@@ -64,6 +64,28 @@ export const blindMemberRouter = createTRPCRouter({
 
       return true;
     }),
+  createDraft: protectedBlindProcedure
+    .input(
+      z.object({
+        phoneNumber: z.string(),
+        nickname: z.string(),
+        gender: z.nativeEnum(Gender),
+        birthYear: z.number(),
+        region: z.nativeEnum(RegionV2),
+        height: z.number(),
+        bodyShape: z.string(),
+        job: z.string(),
+        selfIntroduction: z.string(),
+        kakaotalkId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input }) => {
+      await prisma.draftBlindMember.create({
+        data: input,
+      });
+
+      return true;
+    }),
   findByPhoneNumber: protectedBlindProcedure
     .input(
       z.object({
@@ -81,6 +103,24 @@ export const blindMemberRouter = createTRPCRouter({
               MemberStatus.INACTIVE,
             ],
           },
+        },
+        select: {
+          id: true,
+          phoneNumber: true,
+          gender: true,
+        },
+      });
+    }),
+  findDraftByPhoneNumber: protectedBlindProcedure
+    .input(
+      z.object({
+        phoneNumber: z.string(),
+      }),
+    )
+    .query(({ ctx: { prisma }, input: { phoneNumber } }) => {
+      return prisma.draftBlindMember.findUnique({
+        where: {
+          phoneNumber,
         },
         select: {
           id: true,
@@ -368,6 +408,21 @@ export const blindMemberRouter = createTRPCRouter({
         age: member.ageVerified,
         job: member.jobVerified,
       };
+    }),
+  isNicknameAvailableDraft: protectedBlindProcedure
+    .input(
+      z.object({
+        nickname: z.string(),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { nickname } }) => {
+      const count = await prisma.draftBlindMember.count({
+        where: {
+          nickname,
+        },
+      });
+
+      return count === 0;
     }),
   isNicknameAvailable: publicProcedure
     .input(
