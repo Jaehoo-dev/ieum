@@ -10,7 +10,7 @@ interface Props {
 
 export function AuthGuard({ children }: Props) {
   const router = useRouter();
-  const { member, loading, signOut, loggedIn, registered } =
+  const { member, loading, signOut, loggedIn, registered, preRegistered } =
     useMemberAuthContext();
 
   useEffect(() => {
@@ -21,6 +21,13 @@ export function AuthGuard({ children }: Props) {
     if (!loggedIn) {
       signOut();
       router.push("/");
+
+      return;
+    }
+
+    if (!preRegistered) {
+      signOut();
+      router.push("/pre-register");
 
       return;
     }

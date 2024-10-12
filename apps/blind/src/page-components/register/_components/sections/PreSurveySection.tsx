@@ -15,7 +15,7 @@ interface Props {
   onSubmitSuccess: () => void;
 }
 
-export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
+export function PreSurveySection({ phoneNumber, onSubmitSuccess }: Props) {
   const {
     clearCache,
     formState: { errors, isSubmitting },
@@ -27,8 +27,8 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
     setError,
   } = useRegisterForm();
   const utils = api.useUtils();
-  const { mutateAsync: createMember } =
-    api.blindMemberRouter.create.useMutation({
+  const { mutateAsync: createDraftMember } =
+    api.blindMemberRouter.createDraft.useMutation({
       onSuccess: () => {
         return utils.invalidate();
       },
@@ -41,7 +41,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
         const payload = formToPayload(fields);
 
         try {
-          await createMember({
+          await createDraftMember({
             phoneNumber,
             ...payload,
           });
@@ -92,7 +92,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
               className="rounded-lg border border-blind-500 px-4 py-2 font-medium text-blind-500"
               onClick={async () => {
                 const isAvailable =
-                  await utils.blindMemberRouter.isNicknameAvailable.fetch({
+                  await utils.blindMemberRouter.isNicknameAvailableDraft.fetch({
                     nickname: getValues("nickname"),
                   });
 

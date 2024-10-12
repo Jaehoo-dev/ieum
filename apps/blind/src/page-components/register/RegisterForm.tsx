@@ -3,7 +3,7 @@ import { Gender, RegionV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
-type RegisterForm = {
+export type RegisterForm = {
   nickname: string;
   gender: Gender | null;
   birthYear: number | null;
@@ -31,7 +31,7 @@ const defaultRegisterForm: RegisterForm = {
 
 const STORAGE_KEY = "@ieum-blind/register/values";
 const EXPIRY_KEY = "@ieum-blind/register/expiresAt";
-const EXPIRY_DURATION = 1000 * 60 * 60 * 24;
+const EXPIRY_DURATION = 1000 * 60 * 40; // 40 minutes
 
 export function useRegisterForm() {
   const form = useForm<RegisterForm>({
