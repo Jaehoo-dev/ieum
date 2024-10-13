@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Checkbox } from "~/components/Checkbox";
 import { Layout } from "~/components/Layout";
 import { Select } from "~/components/Select";
+import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
@@ -117,11 +118,12 @@ export function CreateBlindMemberPage() {
             required: true,
           })}
         />
-        <TextInput
+        <TextareaInput
           label="자기소개"
           {...register("selfIntroduction", {
             required: true,
           })}
+          cols={5}
         />
         <div className="flex w-full flex-row gap-2">
           <Checkbox
