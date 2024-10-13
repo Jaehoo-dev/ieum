@@ -45,13 +45,10 @@ export function Sidebar() {
         </Link>
         <hr />
         <h2>블라인드</h2>
-        <Link href="/blind/members" className="text-blue-600 hover:underline">
-          회원 목록
-        </Link>
-        <Link href="/blind/matches" className="text-blue-600 hover:underline">
-          매칭 이력
-        </Link>
-        <Link href="/blind/create" className="text-blue-600 hover:underline">
+        <Link
+          href="/blind/members/create"
+          className="text-blue-600 hover:underline"
+        >
           회원 생성
         </Link>
       </div>
