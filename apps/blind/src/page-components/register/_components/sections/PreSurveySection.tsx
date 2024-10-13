@@ -231,16 +231,6 @@ export function PreSurveySection({ phoneNumber, onSubmitSuccess }: Props) {
               required: true,
             })}
           />
-          <TextInput
-            label="카카오톡 아이디"
-            description="성사됐을 때 서로에게 공개합니다."
-            required={true}
-            error={errors.kakaotalkId != null}
-            errorText={errors.kakaotalkId?.message}
-            {...register("kakaotalkId", {
-              required: true,
-            })}
-          />
           <Controller
             control={control}
             name="personalInfoConsent"

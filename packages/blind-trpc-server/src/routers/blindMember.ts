@@ -29,7 +29,6 @@ export const blindMemberRouter = createTRPCRouter({
         bodyShape: z.string(),
         job: z.string(),
         selfIntroduction: z.string(),
-        kakaotalkId: z.string(),
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
@@ -80,7 +79,6 @@ export const blindMemberRouter = createTRPCRouter({
         bodyShape: z.string(),
         job: z.string(),
         selfIntroduction: z.string(),
-        kakaotalkId: z.string(),
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
@@ -470,23 +468,5 @@ export const blindMemberRouter = createTRPCRouter({
       });
 
       return member.heartsLeft;
-    }),
-  getKakaotalkId: protectedBlindProcedure
-    .input(
-      z.object({
-        memberId: z.string(),
-      }),
-    )
-    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
-      const member = await prisma.blindMember.findUniqueOrThrow({
-        where: {
-          id: memberId,
-        },
-        select: {
-          kakaotalkId: true,
-        },
-      });
-
-      return member.kakaotalkId;
     }),
 });

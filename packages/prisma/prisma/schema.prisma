@@ -145,8 +145,6 @@ model DraftBlindMember {
   job              String
   selfIntroduction String
 
-  kakaotalkId String
-
   @@unique([phoneNumber])
   @@unique([nickname])
 }
@@ -164,8 +162,6 @@ model BlindMember {
   bodyShape        String
   job              String
   selfIntroduction String
-
-  kakaotalkId String
 
   verificationDocuments BlindVerificationDocument[]
 

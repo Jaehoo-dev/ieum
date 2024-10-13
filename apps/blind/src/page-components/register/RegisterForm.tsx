@@ -13,7 +13,6 @@ export type RegisterForm = {
   job: string;
   selfIntroduction: string;
   personalInfoConsent: boolean | null;
-  kakaotalkId: string;
 };
 
 const defaultRegisterForm: RegisterForm = {
@@ -26,7 +25,6 @@ const defaultRegisterForm: RegisterForm = {
   job: "",
   selfIntroduction: "",
   personalInfoConsent: null,
-  kakaotalkId: "",
 };
 
 const STORAGE_KEY = "@ieum-blind/register/values";
