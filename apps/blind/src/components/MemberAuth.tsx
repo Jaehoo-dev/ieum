@@ -7,7 +7,6 @@ import { match } from "ts-pattern";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
-import { TipsMenuLink } from "./TipsMenuLink";
 
 export function MemberAuth() {
   const [step, setStep] = useState<"PHONE" | "CODE">("PHONE");
