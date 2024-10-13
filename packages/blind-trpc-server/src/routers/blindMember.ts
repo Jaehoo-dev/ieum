@@ -1,4 +1,4 @@
-import { DEFAULT_HEART_COUNT, 성별_라벨 } from "@ieum/constants";
+import { DEFAULT_HEART_COUNT, 성별_라벨, 지역_라벨 } from "@ieum/constants";
 import { Gender, MemberStatus, RegionV2 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
 import {
@@ -94,7 +94,7 @@ export const blindMemberRouter = createTRPCRouter({
           name: input.nickname,
           phoneNumber: input.phoneNumber,
         })} / ${성별_라벨[input.gender]} / ${input.birthYear}년생 / ${
-          input.region
+          지역_라벨[input.region]
         }`,
       });
 
