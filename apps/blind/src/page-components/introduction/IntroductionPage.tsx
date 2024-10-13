@@ -2,6 +2,7 @@ import { ReactElement, ReactNode, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PRODUCT_URL } from "@ieum/constants";
+import VerifiedIcon from "@mui/icons-material/Verified";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
@@ -58,6 +59,15 @@ export function IntroductionPage() {
             <Description
               icon="📷"
               content="간략 프로필엔 사진을 공개하지 않아요. 사진을 주고받을지는 성사 이후 당사자끼리 합의합니다."
+            />
+            <Description
+              icon="🪪"
+              content={
+                <>
+                  직장 등을 인증한 회원은 프로필에 인증 배지를 표시해요.{" "}
+                  <VerifiedIcon className="mb-0.5 text-sm text-blind-400" />
+                </>
+              }
             />
           </div>
         </div>
