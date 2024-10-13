@@ -2,8 +2,11 @@ import { ComponentPropsWithoutRef, Fragment, ReactElement } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { 지역_라벨 } from "@ieum/constants";
+import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
+import { BlindMember, Gender } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { match } from "ts-pattern";
 
 // import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
@@ -13,27 +16,16 @@ import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
 export function MembersPage() {
-  return (
-    <>
-      <Head>
-        <meta name="robots" content="noindex" />
-      </Head>
-      <StatusGuard>
-        <div className="flex flex-col gap-6">
-          <MembersTable />
-          <BasicPromotion />
-          {/* <ResponsiveDisplayAd /> */}
-        </div>
-      </StatusGuard>
-    </>
-  );
-}
-
-function MembersTable() {
   const router = useRouter();
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
+
+  const 이성 = match(member.gender)
+    .with(Gender.MALE, () => Gender.FEMALE)
+    .with(Gender.FEMALE, () => Gender.MALE)
+    .exhaustive();
+  const genderQuery = (router.query.gender as Gender) ?? 이성;
 
   const {
     data,
@@ -45,6 +37,7 @@ function MembersTable() {
   } = api.blindMemberRouter.getInfiniteCandidates.useInfiniteQuery(
     {
       selfMemberId: member.id,
+      gender: genderQuery,
       take: 20,
     },
     {
@@ -54,22 +47,121 @@ function MembersTable() {
     },
   );
 
-  if (isPending || data == null) {
-    return (
-      <div className="mt-10 flex items-center justify-center">
-        <Loader />
-      </div>
-    );
-  }
+  return (
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+      </Head>
+      <StatusGuard>
+        <div className="flex flex-col gap-6">
+          <div className="flex w-full justify-center">
+            <GenderTabs
+              value={genderQuery}
+              onChange={(newGender) => {
+                router.replace({
+                  query: {
+                    ...router.query,
+                    gender: newGender,
+                  },
+                });
+              }}
+            />
+          </div>
+          <div className="flex w-full items-start gap-1">
+            <p className="text-sm text-gray-500">※</p>
+            <p className="text-sm text-gray-500">좌우로 스크롤하세요.</p>
+          </div>
+          {isPending || data == null ? (
+            <div className="mt-10 flex items-center justify-center">
+              <Loader />
+            </div>
+          ) : (
+            <MembersTable
+              members={data.pages.flatMap((page) => {
+                return page.members;
+              })}
+              isFetching={isFetching}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              onFetchNextPage={fetchNextPage}
+            />
+          )}
+          <BasicPromotion />
+          {/* <ResponsiveDisplayAd /> */}
+        </div>
+      </StatusGuard>
+    </>
+  );
+}
 
-  const members = data.pages.flatMap((page) => {
-    return page.members;
-  });
+function GenderTabs({
+  value,
+  onChange,
+}: {
+  value: Gender;
+  onChange: (gender: Gender) => void;
+}) {
+  return (
+    <div className="w-full max-w-xs">
+      <ToggleButtonGroup
+        value={value}
+        onChange={(_, value) => {
+          if (value == null) {
+            return;
+          }
+
+          onChange(value);
+        }}
+        color="primary"
+        exclusive={true}
+        fullWidth={true}
+        size="small"
+      >
+        <ToggleButton value={Gender.MALE} disableRipple={true}>
+          <span className="text-sm">{성별_라벨[Gender.MALE]}</span>
+        </ToggleButton>
+        <ToggleButton value={Gender.FEMALE} disableRipple={true}>
+          <span className="text-sm">{성별_라벨[Gender.FEMALE]}</span>
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </div>
+  );
+}
+
+function MembersTable({
+  members,
+  isFetching,
+  hasNextPage,
+  isFetchingNextPage,
+  onFetchNextPage,
+}: {
+  members: Array<
+    Pick<
+      BlindMember,
+      | "id"
+      | "gender"
+      | "nickname"
+      | "region"
+      | "birthYear"
+      | "height"
+      | "bodyShape"
+      | "job"
+    >
+  >;
+  isFetching: boolean;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  onFetchNextPage: () => void;
+}) {
+  const router = useRouter();
+  const { member: self } = useMemberAuthContext();
+
+  assert(self != null, "Component should be used within MemberAuthGuard");
 
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
-      <div className="w-[740px]">
-        <div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_2fr] gap-2 border-b border-b-gray-300 bg-white p-2">
+      <div className="w-[640px]">
+        <div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
           <div className="font-medium text-gray-800">닉네임</div>
           <div className="font-medium text-gray-800">지역</div>
           <div className="font-medium text-gray-800">출생연도</div>
@@ -79,6 +171,8 @@ function MembersTable() {
         </div>
         <div className="max-h-[calc(100vh-220px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => {
+            const 동성인가 = self.gender === member.gender;
+
             return (
               <Fragment key={member.id}>
                 {/* {index % 20 === 0 ? (
@@ -87,12 +181,25 @@ function MembersTable() {
                 </div>
               ) : null} */}
                 <div
-                  className={`grid cursor-pointer grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_2fr] gap-2 px-2 py-5 text-gray-700 hover:bg-blind-100 ${
-                    index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
-                  }`}
+                  className={`grid ${
+                    동성인가 ? "" : "cursor-pointer"
+                  } grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
+                    동성인가 ? "" : "hover:bg-blind-100"
+                  } ${
+                    !동성인가 && index % 2 === 0
+                      ? "bg-blind-100 bg-opacity-50"
+                      : ""
+                  } ${동성인가 ? "bg-gray-100" : ""}`}
                   onClick={() => {
+                    if (self.gender === member.gender) {
+                      alert("동성 회원의 프로필은 조회할 수 없습니다.");
+
+                      return;
+                    }
+
                     router.push(`/members/${member.id}`);
                   }}
+                  aria-disabled={self.gender === member.gender}
                 >
                   <div className="truncate">{member.nickname}</div>
                   <div className="truncate">{지역_라벨[member.region]}</div>
@@ -109,16 +216,12 @@ function MembersTable() {
               <div className="flex w-full justify-around py-2">
                 <FetchMoreButton
                   loading={isFetchingNextPage}
-                  onClick={() => {
-                    fetchNextPage();
-                  }}
+                  onClick={onFetchNextPage}
                   disabled={isFetching}
                 />
                 <FetchMoreButton
                   loading={isFetchingNextPage}
-                  onClick={() => {
-                    fetchNextPage();
-                  }}
+                  onClick={onFetchNextPage}
                   disabled={isFetching}
                 />
               </div>
