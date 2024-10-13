@@ -37,7 +37,7 @@ export function BlindPreRegisterPage() {
           />
           <Description
             icon="🔍"
-            text="이음 매니저의 제안을 기다리지 않고 직접 짝을 찾습니다."
+            text="이음 매니저의 제안을 기다리지 않고 직접 짝을 찾아요."
           />
           <Description
             icon="📃"

@@ -84,7 +84,7 @@ export function BasicPromotionPage() {
             href={PRODUCT_URL}
             className="block w-full rounded-lg bg-primary-500 p-3 text-center text-lg font-medium text-white hover:enabled:bg-primary-700  disabled:opacity-50"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener"
           >
             더 알아보기
           </Link>
@@ -115,7 +115,7 @@ function ExternalLink({
       href={href}
       className="text-primary-500 underline hover:text-primary-700"
       target="_blank"
-      rel="noreferrer"
+      rel="noopener"
     >
       <span>{children}</span>
       <OpenInNewRoundedIcon className="mb-0.5 text-sm" />
