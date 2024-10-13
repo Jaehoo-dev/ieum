@@ -91,54 +91,12 @@ function Resolved({ memberId: targetMemberId }: { memberId: string }) {
       {match != null ? (
         <div className="flex flex-col gap-4">
           <MatchInfo targetMemberId={targetMemberId} />
-          {match.status === BlindMatchStatus.ACCEPTED ? (
-            <KakaotalkIdSection
-              selfMemberId={self.id}
-              targetMemberId={targetMemberId}
-            />
-          ) : null}
           <hr />
         </div>
       ) : null}
       <BlindProfile profile={profile} />
       <Spacing size={108} />
       <ButtonsField targetMemberId={targetMemberId} />
-    </div>
-  );
-}
-
-function KakaotalkIdSection({
-  selfMemberId,
-  targetMemberId,
-}: {
-  selfMemberId: string;
-  targetMemberId: string;
-}) {
-  const [match] = api.blindMatchRouter.getMatchInfo.useSuspenseQuery({
-    selfMemberId,
-    targetMemberId,
-  });
-
-  assert(match != null, "Should have been matched");
-  assert(match.status === BlindMatchStatus.ACCEPTED, "Should be accepted");
-
-  const [kakaotalkId] = api.blindMemberRouter.getKakaotalkId.useSuspenseQuery({
-    memberId: targetMemberId,
-  });
-
-  return (
-    <div className="flex items-center justify-between">
-      <span className="font-semibold text-gray-800">카카오톡 ID</span>
-      <span
-        className="flex cursor-pointer items-center gap-1 text-blind-500"
-        onClick={async () => {
-          await navigator.clipboard.writeText(kakaotalkId);
-          alert("카카오톡 아이디를 복사했어요.");
-        }}
-      >
-        <span className="text-lg font-semibold underline">{kakaotalkId}</span>
-        <ContentCopyRoundedIcon fontSize="small" className="mb-0.5" />
-      </span>
     </div>
   );
 }
