@@ -3,14 +3,16 @@ import {
   ReactElement,
   Suspense,
   useEffect,
+  useState,
 } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { BlindProfile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
-import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
@@ -19,6 +21,7 @@ import { useConfirmDialog } from "~/hooks/useConfirmDialog";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
+import { ChatUrlFormFormDialog } from "./_components/ChatUrlFormDialog";
 
 export function MemberProfilePage() {
   const router = useRouter();
@@ -91,12 +94,52 @@ function Resolved({ memberId: targetMemberId }: { memberId: string }) {
       {match != null ? (
         <div className="flex flex-col gap-4">
           <MatchInfo targetMemberId={targetMemberId} />
+          {match.status === BlindMatchStatus.ACCEPTED ? (
+            <ChatUrlSection
+              selfMemberId={self.id}
+              targetMemberId={targetMemberId}
+            />
+          ) : null}
           <hr />
         </div>
       ) : null}
       <BlindProfile profile={profile} />
       <Spacing size={108} />
       <ButtonsField targetMemberId={targetMemberId} />
+    </div>
+  );
+}
+
+function ChatUrlSection({
+  selfMemberId,
+  targetMemberId,
+}: {
+  selfMemberId: string;
+  targetMemberId: string;
+}) {
+  const [match] = api.blindMatchRouter.getMatchInfo.useSuspenseQuery({
+    selfMemberId,
+    targetMemberId,
+  });
+
+  assert(match != null, "Should have been matched");
+  assert(match.status === BlindMatchStatus.ACCEPTED, "Should be accepted");
+  assert(match.kakaoOpenchatUrl != null, "Should have kakaoOpenchatUrl");
+
+  return (
+    <div className="mt-1 flex flex-col items-center">
+      <span className="font-medium text-gray-800">
+        카카오톡 오픈채팅방 링크
+      </span>
+      <Link
+        href={match.kakaoOpenchatUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex cursor-pointer items-center gap-1 text-blind-500"
+      >
+        <span className="underline">{match.kakaoOpenchatUrl}</span>
+        <OpenInNewRoundedIcon className="mb-0.5 text-sm" />
+      </Link>
     </div>
   );
 }
@@ -173,14 +216,6 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
       ]);
     },
   });
-  const { mutateAsync: accept } = api.blindMatchRouter.accept.useMutation({
-    onSuccess: () => {
-      return Promise.all([
-        utils.blindMatchRouter.invalidate(),
-        utils.blindMemberRouter.invalidate(),
-      ]);
-    },
-  });
 
   if (match == null) {
     return (
@@ -235,29 +270,38 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
   }
 
   if (selfIsRespondent) {
-    return (
+    return <AcceptButton selfMemberId={self.id} matchId={match.id} />;
+  }
+}
+
+function AcceptButton({
+  selfMemberId,
+  matchId,
+}: {
+  selfMemberId: string;
+  matchId: string;
+}) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const utils = api.useUtils();
+  const { mutateAsync: accept } = api.blindMatchRouter.accept.useMutation({
+    onSuccess: () => {
+      return Promise.all([
+        utils.blindMatchRouter.invalidate(),
+        utils.blindMemberRouter.invalidate(),
+      ]);
+    },
+  });
+
+  return (
+    <>
       <div className="fixed bottom-0 left-0 flex w-full justify-center border-t border-gray-200 bg-white p-4 pt-2 md:px-6">
         <div className="flex w-full max-w-lg flex-col gap-2 md:px-2">
           <span className="text-center text-sm text-gray-500">
             ※ 상대방이 먼저 하트를 보냈어요.
           </span>
           <LikeButton
-            onClick={async () => {
-              const confirmed = await confirm({
-                title: "하트를 보내시겠어요?",
-                description: "번복할 수 없어요.",
-              });
-
-              if (!confirmed) {
-                return;
-              }
-
-              await accept({
-                selfMemberId: self.id,
-                matchId: match.id,
-              });
-
-              // TODO: alert
+            onClick={() => {
+              setIsDialogOpen(true);
             }}
           >
             <FavoriteIcon className="mb-0.5" />
@@ -265,8 +309,24 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
           </LikeButton>
         </div>
       </div>
-    );
-  }
+      <ChatUrlFormFormDialog
+        open={isDialogOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+        }}
+        onSubmit={async (kakaoOpenchatUrl) => {
+          await accept({
+            selfMemberId,
+            matchId,
+            kakaoOpenchatUrl,
+          });
+          alert(
+            "성사되었어요. 상대방에게 오픈채팅방 링크와 함께 알림을 보냈어요.",
+          );
+        }}
+      />
+    </>
+  );
 }
 
 function LikeButton(props: ComponentPropsWithoutRef<"button">) {
