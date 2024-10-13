@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PRODUCT_URL } from "@ieum/constants";
 
 export function EndingSection() {
   return (
@@ -8,9 +9,9 @@ export function EndingSection() {
         alt="하트 이미지"
         className="h-2/5 w-full object-cover object-center"
       />
-      <div className="mt-2 flex w-full flex-col gap-8 p-8">
+      <div className="mt-4 flex w-full flex-col gap-8 p-8">
         <div className="flex flex-col gap-6">
-          <h1 className="text-xl font-medium text-gray-800">
+          <h1 className="text-center text-lg font-medium text-gray-800">
             설문 완료해주셔서 감사합니다!
           </h1>
           {/* TODO */}
@@ -19,17 +20,19 @@ export function EndingSection() {
           </p> */}
         </div>
         <div className="flex flex-col gap-1">
-          {/* <Link
-            href="/tips"
-            className="text-center text-blind-500 underline hover:text-blind-700"
-          >
-            소개팅 꿀팁 보러 가기
-          </Link> */}
           <Link
             href="/"
             className="text-center text-blind-500 underline hover:text-blind-700"
           >
             홈으로
+          </Link>
+          <Link
+            href={PRODUCT_URL}
+            className="text-center text-primary-500 underline hover:text-primary-700"
+            target="blank"
+            rel="noopener"
+          >
+            이음 베이직도 알아보기
           </Link>
         </div>
       </div>
