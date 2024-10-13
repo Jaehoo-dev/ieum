@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ReactElement, Suspense } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { assert } from "@ieum/utils";
-import { addDays, differenceInDays } from "date-fns";
+import { differenceInDays } from "date-fns";
 
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
