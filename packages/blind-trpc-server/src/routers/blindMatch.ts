@@ -1,5 +1,7 @@
 import { BLIND_MATCH_DURATION_DAYS } from "@ieum/constants";
 import { BlindMatchStatus } from "@ieum/prisma";
+import { sendSlackMessage } from "@ieum/slack";
+import { solapiMessageService } from "@ieum/solapi";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { addDays, endOfDay } from "date-fns";
@@ -87,63 +89,96 @@ export const blindMatchRouter = createTRPCRouter({
       z.object({
         selfMemberId: z.string(),
         matchId: z.string(),
+        kakaoOpenchatUrl: z.string(),
       }),
     )
-    .mutation(async ({ ctx: { prisma }, input: { selfMemberId, matchId } }) => {
-      const [member, match] = await Promise.all([
-        prisma.blindMember.findUniqueOrThrow({
-          where: {
-            id: selfMemberId,
-          },
-          select: {
-            heartsLeft: true,
-          },
-        }),
-        // NOTE: validate member is respondent of match
-        prisma.blindMatch.findUniqueOrThrow({
-          where: {
-            id: matchId,
-            respondentId: selfMemberId,
-          },
-          select: {
-            id: true,
-          },
-        }),
-      ]);
-
-      assert(
-        member.heartsLeft > 0,
-        new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Not enough hearts",
-        }),
-      );
-
-      await prisma.$transaction([
-        prisma.blindMember.update({
-          where: {
-            id: selfMemberId,
-          },
-          data: {
-            heartsLeft: {
-              decrement: 1,
+    .mutation(
+      async ({
+        ctx: { prisma },
+        input: { selfMemberId, matchId, kakaoOpenchatUrl },
+      }) => {
+        const [member, match] = await Promise.all([
+          prisma.blindMember.findUniqueOrThrow({
+            where: {
+              id: selfMemberId,
             },
-          },
-        }),
-        prisma.blindMatch.update({
-          where: {
-            id: match.id,
-          },
-          data: {
-            status: BlindMatchStatus.ACCEPTED,
-            acceptedAt: new Date(),
-            expiresAt: endOfDay(addDays(new Date(), BLIND_MATCH_DURATION_DAYS)),
-          },
-        }),
-      ]);
+            select: {
+              nickname: true,
+              heartsLeft: true,
+            },
+          }),
+          // NOTE: validate member is respondent of match & get proposer
+          prisma.blindMatch.findUniqueOrThrow({
+            where: {
+              id: matchId,
+              respondentId: selfMemberId,
+            },
+            select: {
+              id: true,
+              proposer: {
+                select: {
+                  nickname: true,
+                  phoneNumber: true,
+                },
+              },
+            },
+          }),
+        ]);
 
-      return true;
-    }),
+        assert(
+          member.heartsLeft > 0,
+          new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Not enough hearts",
+          }),
+        );
+
+        await prisma.$transaction([
+          prisma.blindMember.update({
+            where: {
+              id: selfMemberId,
+            },
+            data: {
+              heartsLeft: {
+                decrement: 1,
+              },
+            },
+          }),
+          prisma.blindMatch.update({
+            where: {
+              id: match.id,
+            },
+            data: {
+              status: BlindMatchStatus.ACCEPTED,
+              acceptedAt: new Date(),
+              expiresAt: endOfDay(
+                addDays(new Date(), BLIND_MATCH_DURATION_DAYS),
+              ),
+              kakaoOpenchatUrl,
+            },
+          }),
+        ]);
+
+        try {
+          await solapiMessageService.sendOne({
+            from: process.env.ADMIN_PHONE_NUMBER,
+            to: match.proposer.phoneNumber,
+            text: `[이음 블라인드] ${match.proposer.nickname} 님 축하합니다! ${member.nickname} 님도 하트를 보내 매칭이 성사되었습니다. 
+            
+아래 오픈채팅방에 입장해 대화를 시작해주세요.
+            
+${kakaoOpenchatUrl}`,
+          });
+        } catch (err) {
+          sendSlackMessage({
+            channel: "에러_알림",
+            content: `이음 블라인드 성사 알림 실패\nproposer: ${match.proposer.nickname} respondent: ${member.nickname}\n${err}`,
+          });
+        }
+
+        return true;
+      },
+    ),
   getMatchInfo: protectedBlindProcedure
     .input(
       z.object({
@@ -172,6 +207,7 @@ export const blindMatchRouter = createTRPCRouter({
           respondentId: true,
           createdAt: true,
           expiresAt: true,
+          kakaoOpenchatUrl: true,
         },
       });
     }),
