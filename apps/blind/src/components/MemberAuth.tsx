@@ -60,74 +60,71 @@ function PhoneStep({ onSignIn }: PhoneStepProps) {
   const { mutateAsync: createOtp } = api.otpRouter.create.useMutation();
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <form
-        className="flex w-full flex-col"
-        onSubmit={handleSubmit(async ({ phoneNumber }) => {
-          sendMessage({
-            content: `${phoneNumber} - 인증번호 전송 요청\n${navigator.userAgent}`,
-          });
+    <form
+      className="flex w-full flex-col"
+      onSubmit={handleSubmit(async ({ phoneNumber }) => {
+        sendMessage({
+          content: `${phoneNumber} - 인증번호 전송 요청\n${navigator.userAgent}`,
+        });
 
-          const hyphenRemovedPhoneNumber = krHyphenToKr(phoneNumber);
+        const hyphenRemovedPhoneNumber = krHyphenToKr(phoneNumber);
 
-          const { verificationId, isReused } = await createOtp({
-            phoneNumber: hyphenRemovedPhoneNumber,
-          });
+        const { verificationId, isReused } = await createOtp({
+          phoneNumber: hyphenRemovedPhoneNumber,
+        });
 
-          if (isReused) {
-            alert(
-              "이미 인증번호를 전송했습니다. 문자로 받은 인증번호를 입력하거나 잠시 후 다시 시도해주세요.",
-            );
-            onSignIn({ phoneNumber: hyphenRemovedPhoneNumber, verificationId });
-
-            return;
-          }
-
-          sendMessage({ content: `${phoneNumber} - 인증번호 전송` });
+        if (isReused) {
+          alert(
+            "이미 인증번호를 전송했습니다. 문자로 받은 인증번호를 입력하거나 잠시 후 다시 시도해주세요.",
+          );
           onSignIn({ phoneNumber: hyphenRemovedPhoneNumber, verificationId });
-          alert("인증번호를 전송했습니다.");
-        })}
+
+          return;
+        }
+
+        sendMessage({ content: `${phoneNumber} - 인증번호 전송` });
+        onSignIn({ phoneNumber: hyphenRemovedPhoneNumber, verificationId });
+        alert("인증번호를 전송했습니다.");
+      })}
+    >
+      <label className="flex flex-col" htmlFor="phoneNumber">
+        <span className="text-gray-700 md:text-lg">전화번호</span>
+        <Controller
+          control={control}
+          name="phoneNumber"
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            return (
+              <input
+                id="phoneNumber"
+                className={`rounded-lg border ${
+                  error ? "border-red-500" : "border-gray-300"
+                } px-4 py-2 text-lg text-gray-700 md:py-3 md:text-xl`}
+                type="text"
+                placeholder="010-0000-0000"
+                value={value}
+                onChange={({ target: { value } }) => {
+                  onChange(formatPhoneNumberInput(value));
+                }}
+              />
+            );
+          }}
+          rules={{
+            required: "전화번호를 입력해주세요",
+            pattern: {
+              value: /^010-\d{4}-\d{4}$/,
+              message: "올바른 전화번호를 입력해주세요",
+            },
+          }}
+        />
+      </label>
+      <button
+        id="sign-in-button"
+        className="mt-3 w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300 md:p-3 md:text-xl"
+        disabled={isSubmitting || errors.phoneNumber != null}
       >
-        <label className="flex flex-col" htmlFor="phoneNumber">
-          <span className="text-gray-700 md:text-lg">전화번호</span>
-          <Controller
-            control={control}
-            name="phoneNumber"
-            render={({ field: { onChange, value }, fieldState: { error } }) => {
-              return (
-                <input
-                  id="phoneNumber"
-                  className={`rounded-lg border ${
-                    error ? "border-red-500" : "border-gray-300"
-                  } px-4 py-2 text-lg text-gray-700 md:py-3 md:text-xl`}
-                  type="text"
-                  placeholder="010-0000-0000"
-                  value={value}
-                  onChange={({ target: { value } }) => {
-                    onChange(formatPhoneNumberInput(value));
-                  }}
-                />
-              );
-            }}
-            rules={{
-              required: "전화번호를 입력해주세요",
-              pattern: {
-                value: /^010-\d{4}-\d{4}$/,
-                message: "올바른 전화번호를 입력해주세요",
-              },
-            }}
-          />
-        </label>
-        <button
-          id="sign-in-button"
-          className="mt-3 w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300 md:p-3 md:text-xl"
-          disabled={isSubmitting || errors.phoneNumber != null}
-        >
-          {isSubmitting ? "전송중.." : "인증번호 전송"}
-        </button>
-      </form>
-      <TipsMenuLink />
-    </div>
+        {isSubmitting ? "전송중.." : "인증번호 전송"}
+      </button>
+    </form>
   );
 }
 
