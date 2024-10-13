@@ -1,3 +1,4 @@
+import { OTP_DURATION } from "@ieum/constants";
 import { UserType } from "@ieum/prisma";
 import { solapiMessageService } from "@ieum/solapi";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
@@ -67,8 +68,6 @@ export const otpRouter = createTRPCRouter({
       };
     }),
 });
-
-const OTP_DURATION = 3 * 60 * 1000; // 3 minutes
 
 function sendOtp(to: string, code: string) {
   return solapiMessageService.sendOne({
