@@ -6,6 +6,7 @@ import { match } from "ts-pattern";
 
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { api } from "~/utils/api";
 import { PreEndingSection } from "./_components/sections/PreEndingSection";
 import { PreSurveySection } from "./_components/sections/PreSurveySection";
@@ -17,6 +18,13 @@ export function PreRegisterPage() {
   const { data: session, status } = useSession();
   const utils = api.useUtils();
   const [step, setStep] = useState<(typeof steps)[number]>("설문");
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: "사전 신청 페이지 진입",
+    });
+  }, []);
 
   const abort = useCallback(async () => {
     await signOut();

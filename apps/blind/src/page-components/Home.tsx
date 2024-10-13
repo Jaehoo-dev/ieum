@@ -9,11 +9,18 @@ import { KakaotalkChatButton } from "~/components/KakaotalkChatButton";
 import { Loader } from "~/components/Loader";
 import { MemberAuth } from "~/components/MemberAuth";
 import { Spacing } from "~/components/Spacing";
-import { TipsMenuLink } from "~/components/TipsMenuLink";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 
 export function Home() {
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: "이음 블라인드 홈 진입",
+    });
+  }, []);
+
   return (
     <>
       <Head>

@@ -1,13 +1,21 @@
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PRODUCT_URL } from "@ieum/constants";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
+import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 export function IntroductionPage() {
   const router = useRouter();
+  const { sendMessage } = useSlackNotibot();
+
+  useEffect(() => {
+    sendMessage({
+      content: "이음 블라인드 안내 페이지 진입",
+    });
+  }, []);
 
   return (
     <>

@@ -1,7 +1,11 @@
 import { DEFAULT_HEART_COUNT, 성별_라벨 } from "@ieum/constants";
 import { Gender, MemberStatus, RegionV2 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
-import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
+import {
+  assert,
+  formatUniqueMemberName,
+  isKrPhoneNumberWithoutHyphens,
+} from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { match } from "ts-pattern";
 import { z } from "zod";
@@ -82,6 +86,16 @@ export const blindMemberRouter = createTRPCRouter({
     .mutation(async ({ ctx: { prisma }, input }) => {
       await prisma.draftBlindMember.create({
         data: input,
+      });
+
+      sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `*이음:cupid:블라인드* 사전 신청\n${formatUniqueMemberName({
+          name: input.nickname,
+          phoneNumber: input.phoneNumber,
+        })} / ${성별_라벨[input.gender]} / ${input.birthYear}년생 / ${
+          input.region
+        }`,
       });
 
       return true;
