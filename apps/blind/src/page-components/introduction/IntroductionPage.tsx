@@ -58,7 +58,7 @@ export function IntroductionPage() {
           </h3>
           <div className="flex flex-col gap-2">
             <Description
-              icon="⚠️"
+              icon="💰"
               content={
                 <>
                   베타 기간 동안{" "}
