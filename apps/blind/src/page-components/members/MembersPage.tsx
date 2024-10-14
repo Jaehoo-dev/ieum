@@ -156,7 +156,7 @@ function MembersTable({
 
   return (
     <div className="flex flex-col gap-2 overflow-x-auto border-b">
-      <div className="w-[700px]">
+      <div className="w-[680px]">
         <div className="grid grid-cols-[1fr_0.7fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
           <div className="font-medium text-gray-800">닉네임</div>
           <div className="font-medium text-gray-800">지역</div>
