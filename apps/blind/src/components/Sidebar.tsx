@@ -35,11 +35,7 @@ export function Sidebar({ open, onClose }: Props) {
         <div className="flex-grow overflow-y-auto">
           <ul className="space-y-2 px-4">
             <MenuItem
-              label={
-                <>
-                  <span className="text-primary-500">이음 베이직</span> 알아보기
-                </>
-              }
+              label="이음 베이직 알아보기"
               href="/basic"
               onClick={onClose}
             />
