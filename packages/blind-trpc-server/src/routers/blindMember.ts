@@ -145,12 +145,16 @@ export const blindMemberRouter = createTRPCRouter({
     .input(
       z.object({
         selfMemberId: z.string(),
+        gender: z.nativeEnum(Gender),
         take: z.number().min(1).max(100).default(20),
         cursor: z.string().optional(),
       }),
     )
     .query(
-      async ({ ctx: { prisma }, input: { selfMemberId, take, cursor } }) => {
+      async ({
+        ctx: { prisma },
+        input: { selfMemberId, gender, take, cursor },
+      }) => {
         const self = await prisma.blindMember.findUniqueOrThrow({
           where: {
             id: selfMemberId,
@@ -170,12 +174,11 @@ export const blindMemberRouter = createTRPCRouter({
           },
         });
 
+        const 이성인가 = self.gender !== gender;
+
         const members = await prisma.blindMember.findMany({
           where: {
-            gender: match(self.gender)
-              .with(Gender.MALE, () => Gender.FEMALE)
-              .with(Gender.FEMALE, () => Gender.MALE)
-              .exhaustive(),
+            gender,
             status: MemberStatus.ACTIVE,
             phoneNumber: {
               notIn: self.blacklistedPhoneNumbers,
@@ -185,16 +188,20 @@ export const blindMemberRouter = createTRPCRouter({
                 has: self.phoneNumber,
               },
             },
-            matchesAsProposer: {
-              none: {
-                respondentId: selfMemberId,
-              },
-            },
-            matchesAsRespondent: {
-              none: {
-                proposerId: selfMemberId,
-              },
-            },
+            matchesAsProposer: 이성인가
+              ? {
+                  none: {
+                    respondentId: selfMemberId,
+                  },
+                }
+              : undefined,
+            matchesAsRespondent: 이성인가
+              ? {
+                  none: {
+                    proposerId: selfMemberId,
+                  },
+                }
+              : undefined,
           },
           take: take + 1,
           cursor: cursor ? { id: cursor } : undefined,

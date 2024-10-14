@@ -65,21 +65,12 @@ function Resolved({ memberId: targetMemberId }: { memberId: string }) {
     targetMemberId,
   });
 
-  useEffect(() => {
-    if (match == null) {
-      return;
-    }
-
-    if (match.expiresAt < new Date()) {
-      router.replace("/members");
-    }
-  }, [match?.expiresAt, router]);
-
-  useEffect(() => {
-    if (match?.status === BlindMatchStatus.REJECTED) {
-      router.replace("/members");
-    }
-  }, [match, router]);
+  if (
+    (match != null && match.expiresAt < new Date()) ||
+    match?.status === BlindMatchStatus.REJECTED
+  ) {
+    router.replace("/members");
+  }
 
   const { sendMessage } = useSlackNotibot();
 
