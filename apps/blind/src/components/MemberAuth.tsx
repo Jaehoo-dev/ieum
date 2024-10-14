@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "@ieum/blind-auth";
 import { assert, formatPhoneNumberInput, krHyphenToKr } from "@ieum/utils";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import { Controller, useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 
@@ -14,7 +15,7 @@ export function MemberAuth() {
   const [verificationId, setVerificationId] = useState<string>();
 
   return (
-    <div className="w-full max-w-md">
+    <div className="flex w-full max-w-md flex-col gap-10">
       {match(step)
         .with("PHONE", () => (
           <PhoneStep
@@ -37,6 +38,32 @@ export function MemberAuth() {
           />
         ))
         .exhaustive()}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-1 text-gray-700">
+          <HelpOutlineRoundedIcon className="mb-0.5 text-sm" />
+          <span>전화번호 인증을 왜 하나요?</span>
+        </div>
+        <p className="flex flex-col gap-1 text-sm text-gray-700">
+          <Description>
+            무분별한 계정 생성을 방지하고 건전한 서비스를 제공하기 위해
+            전화번호로 회원체계를 운영합니다.
+          </Description>
+          <Description>하트를 받았을 때 알림을 발송합니다.</Description>
+          <Description>
+            전화번호는 다른 회원에게{" "}
+            <span className="font-semibold">절대 노출하지 않습니다</span>.
+          </Description>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Description({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex w-full items-start gap-1">
+      <p>-</p>
+      <p>{children}</p>
     </div>
   );
 }
