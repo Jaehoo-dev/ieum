@@ -32,7 +32,7 @@ export function HeartSection() {
       <div className="flex w-full items-start gap-1">
         <p className="text-sm text-gray-500">※</p>
         <p className="text-sm text-gray-500">
-          {`하트는 매주 월요일 오전에 ${DEFAULT_HEART_COUNT}개씩 생겨요.`}
+          {`하트는 매주 월요일 오전에 ${DEFAULT_HEART_COUNT}개씩 충전돼요.`}
         </p>
       </div>
     </div>
