@@ -51,6 +51,9 @@ export function Sidebar() {
         >
           회원 생성
         </Link>
+        <Link href="/bulk-notify" className="text-blue-600 hover:underline">
+          알림
+        </Link>
       </div>
       <button
         className="w-full rounded bg-gray-300 py-2 text-xs text-gray-900"

@@ -230,6 +230,7 @@ model BlindVerificationDocument {
 model BlindBulkNotification {
   id     String   @id @default(cuid())
   sentAt DateTime
+  sentTo String[]
 }
 
 enum MatchStatus {

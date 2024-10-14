@@ -157,11 +157,11 @@ function MembersTable({
   return (
     <div className="flex flex-col gap-2 overflow-x-auto border-b">
       <div className="w-[680px]">
-        <div className="grid grid-cols-[1fr_0.7fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
+        <div className="grid grid-cols-[0.8fr_0.7fr_0.7fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
           <div className="font-medium text-gray-800">닉네임</div>
           <div className="font-medium text-gray-800">지역</div>
           <div className="font-medium text-gray-800">출생연도</div>
-          <div className="font-medium text-gray-800">키</div>
+          <div className="font-medium text-gray-800">키(cm)</div>
           <div className="font-medium text-gray-800">체형</div>
           <div className="font-medium text-gray-800">직업</div>
         </div>
@@ -180,7 +180,7 @@ function MembersTable({
                   key={member.id}
                   className={`grid ${
                     동성인가 ? "" : "cursor-pointer"
-                  } grid-cols-[1fr_0.7fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
+                  } grid-cols-[0.8fr_0.7fr_0.7fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
                     동성인가 ? "" : "hover:bg-blind-100"
                   } ${
                     !동성인가 && index % 2 === 0
@@ -200,8 +200,8 @@ function MembersTable({
                 >
                   <div className="truncate">{member.nickname}</div>
                   <div className="truncate">{지역_라벨[member.region]}</div>
-                  <div className="truncate">{member.birthYear}년생</div>
-                  <div className="truncate">{member.height}cm</div>
+                  <div className="truncate">{member.birthYear}</div>
+                  <div className="truncate">{member.height}</div>
                   <div className="truncate">{member.bodyShape}</div>
                   <div className="truncate">{member.job}</div>
                 </div>
