@@ -1,10 +1,11 @@
-import { ReactElement, Suspense, useEffect } from "react";
+import { ReactElement, useEffect } from "react";
+import Link from "next/link";
+import { IEUM_BLIND_HOME_URL } from "@ieum/constants";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
-import { ResolvedRegisterSection } from "./_components/ResolvedRegisterButton";
 
 export function BlindRegisterPage() {
   const { member } = useMemberAuthContext();
@@ -23,9 +24,6 @@ export function BlindRegisterPage() {
 
   return (
     <div className="mb-10 flex flex-col gap-10 text-gray-700">
-      <Suspense>
-        <ResolvedRegisterSection />
-      </Suspense>
       <div className="flex flex-col gap-4">
         <h2 className="border-b border-blind-500 pb-2 text-lg font-semibold text-blind-500">
           이음 블라인드란?
@@ -66,6 +64,12 @@ export function BlindRegisterPage() {
           <Disclaimer text="추후 유료화할 수 있어요. 미리 고지할 테니 걱정마세요!" />
         </div>
       </div>
+      <Link
+        href={IEUM_BLIND_HOME_URL}
+        className="block w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white disabled:opacity-50 md:p-2.5 md:text-lg"
+      >
+        이음 블라인드 시작하기
+      </Link>
     </div>
   );
 }
