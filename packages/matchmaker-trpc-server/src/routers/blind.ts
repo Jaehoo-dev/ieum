@@ -59,6 +59,7 @@ export const blindRouter = createTRPCRouter({
           id: input.memberId,
         },
         select: {
+          name: true,
           phoneNumber: true,
           gender: true,
           birthYear: true,
@@ -70,7 +71,7 @@ export const blindRouter = createTRPCRouter({
       assert(member.regionV2 != null, "regionV2 should be defined");
       assert(member.profile != null, "profile should be defined");
 
-      await prisma.blindMember.create({
+      const blindMember = await prisma.blindMember.create({
         data: {
           phoneNumber: member.phoneNumber,
           status: MemberStatus.ACTIVE,
@@ -88,6 +89,14 @@ export const blindRouter = createTRPCRouter({
           jobVerified: false,
           heartsLeft: DEFAULT_HEART_COUNT,
         },
+      });
+
+      sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `*이음:cupid:블라인드* 회원 생성\n${formatUniqueMemberName({
+          name: member.name,
+          phoneNumber: member.phoneNumber,
+        })} 블라인드 가입 (${blindMember.nickname})`,
       });
 
       return true;
