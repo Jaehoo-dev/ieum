@@ -12,12 +12,8 @@ export function EndingSection() {
       <div className="mt-4 flex w-full flex-col gap-8 p-8">
         <div className="flex flex-col gap-6">
           <h1 className="text-center text-lg font-medium text-gray-800">
-            설문 완료해주셔서 감사합니다!
+            회원 가입을 완료했습니다!
           </h1>
-          {/* TODO */}
-          {/* <p className="text-gray-800">
-            각종 인증을 진행하시면 성사율이 올라갑니다.
-          </p> */}
         </div>
         <div className="flex flex-col gap-1">
           <Link

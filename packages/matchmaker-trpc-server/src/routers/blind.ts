@@ -1,117 +1,125 @@
-import { sendSlackMessage } from "@ieum/slack";
-import { formatUniqueMemberName } from "@ieum/utils";
+import { DEFAULT_HEART_COUNT } from "@ieum/constants";
+import { MemberStatus } from "@ieum/prisma";
+import {
+  sendSlackMessage,
+  SLACK_MANAGER1_ID_MENTION,
+  SLACK_MANAGER2_ID_MENTION,
+} from "@ieum/slack";
+import { assert, formatUniqueMemberName } from "@ieum/utils";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedMatchmakerProcedure } from "../trpc";
 
 export const blindRouter = createTRPCRouter({
-  updateKakaotalkId: protectedMatchmakerProcedure
+  isBlindMember: protectedMatchmakerProcedure
     .input(
       z.object({
         memberId: z.string(),
-        kakaotalkId: z.string(),
       }),
     )
-    .mutation(async ({ ctx: { prisma }, input: { memberId, kakaotalkId } }) => {
+    .query(async ({ ctx: { prisma }, input: { memberId } }) => {
       const member = await prisma.basicMemberV2.findUniqueOrThrow({
         where: {
           id: memberId,
         },
         select: {
-          name: true,
           phoneNumber: true,
         },
       });
 
-      await prisma.blindPreRegisteredMember.update({
+      const blindMember = await prisma.blindMember.findUnique({
         where: {
           phoneNumber: member.phoneNumber,
         },
+      });
+
+      return blindMember != null;
+    }),
+  create: protectedMatchmakerProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        nickname: z.string(),
+        bodyShape: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input }) => {
+      const existingMember = await prisma.blindMember.findFirst({
+        where: {
+          nickname: input.nickname,
+        },
+      });
+
+      if (existingMember != null) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Nickname already exists",
+        });
+      }
+
+      const member = await prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          id: input.memberId,
+        },
+        select: {
+          name: true,
+          phoneNumber: true,
+          gender: true,
+          birthYear: true,
+          regionV2: true,
+          profile: true,
+        },
+      });
+
+      assert(member.regionV2 != null, "regionV2 should be defined");
+      assert(member.profile != null, "profile should be defined");
+
+      const blindMember = await prisma.blindMember.create({
         data: {
-          kakaotalkId,
+          phoneNumber: member.phoneNumber,
+          status: MemberStatus.ACTIVE,
+          nickname: input.nickname,
+          gender: member.gender,
+          birthYear: member.birthYear,
+          region: member.regionV2,
+          height: member.profile.height,
+          bodyShape: input.bodyShape,
+          job: member.profile.job,
+          selfIntroduction: member.profile.selfIntroduction ?? "-",
+          nameVerified: false,
+          ageVerified: false,
+          genderVerified: false,
+          jobVerified: false,
+          heartsLeft: DEFAULT_HEART_COUNT,
         },
       });
 
       sendSlackMessage({
         channel: "폼_제출_알림",
-        content: `${formatUniqueMemberName(
-          member,
-        )} - 이음 블라인드 카카오톡 ID 업데이트`,
-      });
-
-      return true;
-    }),
-  preRegister: protectedMatchmakerProcedure
-    .input(
-      z.object({
-        memberId: z.string(),
-        kakaotalkId: z.string(),
-      }),
-    )
-    .mutation(async ({ ctx: { prisma }, input: { memberId, kakaotalkId } }) => {
-      const member = await prisma.basicMemberV2.findUniqueOrThrow({
-        where: {
-          id: memberId,
-        },
-        select: {
-          name: true,
-          phoneNumber: true,
-        },
-      });
-
-      await prisma.blindPreRegisteredMember.create({
-        data: {
+        content: `*이음:cupid:블라인드* 회원 생성\n${formatUniqueMemberName({
           name: member.name,
           phoneNumber: member.phoneNumber,
-          kakaotalkId,
-        },
-      });
-
-      sendSlackMessage({
-        channel: "폼_제출_알림",
-        content: `${formatUniqueMemberName(member)} - 이음 블라인드 사전 신청`,
+        })} 블라인드 가입 (${
+          blindMember.nickname
+        }) ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
       });
 
       return true;
     }),
-  getPreRegisterStatus: protectedMatchmakerProcedure
+  isNicknameAvailable: protectedMatchmakerProcedure
     .input(
       z.object({
-        memberId: z.string(),
+        nickname: z.string(),
       }),
     )
-    .query(
-      async ({
-        ctx: { prisma },
-        input: { memberId },
-      }): Promise<"DONE" | "KAKAOTALK_ID_MISSING" | "NON_REGISTERED"> => {
-        const member = await prisma.basicMemberV2.findUniqueOrThrow({
-          where: {
-            id: memberId,
-          },
-          select: {
-            phoneNumber: true,
-          },
-        });
+    .query(async ({ ctx: { prisma }, input }) => {
+      const count = await prisma.blindMember.count({
+        where: {
+          nickname: input.nickname,
+        },
+      });
 
-        const preRegisteredMember =
-          await prisma.blindPreRegisteredMember.findUnique({
-            where: {
-              phoneNumber: member.phoneNumber,
-            },
-            select: {
-              id: true,
-              kakaotalkId: true,
-            },
-          });
-
-        if (preRegisteredMember == null) {
-          return "NON_REGISTERED";
-        }
-
-        return preRegisteredMember.kakaotalkId == null
-          ? "KAKAOTALK_ID_MISSING"
-          : "DONE";
-      },
-    ),
+      return count === 0;
+    }),
 });

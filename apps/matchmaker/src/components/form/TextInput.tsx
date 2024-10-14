@@ -24,7 +24,7 @@ function _TextInput(
   const hasErrorText = error && !isEmptyStringOrNil(errorText);
 
   return (
-    <label className="flex flex-col gap-1 text-gray-800" htmlFor={label}>
+    <label className="flex flex-1 flex-col gap-1 text-gray-800" htmlFor={label}>
       <span className="text-lg font-medium">
         {label}
         {props.required ? <span className="text-primary-500">*</span> : null}

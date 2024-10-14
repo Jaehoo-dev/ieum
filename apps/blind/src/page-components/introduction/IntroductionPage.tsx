@@ -103,7 +103,7 @@ export function IntroductionPage() {
               router.push("/");
             }}
           >
-            사전 신청
+            시작하기
           </Link>
         </div>
       </div>
