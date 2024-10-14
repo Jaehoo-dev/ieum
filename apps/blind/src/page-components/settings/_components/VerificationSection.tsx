@@ -28,10 +28,10 @@ export function VerificationSection() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <div className="flex flex-row items-center gap-0.5">
+        {/* <div className="flex flex-row items-center gap-0.5">
           <span>실명:</span>
           {verificationStatus.name ? <Verified /> : <NotVerified />}
-        </div>
+        </div> */}
         <div className="flex flex-row items-center gap-0.5">
           <span>성별:</span>
           {verificationStatus.gender ? <Verified /> : <NotVerified />}
