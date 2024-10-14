@@ -1,6 +1,10 @@
 import { DEFAULT_HEART_COUNT } from "@ieum/constants";
 import { MemberStatus } from "@ieum/prisma";
-import { sendSlackMessage } from "@ieum/slack";
+import {
+  sendSlackMessage,
+  SLACK_MANAGER1_ID_MENTION,
+  SLACK_MANAGER2_ID_MENTION,
+} from "@ieum/slack";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -96,7 +100,9 @@ export const blindRouter = createTRPCRouter({
         content: `*이음:cupid:블라인드* 회원 생성\n${formatUniqueMemberName({
           name: member.name,
           phoneNumber: member.phoneNumber,
-        })} 블라인드 가입 (${blindMember.nickname})`,
+        })} 블라인드 가입 (${
+          blindMember.nickname
+        }) ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
       });
 
       return true;
