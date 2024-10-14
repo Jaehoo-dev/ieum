@@ -4,9 +4,9 @@ import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { Layout } from "~/components/Layout";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
-import { ResolvedPreRegisterSection } from "./_components/ResolvedPreRegisterButton";
+import { ResolvedRegisterSection } from "./_components/ResolvedRegisterButton";
 
-export function BlindPreRegisterPage() {
+export function BlindRegisterPage() {
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
@@ -17,14 +17,14 @@ export function BlindPreRegisterPage() {
     sendMessage({
       content: `${formatUniqueMemberName(
         member,
-      )} - 이음 블라인드 사전 신청 페이지 진입`,
+      )} - 이음 블라인드 신청 페이지 진입`,
     });
   }, []);
 
   return (
     <div className="mb-10 flex flex-col gap-10 text-gray-700">
       <Suspense>
-        <ResolvedPreRegisterSection />
+        <ResolvedRegisterSection />
       </Suspense>
       <div className="flex flex-col gap-4">
         <h2 className="border-b border-blind-500 pb-2 text-lg font-semibold text-blind-500">
@@ -88,6 +88,6 @@ function Disclaimer({ text }: { text: string }) {
   );
 }
 
-BlindPreRegisterPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="이음 블라인드 사전 신청">{page}</Layout>;
+BlindRegisterPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout title="이음 블라인드 신청">{page}</Layout>;
 };
