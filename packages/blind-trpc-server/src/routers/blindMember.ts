@@ -166,9 +166,7 @@ export const blindMemberRouter = createTRPCRouter({
             job: true,
             region: true,
           },
-          orderBy: {
-            birthYear: "asc",
-          },
+          orderBy: [{ birthYear: "asc" }, { createdAt: "desc" }],
         });
 
         const nextCursor =
