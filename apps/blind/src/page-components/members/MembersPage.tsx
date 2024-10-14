@@ -165,7 +165,7 @@ function MembersTable({
           <div className="font-medium text-gray-800">체형</div>
           <div className="font-medium text-gray-800">직업</div>
         </div>
-        <div className="max-h-[calc(100vh-252px)] divide-y overflow-y-auto overflow-x-hidden">
+        <div className="max-h-[calc(100vh-340px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => {
             const 동성인가 = self.gender === member.gender;
 
