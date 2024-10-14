@@ -1,3 +1,4 @@
+import { IEUM_BLIND_MATCHES_PAGE_URL } from "@ieum/constants";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { solapiMessageService } from "@ieum/solapi";
 import { assert, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
@@ -50,7 +51,7 @@ export const blindMatchRouter = createTRPCRouter({
             to: phoneNumber,
             from: process.env.ADMIN_PHONE_NUMBER,
             text: `[이음 블라인드] 하트가 도착했습니다! '매칭 목록' 탭에서 확인해보세요.
-https://blind.ieum.love/matches`,
+${IEUM_BLIND_MATCHES_PAGE_URL}`,
           };
         }),
       ),
