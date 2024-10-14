@@ -251,7 +251,7 @@ function FetchMoreButton({
 
 function BasicPromotion() {
   return (
-    <div className="text-center">
+    <div className="text-center text-gray-700">
       <p>
         더 꼼꼼한 조건으로
         <br />
