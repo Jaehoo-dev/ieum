@@ -194,10 +194,7 @@ function MembersTable({
                       return;
                     }
 
-                    // TODO
-                    alert("아직 준비 중이에요. 조금만 기다려주세요!");
-
-                    // router.push(`/members/${member.id}`);
+                    router.push(`/members/${member.id}`);
                   }}
                   aria-disabled={self.gender === member.gender}
                 >
