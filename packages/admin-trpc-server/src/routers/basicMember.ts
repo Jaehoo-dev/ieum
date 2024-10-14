@@ -1305,4 +1305,41 @@ export const basicMemberRouter = createTRPCRouter({
         return !hasBeenMatched;
       });
     }),
+  getByReferralCode: protectedAdminProcedure
+    .input(z.object({ referralCode: z.string() }))
+    .query(({ ctx, input: { referralCode } }) => {
+      return ctx.prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          referralCode,
+        },
+        select: {
+          id: true,
+          name: true,
+          phoneNumber: true,
+        },
+      });
+    }),
+  getReferrals: protectedAdminProcedure
+    .input(z.object({ memberId: z.string() }))
+    .query(async ({ ctx, input: { memberId } }) => {
+      const member = await ctx.prisma.basicMemberV2.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          referralCode: true,
+        },
+      });
+
+      return ctx.prisma.basicMemberV2.findMany({
+        where: {
+          referrerCode: member.referralCode,
+        },
+        select: {
+          id: true,
+          name: true,
+          phoneNumber: true,
+        },
+      });
+    }),
 });
