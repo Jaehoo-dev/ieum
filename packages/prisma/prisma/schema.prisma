@@ -227,6 +227,11 @@ model BlindVerificationDocument {
   bucketPath String
 }
 
+model BlindBulkNotification {
+  id     String   @id @default(cuid())
+  sentAt DateTime
+}
+
 enum MatchStatus {
   BACKLOG
   PREPARING

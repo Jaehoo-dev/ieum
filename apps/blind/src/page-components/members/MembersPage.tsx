@@ -38,7 +38,7 @@ export function MembersPage() {
     {
       selfMemberId: member.id,
       gender: genderQuery,
-      take: 20,
+      take: 15,
     },
     {
       getNextPageParam: (lastPage) => {
@@ -53,7 +53,7 @@ export function MembersPage() {
         <meta name="robots" content="noindex" />
       </Head>
       <StatusGuard>
-        <div className="flex flex-col gap-6">
+        <div className="mb-10 flex flex-col gap-6">
           <div className="flex w-full justify-center">
             <GenderTabs
               value={genderQuery}
@@ -159,7 +159,7 @@ function MembersTable({
   assert(self != null, "Component should be used within MemberAuthGuard");
 
   return (
-    <div className="flex flex-col gap-2 overflow-x-auto">
+    <div className="flex flex-col gap-2 overflow-x-auto border-b">
       <div className="w-[640px]">
         <div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
           <div className="font-medium text-gray-800">닉네임</div>
@@ -181,6 +181,7 @@ function MembersTable({
                 </div>
               ) : null} */}
                 <div
+                  key={member.id}
                   className={`grid ${
                     동성인가 ? "" : "cursor-pointer"
                   } grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
