@@ -197,7 +197,10 @@ function MembersTable({
                       return;
                     }
 
-                    router.push(`/members/${member.id}`);
+                    // TODO
+                    alert("프로필 조회는 출시 후 가능합니다.");
+
+                    // router.push(`/members/${member.id}`);
                   }}
                   aria-disabled={self.gender === member.gender}
                 >
