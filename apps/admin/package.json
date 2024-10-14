@@ -44,6 +44,7 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "ts-pattern": "^5.1.1",
+    "use-debounce": "^10.0.4",
     "zod": "^3.22.2"
   },
   "devDependencies": {
