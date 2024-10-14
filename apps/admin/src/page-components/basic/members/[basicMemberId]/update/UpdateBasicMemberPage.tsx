@@ -14,6 +14,7 @@ import { api } from "~/utils/api";
 import { BasicMemberForm } from "../../BasicMemberForm";
 import { AudiosField } from "./components/AudiosField";
 import { ImagesField } from "./components/ImagesField";
+import { ReferralsField } from "./components/ReferralsField";
 import { VideosField } from "./components/VideosField";
 
 interface BasicMemberUpdateForm {
@@ -71,6 +72,7 @@ function Resolved() {
             </div>
           </div>
           <ReferrerCodeField />
+          <ReferralsField />
           <MemoField />
           <ImagesField memberId={member.id} />
           <VideosField memberId={member.id} />
