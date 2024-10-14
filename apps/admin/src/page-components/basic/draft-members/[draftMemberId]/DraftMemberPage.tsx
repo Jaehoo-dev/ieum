@@ -13,7 +13,7 @@ import {
 } from "@ieum/constants";
 import { RegionV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { calculateBmi, getBmiLabel } from "@ieum/utils";
+import { calculateBmi, formatUniqueMemberName, getBmiLabel } from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Select } from "~/components/Select";
@@ -76,7 +76,6 @@ function Resolved() {
       selfIntroduction,
       idealMinAgeBirthYear,
       idealMaxAgeBirthYear,
-      idealRegions,
       idealRegionsV2,
       idealMinHeight,
       idealMaxHeight,
@@ -112,6 +111,10 @@ function Resolved() {
   const { mutateAsync: createBasicMember } =
     api.draftBasicMemberRouter.createBasicMemberFromDraft.useMutation();
   const [region, setRegion] = useState<RegionV2>();
+  const { data: referrer } = api.basicMemberRouter.getByReferralCode.useQuery(
+    { referralCode: referrerCode! },
+    { enabled: referrerCode != null },
+  );
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -417,8 +420,8 @@ function Resolved() {
         </div>
       </div>
       <TextInput
-        label="추천 코드"
-        value={referrerCode ?? "null"}
+        label="추천인"
+        value={referrer != null ? formatUniqueMemberName(referrer) : "null"}
         disabled={true}
       />
       <TextareaInput
