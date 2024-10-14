@@ -67,10 +67,6 @@ export function MembersPage() {
               }}
             />
           </div>
-          <div className="flex w-full items-start gap-1">
-            <p className="text-sm text-gray-500">※</p>
-            <p className="text-sm text-gray-500">좌우로 스크롤하세요.</p>
-          </div>
           {isPending || data == null ? (
             <div className="mt-10 flex items-center justify-center">
               <Loader />
@@ -160,8 +156,8 @@ function MembersTable({
 
   return (
     <div className="flex flex-col gap-2 overflow-x-auto border-b">
-      <div className="w-[640px]">
-        <div className="grid grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
+      <div className="w-[700px]">
+        <div className="grid grid-cols-[1fr_0.7fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
           <div className="font-medium text-gray-800">닉네임</div>
           <div className="font-medium text-gray-800">지역</div>
           <div className="font-medium text-gray-800">출생연도</div>
@@ -169,7 +165,7 @@ function MembersTable({
           <div className="font-medium text-gray-800">체형</div>
           <div className="font-medium text-gray-800">직업</div>
         </div>
-        <div className="max-h-[calc(100vh-300px)] divide-y overflow-y-auto overflow-x-hidden">
+        <div className="max-h-[calc(100vh-252px)] divide-y overflow-y-auto overflow-x-hidden">
           {members.map((member, index) => {
             const 동성인가 = self.gender === member.gender;
 
@@ -184,7 +180,7 @@ function MembersTable({
                   key={member.id}
                   className={`grid ${
                     동성인가 ? "" : "cursor-pointer"
-                  } grid-cols-[1fr_0.8fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
+                  } grid-cols-[1fr_0.7fr_0.8fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
                     동성인가 ? "" : "hover:bg-blind-100"
                   } ${
                     !동성인가 && index % 2 === 0
@@ -207,8 +203,8 @@ function MembersTable({
                 >
                   <div className="truncate">{member.nickname}</div>
                   <div className="truncate">{지역_라벨[member.region]}</div>
-                  <div className="truncate">{member.birthYear}</div>
-                  <div className="truncate">{member.height}</div>
+                  <div className="truncate">{member.birthYear}년생</div>
+                  <div className="truncate">{member.height}cm</div>
                   <div className="truncate">{member.bodyShape}</div>
                   <div className="truncate">{member.job}</div>
                 </div>
