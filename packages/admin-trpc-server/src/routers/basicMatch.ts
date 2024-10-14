@@ -444,6 +444,7 @@ export const basicMatchRouter = createTRPCRouter({
               id: actionMemberId,
             },
           },
+          // TODO: disconnect from acceptedByV2
           rejectedByV2: {
             connect: {
               id: actionMemberId,
