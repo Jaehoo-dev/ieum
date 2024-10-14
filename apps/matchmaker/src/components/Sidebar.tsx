@@ -52,13 +52,8 @@ export function Sidebar({ open, onClose }: Props) {
               onClick={onClose}
             />
             <MenuItem
-              label={
-                <>
-                  <span className="text-blind-500">이음 블라인드</span> 사전
-                  신청
-                </>
-              }
-              href="/blind/pre-register"
+              label={<span className="text-blind-500">이음 블라인드</span>}
+              href="/blind/register"
               onClick={onClose}
             />
             <MenuItem label="설정" href="/settings" onClick={onClose} />

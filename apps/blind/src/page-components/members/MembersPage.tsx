@@ -198,7 +198,7 @@ function MembersTable({
                     }
 
                     // TODO
-                    alert("프로필 조회는 출시 후 가능합니다.");
+                    alert("아직 준비 중이에요. 조금만 기다려주세요!");
 
                     // router.push(`/members/${member.id}`);
                   }}
