@@ -886,6 +886,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
         alt="사진"
       />
       <button
+        type="button"
         className="absolute right-2 top-2 rounded-full bg-white p-1"
         onClick={async () => {
           const { error } = await supabase.storage
@@ -970,6 +971,7 @@ function Video({ bucketPath, onRemove }: ImageProps) {
         }}
       />
       <button
+        type="button"
         className="absolute right-2 top-2 rounded-full bg-white p-1"
         onClick={async () => {
           const { error } = await supabase.storage
@@ -1168,6 +1170,7 @@ function Audio({
         }}
       />
       <button
+        type="button"
         className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white p-1"
         onClick={async () => {
           const { error } = await supabase.storage
