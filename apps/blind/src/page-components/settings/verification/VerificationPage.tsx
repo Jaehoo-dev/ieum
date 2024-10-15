@@ -7,7 +7,6 @@ import { nanoid } from "nanoid";
 import { Controller, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { Spacing } from "~/components/Spacing";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 
@@ -22,7 +21,12 @@ export function VerificationPage() {
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
-  const { control, handleSubmit } = useForm<VerificationForm>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+    watch,
+  } = useForm<VerificationForm>({
     defaultValues: {
       idBucketPaths: [],
       jobBucketPaths: [],
@@ -114,6 +118,17 @@ export function VerificationPage() {
             }}
           />
         </div>
+        <button
+          className="flex-1 rounded-lg bg-blind-500 px-4 py-2 text-lg font-medium text-white hover:bg-blind-700 disabled:opacity-50"
+          type="submit"
+          disabled={
+            isSubmitting ||
+            (watch("idBucketPaths").length === 0 &&
+              watch("jobBucketPaths").length === 0)
+          }
+        >
+          제출
+        </button>
       </form>
     </div>
   );
