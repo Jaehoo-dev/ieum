@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import Link from "next/link";
-import { WORLDCUP_URL } from "@ieum/constants";
+import {
+  IEUM_BLIND_INTRODUCTION_PAGE_URL,
+  WORLDCUP_URL,
+} from "@ieum/constants";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
@@ -32,6 +35,17 @@ export function Ending() {
           </p>
         </div>
         <div className="flex flex-col gap-1">
+          <Link
+            href={IEUM_BLIND_INTRODUCTION_PAGE_URL}
+            className="text-center text-blind-500 underline hover:text-blind-700"
+            onClick={() => {
+              sendMessage({
+                content: `회원가입 끝 페이지 - 이음 블라인드 알아보기 클릭`,
+              });
+            }}
+          >
+            이음 블라인드 알아보기
+          </Link>
           <Link
             href="/tips"
             className="text-center text-primary-500 underline hover:text-primary-700"
