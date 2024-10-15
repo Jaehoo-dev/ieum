@@ -178,6 +178,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
         alt="사진"
       />
       <button
+        type="button"
         className="absolute right-2 top-2 rounded-full bg-white p-1"
         onClick={async () => {
           const { error } = await supabase.storage
