@@ -50,9 +50,9 @@ export function Home() {
             className="h-full w-full object-cover object-center"
           />
         </div>
-        <div className="flex h-3/5 w-full justify-center p-8 md:mt-0 md:h-full md:w-1/3 md:items-center">
+        <div className="mt-4 flex h-3/5 w-full justify-center p-8 md:mt-10 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center gap-4">
-            <h1 className="mt-4 text-3xl font-semibold text-blind-500 md:text-4xl">
+            <h1 className="text-3xl font-semibold text-blind-500 md:text-4xl">
               이음 블라인드
             </h1>
             <Suspense fallback={<Loader />}>
