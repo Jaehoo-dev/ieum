@@ -8,7 +8,6 @@ import { assert } from "@ieum/utils";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { match } from "ts-pattern";
 
-// import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
 import { StatusGuard } from "~/components/StatusGuard";
