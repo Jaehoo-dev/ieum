@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { signIn } from "@ieum/blind-auth";
 import { assert, formatPhoneNumberInput, krHyphenToKr } from "@ieum/utils";
@@ -15,7 +16,7 @@ export function MemberAuth() {
   const [verificationId, setVerificationId] = useState<string>();
 
   return (
-    <div className="flex w-full max-w-md flex-col gap-10">
+    <div className="flex w-full max-w-md flex-col gap-6">
       {match(step)
         .with("PHONE", () => (
           <PhoneStep
@@ -38,6 +39,12 @@ export function MemberAuth() {
           />
         ))
         .exhaustive()}
+      <Link
+        href="/demo"
+        className="text-center text-sm text-blind-500 underline"
+      >
+        체험하기
+      </Link>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-1 text-gray-700">
           <HelpOutlineRoundedIcon className="mb-0.5 text-sm" />

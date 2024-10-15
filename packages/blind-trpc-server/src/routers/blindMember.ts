@@ -410,4 +410,49 @@ export const blindMemberRouter = createTRPCRouter({
 
       return member.heartsLeft;
     }),
+  getDemoMembers: publicProcedure
+    .input(
+      z.object({
+        gender: z.nativeEnum(Gender),
+      }),
+    )
+    .query(async ({ ctx: { prisma }, input: { gender } }) => {
+      const members = await prisma.blindMember.findMany({
+        where: {
+          gender,
+        },
+        take: 10,
+        orderBy: [{ birthYear: "asc" }, { createdAt: "desc" }],
+        select: {
+          id: true,
+          gender: true,
+          nickname: true,
+          birthYear: true,
+          height: true,
+          bodyShape: true,
+          region: true,
+          job: true,
+        },
+      });
+
+      const result = members.map((member) => {
+        return {
+          ...member,
+          nickname: maskNickname(member.nickname),
+          job: maskJob(member.job),
+        };
+      });
+
+      return result;
+    }),
 });
+
+function maskNickname(nickname: string) {
+  const sliceIndex = nickname.length > 2 ? 2 : 1;
+
+  return nickname.slice(0, sliceIndex) + "*".repeat(nickname.length - 2);
+}
+
+function maskJob(job: string) {
+  return job.replace(/\S/g, "*");
+}
