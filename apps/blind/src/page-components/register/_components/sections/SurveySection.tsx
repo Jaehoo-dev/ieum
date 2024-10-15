@@ -151,6 +151,15 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
             {...register("birthYear", {
               required: true,
               setValueAs: handleNullableStringNumber,
+              validate: (value) => {
+                if (value == null) {
+                  return "출생연도를 입력해주세요.";
+                }
+
+                if (value < 1970 || value > 2005) {
+                  return "출생연도를 확인해주세요.";
+                }
+              },
             })}
           />
           <Controller
