@@ -107,6 +107,7 @@ export function WrapUp({ onBack }: Props) {
       </div>
       <div className="mt-4 flex flex-row gap-2">
         <button
+          type="button"
           onClick={() => {
             sendMessage({
               content: `${phoneNumber} - 회원가입 마무리 페이지 이전 버튼 클릭`,

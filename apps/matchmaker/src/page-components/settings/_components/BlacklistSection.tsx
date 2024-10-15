@@ -127,6 +127,7 @@ function Resolved() {
               {krToKrHyphen(phoneNumber)}
             </p>
             <button
+              type="button"
               onClick={async () => {
                 await remove({ memberId: member.id, phoneNumber });
               }}

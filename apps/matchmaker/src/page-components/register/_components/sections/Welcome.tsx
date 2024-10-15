@@ -175,6 +175,7 @@ export function Welcome({ onNext }: Props) {
           />
         </div>
         <button
+          type="button"
           onClick={async () => {
             sendMessage({
               content: "회원가입 페이지 다음 클릭",
