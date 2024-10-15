@@ -7,7 +7,11 @@ interface Props {
 export function BackTextButton({ onClick }: Props) {
   return (
     <div>
-      <button onClick={onClick} className="flex pr-2 text-gray-500">
+      <button
+        type="button"
+        onClick={onClick}
+        className="flex pr-2 text-gray-500"
+      >
         <ChevronLeftRoundedIcon fontSize="small" />
         이전
       </button>
