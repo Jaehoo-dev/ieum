@@ -156,7 +156,7 @@ function MembersTable({
 
   return (
     <div className="flex w-full flex-col border-b">
-      <div className="border-b border-b-gray-300 bg-white p-1 pt-0">
+      <div className="border-b border-b-gray-300 p-1 pt-0">
         <div className="flex">
           <div className="w-1/3 text-center font-medium text-gray-800">
             닉네임
