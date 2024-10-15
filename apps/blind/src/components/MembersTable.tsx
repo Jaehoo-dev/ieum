@@ -37,14 +37,14 @@ export function MembersTable({
     <div className="flex w-full flex-col border-b">
       <div className="border-b border-b-gray-300 p-1 pt-0 text-center text-sm font-medium text-gray-800">
         <div className="flex">
-          <div className="w-5/12">닉네임</div>
-          <div className="flex-1">지역</div>
-          <div className="flex-1">키(cm)</div>
+          <div className="w-1/3">닉네임</div>
+          <div className="w-1/3">지역</div>
+          <div className="w-1/3">키(cm)</div>
         </div>
         <div className="flex">
-          <div className="w-5/12">직업</div>
-          <div className="flex-1">출생연도</div>
-          <div className="flex-1">체형</div>
+          <div className="w-1/3">직업</div>
+          <div className="w-1/3">출생연도</div>
+          <div className="w-1/3">체형</div>
         </div>
       </div>
       <div className="divide-y">
@@ -67,16 +67,14 @@ export function MembersTable({
               aria-disabled={selfGender === member.gender}
             >
               <div className="flex">
-                <div className="w-5/12 truncate">{member.nickname}</div>
-                <div className="flex-1 truncate">
-                  {지역_라벨[member.region]}
-                </div>
-                <div className="flex-1 truncate">{member.height}</div>
+                <div className="w-1/3 truncate">{member.nickname}</div>
+                <div className="w-1/3 truncate">{지역_라벨[member.region]}</div>
+                <div className="w-1/3 truncate">{member.height}</div>
               </div>
               <div className="flex">
-                <div className="w-5/12 truncate">{member.job}</div>
-                <div className="flex-1 truncate">{member.birthYear}</div>
-                <div className="flex-1 truncate">{member.bodyShape}</div>
+                <div className="w-1/3 truncate">{member.job}</div>
+                <div className="w-1/3 truncate">{member.birthYear}</div>
+                <div className="w-1/3 truncate">{member.bodyShape}</div>
               </div>
             </div>
           );
