@@ -155,80 +155,87 @@ function MembersTable({
   assert(self != null, "Component should be used within MemberAuthGuard");
 
   return (
-    <div className="flex flex-col gap-2 overflow-x-auto border-b">
-      <div className="w-[680px]">
-        <div className="grid grid-cols-[0.8fr_0.7fr_0.7fr_0.6fr_1fr_1.6fr] gap-2 border-b border-b-gray-300 bg-white p-2 pt-0">
-          <div className="font-medium text-gray-800">닉네임</div>
-          <div className="font-medium text-gray-800">지역</div>
-          <div className="font-medium text-gray-800">출생연도</div>
-          <div className="font-medium text-gray-800">키(cm)</div>
-          <div className="font-medium text-gray-800">체형</div>
-          <div className="font-medium text-gray-800">직업</div>
-        </div>
-        <div className="max-h-[calc(100vh-340px)] divide-y overflow-y-auto overflow-x-hidden">
-          {members.map((member, index) => {
-            const 동성인가 = self.gender === member.gender;
-
-            return (
-              <Fragment key={member.id}>
-                {/* {index % 20 === 0 ? (
-                <div>
-                  <HorizontalInfeedAd />
-                </div>
-              ) : null} */}
-                <div
-                  key={member.id}
-                  className={`grid ${
-                    동성인가 ? "" : "cursor-pointer"
-                  } grid-cols-[0.8fr_0.7fr_0.7fr_0.6fr_1fr_1.6fr] gap-2 px-2 py-5 text-gray-700 ${
-                    동성인가 ? "" : "hover:bg-blind-100"
-                  } ${
-                    !동성인가 && index % 2 === 0
-                      ? "bg-blind-100 bg-opacity-50"
-                      : ""
-                  } ${동성인가 ? "bg-gray-100" : ""}`}
-                  onClick={() => {
-                    if (self.gender === member.gender) {
-                      alert("동성 회원의 프로필은 조회할 수 없습니다.");
-
-                      return;
-                    }
-
-                    router.push(`/members/${member.id}`);
-                  }}
-                  aria-disabled={self.gender === member.gender}
-                >
-                  <div className="truncate">{member.nickname}</div>
-                  <div className="truncate">{지역_라벨[member.region]}</div>
-                  <div className="truncate">{member.birthYear}</div>
-                  <div className="truncate">{member.height}</div>
-                  <div className="truncate">{member.bodyShape}</div>
-                  <div className="truncate">{member.job}</div>
-                </div>
-              </Fragment>
-            );
-          })}
-          <div className="col-span-6 flex p-2">
-            {hasNextPage ? (
-              <div className="flex w-full justify-around py-2">
-                <FetchMoreButton
-                  loading={isFetchingNextPage}
-                  onClick={onFetchNextPage}
-                  disabled={isFetching}
-                />
-                <FetchMoreButton
-                  loading={isFetchingNextPage}
-                  onClick={onFetchNextPage}
-                  disabled={isFetching}
-                />
-              </div>
-            ) : (
-              <div className="flex w-full justify-around py-2">
-                <span className="text-gray-600">-</span>
-                <span className="text-gray-600">-</span>
-              </div>
-            )}
+    <div className="flex w-full flex-col border-b">
+      <div className="border-b border-b-gray-300 bg-white p-1 pt-0">
+        <div className="flex">
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            닉네임
           </div>
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            지역
+          </div>
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            키(cm)
+          </div>
+        </div>
+        <div className="flex">
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            직업
+          </div>
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            출생연도
+          </div>
+          <div className="w-1/3 text-center font-medium text-gray-800">
+            체형
+          </div>
+        </div>
+      </div>
+      <div className="divide-y">
+        {members.map((member, index) => {
+          const 동성인가 = self.gender === member.gender;
+
+          return (
+            <div
+              key={member.id}
+              className={`grid ${
+                동성인가 ? "" : "cursor-pointer"
+              } p-2 text-gray-700 ${동성인가 ? "" : "hover:bg-blind-100"} ${
+                !동성인가 && index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
+              } ${동성인가 ? "bg-gray-100" : ""}`}
+              onClick={() => {
+                if (self.gender === member.gender) {
+                  alert("동성 회원의 프로필은 조회할 수 없습니다.");
+
+                  return;
+                }
+
+                router.push(`/members/${member.id}`);
+              }}
+              aria-disabled={self.gender === member.gender}
+            >
+              <div className="flex">
+                <div className="w-1/3 truncate text-center">
+                  {member.nickname}
+                </div>
+                <div className="w-1/3 truncate text-center">
+                  {지역_라벨[member.region]}
+                </div>
+                <div className="w-1/3 truncate text-center">
+                  {member.height}
+                </div>
+              </div>
+              <div className="flex">
+                <div className="w-1/3 truncate text-center">{member.job}</div>
+                <div className="w-1/3 truncate text-center">
+                  {member.birthYear}
+                </div>
+                <div className="w-1/3 truncate text-center">
+                  {member.bodyShape}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        <div className="flex justify-center p-3">
+          {hasNextPage ? (
+            <FetchMoreButton
+              loading={isFetchingNextPage}
+              onClick={onFetchNextPage}
+              disabled={isFetching}
+            />
+          ) : (
+            <span className="text-gray-600">-</span>
+          )}
         </div>
       </div>
     </div>
