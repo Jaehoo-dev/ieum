@@ -156,26 +156,26 @@ function MembersTable({
 
   return (
     <div className="flex w-full flex-col border-b">
-      <div className="border-b border-b-gray-300 p-1 pt-0">
+      <div className="border-b border-b-gray-300 p-1 pt-0 text-sm">
         <div className="flex">
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="w-5/12 text-center font-medium text-gray-800">
             닉네임
           </div>
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="flex-1 text-center font-medium text-gray-800">
             지역
           </div>
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="flex-1 text-center font-medium text-gray-800">
             키(cm)
           </div>
         </div>
         <div className="flex">
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="w-5/12 text-center font-medium text-gray-800">
             직업
           </div>
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="flex-1 text-center font-medium text-gray-800">
             출생연도
           </div>
-          <div className="w-1/3 text-center font-medium text-gray-800">
+          <div className="flex-1 text-center font-medium text-gray-800">
             체형
           </div>
         </div>
@@ -204,22 +204,22 @@ function MembersTable({
               aria-disabled={self.gender === member.gender}
             >
               <div className="flex">
-                <div className="w-1/3 truncate text-center">
+                <div className="w-5/12 truncate text-center">
                   {member.nickname}
                 </div>
-                <div className="w-1/3 truncate text-center">
+                <div className="flex-1 truncate text-center">
                   {지역_라벨[member.region]}
                 </div>
-                <div className="w-1/3 truncate text-center">
+                <div className="flex-1 truncate text-center">
                   {member.height}
                 </div>
               </div>
               <div className="flex">
-                <div className="w-1/3 truncate text-center">{member.job}</div>
-                <div className="w-1/3 truncate text-center">
+                <div className="w-5/12 truncate text-center">{member.job}</div>
+                <div className="flex-1 truncate text-center">
                   {member.birthYear}
                 </div>
-                <div className="w-1/3 truncate text-center">
+                <div className="flex-1 truncate text-center">
                   {member.bodyShape}
                 </div>
               </div>
