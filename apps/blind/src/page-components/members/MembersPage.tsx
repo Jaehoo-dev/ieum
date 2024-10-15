@@ -187,7 +187,7 @@ function MembersTable({
           return (
             <div
               key={member.id}
-              className={`grid ${
+              className={`${
                 동성인가 ? "" : "cursor-pointer"
               } p-2 text-gray-700 ${동성인가 ? "" : "hover:bg-blind-100"} ${
                 !동성인가 && index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
