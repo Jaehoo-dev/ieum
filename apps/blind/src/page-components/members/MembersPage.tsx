@@ -156,28 +156,16 @@ function MembersTable({
 
   return (
     <div className="flex w-full flex-col border-b">
-      <div className="border-b border-b-gray-300 p-1 pt-0 text-sm">
+      <div className="border-b border-b-gray-300 p-1 pt-0 text-center text-sm font-medium text-gray-800">
         <div className="flex">
-          <div className="w-5/12 text-center font-medium text-gray-800">
-            닉네임
-          </div>
-          <div className="flex-1 text-center font-medium text-gray-800">
-            지역
-          </div>
-          <div className="flex-1 text-center font-medium text-gray-800">
-            키(cm)
-          </div>
+          <div className="w-5/12">닉네임</div>
+          <div className="flex-1">지역</div>
+          <div className="flex-1">키(cm)</div>
         </div>
         <div className="flex">
-          <div className="w-5/12 text-center font-medium text-gray-800">
-            직업
-          </div>
-          <div className="flex-1 text-center font-medium text-gray-800">
-            출생연도
-          </div>
-          <div className="flex-1 text-center font-medium text-gray-800">
-            체형
-          </div>
+          <div className="w-5/12">직업</div>
+          <div className="flex-1">출생연도</div>
+          <div className="flex-1">체형</div>
         </div>
       </div>
       <div className="divide-y">
@@ -187,11 +175,13 @@ function MembersTable({
           return (
             <div
               key={member.id}
-              className={`${
-                동성인가 ? "" : "cursor-pointer"
-              } p-2 text-gray-700 ${동성인가 ? "" : "hover:bg-blind-100"} ${
-                !동성인가 && index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
-              } ${동성인가 ? "bg-gray-100" : ""}`}
+              className={`p-2 text-center text-gray-700 ${
+                동성인가
+                  ? "bg-gray-100"
+                  : `cursor-pointer hover:bg-blind-100 ${
+                      index % 2 === 0 ? "bg-blind-100 bg-opacity-50" : ""
+                    }`
+              }`}
               onClick={() => {
                 if (self.gender === member.gender) {
                   alert("동성 회원의 프로필은 조회할 수 없습니다.");
@@ -204,24 +194,16 @@ function MembersTable({
               aria-disabled={self.gender === member.gender}
             >
               <div className="flex">
-                <div className="w-5/12 truncate text-center">
-                  {member.nickname}
-                </div>
-                <div className="flex-1 truncate text-center">
+                <div className="w-5/12 truncate">{member.nickname}</div>
+                <div className="flex-1 truncate">
                   {지역_라벨[member.region]}
                 </div>
-                <div className="flex-1 truncate text-center">
-                  {member.height}
-                </div>
+                <div className="flex-1 truncate">{member.height}</div>
               </div>
               <div className="flex">
-                <div className="w-5/12 truncate text-center">{member.job}</div>
-                <div className="flex-1 truncate text-center">
-                  {member.birthYear}
-                </div>
-                <div className="flex-1 truncate text-center">
-                  {member.bodyShape}
-                </div>
+                <div className="w-5/12 truncate">{member.job}</div>
+                <div className="flex-1 truncate">{member.birthYear}</div>
+                <div className="flex-1 truncate">{member.bodyShape}</div>
               </div>
             </div>
           );
