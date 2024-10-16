@@ -23,8 +23,8 @@ export function Home() {
         {stats == null ? null : (
           <div className="space-y-6 text-gray-700">
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+                <thead className="bg-primary-100">
                   <tr>
                     <th
                       scope="col"
@@ -91,7 +91,7 @@ export function Home() {
                         stats.basic.chungcheong.active.female}
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
+                  <tr className="bg-primary-100">
                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                       전체
                     </td>
@@ -142,7 +142,7 @@ export function Home() {
                         stats.basic.chungcheong.inactive.female}
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
+                  <tr className="bg-primary-100">
                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                       전체
                     </td>
@@ -164,10 +164,9 @@ export function Home() {
                 </tbody>
               </table>
             </div>
-
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+                <thead className="bg-blind-100">
                   <tr>
                     <th
                       scope="col"
@@ -208,7 +207,7 @@ export function Home() {
                       {stats.blind.active.female}
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
+                  <tr className="bg-blind-100">
                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                       전체
                     </td>
@@ -234,7 +233,7 @@ export function Home() {
                       {stats.blind.inactive.female}
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
+                  <tr className="bg-blind-100">
                     <td className="whitespace-nowrap px-6 py-4 font-medium">
                       전체
                     </td>
