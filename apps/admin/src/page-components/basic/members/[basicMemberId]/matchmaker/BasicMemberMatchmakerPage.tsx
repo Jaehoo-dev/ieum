@@ -357,7 +357,8 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         !dealBreakerFields.some((field) => field.value === condition) &&
         !highPriorityFields.some((field) => field.value === condition) &&
         !mediumPriorityFields.some((field) => field.value === condition) &&
-        !lowPriorityFields.some((field) => field.value === condition)
+        !lowPriorityFields.some((field) => field.value === condition) &&
+        !시스템이_치러하지_못하는_조건들.includes(condition)
       );
     }),
   );
@@ -1201,3 +1202,15 @@ type 쿼리_가능한_지역 =
 BasicMemberMatchmakerPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+const 시스템이_치러하지_못하는_조건들: BasicCondition[] = [
+  BasicCondition.BODY_SHAPES,
+  BasicCondition.FACIAL_BODY_PART,
+  BasicCondition.SCHOOL_LEVEL,
+  BasicCondition.OCCUPATION_STATUS,
+  BasicCondition.NON_PREFERRED_WORKPLACE_SCHOOL,
+  BasicCondition.NON_PREFERRED_JOB,
+  BasicCondition.DRINKING_FREQUENCY,
+  BasicCondition.HOBBY,
+  BasicCondition.CHARACTERISTICS,
+];
