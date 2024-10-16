@@ -10,6 +10,7 @@ import { indexingApiRouter } from "./routers/indexingApi";
 import { megaphoneMatchRouter } from "./routers/megaphoneMatch";
 import { adminMessageRouter } from "./routers/message";
 import { reviewRouter } from "./routers/review";
+import { statsRouter } from "./routers/stats";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   adminMessageRouter,
   indexingApiRouter,
   reviewRouter,
+  statsRouter,
 });
 
 // export type definition of API
