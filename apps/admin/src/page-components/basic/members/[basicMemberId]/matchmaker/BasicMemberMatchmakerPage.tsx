@@ -454,47 +454,37 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
         throw new Error("Invalid containerId");
     }
   }
-  const [hide, setHide] = useState(false);
 
   return (
-    <div>
-      <div className="flex flex-col gap-1">
-        <span>우선순위</span>
-        <div className="flex gap-2">
-          <Checkbox
-            label="숨김"
-            checked={hide}
-            onChange={({ target: { checked } }) => {
-              setHide(checked);
-            }}
-          />
-          <button
-            type="button"
-            className="rounded bg-gray-300 px-2 py-1 text-sm"
-            onClick={() => {
-              setAsDealBreaker(BasicCondition.AGE);
-              setAsDealBreaker(BasicCondition.REGION);
-            }}
-          >
-            나지
-          </button>
-          <button
-            type="button"
-            className="rounded bg-gray-300 px-2 py-1 text-sm"
-            onClick={() => {
-              setAsDealBreaker(BasicCondition.AGE);
-              setAsDealBreaker(BasicCondition.REGION);
-              setAsDealBreaker(BasicCondition.EDUCATION_LEVEL);
-              setAsDealBreaker(BasicCondition.IS_SMOKER_OK);
-              setAsDealBreaker(BasicCondition.IS_TATTOO_OK);
-            }}
-          >
-            나지학흡문
-          </button>
-        </div>
+    <div className="flex flex-col gap-1">
+      <span>우선순위</span>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          className="rounded bg-gray-300 px-2 py-1 text-sm"
+          onClick={() => {
+            setAsDealBreaker(BasicCondition.AGE);
+            setAsDealBreaker(BasicCondition.REGION);
+          }}
+        >
+          나지
+        </button>
+        <button
+          type="button"
+          className="rounded bg-gray-300 px-2 py-1 text-sm"
+          onClick={() => {
+            setAsDealBreaker(BasicCondition.AGE);
+            setAsDealBreaker(BasicCondition.REGION);
+            setAsDealBreaker(BasicCondition.EDUCATION_LEVEL);
+            setAsDealBreaker(BasicCondition.IS_SMOKER_OK);
+            setAsDealBreaker(BasicCondition.IS_TATTOO_OK);
+          }}
+        >
+          나지학흡문
+        </button>
       </div>
       <form
-        className={`flex flex-col gap-1 text-xs ${hide ? "hidden" : ""}`}
+        className={`flex flex-col gap-1 text-xs`}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
