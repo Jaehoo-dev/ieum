@@ -362,6 +362,44 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
     }),
   );
 
+  function setAsDealBreaker(condition: BasicCondition) {
+    const highPriorityIndex = highPriorityFields.findIndex((field) => {
+      return field.value === condition;
+    });
+    if (highPriorityIndex > -1) {
+      removeHighPriority(highPriorityIndex);
+    }
+
+    const mediumPriorityIndex = mediumPriorityFields.findIndex((field) => {
+      return field.value === condition;
+    });
+    if (mediumPriorityIndex > -1) {
+      removeMediumPriority(mediumPriorityIndex);
+    }
+
+    const lowPriorityIndex = lowPriorityFields.findIndex((field) => {
+      return field.value === condition;
+    });
+    if (lowPriorityIndex > -1) {
+      removeLowPriority(lowPriorityIndex);
+    }
+
+    const noPriorityIndex = noPriorities.findIndex((c) => c === condition);
+    if (noPriorityIndex > -1) {
+      setNoPriorities((prev) => {
+        return prev.filter((c) => c !== condition);
+      });
+    }
+
+    const isDealBreaker = dealBreakerFields.some((field) => {
+      return field.value === condition;
+    });
+
+    if (!isDealBreaker) {
+      appendDealBreaker({ value: condition });
+    }
+  }
+
   function appendToContainer(condition: BasicCondition, containerId: 우선순위) {
     switch (containerId) {
       case 우선순위.필수:
@@ -422,13 +460,38 @@ function CustomSearchForm({ onReset, onSubmit }: CustomSearchFormProps) {
     <div>
       <div className="flex flex-col gap-1">
         <span>우선순위</span>
-        <Checkbox
-          label="숨김"
-          checked={hide}
-          onChange={({ target: { checked } }) => {
-            setHide(checked);
-          }}
-        />
+        <div className="flex gap-2">
+          <Checkbox
+            label="숨김"
+            checked={hide}
+            onChange={({ target: { checked } }) => {
+              setHide(checked);
+            }}
+          />
+          <button
+            type="button"
+            className="rounded bg-gray-300 px-2 py-1 text-sm"
+            onClick={() => {
+              setAsDealBreaker(BasicCondition.AGE);
+              setAsDealBreaker(BasicCondition.REGION);
+            }}
+          >
+            나지
+          </button>
+          <button
+            type="button"
+            className="rounded bg-gray-300 px-2 py-1 text-sm"
+            onClick={() => {
+              setAsDealBreaker(BasicCondition.AGE);
+              setAsDealBreaker(BasicCondition.REGION);
+              setAsDealBreaker(BasicCondition.EDUCATION_LEVEL);
+              setAsDealBreaker(BasicCondition.IS_SMOKER_OK);
+              setAsDealBreaker(BasicCondition.IS_TATTOO_OK);
+            }}
+          >
+            나지학흡문
+          </button>
+        </div>
       </div>
       <form
         className={`flex flex-col gap-1 text-xs ${hide ? "hidden" : ""}`}

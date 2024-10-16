@@ -14,7 +14,7 @@ function _Checkbox(
   const fieldId = `${label}-${nanoid(8)}`;
 
   return (
-    <label className="flex gap-2" htmlFor={fieldId}>
+    <label className="flex items-center gap-1" htmlFor={fieldId}>
       <input
         id={fieldId}
         ref={ref}
