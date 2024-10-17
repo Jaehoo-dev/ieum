@@ -59,7 +59,7 @@ export const blindMemberRouter = createTRPCRouter({
 
       sendSlackMessage({
         channel: "폼_제출_알림",
-        content: `*이음:cupid:블라인드* 설문 제출\n${input.nickname} / ${
+        content: `*이음:purple_heart:블라인드* 설문 제출\n${input.nickname} / ${
           성별_라벨[input.gender]
         }`,
         throwOnError: false,

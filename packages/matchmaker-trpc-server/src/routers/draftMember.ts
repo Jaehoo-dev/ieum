@@ -127,7 +127,7 @@ export const draftMemberRouter = createTRPCRouter({
         await Promise.all([
           sendSlackMessage({
             channel: "폼_제출_알림",
-            content: `*이음:cupid:베이직* 설문 제출\n${
+            content: `*이음:orange_heart:베이직* 설문 제출\n${
               data.name
             } / ${krToKrHyphen(data.phoneNumber)} / ${성별_라벨[data.gender]}`,
             throwOnError: false,

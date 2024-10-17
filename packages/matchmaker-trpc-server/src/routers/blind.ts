@@ -97,7 +97,7 @@ export const blindRouter = createTRPCRouter({
 
       sendSlackMessage({
         channel: "폼_제출_알림",
-        content: `*이음:cupid:블라인드* 회원 생성\n${formatUniqueMemberName({
+        content: `*이음:purple_heart:블라인드* 회원 생성\n${formatUniqueMemberName({
           name: member.name,
           phoneNumber: member.phoneNumber,
         })} 블라인드 가입 (${
