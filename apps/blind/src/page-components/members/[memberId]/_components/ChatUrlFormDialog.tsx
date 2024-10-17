@@ -40,7 +40,7 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
     >
       <form
         onSubmit={handleSubmit(async ({ value }) => {
-          // await onSubmit(value);
+          await onSubmit(value);
         })}
       >
         <DialogTitle>오픈채팅방 링크</DialogTitle>
