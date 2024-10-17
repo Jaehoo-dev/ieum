@@ -50,7 +50,7 @@ export const blindMatchRouter = createTRPCRouter({
           return {
             to: phoneNumber,
             from: process.env.ADMIN_PHONE_NUMBER,
-            text: `[이음 블라인드] 하트가 도착했습니다! '매칭 목록' 탭에서 확인해보세요. (알림은 매일 오후 9시에 일괄로 발송합니다.)
+            text: `[이음 블라인드] 하트가 도착했습니다! '매칭 목록' 탭에서 확인해보세요.
 ${IEUM_BLIND_MATCHES_PAGE_URL}`,
           };
         }),
