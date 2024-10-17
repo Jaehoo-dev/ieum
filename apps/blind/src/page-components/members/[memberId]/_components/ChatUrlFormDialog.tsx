@@ -18,6 +18,7 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
+    setValue,
   } = useForm({
     defaultValues: {
       value: "",
@@ -39,7 +40,7 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
     >
       <form
         onSubmit={handleSubmit(async ({ value }) => {
-          await onSubmit(value);
+          // await onSubmit(value);
         })}
       >
         <DialogTitle>오픈채팅방 링크</DialogTitle>
@@ -56,6 +57,19 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
                 required: true,
               })}
               error={errors.value != null}
+              autoFocus={true}
+              right={
+                <button
+                  type="button"
+                  className="bg-white pl-1 text-sm text-blind-500 underline"
+                  onClick={async () => {
+                    const copiedText = await navigator.clipboard.readText();
+                    setValue("value", copiedText);
+                  }}
+                >
+                  붙여넣기
+                </button>
+              }
             />
           </div>
         </DialogContent>

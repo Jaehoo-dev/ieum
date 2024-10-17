@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import type { InputHTMLAttributes, Ref } from "react";
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
 import { isEmptyStringOrNil } from "@ieum/utils";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,6 +7,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   description?: string;
   error?: boolean;
   errorText?: string;
+  right?: ReactNode;
 }
 
 function _TextInput(
@@ -15,6 +16,7 @@ function _TextInput(
     description,
     error = false,
     errorText,
+    right,
     autoComplete = "off",
     ...props
   }: Props,
@@ -39,16 +41,23 @@ function _TextInput(
           ) : null}
         </div>
       ) : null}
-      <input
-        id={label}
-        ref={ref}
-        className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-blind-300 ${
-          error ? "border-red-500" : "border-gray-300"
-        }`}
-        type={props.type ?? "text"}
-        autoComplete={autoComplete}
-        {...props}
-      />
+      <div className="relative w-full">
+        <input
+          id={label}
+          ref={ref}
+          className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-blind-300 ${
+            error ? "border-red-500" : "border-gray-300"
+          } ${right ? "pr-10" : ""}`}
+          type={props.type ?? "text"}
+          autoComplete={autoComplete}
+          {...props}
+        />
+        {right != null ? (
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {right}
+          </div>
+        ) : null}
+      </div>
     </label>
   );
 }
