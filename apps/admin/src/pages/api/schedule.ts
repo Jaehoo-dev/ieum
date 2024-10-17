@@ -8,6 +8,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  // @ts-ignore
+  const authHeader = req.headers.get("authorization");
+
+  if (
+    !process.env.CRON_SECRET ||
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return res.status(401).json({ success: false });
+  }
+
   const lastNotification = await prisma.blindBulkNotification.findFirst({
     orderBy: {
       sentAt: "desc",
@@ -70,5 +80,5 @@ export default async function handler(
     }),
   ]);
 
-  res.status(200).json(true);
+  res.status(200).json({ success: true });
 }
