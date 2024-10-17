@@ -1,9 +1,11 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@ieum/prisma";
 import { solapiMessageService } from "@ieum/solapi";
 
-export const dynamic = "force-dynamic";
-
-export async function GET(request: Request) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const testMember = await prisma.blindMember.findUniqueOrThrow({
     where: {
       nickname: "콜라",
@@ -19,5 +21,5 @@ export async function GET(request: Request) {
     text: "cron job test",
   });
 
-  return true;
+  res.status(200).json(true);
 }
