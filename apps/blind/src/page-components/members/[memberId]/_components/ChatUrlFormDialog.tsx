@@ -56,7 +56,6 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
                 required: true,
               })}
               error={errors.value != null}
-              autoFocus={true}
             />
           </div>
         </DialogContent>
