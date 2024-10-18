@@ -20,10 +20,13 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
     formState: { errors, isSubmitting },
     handleSubmit,
     setValue,
+    clearErrors,
+    trigger,
   } = useForm({
     defaultValues: {
       value: "",
     },
+    reValidateMode: "onChange",
   });
 
   return (
@@ -68,16 +71,24 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
               placeholder="https://open.kakao.com/..."
               {...register("value", {
                 required: true,
+                validate: (value) => {
+                  if (!value.startsWith("https://open.kakao.com/")) {
+                    return "오픈채팅방 링크는 https://open.kakao.com/으로 시작해야 합니다.";
+                  }
+                },
               })}
               error={errors.value != null}
+              errorText={errors.value?.message}
               autoFocus={true}
               right={
                 <button
                   type="button"
                   className="bg-white pl-1 text-sm text-blind-500 underline"
                   onClick={async () => {
+                    clearErrors("value");
                     const copiedText = await navigator.clipboard.readText();
                     setValue("value", copiedText);
+                    trigger("value");
                   }}
                 >
                   붙여넣기
