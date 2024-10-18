@@ -1,4 +1,10 @@
-import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
+import {
+  EXISTING_NICKNAME_ERROR_MESSAGE,
+  INVALID_BIRTH_YEAR_ERROR_MESSAGE,
+  INVALID_HEIGHT_ERROR_MESSAGE,
+  성별_라벨,
+  지역_라벨,
+} from "@ieum/constants";
 import { Gender, RegionV2 } from "@ieum/prisma";
 import { handleNullableStringNumber, isEmptyStringOrNil } from "@ieum/utils";
 import { TRPCClientError } from "@trpc/client";
@@ -46,16 +52,45 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
             ...payload,
           });
         } catch (err) {
+          if (!(err instanceof TRPCClientError)) {
+            throw err;
+          }
+
           if (
-            err instanceof TRPCClientError &&
             err.data.code === "CONFLICT" &&
-            err.message === "Nickname already exists"
+            err.message === EXISTING_NICKNAME_ERROR_MESSAGE
           ) {
             setError("nickname", {
               message: "이미 사용 중인 닉네임입니다.",
             });
 
             alert("닉네임이 이미 사용 중입니다.");
+
+            return;
+          }
+
+          if (
+            err.data.code === "BAD_REQUEST" &&
+            err.message === INVALID_BIRTH_YEAR_ERROR_MESSAGE
+          ) {
+            setError("birthYear", {
+              message: "출생연도를 확인해주세요.",
+            });
+
+            alert("출생연도를 확인해주세요.");
+
+            return;
+          }
+
+          if (
+            err.data.code === "BAD_REQUEST" &&
+            err.message === INVALID_HEIGHT_ERROR_MESSAGE
+          ) {
+            setError("height", {
+              message: "키를 확인해주세요.",
+            });
+
+            alert("키를 확인해주세요.");
 
             return;
           }

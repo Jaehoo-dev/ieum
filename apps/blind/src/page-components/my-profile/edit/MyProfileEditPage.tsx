@@ -1,6 +1,6 @@
 import { ReactElement, Suspense } from "react";
 import { useRouter } from "next/router";
-import { 지역_라벨 } from "@ieum/constants";
+import { EXISTING_NICKNAME_ERROR_MESSAGE, 지역_라벨 } from "@ieum/constants";
 import { assert, handleNullableStringNumber } from "@ieum/utils";
 import { TRPCClientError } from "@trpc/client";
 import { useForm } from "react-hook-form";
@@ -75,7 +75,7 @@ function Resolved() {
             if (
               err instanceof TRPCClientError &&
               err.data.code === "CONFLICT" &&
-              err.message === "Nickname already exists"
+              err.message === EXISTING_NICKNAME_ERROR_MESSAGE
             ) {
               setError("nickname", {
                 message: "이미 사용 중인 닉네임입니다.",
