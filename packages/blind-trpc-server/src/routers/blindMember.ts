@@ -1,4 +1,11 @@
-import { DEFAULT_HEART_COUNT, 성별_라벨, 지역_라벨 } from "@ieum/constants";
+import {
+  DEFAULT_HEART_COUNT,
+  EXISTING_NICKNAME_ERROR_MESSAGE,
+  INVALID_BIRTH_YEAR_ERROR_MESSAGE,
+  INVALID_HEIGHT_ERROR_MESSAGE,
+  INVALID_PHONE_NUMBER_ERROR_MESSAGE,
+  성별_라벨,
+} from "@ieum/constants";
 import { Gender, MemberStatus, RegionV2 } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
 import {
@@ -32,18 +39,35 @@ export const blindMemberRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx: { prisma }, input }) => {
+      assert(
+        isKrPhoneNumberWithoutHyphens(input.phoneNumber),
+        new TRPCError({
+          code: "BAD_REQUEST",
+          message: INVALID_PHONE_NUMBER_ERROR_MESSAGE,
+        }),
+      );
+      assert(
+        input.birthYear >= 1970 && input.birthYear <= 2005,
+        INVALID_BIRTH_YEAR_ERROR_MESSAGE,
+      );
+      assert(
+        input.height >= 140 && input.height <= 200,
+        INVALID_HEIGHT_ERROR_MESSAGE,
+      );
+
       const existingMember = await prisma.blindMember.findFirst({
         where: {
           nickname: input.nickname,
         },
       });
 
-      if (existingMember != null) {
-        throw new TRPCError({
+      assert(
+        existingMember == null,
+        new TRPCError({
           code: "CONFLICT",
-          message: "Nickname already exists",
-        });
-      }
+          message: EXISTING_NICKNAME_ERROR_MESSAGE,
+        }),
+      );
 
       await prisma.blindMember.create({
         data: {
@@ -334,7 +358,7 @@ export const blindMemberRouter = createTRPCRouter({
         if (existingMember != null) {
           throw new TRPCError({
             code: "CONFLICT",
-            message: "Nickname already exists",
+            message: EXISTING_NICKNAME_ERROR_MESSAGE,
           });
         }
       }

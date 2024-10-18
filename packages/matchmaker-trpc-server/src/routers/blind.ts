@@ -1,4 +1,7 @@
-import { DEFAULT_HEART_COUNT } from "@ieum/constants";
+import {
+  DEFAULT_HEART_COUNT,
+  EXISTING_NICKNAME_ERROR_MESSAGE,
+} from "@ieum/constants";
 import { MemberStatus } from "@ieum/prisma";
 import {
   sendSlackMessage,
@@ -54,7 +57,7 @@ export const blindRouter = createTRPCRouter({
       if (existingMember != null) {
         throw new TRPCError({
           code: "CONFLICT",
-          message: "Nickname already exists",
+          message: EXISTING_NICKNAME_ERROR_MESSAGE,
         });
       }
 
@@ -97,10 +100,12 @@ export const blindRouter = createTRPCRouter({
 
       sendSlackMessage({
         channel: "폼_제출_알림",
-        content: `*이음:purple_heart:블라인드* 회원 생성\n${formatUniqueMemberName({
-          name: member.name,
-          phoneNumber: member.phoneNumber,
-        })} 블라인드 가입 (${
+        content: `*이음:purple_heart:블라인드* 회원 생성\n${formatUniqueMemberName(
+          {
+            name: member.name,
+            phoneNumber: member.phoneNumber,
+          },
+        )} 블라인드 가입 (${
           blindMember.nickname
         }) ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
       });
