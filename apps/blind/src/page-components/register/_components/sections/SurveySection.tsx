@@ -1,6 +1,6 @@
 import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
 import { Gender, RegionV2 } from "@ieum/prisma";
-import { handleNullableStringNumber } from "@ieum/utils";
+import { handleNullableStringNumber, isEmptyStringOrNil } from "@ieum/utils";
 import { TRPCClientError } from "@trpc/client";
 import { Controller } from "react-hook-form";
 
@@ -90,7 +90,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
             />
             <button
               type="button"
-              className="rounded-lg border border-blind-500 px-4 py-2 font-medium text-blind-500"
+              className="rounded-lg border border-blind-500 px-4 py-2 font-medium text-blind-500 disabled:opacity-50"
               onClick={async () => {
                 const isAvailable =
                   await utils.blindMemberRouter.isNicknameAvailable.fetch({
@@ -107,6 +107,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
 
                 alert("사용 가능한 닉네임입니다.");
               }}
+              disabled={isEmptyStringOrNil(watch("nickname"))}
             >
               중복 확인
             </button>
