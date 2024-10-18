@@ -248,6 +248,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
               return (
                 <UniSelect
                   label="서비스를 제공하기 위해 개인정보를 수집하는 데 동의하십니까?"
+                  description="거짓 정보, 불건전한 내용, 불성실한 답변 등을 제출하면 서비스 이용이 제한될 수 있습니다."
                   options={[
                     { label: "예", value: true },
                     { label: "아니요", value: false },
