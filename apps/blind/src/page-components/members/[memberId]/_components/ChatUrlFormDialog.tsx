@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -46,8 +47,20 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
         <DialogTitle>오픈채팅방 링크</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            카카오톡 오픈채팅방을 생성해 링크를 입력해주세요. 링크와 함께
-            상대방에게 성사 알림을 보냅니다.
+            <div>
+              <span>
+                카카오톡 오픈채팅방을 생성해 링크를 입력해주세요. 링크와 함께
+                상대방에게 성사 알림을 보냅니다.{" "}
+              </span>
+              <Link
+                href="https://cs.kakao.com/helps_html/1073184402?locale=ko"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blind-500 underline"
+              >
+                오픈채팅방 만드는 방법
+              </Link>
+            </div>
           </DialogContentText>
           <div className="mt-4">
             <TextInput
