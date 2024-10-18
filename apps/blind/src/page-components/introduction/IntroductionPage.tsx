@@ -86,8 +86,12 @@ export function IntroductionPage() {
               }
             />
             <Description
-              icon="⚠️"
+              icon="⛔️"
               content="무료 기간 무분별한 하트 발송을 방지하기 위해 하트 개수를 주 3개로 제한해요. 월요일마다 충전해드려요."
+            />
+            <Description
+              icon="⚠️"
+              content="이음 블라인드와 이음 베이직은 별도 서비스로, 회원 체계도 별도로 운영해요."
             />
           </div>
         </div>
