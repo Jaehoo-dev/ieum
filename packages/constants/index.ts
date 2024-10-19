@@ -370,3 +370,4 @@ export const INVALID_PHONE_NUMBER_ERROR_MESSAGE = "Invalid phone number";
 export const INVALID_BIRTH_YEAR_ERROR_MESSAGE = "Invalid birth year";
 export const INVALID_HEIGHT_ERROR_MESSAGE = "Invalid height";
 export const EXISTING_NICKNAME_ERROR_MESSAGE = "Nickname already exists";
+export const NOT_ENOUGH_HEARTS_ERROR_MESSAGE = "Not enough hearts";

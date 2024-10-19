@@ -8,11 +8,13 @@ import {
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { NOT_ENOUGH_HEARTS_ERROR_MESSAGE } from "@ieum/constants";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { BlindProfile } from "@ieum/profile";
 import { assert } from "@ieum/utils";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
+import { TRPCClientError } from "@trpc/client";
 
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
@@ -197,44 +199,14 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
     "Should have not been matched or member should be either proposer or respondent",
   );
 
-  const { open: confirm } = useConfirmDialog();
-  const utils = api.useUtils();
-  const { mutateAsync: propose } = api.blindMatchRouter.propose.useMutation({
-    onSuccess: () => {
-      return Promise.all([
-        utils.blindMatchRouter.invalidate(),
-        utils.blindMemberRouter.invalidate(),
-      ]);
-    },
-  });
-
   if (match == null) {
     return (
       <div className="fixed bottom-0 left-0 flex w-full flex-col items-center gap-2 border-t border-gray-200 bg-white p-4 md:px-6">
         <div className="w-full max-w-lg px-2">
-          <LikeButton
-            onClick={async () => {
-              const confirmed = await confirm({
-                title: "하트를 보내시겠어요?",
-                description:
-                  "취소할 수 없어요. 상대방도 하트를 보내면 성사됩니다.",
-              });
-
-              if (!confirmed) {
-                return;
-              }
-
-              await propose({
-                proposerId: self.id,
-                respondentId: targetMemberId,
-              });
-
-              alert("하트를 보냈어요. 알림은 매일 오후 9시에 일괄로 보냅니다.");
-            }}
-          >
-            <FavoriteIcon className="mb-0.5" />
-            <span>하트 보내기</span>
-          </LikeButton>
+          <ProposeButton
+            selfMemberId={self.id}
+            targetMemberId={targetMemberId}
+          />
         </div>
       </div>
     );
@@ -263,6 +235,61 @@ function ButtonsField({ targetMemberId }: { targetMemberId: string }) {
   }
 }
 
+function ProposeButton({
+  selfMemberId,
+  targetMemberId,
+}: {
+  selfMemberId: string;
+  targetMemberId: string;
+}) {
+  const { open: confirm } = useConfirmDialog();
+  const utils = api.useUtils();
+  const { mutateAsync: propose } = api.blindMatchRouter.propose.useMutation({
+    onSuccess: () => {
+      return Promise.all([
+        utils.blindMatchRouter.invalidate(),
+        utils.blindMemberRouter.invalidate(),
+      ]);
+    },
+  });
+  const { data: heartsLeft, isFetching: isFetchingHeartsLeft } =
+    api.blindMemberRouter.getHeartCount.useQuery({
+      memberId: selfMemberId,
+    });
+
+  return (
+    <LikeButton
+      onClick={async () => {
+        const confirmed = await confirm({
+          title: "하트를 보내시겠어요?",
+          description: "취소할 수 없어요. 상대방도 하트를 보내면 성사됩니다.",
+        });
+
+        if (!confirmed) {
+          return;
+        }
+
+        await propose({
+          proposerId: selfMemberId,
+          respondentId: targetMemberId,
+        });
+
+        alert("하트를 보냈어요. 알림은 매일 오후 9시에 일괄로 보냅니다.");
+      }}
+      disabled={isFetchingHeartsLeft || heartsLeft == null || heartsLeft < 1}
+    >
+      <FavoriteIcon className="mb-0.5" />
+      <span>
+        {isFetchingHeartsLeft || heartsLeft == null
+          ? ".."
+          : heartsLeft < 1
+          ? "하트 0개"
+          : "하트 보내기"}
+      </span>
+    </LikeButton>
+  );
+}
+
 function AcceptButton({
   selfMemberId,
   matchId,
@@ -280,6 +307,10 @@ function AcceptButton({
       ]);
     },
   });
+  const { data: heartsLeft, isFetching: isFetchingHeartsLeft } =
+    api.blindMemberRouter.getHeartCount.useQuery({
+      memberId: selfMemberId,
+    });
 
   return (
     <>
@@ -292,9 +323,18 @@ function AcceptButton({
             onClick={() => {
               setIsDialogOpen(true);
             }}
+            disabled={
+              isFetchingHeartsLeft || heartsLeft == null || heartsLeft < 1
+            }
           >
             <FavoriteIcon className="mb-0.5" />
-            <span>하트 보내기</span>
+            <span>
+              {isFetchingHeartsLeft || heartsLeft == null
+                ? ".."
+                : heartsLeft < 1
+                ? "하트 0개"
+                : "하트 보내기"}
+            </span>
           </LikeButton>
         </div>
       </div>
@@ -304,15 +344,32 @@ function AcceptButton({
           setIsDialogOpen(false);
         }}
         onSubmit={async (kakaoOpenchatUrl) => {
-          await accept({
-            selfMemberId,
-            matchId,
-            kakaoOpenchatUrl,
-          });
-          alert(
-            "성사되었어요. 상대방에게 오픈채팅방 링크와 함께 알림을 보냈어요.",
-          );
+          try {
+            await accept({
+              selfMemberId,
+              matchId,
+              kakaoOpenchatUrl,
+            });
+            alert(
+              "성사되었어요. 상대방에게 오픈채팅방 링크와 함께 알림을 보냈어요.",
+            );
+          } catch (err) {
+            if (
+              err instanceof TRPCClientError &&
+              err.data.code === "BAD_REQUEST" &&
+              err.message === NOT_ENOUGH_HEARTS_ERROR_MESSAGE
+            ) {
+              alert("하트가 부족합니다.");
+
+              return;
+            }
+
+            throw err;
+          }
         }}
+        submitDisabled={
+          isFetchingHeartsLeft || heartsLeft == null || heartsLeft < 1
+        }
       />
     </>
   );
@@ -321,7 +378,7 @@ function AcceptButton({
 function LikeButton(props: ComponentPropsWithoutRef<"button">) {
   return (
     <button
-      className="flex w-full items-center justify-center gap-1 rounded-lg bg-blind-500 p-3 text-lg text-white enabled:hover:bg-blind-700 disabled:cursor-not-allowed disabled:bg-blind-300"
+      className="flex w-full items-center justify-center gap-1 rounded-lg bg-blind-500 p-3 text-lg text-white enabled:hover:bg-blind-700 disabled:cursor-not-allowed disabled:opacity-50"
       {...props}
     />
   );

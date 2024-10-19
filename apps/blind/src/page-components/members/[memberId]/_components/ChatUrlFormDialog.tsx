@@ -12,9 +12,15 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onSubmit: (kakaoOpenchatUrl: string) => Promise<void>;
+  submitDisabled?: boolean;
 }
 
-export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
+export function ChatUrlFormFormDialog({
+  open,
+  onClose,
+  onSubmit,
+  submitDisabled = false,
+}: Props) {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -109,7 +115,7 @@ export function ChatUrlFormFormDialog({ open, onClose, onSubmit }: Props) {
             <button
               type="submit"
               className="rounded-md bg-blind-500 px-8 py-2 text-white hover:bg-blind-600 disabled:opacity-50"
-              disabled={isSubmitting}
+              disabled={isSubmitting || submitDisabled}
             >
               {isSubmitting ? "보내는 중.." : "하트 보내기"}
             </button>
