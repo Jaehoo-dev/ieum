@@ -177,6 +177,11 @@ ${IEUM_BLIND_MATCHES_PAGE_URL}`,
           });
         }
 
+        sendSlackMessage({
+          channel: "매칭_결과_알림",
+          content: `[블라인드 성사] ${match.proposer.nickname} - ${member.nickname}`,
+        });
+
         return true;
       },
     ),
