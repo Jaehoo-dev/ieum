@@ -1,6 +1,7 @@
 import {
   BLIND_MATCH_DURATION_DAYS,
   IEUM_BLIND_MATCHES_PAGE_URL,
+  NOT_ENOUGH_HEARTS_ERROR_MESSAGE,
 } from "@ieum/constants";
 import { BlindMatchStatus } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
@@ -132,7 +133,7 @@ export const blindMatchRouter = createTRPCRouter({
           member.heartsLeft > 0,
           new TRPCError({
             code: "BAD_REQUEST",
-            message: "Not enough hearts",
+            message: NOT_ENOUGH_HEARTS_ERROR_MESSAGE,
           }),
         );
 
