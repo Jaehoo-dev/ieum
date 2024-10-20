@@ -9,11 +9,7 @@ import {
   MegaphoneMatchMemberStatus,
   MemberStatus,
 } from "@ieum/prisma";
-import {
-  sendSlackMessage,
-  SLACK_MANAGER1_ID_MENTION,
-  SLACK_MANAGER2_ID_MENTION,
-} from "@ieum/slack";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { assert } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
@@ -519,7 +515,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
 
           sendSlackMessage({
             channel: "매칭_결과_알림",
-            content: `[확성기 성공]\n수락: ${match.sender.name}, ${match.receiver.name} ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
+            content: `[확성기 성공]\n수락: ${match.sender.name}, ${match.receiver.name} ${SLACK_MANAGER1_ID_MENTION}`,
           });
 
           return true;
@@ -536,7 +532,7 @@ export const megaphoneMatchRouter = createTRPCRouter({
 
         sendSlackMessage({
           channel: "매칭_결과_알림",
-          content: `[확성기 수락] ${match.receiver.name} ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
+          content: `[확성기 수락] ${match.receiver.name} ${SLACK_MANAGER1_ID_MENTION}`,
         });
 
         return true;
