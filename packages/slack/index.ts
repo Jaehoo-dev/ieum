@@ -39,4 +39,3 @@ export async function sendSlackMessage({
 }
 
 export const SLACK_MANAGER1_ID_MENTION = "<@U06LZ57FHPA>";
-export const SLACK_MANAGER2_ID_MENTION = "<@U07PG9RDJQ4>";

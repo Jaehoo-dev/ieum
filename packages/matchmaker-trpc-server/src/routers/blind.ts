@@ -3,11 +3,7 @@ import {
   EXISTING_NICKNAME_ERROR_MESSAGE,
 } from "@ieum/constants";
 import { MemberStatus } from "@ieum/prisma";
-import {
-  sendSlackMessage,
-  SLACK_MANAGER1_ID_MENTION,
-  SLACK_MANAGER2_ID_MENTION,
-} from "@ieum/slack";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -107,7 +103,7 @@ export const blindRouter = createTRPCRouter({
           },
         )} 블라인드 가입 (${
           blindMember.nickname
-        }) ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
+        }) ${SLACK_MANAGER1_ID_MENTION}`,
       });
 
       return true;

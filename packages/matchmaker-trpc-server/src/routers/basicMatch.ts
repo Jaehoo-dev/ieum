@@ -3,11 +3,7 @@ import {
   MATCH_DISPLAY_DURATION_DAYS,
 } from "@ieum/constants";
 import { MatchStatus, MemberStatus } from "@ieum/prisma";
-import {
-  sendSlackMessage,
-  SLACK_MANAGER1_ID_MENTION,
-  SLACK_MANAGER2_ID_MENTION,
-} from "@ieum/slack";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
 import { subDays, subHours } from "date-fns";
@@ -630,11 +626,7 @@ export const basicMatchRouter = createTRPCRouter({
             hasOtherAccepted ? "성공" : "실패"
           }] ${formatUniqueMemberName(members[0])} - ${formatUniqueMemberName(
             members[1],
-          )}${
-            hasOtherAccepted
-              ? ` 🙌 ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`
-              : ""
-          }`,
+          )}${hasOtherAccepted ? ` 🙌 ${SLACK_MANAGER1_ID_MENTION}` : ""}`,
         });
       }
 

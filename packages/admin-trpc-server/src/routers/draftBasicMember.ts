@@ -1,14 +1,5 @@
-import {
-  DraftStatus,
-  MemberStatus,
-  PrismaPromise,
-  RegionV2,
-} from "@ieum/prisma";
-import {
-  sendSlackMessage,
-  SLACK_MANAGER1_ID_MENTION,
-  SLACK_MANAGER2_ID_MENTION,
-} from "@ieum/slack";
+import { DraftStatus, MemberStatus, RegionV2 } from "@ieum/prisma";
+import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { supabase } from "@ieum/supabase";
 import { calculateBmi, formatUniqueMemberName, hash } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
@@ -317,7 +308,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
           })} 님의 추천으로 신규 회원 ${formatUniqueMemberName({
             name: newMember.name,
             phoneNumber: newMember.phoneNumber,
-          })} 님 가입 ${SLACK_MANAGER1_ID_MENTION} ${SLACK_MANAGER2_ID_MENTION}`,
+          })} 님 가입 ${SLACK_MANAGER1_ID_MENTION}`,
         });
       }
 
