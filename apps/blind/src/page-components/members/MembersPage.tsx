@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { Gender } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
@@ -91,28 +90,9 @@ export function MembersPage() {
               }}
             />
           )}
-          <BasicPromotion />
         </div>
       </StatusGuard>
     </>
-  );
-}
-
-function BasicPromotion() {
-  return (
-    <div className="text-center text-gray-700">
-      <p>
-        더 꼼꼼한 조건으로
-        <br />
-        이상형을 소개받고 싶다면?
-      </p>
-      <Link
-        href="/basic"
-        className="text-primary-500 underline hover:text-primary-700"
-      >
-        이음 베이직 알아보기
-      </Link>
-    </div>
   );
 }
 
