@@ -28,20 +28,7 @@ export function IntroductionPage() {
           <div className="flex flex-col gap-2">
             <Description
               icon="🎊"
-              content={
-                <>
-                  이음 블라인드는 기존{" "}
-                  <Link
-                    href={PRODUCT_URL}
-                    className="text-primary-500 underline"
-                    target="blank"
-                    rel="noopener noreferrer"
-                  >
-                    이음 베이직
-                  </Link>
-                  과 별개로 운영하는 새로운 서비스예요.
-                </>
-              }
+              content="이음 블라인드는 기존 이음 베이직 과 별개로 운영하는 새로운 서비스예요."
             />
             <Description
               icon="🔍"

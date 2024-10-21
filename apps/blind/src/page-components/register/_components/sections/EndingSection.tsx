@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PRODUCT_URL } from "@ieum/constants";
 
 export function EndingSection() {
   return (
@@ -21,14 +20,6 @@ export function EndingSection() {
             className="text-center text-blind-500 underline hover:text-blind-700"
           >
             홈으로
-          </Link>
-          <Link
-            href={PRODUCT_URL}
-            className="text-center text-primary-500 underline hover:text-primary-700"
-            target="blank"
-            rel="noopener"
-          >
-            이음 베이직도 알아보기
           </Link>
         </div>
       </div>

@@ -119,12 +119,6 @@ function Registered() {
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">
       <Link
-        href="/basic"
-        className="w-full rounded-lg border border-primary-500 bg-primary-500 p-2 text-center font-medium text-white hover:border-primary-700 hover:bg-primary-700 md:p-2.5 md:text-lg"
-      >
-        이음 베이직 알아보기
-      </Link>
-      <Link
         href="/members"
         className="w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 md:p-2.5 md:text-lg"
         onClick={() => {
