@@ -121,19 +121,6 @@ function Registered() {
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">
       <Link
-        href="/referral"
-        className="animate-glow-border w-full rounded-lg border border-primary-500 p-2 text-center font-medium text-primary-500 hover:border-primary-700 hover:text-primary-700 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${formatUniqueMemberName(
-              member,
-            )} - 10,000원 캐시백 받기 클릭`,
-          });
-        }}
-      >
-        1만 원 캐시백 받기
-      </Link>
-      <Link
         href="/blind/register"
         className="w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-600 hover:bg-blind-600 md:p-2.5 md:text-lg"
         onClick={() => {
