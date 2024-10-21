@@ -51,8 +51,8 @@ export function Sidebar() {
         >
           회원 생성
         </Link>
-        <Link href="/bulk-notify" className="text-blue-600 hover:underline">
-          알림
+        <Link href="/bulk-actions" className="text-blue-600 hover:underline">
+          일괄 작업
         </Link>
       </div>
       <button

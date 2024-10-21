@@ -23,4 +23,11 @@ export const blindMemberRouter = createTRPCRouter({
         data: input,
       });
     }),
+  resetHearts: protectedAdminProcedure.mutation(({ ctx: { prisma } }) => {
+    return prisma.blindMember.updateMany({
+      data: {
+        heartsLeft: 3,
+      },
+    });
+  }),
 });
