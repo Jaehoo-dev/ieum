@@ -300,7 +300,7 @@ export const draftBasicMemberRouter = createTRPCRouter({
       ]);
 
       if (referrer != null) {
-        sendSlackMessage({
+        await sendSlackMessage({
           channel: "폼_제출_알림",
           content: `${formatUniqueMemberName({
             name: referrer.name,

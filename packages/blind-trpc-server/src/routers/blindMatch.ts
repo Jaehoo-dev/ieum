@@ -171,7 +171,7 @@ export const blindMatchRouter = createTRPCRouter({
 ${IEUM_BLIND_MATCHES_PAGE_URL}`,
           });
         } catch (err) {
-          sendSlackMessage({
+          await sendSlackMessage({
             channel: "에러_알림",
             content: `이음 블라인드 성사 알림 실패\nproposer: ${match.proposer.nickname} respondent: ${member.nickname}\n${err}`,
           });

@@ -620,7 +620,7 @@ export const basicMatchRouter = createTRPCRouter({
       });
 
       if (hasOtherReplied) {
-        void sendSlackMessage({
+        await sendSlackMessage({
           channel: "매칭_결과_알림",
           content: `[제안 ${
             hasOtherAccepted ? "성공" : "실패"
