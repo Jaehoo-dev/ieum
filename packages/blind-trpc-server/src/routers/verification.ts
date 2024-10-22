@@ -32,7 +32,7 @@ export const verificationRouter = createTRPCRouter({
         }),
       ]);
 
-      sendSlackMessage({
+      await sendSlackMessage({
         channel: "폼_제출_알림",
         content: `${member.nickname}(${member.phoneNumber}) 인증 자료 제출 ${SLACK_MANAGER1_ID_MENTION}`,
       });
