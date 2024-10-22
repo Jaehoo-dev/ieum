@@ -18,7 +18,7 @@ type 정렬 = (typeof 정렬)[keyof typeof 정렬];
 
 export function BasicMembersPage() {
   const router = useRouter();
-  const regionQuery = (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리;
+  const regionQuery = (router.query.region ?? 지역_쿼리.전체) as 지역_쿼리;
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
@@ -86,7 +86,7 @@ function Filter({
   onMatchTypeChange: (matchType: 매치_유형) => void;
 }) {
   const router = useRouter();
-  const regionQuery = (router.query.region ?? 지역_쿼리.수도권) as 지역_쿼리;
+  const regionQuery = (router.query.region ?? 지역_쿼리.전체) as 지역_쿼리;
   const statusQuery = (router.query.status ??
     MemberStatus.ACTIVE) as MemberStatus;
   const sortQuery = (router.query.sort ?? 정렬.생성_최신순) as 정렬;
