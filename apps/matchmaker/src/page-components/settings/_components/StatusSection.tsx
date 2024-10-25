@@ -35,19 +35,44 @@ function Active() {
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
+  const utils = api.useUtils();
+  const { mutateAsync: inactivate, isPending: isInactivating } =
+    api.basicMemberRouter.inactivate.useMutation({
+      onSuccess: () => {
+        return utils.basicMemberRouter.getStatus.invalidate();
+      },
+    });
+
   return (
     <div className="flex flex-col gap-4">
       <Title />
-      <p className="text-lg text-gray-700">
-        {`활동 중 ${match(member.gender)
-          .with(Gender.MALE, () => {
-            return "🏃‍♂️";
-          })
-          .with(Gender.FEMALE, () => {
-            return "🏃‍♀️";
-          })
-          .exhaustive()}`}
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="text-lg text-gray-700">
+          {`활동 중 ${match(member.gender)
+            .with(Gender.MALE, () => {
+              return "🏃‍♂️";
+            })
+            .with(Gender.FEMALE, () => {
+              return "🏃‍♀️";
+            })
+            .exhaustive()}`}
+        </p>
+        <button
+          className="rounded-lg bg-gray-300 px-5 py-2 text-center text-gray-800 hover:bg-gray-400 disabled:opacity-50"
+          onClick={async () => {
+            try {
+              await inactivate({ memberId: member.id });
+            } catch (error) {
+              alert(
+                "휴면 처리 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
+              );
+            }
+          }}
+          disabled={isInactivating}
+        >
+          {isInactivating ? "처리 중.." : "휴면"}
+        </button>
+      </div>
     </div>
   );
 }

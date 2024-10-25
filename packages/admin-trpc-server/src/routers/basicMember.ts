@@ -396,7 +396,7 @@ export const basicMemberRouter = createTRPCRouter({
           cursor: cursor ? { id: cursor } : undefined,
           orderBy:
             sort === "lastMatchedAt"
-              ? { lastMatchedAt: "asc" }
+              ? [{ lastMatchedAt: "asc" }, { createdAt: "desc" }]
               : { createdAt: sort },
         });
 
