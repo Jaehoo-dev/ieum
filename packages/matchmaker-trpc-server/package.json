@@ -16,6 +16,7 @@
     "@ieum/prisma": "*",
     "@ieum/slack": "*",
     "@ieum/solapi": "*",
+    "@ieum/supabase": "*",
     "@ieum/utils": "*",
     "@trpc/client": "next",
     "@trpc/server": "next",

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Gender, MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";
@@ -31,15 +32,16 @@ function Pending() {
 }
 
 function Active() {
+  const router = useRouter();
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const utils = api.useUtils();
-  const { mutateAsync: inactivate, isPending: isInactivating } =
-    api.basicMemberRouter.inactivate.useMutation({
+  const { mutateAsync: deleteAccount, isPending: isDeleting } =
+    api.basicMemberRouter.deleteAccount.useMutation({
       onSuccess: () => {
-        return utils.basicMemberRouter.getStatus.invalidate();
+        return utils.invalidate();
       },
     });
 
@@ -58,19 +60,20 @@ function Active() {
             .exhaustive()}`}
         </p>
         <button
-          className="rounded-lg bg-gray-300 px-5 py-2 text-center text-gray-800 hover:bg-gray-400 disabled:opacity-50"
+          className="rounded-lg bg-red-500 px-5 py-2 text-center text-white disabled:opacity-50"
           onClick={async () => {
             try {
-              await inactivate({ memberId: member.id });
+              await deleteAccount({ memberId: member.id });
+              router.push("/");
             } catch (error) {
               alert(
-                "휴면 처리 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
+                "탈퇴 처리 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
               );
             }
           }}
-          disabled={isInactivating}
+          disabled={isDeleting}
         >
-          {isInactivating ? "처리 중.." : "휴면"}
+          {isDeleting ? "처리 중.." : "탈퇴"}
         </button>
       </div>
     </div>
@@ -78,15 +81,16 @@ function Active() {
 }
 
 function Inactive() {
+  const router = useRouter();
   const { member } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
   const utils = api.useUtils();
-  const { mutateAsync: requestActivation, isPending: isRequesting } =
-    api.basicMemberRouter.requestActivation.useMutation({
+  const { mutateAsync: deleteAccount, isPending: isDeleting } =
+    api.basicMemberRouter.deleteAccount.useMutation({
       onSuccess: () => {
-        return utils.basicMemberRouter.getStatus.invalidate();
+        return utils.invalidate();
       },
     });
 
@@ -96,20 +100,20 @@ function Inactive() {
       <div className="flex items-center justify-between">
         <p className="text-lg text-gray-700">휴면 😴</p>
         <button
-          className="rounded-lg bg-primary-500 px-5 py-2 text-center text-white hover:bg-primary-700 disabled:opacity-50"
+          className="rounded-lg bg-red-500 px-5 py-2 text-center text-white disabled:opacity-50"
           onClick={async () => {
             try {
-              await requestActivation({ memberId: member.id });
-              alert("휴면 해제를 요청했습니다. 관리자 확인 후 활성화됩니다.");
+              await deleteAccount({ memberId: member.id });
+              router.push("/");
             } catch (error) {
               alert(
-                "휴면 해제 요청 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
+                "탈퇴 처리 중 오류가 발생했습니다. 호스트에게 문의해주세요.",
               );
             }
           }}
-          disabled={isRequesting}
+          disabled={isDeleting}
         >
-          {isRequesting ? "접수 중.." : "활성화 요청"}
+          {isDeleting ? "처리 중.." : "탈퇴"}
         </button>
       </div>
     </div>
