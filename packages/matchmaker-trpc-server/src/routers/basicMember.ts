@@ -361,6 +361,11 @@ export const basicMemberRouter = createTRPCRouter({
         });
       });
 
+      await sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `${memberId} 탈퇴`,
+      });
+
       return true;
     }),
 });
