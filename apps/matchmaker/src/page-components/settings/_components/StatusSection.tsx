@@ -33,7 +33,7 @@ function Pending() {
 
 function Active() {
   const router = useRouter();
-  const { member } = useMemberAuthContext();
+  const { member, signOut } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
@@ -64,6 +64,7 @@ function Active() {
           onClick={async () => {
             try {
               await deleteAccount({ memberId: member.id });
+              signOut();
               router.push("/");
             } catch (error) {
               alert(
@@ -82,7 +83,7 @@ function Active() {
 
 function Inactive() {
   const router = useRouter();
-  const { member } = useMemberAuthContext();
+  const { member, signOut } = useMemberAuthContext();
 
   assert(member != null, "Component should be used within MemberAuthGuard");
 
@@ -104,6 +105,7 @@ function Inactive() {
           onClick={async () => {
             try {
               await deleteAccount({ memberId: member.id });
+              signOut();
               router.push("/");
             } catch (error) {
               alert(
