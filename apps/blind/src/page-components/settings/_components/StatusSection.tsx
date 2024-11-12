@@ -15,19 +15,9 @@ export function StatusSectionResolved() {
   });
 
   return match(memberStatus)
-    .with(MemberStatus.PENDING, () => <Pending />)
     .with(MemberStatus.ACTIVE, () => <Active />)
     .with(MemberStatus.INACTIVE, () => <Inactive />)
     .exhaustive();
-}
-
-function Pending() {
-  return (
-    <div className="flex flex-col gap-4">
-      <Title />
-      <p className="text-lg text-gray-700">심사 중 📃</p>
-    </div>
-  );
 }
 
 function Active() {

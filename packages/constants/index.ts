@@ -363,11 +363,12 @@ export type 지역_쿼리 = (typeof 지역_쿼리)[keyof typeof 지역_쿼리];
 
 export const DEFAULT_HEART_COUNT = 3;
 export const BLIND_MATCH_DURATION_DAYS = 7;
-
 export const OTP_DURATION = 3 * 60 * 1000; // 3 minutes
+export const BLIND_MEMBER_REJOIN_BLOCK_DURATION = 14 * 24 * 60 * 60 * 1000; // 2 weeks
 
 export const INVALID_PHONE_NUMBER_ERROR_MESSAGE = "Invalid phone number";
 export const INVALID_BIRTH_YEAR_ERROR_MESSAGE = "Invalid birth year";
 export const INVALID_HEIGHT_ERROR_MESSAGE = "Invalid height";
 export const EXISTING_NICKNAME_ERROR_MESSAGE = "Nickname already exists";
 export const NOT_ENOUGH_HEARTS_ERROR_MESSAGE = "Not enough hearts";
+export const BLIND_MEMBER_REJOIN_BLOCK_ERROR_MESSAGE = "Cannot rejoin yet";

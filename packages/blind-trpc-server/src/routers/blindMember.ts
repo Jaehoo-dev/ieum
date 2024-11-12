@@ -1,4 +1,6 @@
 import {
+  BLIND_MEMBER_REJOIN_BLOCK_DURATION,
+  BLIND_MEMBER_REJOIN_BLOCK_ERROR_MESSAGE,
   DEFAULT_HEART_COUNT,
   EXISTING_NICKNAME_ERROR_MESSAGE,
   INVALID_BIRTH_YEAR_ERROR_MESSAGE,
@@ -6,15 +8,10 @@ import {
   INVALID_PHONE_NUMBER_ERROR_MESSAGE,
   성별_라벨,
 } from "@ieum/constants";
-import { Gender, MemberStatus, RegionV2 } from "@ieum/prisma";
+import { Gender, MemberStatus, RegionV2, UserType } from "@ieum/prisma";
 import { sendSlackMessage } from "@ieum/slack";
-import {
-  assert,
-  formatUniqueMemberName,
-  isKrPhoneNumberWithoutHyphens,
-} from "@ieum/utils";
+import { assert, hash, isKrPhoneNumberWithoutHyphens } from "@ieum/utils";
 import { TRPCError } from "@trpc/server";
-import { match } from "ts-pattern";
 import { z } from "zod";
 
 import {
@@ -53,6 +50,26 @@ export const blindMemberRouter = createTRPCRouter({
       assert(
         input.height >= 140 && input.height <= 200,
         INVALID_HEIGHT_ERROR_MESSAGE,
+      );
+
+      const archivedMember = await prisma.archivedBlindMember.findFirst({
+        where: {
+          hashedPhoneNumber: hash(
+            input.phoneNumber,
+            process.env.SOFT_DELETE_SECRET_KEY!,
+          ),
+          createdAt: {
+            gte: new Date(Date.now() - BLIND_MEMBER_REJOIN_BLOCK_DURATION),
+          },
+        },
+      });
+
+      assert(
+        archivedMember == null,
+        new TRPCError({
+          code: "FORBIDDEN",
+          message: BLIND_MEMBER_REJOIN_BLOCK_ERROR_MESSAGE,
+        }),
       );
 
       const existingMember = await prisma.blindMember.findFirst({
@@ -247,8 +264,7 @@ export const blindMemberRouter = createTRPCRouter({
       });
 
       assert(
-        member.status === MemberStatus.PENDING ||
-          member.status === MemberStatus.ACTIVE ||
+        member.status === MemberStatus.ACTIVE ||
           member.status === MemberStatus.INACTIVE,
         "Invalid member status",
       );
@@ -468,6 +484,48 @@ export const blindMemberRouter = createTRPCRouter({
       });
 
       return result;
+    }),
+  deleteMember: protectedBlindProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx: { prisma }, input: { memberId } }) => {
+      const member = await prisma.blindMember.findUniqueOrThrow({
+        where: {
+          id: memberId,
+        },
+        select: {
+          phoneNumber: true,
+        },
+      });
+
+      await prisma.$transaction([
+        prisma.user.delete({
+          where: {
+            phoneNumber_type: {
+              phoneNumber: member.phoneNumber,
+              type: UserType.BLIND_MEMBER,
+            },
+          },
+        }),
+        prisma.blindMember.delete({
+          where: {
+            id: memberId,
+          },
+        }),
+        prisma.archivedBlindMember.create({
+          data: {
+            hashedPhoneNumber: hash(
+              member.phoneNumber,
+              process.env.SOFT_DELETE_SECRET_KEY!,
+            ),
+          },
+        }),
+      ]);
+
+      return true;
     }),
 });
 
