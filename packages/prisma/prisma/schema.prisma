@@ -194,6 +194,14 @@ model BlindMember {
   @@index([status])
 }
 
+model ArchivedBlindMember {
+  id                String   @id @default(cuid())
+  hashedPhoneNumber String
+  createdAt         DateTime @default(now())
+
+  @@index([hashedPhoneNumber])
+}
+
 model BlindMatch {
   id               String           @id @default(cuid())
   proposer         BlindMember      @relation(fields: [proposerId], references: [id], onDelete: Cascade, name: "proposer")
