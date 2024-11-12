@@ -1,4 +1,5 @@
 import {
+  BLIND_MEMBER_REJOIN_BLOCK_ERROR_MESSAGE,
   EXISTING_NICKNAME_ERROR_MESSAGE,
   INVALID_BIRTH_YEAR_ERROR_MESSAGE,
   INVALID_HEIGHT_ERROR_MESSAGE,
@@ -54,6 +55,15 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
         } catch (err) {
           if (!(err instanceof TRPCClientError)) {
             throw err;
+          }
+
+          if (
+            err.data.code === "FORBIDDEN" &&
+            err.message === BLIND_MEMBER_REJOIN_BLOCK_ERROR_MESSAGE
+          ) {
+            alert("재가입 제한 기간이 남았습니다.");
+
+            return;
           }
 
           if (

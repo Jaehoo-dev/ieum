@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Layout } from "~/components/Layout";
 import { Loader } from "~/components/Loader";
 import { BlacklistSection } from "./_components/BlacklistSection";
+import { DeleteMemberSection } from "./_components/DeleteMemberSection";
 import { HeartSection } from "./_components/HeartSection";
 import { StatusSectionResolved } from "./_components/StatusSection";
 import { VerificationSection } from "./_components/VerificationSection";
@@ -37,6 +38,7 @@ function Resolved() {
       <VerificationSection />
       <hr />
       <BlacklistSection />
+      <DeleteMemberSection />
     </div>
   );
 }
