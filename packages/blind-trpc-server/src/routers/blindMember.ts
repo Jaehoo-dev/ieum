@@ -497,6 +497,7 @@ export const blindMemberRouter = createTRPCRouter({
           id: memberId,
         },
         select: {
+          nickname: true,
           phoneNumber: true,
         },
       });
@@ -524,6 +525,11 @@ export const blindMemberRouter = createTRPCRouter({
           },
         }),
       ]);
+
+      await sendSlackMessage({
+        channel: "폼_제출_알림",
+        content: `${member.nickname} - ${member.phoneNumber} 탈퇴`,
+      });
 
       return true;
     }),
