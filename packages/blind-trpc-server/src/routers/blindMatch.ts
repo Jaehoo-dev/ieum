@@ -167,19 +167,19 @@ export const blindMatchRouter = createTRPCRouter({
           await solapiMessageService.sendOne({
             from: process.env.ADMIN_PHONE_NUMBER,
             to: match.proposer.phoneNumber,
-            text: `[이음 블라인드] 축하합니다! ${member.nickname} 님도 하트를 보내 매칭이 성사되어요. 오픈채팅방에 입장해주세요.
+            text: `[이음] 축하합니다! ${member.nickname} 님도 하트를 보내 매칭이 성사되어요. 오픈채팅방에 입장해주세요.
 ${IEUM_BLIND_MATCHES_PAGE_URL}`,
           });
         } catch (err) {
           await sendSlackMessage({
             channel: "에러_알림",
-            content: `이음 블라인드 성사 알림 실패\nproposer: ${match.proposer.nickname} respondent: ${member.nickname}\n${err}`,
+            content: `이음 성사 알림 실패\nproposer: ${match.proposer.nickname} respondent: ${member.nickname}\n${err}`,
           });
         }
 
         sendSlackMessage({
           channel: "매칭_결과_알림",
-          content: `[블라인드 성사] ${match.proposer.nickname} - ${member.nickname}`,
+          content: `[성사] ${match.proposer.nickname} - ${member.nickname}`,
         });
 
         return true;

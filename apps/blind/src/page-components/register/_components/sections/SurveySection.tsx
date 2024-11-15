@@ -119,7 +119,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
       />
       <div className="mt-2 flex w-full flex-col gap-6 p-8">
         <h1 className="text-xl font-medium text-gray-800">
-          안녕하세요! <span className="text-blind-500">이음 블라인드</span>
+          안녕하세요! <span className="text-blind-500">이음</span>
           입니다.
         </h1>
         <div className="flex flex-col gap-8">

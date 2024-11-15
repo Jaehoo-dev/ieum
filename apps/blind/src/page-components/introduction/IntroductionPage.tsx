@@ -23,16 +23,12 @@ export function IntroductionPage() {
       <div className="mb-10 flex flex-col gap-10 text-gray-700">
         <div className="flex flex-col gap-4">
           <h2 className="border-b border-blind-500 pb-2 text-lg font-semibold text-blind-500">
-            이음 블라인드란?
+            이음은?
           </h2>
           <div className="flex flex-col gap-2">
             <Description
-              icon="🎊"
-              content="이음 블라인드는 기존 이음 베이직 과 별개로 운영하는 새로운 서비스예요."
-            />
-            <Description
               icon="🔍"
-              content="이음 매니저의 제안을 기다리지 않고 직접 짝을 찾아요."
+              content="매니저나 시스템의 제안을 기다리지 않고 직접 짝을 찾아요."
             />
             <Description
               icon="📃"
@@ -76,10 +72,6 @@ export function IntroductionPage() {
               icon="⛔️"
               content="무료 기간 무분별한 하트 발송을 방지하기 위해 하트 개수를 주 3개로 제한해요. 월요일마다 충전해드려요."
             />
-            <Description
-              icon="⚠️"
-              content="이음 블라인드와 이음 베이직은 별도 서비스로, 회원 체계도 별도로 운영해요."
-            />
           </div>
         </div>
       </div>
@@ -111,7 +103,7 @@ function Description({ icon, content }: { icon: string; content: ReactNode }) {
 }
 
 IntroductionPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="이음 블라인드란">{page}</Layout>;
+  return <Layout title="이음 소개">{page}</Layout>;
 };
 
 IntroductionPage.auth = false;
