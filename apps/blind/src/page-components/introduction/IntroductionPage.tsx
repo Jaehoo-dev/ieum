@@ -28,7 +28,7 @@ export function IntroductionPage() {
           <div className="flex flex-col gap-2">
             <Description
               icon="🔍"
-              content="매니저나 시스템의 제안을 기다리지 않고 직접 짝을 찾아요."
+              content="매칭 매니저나 시스템의 제안을 기다리지 않고 직접 짝을 찾아요."
             />
             <Description
               icon="📃"
