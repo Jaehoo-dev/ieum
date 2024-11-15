@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { ReactElement } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -8,7 +7,6 @@ import { Gender } from "@ieum/prisma";
 
 import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
-import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 export function DemoEntryPage() {
   const router = useRouter();
@@ -16,11 +14,11 @@ export function DemoEntryPage() {
   return (
     <>
       <Head>
-        <meta name="description" content="이음 블라인드 체험" />
+        <meta name="description" content="이음 체험" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="이음 블라인드 체험" />
+        <meta property="og:title" content="이음 체험" />
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
-        <meta property="og:description" content="이음 블라인드 체험" />
+        <meta property="og:description" content="이음 체험" />
         <meta property="og:locale" content="ko_KR" />
       </Head>
       <div className="flex w-full flex-col">

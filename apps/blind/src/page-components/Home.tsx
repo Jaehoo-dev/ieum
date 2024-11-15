@@ -24,15 +24,12 @@ export function Home() {
   return (
     <>
       <Head>
-        <title>이음 블라인드</title>
-        <meta name="description" content="직접 찾는 내 인연, 이음 블라인드" />
+        <title>이음</title>
+        <meta name="description" content="직접 찾는 내 인연, 이음" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="이음 블라인드" />
+        <meta property="og:title" content="이음" />
         <meta property="og:image" content={`${MATCHMAKER_URL}/heart.webp`} />
-        <meta
-          property="og:description"
-          content="직접 찾는 내 인연, 이음 블라인드"
-        />
+        <meta property="og:description" content="직접 찾는 내 인연, 이음" />
         <meta property="og:locale" content="ko_KR" />
         <meta property="og:url" content={MATCHMAKER_URL} />
         <meta
@@ -53,7 +50,7 @@ export function Home() {
         <div className="mt-4 flex h-3/5 w-full justify-center p-8 md:mt-10 md:h-full md:w-1/3 md:items-center">
           <div className="flex w-full max-w-md flex-col items-center gap-4">
             <h1 className="text-3xl font-semibold text-blind-500 md:text-4xl">
-              이음 블라인드
+              이음
             </h1>
             <Suspense fallback={<Loader />}>
               <Resolved />

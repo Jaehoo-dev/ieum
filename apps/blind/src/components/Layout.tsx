@@ -32,7 +32,7 @@ export function Layout({
   return (
     <>
       <Head>
-        <title>{`${title} | 이음 블라인드`}</title>
+        <title>{`${title} | 이음`}</title>
       </Head>
       <div
         className={`mx-auto flex min-h-screen ${

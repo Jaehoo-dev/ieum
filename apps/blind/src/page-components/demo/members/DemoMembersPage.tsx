@@ -23,13 +23,10 @@ export function DemoMembersPage() {
   return (
     <>
       <Head>
-        <meta name="description" content="직접 찾는 내 인연, 이음 블라인드" />
+        <meta name="description" content="직접 찾는 내 인연, 이음" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="이음 블라인드" />
-        <meta
-          property="og:description"
-          content="직접 찾는 내 인연, 이음 블라인드"
-        />
+        <meta property="og:title" content="이음" />
+        <meta property="og:description" content="직접 찾는 내 인연, 이음" />
         <meta property="og:locale" content="ko_KR" />
         <meta
           property="keywords"
@@ -40,7 +37,7 @@ export function DemoMembersPage() {
         <div className="flex w-full items-start gap-1">
           <p className="text-sm text-gray-700">※</p>
           <p className="text-sm text-gray-700">
-            이음 블라인드 체험용 페이지입니다.{" "}
+            이음 체험용 페이지입니다.{" "}
             <Link
               href="/"
               className="text-blind-500 underline hover:text-blind-700"
