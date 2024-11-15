@@ -1,7 +1,5 @@
 import { ReactElement, ReactNode, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { PRODUCT_URL } from "@ieum/constants";
 import VerifiedIcon from "@mui/icons-material/Verified";
 
 import { Layout } from "~/components/Layout";
@@ -9,7 +7,6 @@ import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 
 export function IntroductionPage() {
-  const router = useRouter();
   const { sendMessage } = useSlackNotibot();
 
   useEffect(() => {
@@ -78,15 +75,20 @@ export function IntroductionPage() {
       <Spacing size={80} />
       <div className="fixed bottom-0 left-0 flex w-full items-center justify-center border-t border-gray-200 bg-white p-4 md:px-6">
         <div className="w-full max-w-lg px-2">
-          <Link
-            href="/"
-            className="block w-full rounded-lg bg-blind-500 p-3 text-center text-xl font-medium text-white hover:bg-blind-600"
-            onClick={() => {
-              router.push("/");
-            }}
-          >
-            시작하기
-          </Link>
+          <div className="flex gap-2">
+            <Link
+              href="/demo"
+              className="block w-full rounded-lg bg-gray-200 p-3 text-center text-xl font-medium text-gray-700 hover:bg-gray-300"
+            >
+              미리보기
+            </Link>
+            <Link
+              href="/"
+              className="block w-full rounded-lg bg-blind-500 p-3 text-center text-xl font-medium text-white hover:bg-blind-600"
+            >
+              시작하기
+            </Link>
+          </div>
         </div>
       </div>
     </>

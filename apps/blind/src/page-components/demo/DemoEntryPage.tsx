@@ -40,20 +40,13 @@ export function DemoEntryPage() {
             여성
           </Link>
         </div>
-        <Spacing size={32} />
-        <Link
-          href="/tips?from=blind-demo-entry"
-          className="text-center text-lg text-gray-600 underline hover:text-gray-800"
-        >
-          소개팅 꿀팁 보러 가기
-        </Link>
       </div>
     </>
   );
 }
 
 DemoEntryPage.getLayout = function getLayout(page: ReactElement) {
-  return <Layout title="상대방 프로필 예시">{page}</Layout>;
+  return <Layout title="이음 미리보기">{page}</Layout>;
 };
 
 DemoEntryPage.auth = false;
