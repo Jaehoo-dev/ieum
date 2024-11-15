@@ -37,7 +37,7 @@ export function DemoMembersPage() {
         <div className="flex w-full items-start gap-1">
           <p className="text-sm text-gray-700">※</p>
           <p className="text-sm text-gray-700">
-            이음 체험용 페이지입니다.{" "}
+            서비스 미리보기 페이지입니다.{" "}
             <Link
               href="/"
               className="text-blind-500 underline hover:text-blind-700"
