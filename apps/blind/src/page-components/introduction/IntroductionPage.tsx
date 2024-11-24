@@ -59,7 +59,6 @@ export function IntroductionPage() {
               icon="💰"
               content={
                 <>
-                  베타 기간 동안{" "}
                   <span className="font-medium text-blind-500">무료</span>로
                   운영해요. 가입, 하트 보내기, 성사 모두 비용이 발생하지 않아요.
                 </>
