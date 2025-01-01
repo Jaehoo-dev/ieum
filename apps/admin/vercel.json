@@ -2,15 +2,5 @@
   "github": {
     "silent": true
   },
-  "regions": ["icn1"],
-  "crons": [
-    {
-      "path": "/api/schedule",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/reset-hearts",
-      "schedule": "0 23 * * 0"
-    }
-  ]
+  "regions": ["icn1"]
 }
