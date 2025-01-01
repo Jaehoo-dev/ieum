@@ -1,16 +1,9 @@
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { MATCHMAKER_URL } from "@ieum/constants";
-import { assert } from "@ieum/utils";
 
 import { KakaotalkChatButton } from "~/components/KakaotalkChatButton";
-import { Loader } from "~/components/Loader";
-import { MemberAuth } from "~/components/MemberAuth";
-import { Spacing } from "~/components/Spacing";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { useMemberAuthContext } from "~/providers/MemberAuthProvider";
 
 export function Home() {
   const { sendMessage } = useSlackNotibot();
@@ -52,9 +45,11 @@ export function Home() {
             <h1 className="text-3xl font-semibold text-blind-500 md:text-4xl">
               이음
             </h1>
-            <Suspense fallback={<Loader />}>
-              <Resolved />
-            </Suspense>
+            <p className="text-center text-lg text-gray-700">
+              그동안 이용해주셔서 감사합니다.
+              <br />
+              좋은 인연 만나시길 바라겠습니다.
+            </p>
           </div>
         </div>
         <KakaotalkChatButton />
@@ -64,112 +59,3 @@ export function Home() {
 }
 
 Home.auth = false;
-
-function Resolved() {
-  const { loading, loggedIn } = useMemberAuthContext();
-
-  return loading ? (
-    <Loading />
-  ) : loggedIn ? (
-    <Suspense fallback={<Loader />}>
-      <LoggedIn />
-    </Suspense>
-  ) : (
-    <MemberAuth />
-  );
-}
-
-function Loading() {
-  return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <Loader />
-      <Spacing size={354} />
-    </div>
-  );
-}
-
-function LoggedIn() {
-  const router = useRouter();
-  const { registered } = useMemberAuthContext();
-
-  useEffect(() => {
-    if (!registered) {
-      router.push("/register");
-    }
-  }, [registered, router]);
-
-  return registered ? <Registered /> : null;
-}
-
-function Registered() {
-  const { member, signOut } = useMemberAuthContext();
-
-  assert(member != null, "member should be defined");
-  const { sendMessage } = useSlackNotibot();
-
-  useEffect(() => {
-    void sendMessage({
-      content: `${member.id} - 홈 진입\n${navigator.userAgent}`,
-    });
-  }, [member]);
-
-  return (
-    <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">
-      <Link
-        href="/members"
-        className="w-full rounded-lg border border-blind-500 bg-blind-500 p-2 text-center font-medium text-white hover:border-blind-700 hover:bg-blind-700 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 회원 목록 보기 클릭`,
-          });
-        }}
-      >
-        회원 목록 보기
-      </Link>
-      <Link
-        href="/matches"
-        className="w-full rounded-lg border border-blind-500 p-2 text-center font-medium text-blind-500 hover:border-blind-600 hover:text-blind-600 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 회원 목록 보기 클릭`,
-          });
-        }}
-      >
-        매칭 목록 보기
-      </Link>
-      <Link
-        href="/my-profile"
-        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 내 프로필 보기 클릭`,
-          });
-        }}
-      >
-        내 프로필 보기
-      </Link>
-      <Link
-        href="/settings"
-        className="w-full rounded-lg border border-gray-600 p-2 text-center font-medium text-gray-600 hover:border-gray-800 hover:text-gray-800 md:p-2.5 md:text-lg"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 설정 클릭`,
-          });
-        }}
-      >
-        설정
-      </Link>
-      <button
-        className="mt-1 text-sm font-light text-gray-500 underline hover:text-gray-700"
-        onClick={() => {
-          void sendMessage({
-            content: `${member.id} - 로그아웃 클릭`,
-          });
-          void signOut();
-        }}
-      >
-        로그아웃
-      </button>
-    </div>
-  );
-}
