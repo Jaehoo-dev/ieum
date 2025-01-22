@@ -1,4 +1,5 @@
-import { ReactElement, useEffect } from "react";
+import type { ReactElement } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import {
@@ -7,7 +8,8 @@ import {
   구_라벨,
   커스텀_지역_라벨,
 } from "@ieum/constants";
-import { CustomRegion, Place, SeoulDistrict } from "@ieum/prisma";
+import type { Place, SeoulDistrict } from "@ieum/prisma";
+import { CustomRegion } from "@ieum/prisma";
 
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";

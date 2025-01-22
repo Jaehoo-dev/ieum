@@ -1,4 +1,5 @@
-import { ReactElement, Suspense } from "react";
+import type { ReactElement } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/router";
 import { EXISTING_NICKNAME_ERROR_MESSAGE, 지역_라벨 } from "@ieum/constants";
 import { assert, handleNullableStringNumber } from "@ieum/utils";

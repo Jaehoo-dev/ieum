@@ -1,7 +1,6 @@
+import type { BasicMemberIdealTypeV2, BasicMemberV2 } from "@ieum/prisma";
 import {
   BasicCondition,
-  BasicMemberIdealTypeV2,
-  BasicMemberV2,
   orderedAnnualIncomes,
   orderedAssetsValues,
   orderedBooksReadPerYears,

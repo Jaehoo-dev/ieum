@@ -1,6 +1,6 @@
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { signIn } from "@ieum/blind-auth";
 import { assert, formatPhoneNumberInput, krHyphenToKr } from "@ieum/utils";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
@@ -168,7 +168,6 @@ interface CodeStepProps {
 }
 
 function CodeStep({ phoneNumber, verificationId, onReset }: CodeStepProps) {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -185,7 +184,7 @@ function CodeStep({ phoneNumber, verificationId, onReset }: CodeStepProps) {
     <div className="w-full">
       <form
         className="flex flex-col items-center gap-1"
-        onSubmit={handleSubmit(async ({ shouldPersist, verificationCode }) => {
+        onSubmit={handleSubmit(async ({ verificationCode }) => {
           assert(verificationId != null, "verificationId must be set");
 
           void sendMessage({ content: "로그인 시도" });

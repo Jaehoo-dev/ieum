@@ -14,10 +14,11 @@ export function Ending() {
     sendMessage({
       content: `회원가입 끝 페이지 진입`,
     });
-  }, []);
+  }, [sendMessage]);
 
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/heart.webp"
         alt="하트 이미지"

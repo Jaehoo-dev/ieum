@@ -1,5 +1,6 @@
 import { 하루_초 } from "@ieum/matchmaker-trpc-server/src/constants";
-import { prisma, SeoulDistrict } from "@ieum/prisma";
+import type { SeoulDistrict } from "@ieum/prisma";
+import { prisma } from "@ieum/prisma";
 
 export { PlacesPage as default } from "~/page-components/places/PlacesPage";
 

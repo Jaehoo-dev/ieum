@@ -4,7 +4,6 @@ import {
   자산_라벨,
   종교_라벨,
   지역_라벨,
-  체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
 import type { BasicMemberV2 } from "@ieum/prisma";

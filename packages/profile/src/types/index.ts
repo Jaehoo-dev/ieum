@@ -1,4 +1,4 @@
-import {
+import type {
   BasicMemberProfileV2,
   BlindMember,
   MemberAudio,

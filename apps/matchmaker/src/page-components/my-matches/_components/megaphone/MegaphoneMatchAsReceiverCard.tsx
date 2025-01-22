@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { MEGAPHONE_MATCH_RECEIVER_DURATION_HOURS } from "@ieum/constants";
-import { MegaphoneMatch } from "@ieum/prisma";
+import type { MegaphoneMatch } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { format } from "date-fns";
 

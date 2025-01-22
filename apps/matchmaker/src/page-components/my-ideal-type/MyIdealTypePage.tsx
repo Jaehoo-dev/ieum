@@ -1,17 +1,10 @@
-import {
-  ComponentPropsWithRef,
-  forwardRef,
-  ReactElement,
-  Suspense,
-  useEffect,
-  useState,
-} from "react";
+import type { ComponentPropsWithRef, ReactElement } from "react";
+import { forwardRef, Suspense, useEffect, useState } from "react";
 import Head from "next/head";
+import type { DraggableAttributes, DragOverEvent } from "@dnd-kit/core";
 import {
   closestCorners,
   DndContext,
-  DraggableAttributes,
-  DragOverEvent,
   DragOverlay,
   PointerSensor,
   TouchSensor,
@@ -19,7 +12,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
@@ -40,12 +33,8 @@ import {
   최소_자산_라벨,
   최소_학력_라벨,
 } from "@ieum/constants";
-import {
-  BasicCondition,
-  BasicMemberIdealTypeV2,
-  DrinkingFrequency,
-  Religion,
-} from "@ieum/prisma";
+import type { BasicMemberIdealTypeV2 } from "@ieum/prisma";
+import { BasicCondition, DrinkingFrequency, Religion } from "@ieum/prisma";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { keepPreviousData } from "@tanstack/react-query";
@@ -201,7 +190,7 @@ function Resolved() {
     void sendMessage({
       content: `${formatUniqueMemberName(member)} - 내 이상형 조건 페이지 진입`,
     });
-  }, []);
+  }, [member, sendMessage]);
 
   const handleDragEnd = ({ active, over }: DragOverEvent) => {
     const overContainerId: 우선순위 =
@@ -527,7 +516,7 @@ interface DataFieldProps extends ComponentPropsWithRef<"div"> {
 }
 
 const DataField = forwardRef<HTMLDivElement, DataFieldProps>(
-  (
+  function _DataField(
     {
       condition,
       idealType,
@@ -538,7 +527,7 @@ const DataField = forwardRef<HTMLDivElement, DataFieldProps>(
       ...props
     },
     ref,
-  ) => {
+  ) {
     const isDealBreaker = dealBreaker || 기본_필수_조건들.has(condition);
     const { label, value } = createFieldData(idealType, condition);
 

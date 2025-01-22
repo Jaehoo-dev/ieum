@@ -1,10 +1,9 @@
 import { 상태_라벨 } from "@ieum/constants";
 import { Gender, MatchStatus } from "@ieum/prisma";
 import { format } from "date-fns";
-import { match } from "ts-pattern";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
-import { BasicMatchWithMembers } from "~/domains/basic/types";
+import type { BasicMatchWithMembers } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 import { BasicMatchRespondField } from "../../components/BasicMatchRespondField";
 import { getStatusButtonBackgroundClassName } from "../utils/getStatusButtonBackgroundClassName";

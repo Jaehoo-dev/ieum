@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {
+import type {
   AnnualIncome,
   AssetsValue,
   BodyShape,
@@ -14,7 +14,7 @@ import {
 import { assert, krHyphenToKr } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
-export type RegisterForm = {
+export interface RegisterForm {
   name: string;
   phoneNumber: string;
   gender: Gender | null;
@@ -76,7 +76,7 @@ export type RegisterForm = {
   memo: string | null;
 
   personalInfoConsent: boolean | null;
-};
+}
 
 const defaultRegisterForm: RegisterForm = {
   name: "",
@@ -172,7 +172,7 @@ export function useRegisterForm() {
         form.setValue(field as keyof RegisterForm, parsedValues[field]);
       });
     }
-  }, [STORAGE_KEY, form.setValue]);
+  }, [form, form.setValue]);
 
   useEffect(() => {
     const subscription = form.watch((values) => {
@@ -184,7 +184,7 @@ export function useRegisterForm() {
     });
 
     return () => subscription.unsubscribe();
-  }, [STORAGE_KEY, form.watch]);
+  }, [form, form.watch]);
 
   return {
     clearCache: () => {

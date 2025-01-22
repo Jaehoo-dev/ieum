@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm } from "../../RegisterForm";
+import type { RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";
 
@@ -21,10 +21,11 @@ export function PreSelfSurvey({ onBack, onNext }: Props) {
     sendMessage({
       content: `${phoneNumber} - 본인 설문 설명 페이지 진입`,
     });
-  }, []);
+  }, [phoneNumber, sendMessage]);
 
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/heart.webp"
         alt="하트 이미지"

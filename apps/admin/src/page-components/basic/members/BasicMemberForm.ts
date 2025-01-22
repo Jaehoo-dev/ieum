@@ -11,7 +11,7 @@ import type {
   Religion,
 } from "@ieum/prisma";
 
-export type BasicMemberForm = {
+export interface BasicMemberForm {
   self: Omit<
     BasicMemberV2,
     | "id"
@@ -61,4 +61,4 @@ export type BasicMemberForm = {
     mediumPriorities: { value: BasicCondition }[];
     lowPriorities: { value: BasicCondition }[];
   };
-};
+}

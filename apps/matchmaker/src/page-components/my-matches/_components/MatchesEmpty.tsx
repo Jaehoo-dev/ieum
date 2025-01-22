@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { MemberStatus } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { match } from "ts-pattern";

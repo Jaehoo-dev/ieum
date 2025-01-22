@@ -1,4 +1,4 @@
-import {
+import type {
   AnnualIncome,
   BodyShape,
   EducationLevel,
@@ -7,7 +7,7 @@ import {
   Religion,
 } from "@ieum/prisma";
 
-export type DemoForm = {
+export interface DemoForm {
   idealMinAgeBirthYear: number | null;
   idealMaxAgeBirthYear: number | null;
   idealRegions: RegionV2[];
@@ -28,7 +28,7 @@ export type DemoForm = {
   idealNonPreferredReligions: Religion[];
   idealIsTattooOk: boolean | null;
   idealTypeDescription: string;
-};
+}
 
 export const defaultDemoForm: DemoForm = {
   idealMinAgeBirthYear: null,

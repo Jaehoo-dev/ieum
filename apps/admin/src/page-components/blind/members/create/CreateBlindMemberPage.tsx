@@ -1,4 +1,5 @@
-import { ReactElement, useState } from "react";
+import type { ReactElement } from "react";
+import { useState } from "react";
 import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
 import { Gender, RegionV2 } from "@ieum/prisma";
 import { Controller, useForm } from "react-hook-form";

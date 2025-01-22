@@ -1,7 +1,6 @@
-import { SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
 
-import { Checkbox as _Checkbox, Checkbox } from "~/components/ui/checkbox";
+import { Checkbox } from "~/components/ui/checkbox";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
 import { 조회용_매치_유형 } from "~/page-components/my-matches/_enums";
 import { useMemberAuthContext } from "~/providers/MemberAuthProvider";

@@ -10,7 +10,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm } from "../../RegisterForm";
+import type { RegisterForm } from "../../RegisterForm";
 
 interface Props {
   onNext: () => void;
@@ -31,7 +31,7 @@ export function Welcome({ onNext }: Props) {
     sendMessage({
       content: "회원가입 페이지 진입",
     });
-  }, []);
+  }, [sendMessage]);
 
   useEffect(() => {
     if (router.query.from == null) {
@@ -41,10 +41,11 @@ export function Welcome({ onNext }: Props) {
     sendMessage({
       content: `from: ${router.query.from}`,
     });
-  }, [router.query.from]);
+  }, [router.query.from, sendMessage]);
 
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/hello.jpg"
         alt="안녕하세요"

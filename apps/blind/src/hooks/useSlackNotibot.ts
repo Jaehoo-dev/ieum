@@ -1,4 +1,5 @@
-import { sendSlackMessage, 슬랙_채널 } from "@ieum/slack";
+import type { 슬랙_채널 } from "@ieum/slack";
+import { sendSlackMessage } from "@ieum/slack";
 
 export function useSlackNotibot() {
   async function sendMessage({

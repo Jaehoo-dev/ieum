@@ -7,7 +7,7 @@ import {
   구_라벨,
   음식종류_라벨,
 } from "@ieum/constants";
-import { CuisineType, Place } from "@ieum/prisma";
+import type { CuisineType, Place } from "@ieum/prisma";
 
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
@@ -26,7 +26,7 @@ export function PlacesByDistrictPage({ district, places }: Props) {
     void sendMessage({
       content: `${구} 소개팅 장소 추천 페이지 진입`,
     });
-  }, [sendMessage]);
+  }, [sendMessage, 구]);
 
   const placesByCuisineType = places.reduce(
     (acc, place) => {

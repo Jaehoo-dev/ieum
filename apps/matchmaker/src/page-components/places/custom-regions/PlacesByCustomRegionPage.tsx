@@ -7,7 +7,7 @@ import {
   음식종류_라벨,
   커스텀_지역_라벨,
 } from "@ieum/constants";
-import { CuisineType, CustomRegion, Place } from "@ieum/prisma";
+import type { CuisineType, CustomRegion, Place } from "@ieum/prisma";
 
 import { ResponsiveDisplayAd } from "~/components/adsense/ResponsiveDisplayAd";
 import { Layout } from "~/components/Layout";
@@ -27,7 +27,7 @@ export function PlacesByCustomRegionPage({ customRegion, places }: Props) {
     void sendMessage({
       content: `${커스텀_지역} 소개팅 장소 추천 페이지 진입`,
     });
-  }, [sendMessage]);
+  }, [sendMessage, 커스텀_지역]);
 
   const placesByCuisineType = places.reduce(
     (acc, place) => {

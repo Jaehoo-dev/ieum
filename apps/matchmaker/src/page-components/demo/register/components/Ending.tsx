@@ -7,6 +7,7 @@ interface Props {
 export function Ending({ targetUrl }: Props) {
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/heart.webp"
         alt="안녕하세요"

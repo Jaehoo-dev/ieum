@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense, useCallback, useEffect } from "react";
 import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import {
@@ -39,21 +39,7 @@ function Resolved() {
 
   const router = useRouter();
 
-  if (router.query.megaphoneMatchId == null) {
-    return null;
-  }
-
-  async function handleRouterReplace() {
-    return router.replace({
-      pathname: "/my-matches",
-      query: {
-        matchType:
-          selfMemberType === 확성기_매치_참가자_유형.SENDER
-            ? 조회용_매치_유형.MEGAPHONE_SENDER
-            : 조회용_매치_유형.MEGAPHONE_RECEIVER,
-      },
-    });
-  }
+  assert(router.query.megaphoneMatchId != null);
 
   const matchId = router.query.megaphoneMatchId as string;
   const [
@@ -77,6 +63,18 @@ function Resolved() {
     });
   const { open: confirm } = useConfirmDialog();
   const { sendMessage } = useSlackNotibot();
+
+  const handleRouterReplace = useCallback(() => {
+    return router.replace({
+      pathname: "/my-matches",
+      query: {
+        matchType:
+          selfMemberType === 확성기_매치_참가자_유형.SENDER
+            ? 조회용_매치_유형.MEGAPHONE_SENDER
+            : 조회용_매치_유형.MEGAPHONE_RECEIVER,
+      },
+    });
+  }, [router, selfMemberType]);
 
   useEffect(() => {
     void sendMessage({
@@ -102,7 +100,15 @@ function Resolved() {
 
       handleRouterReplace();
     }
-  }, [forbidden, isSelfMemberPending, matchId, member, router, sendMessage]);
+  }, [
+    forbidden,
+    handleRouterReplace,
+    isSelfMemberPending,
+    matchId,
+    member,
+    router,
+    sendMessage,
+  ]);
 
   if (forbidden) {
     return null;
@@ -203,11 +209,11 @@ function Buttons({
 }: {
   selfMemberType: 확성기_매치_참가자_유형;
   rejectButton: {
-    onClick: () => void;
+    onClick: () => Promise<void>;
     isPending: boolean;
   };
   acceptButton: {
-    onClick: () => void;
+    onClick: () => Promise<void>;
     isPending: boolean;
   };
 }) {

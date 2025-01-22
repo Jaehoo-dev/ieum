@@ -1,4 +1,5 @@
-import { ConfirmOptions, useConfirm } from "material-ui-confirm";
+import type { ConfirmOptions } from "material-ui-confirm";
+import { useConfirm } from "material-ui-confirm";
 
 interface Options extends Omit<ConfirmOptions, "allowClose"> {
   title: string;

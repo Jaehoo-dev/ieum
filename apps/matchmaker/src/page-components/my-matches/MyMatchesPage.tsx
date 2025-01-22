@@ -36,7 +36,7 @@ export function MyMatchesPage() {
         member,
       )} - ${matchType} 목록 페이지 진입`,
     });
-  }, [member.name, sendMessage]);
+  }, [matchType, member, member.name, sendMessage]);
 
   const { data: activeBasicMatches = [] } =
     api.basicMatchRouter.findActiveMatchesByMemberId.useQuery({

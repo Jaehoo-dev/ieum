@@ -3,6 +3,7 @@ import Link from "next/link";
 export function EndingSection() {
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/heart.webp"
         alt="하트 이미지"

@@ -33,9 +33,7 @@ function Resolved() {
 
   const router = useRouter();
 
-  if (router.query.basicMatchId == null) {
-    return null;
-  }
+  assert(router.query.basicMatchId != null);
 
   const matchId = router.query.basicMatchId as string;
 
@@ -60,7 +58,7 @@ function Resolved() {
         match.id
       } 기본 매치 페이지 진입 / ${profile.id} 프로필 조회`,
     });
-  }, [match.id, member.name, profile.id, sendMessage]);
+  }, [match.id, member, member.name, profile.id, sendMessage]);
 
   useEffect(() => {
     if (isPendingByMember || match.acceptedByV2.length === 2) {
@@ -83,6 +81,7 @@ function Resolved() {
     isPendingByMember,
     match.acceptedByV2.length,
     match.id,
+    member,
     member.name,
     router,
     sendMessage,

@@ -16,11 +16,11 @@ import {
   지역_라벨,
   학력_라벨,
 } from "@ieum/constants";
+import type { BasicMemberIdealTypeV2 } from "@ieum/prisma";
 import {
   AnnualIncome,
   AssetsValue,
   BasicCondition,
-  BasicMemberIdealTypeV2,
   BooksReadPerYear,
   EducationLevel,
   ExercisePerWeek,

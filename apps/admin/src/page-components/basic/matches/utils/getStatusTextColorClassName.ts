@@ -1,4 +1,4 @@
-import { MatchStatus } from "@ieum/prisma";
+import type { MatchStatus } from "@ieum/prisma";
 import { match } from "ts-pattern";
 
 export function getStatusTextColorClassName(status: MatchStatus) {

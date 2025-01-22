@@ -112,6 +112,7 @@ export function SurveySection({ phoneNumber, onSubmitSuccess }: Props) {
         onSubmitSuccess();
       })}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/hello.jpg"
         alt="안녕하세요"

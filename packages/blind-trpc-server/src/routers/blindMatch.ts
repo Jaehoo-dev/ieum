@@ -275,47 +275,31 @@ ${IEUM_BLIND_MATCHES_PAGE_URL}`,
             .filter((match) => {
               return match.proposerId === selfMemberId;
             })
-            .map(
-              ({
-                proposer,
-                respondent,
-                proposerId,
-                respondentId,
-                ...match
-              }) => {
-                return {
-                  ...match,
-                  target: {
-                    id: respondent.id,
-                    nickname: respondent.nickname,
-                  },
-                };
-              },
-            ),
+            .map(({ respondent, ...match }) => {
+              return {
+                ...match,
+                target: {
+                  id: respondent.id,
+                  nickname: respondent.nickname,
+                },
+              };
+            }),
           received: pendingMatches
             .filter((match) => {
               return match.respondentId === selfMemberId;
             })
-            .map(
-              ({
-                proposer,
-                respondent,
-                proposerId,
-                respondentId,
-                ...match
-              }) => {
-                return {
-                  ...match,
-                  target: {
-                    id: proposer.id,
-                    nickname: proposer.nickname,
-                  },
-                };
-              },
-            ),
+            .map(({ proposer, ...match }) => {
+              return {
+                ...match,
+                target: {
+                  id: proposer.id,
+                  nickname: proposer.nickname,
+                },
+              };
+            }),
         },
         accepted: acceptedMatches.map(
-          ({ proposer, respondent, proposerId, respondentId, ...match }) => {
+          ({ proposer, respondent, proposerId, ...match }) => {
             return {
               ...match,
               target: {

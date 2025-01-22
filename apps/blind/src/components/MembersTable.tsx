@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { 지역_라벨 } from "@ieum/constants";
-import { BlindMember, Gender } from "@ieum/prisma";
+import type { BlindMember, Gender } from "@ieum/prisma";
 
 import { Loader } from "./Loader";
 
@@ -52,7 +52,9 @@ export function MembersTable({
           const 동성인가 = selfGender === member.gender;
 
           return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div
+              role="button"
               key={member.id}
               className={`p-2 text-center text-gray-700 ${
                 동성인가
@@ -65,6 +67,7 @@ export function MembersTable({
                 onRowClick(member);
               }}
               aria-disabled={selfGender === member.gender}
+              tabIndex={index}
             >
               <div className="flex">
                 <div className="w-1/3 truncate">{member.nickname}</div>

@@ -20,7 +20,8 @@ import { Range } from "~/components/form/Range";
 import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
-import { defaultDemoForm, DemoForm } from "../DemoForm";
+import type { DemoForm } from "../DemoForm";
+import { defaultDemoForm } from "../DemoForm";
 import { BackTextButton } from "./BackTextButton";
 
 interface Props {
@@ -56,7 +57,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
             errors.idealMaxAgeBirthYear != null
           }
           errorText={
-            errors.idealMinAgeBirthYear?.message ||
+            errors.idealMinAgeBirthYear?.message ??
             errors.idealMaxAgeBirthYear?.message
           }
           from={{
@@ -105,7 +106,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         <Controller
           control={control}
           name="idealRegions"
-          render={({ field: { onChange, value }, fieldState: { error } }) => {
+          render={({ field: { onChange, value } }) => {
             return (
               <MultiSelect
                 label="상대방이 어디에 거주하길 바라세요?"
@@ -127,7 +128,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
           description="상관없으면 비워두시면 됩니다. 예) 160 ~ 170, 170 ~"
           error={errors.idealMinHeight != null || errors.idealMaxHeight != null}
           errorText={
-            errors.idealMinHeight?.message || errors.idealMaxHeight?.message
+            errors.idealMinHeight?.message ?? errors.idealMaxHeight?.message
           }
           from={{
             ...register("idealMinHeight", {
@@ -173,7 +174,7 @@ export function IdealTypeSurvey({ onBack, onNext }: Props) {
         <Controller
           control={control}
           name="idealBodyShapes"
-          render={({ field: { onChange, value }, fieldState: { error } }) => {
+          render={({ field: { onChange, value } }) => {
             return (
               <MultiSelect
                 label="선호하시는 체형이 있으세요?"

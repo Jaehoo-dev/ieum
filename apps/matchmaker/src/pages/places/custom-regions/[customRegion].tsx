@@ -1,6 +1,7 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { 하루_초 } from "@ieum/matchmaker-trpc-server/src/constants";
-import { CustomRegion, Place, prisma, SeoulDistrict } from "@ieum/prisma";
+import type { Place } from "@ieum/prisma";
+import { CustomRegion, prisma } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
 export { PlacesByCustomRegionPage as default } from "~/page-components/places/custom-regions/PlacesByCustomRegionPage";

@@ -45,7 +45,7 @@ export function BlacklistSection() {
             reset();
           })}
         >
-          <label className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <span className="text-sm text-gray-700">전화번호</span>
             <div className="flex flex-row gap-2">
               <Controller
@@ -78,7 +78,7 @@ export function BlacklistSection() {
                 등록
               </button>
             </div>
-          </label>
+          </div>
         </form>
         <Suspense>
           <Resolved />

@@ -1,4 +1,5 @@
-import { ReactElement, useEffect } from "react";
+import type { ReactElement } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -152,7 +153,7 @@ function Section({
   posts,
 }: {
   title: string;
-  posts: Array<{ title: string; href: string }>;
+  posts: { title: string; href: string }[];
 }) {
   const { sendMessage } = useSlackNotibot();
 

@@ -1,4 +1,5 @@
-import { ReactElement, Suspense, useState } from "react";
+import type { ReactElement } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/router";
 import {
   연간_벌이_라벨,
@@ -13,7 +14,12 @@ import {
 } from "@ieum/constants";
 import { RegionV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
-import { calculateBmi, formatUniqueMemberName, getBmiLabel } from "@ieum/utils";
+import {
+  assert,
+  calculateBmi,
+  formatUniqueMemberName,
+  getBmiLabel,
+} from "@ieum/utils";
 
 import { Layout } from "~/components/Layout";
 import { Select } from "~/components/Select";
@@ -36,9 +42,7 @@ function Resolved() {
   const router = useRouter();
   const draftMemberId = router.query.draftMemberId as string;
 
-  if (draftMemberId == null) {
-    return null;
-  }
+  assert(draftMemberId != null);
 
   const [
     {
@@ -500,6 +504,7 @@ function ImageField({ bucketPath }: { bucketPath: string }) {
     .getPublicUrl(bucketPath);
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img src={publicUrl} alt="사진" width={400} className="object-contain" />
   );
 }
@@ -511,6 +516,7 @@ function VideoField({ bucketPath }: { bucketPath: string }) {
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_VIDEOS_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
+  // eslint-disable-next-line jsx-a11y/media-has-caption
   return <video src={publicUrl} controls width={400} />;
 }
 
@@ -521,6 +527,7 @@ function AudioField({ bucketPath }: { bucketPath: string }) {
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_AUDIOS_BUCKET_NAME!)
     .getPublicUrl(bucketPath);
 
+  // eslint-disable-next-line jsx-a11y/media-has-caption
   return <audio src={publicUrl} controls />;
 }
 

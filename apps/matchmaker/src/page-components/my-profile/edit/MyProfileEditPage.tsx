@@ -1,4 +1,5 @@
-import { ReactElement, Suspense, useEffect } from "react";
+import type { ReactElement } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   assert,
@@ -23,7 +24,7 @@ export function MyProfileEditPage() {
     void sendMessage({
       content: `${formatUniqueMemberName(member)} - 내 프로필 수정 페이지 진입`,
     });
-  }, [member.name, sendMessage]);
+  }, [member, member.name, sendMessage]);
 
   return (
     <div className="flex flex-col gap-4">

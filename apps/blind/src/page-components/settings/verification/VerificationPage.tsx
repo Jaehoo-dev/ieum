@@ -1,4 +1,5 @@
-import { ReactElement, useRef } from "react";
+import type { ReactElement } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
@@ -172,6 +173,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
 
   return (
     <div key={bucketPath} className="relative">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className="w-full rounded-lg object-cover"
         src={publicUrl}

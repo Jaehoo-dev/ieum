@@ -1,4 +1,5 @@
-import { BasicMemberWithBasicMatchesJoined } from "./types";
+/* eslint-disable no-prototype-builtins */
+import type { BasicMemberWithBasicMatchesJoined } from "./types";
 
 export function isBasicMemberWithBasicMatchesJoined(
   value: any,

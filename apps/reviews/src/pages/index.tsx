@@ -35,7 +35,7 @@ export default function Home() {
       target: iframeParentTarget,
       device: parentDevice,
     });
-  }, [data]);
+  }, [iframeParentTarget, parentDevice]);
 
   if (data == null) {
     return null;
@@ -185,5 +185,4 @@ function sendScrollTriggerToParent({
   );
 }
 
-type Event = "HEIGHT" | "SCROLL";
 type Device = "pc" | "mobile";

@@ -5,7 +5,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { format } from "date-fns";
 
 import { BasicMemberCard } from "~/components/BasicMemberCard";
-import { MegaphoneMatchWithMembers } from "~/domains/basic/types";
+import type { MegaphoneMatchWithMembers } from "~/domains/basic/types";
 import { api } from "~/utils/api";
 import { getStatusButtonBackgroundClassName } from "../utils/getStatusButtonBackgroundClassName";
 import { getStatusTextColorClassName } from "../utils/getStatusTextColorClassName";
@@ -75,7 +75,7 @@ export function MegaphoneMatchField({ match }: Props) {
           {sentToSenderAt != null ? (
             <div className="flex flex-row items-center gap-2">
               <MegaphoneMatchMemberStatusSelect
-                value={senderStatus as MegaphoneMatchMemberStatus}
+                value={senderStatus!}
                 onChange={(status) => {
                   updateSenderStatus({ matchId, status });
                 }}
@@ -103,7 +103,7 @@ export function MegaphoneMatchField({ match }: Props) {
           {sentToReceiverAt != null ? (
             <div className="flex flex-row items-center gap-2">
               <MegaphoneMatchMemberStatusSelect
-                value={receiverStatus as MegaphoneMatchMemberStatus}
+                value={receiverStatus!}
                 onChange={(status) => {
                   updateReceiverStatus({ matchId, status });
                 }}

@@ -5,6 +5,7 @@ interface Props {
 export function Welcome({ onNext }: Props) {
   return (
     <div className="flex w-full flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/hello.jpg"
         alt="안녕하세요"

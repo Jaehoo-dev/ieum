@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { MATCHMAKER_URL } from "@ieum/constants";
 import { Gender } from "@ieum/prisma";
 
@@ -9,8 +8,6 @@ import { Layout } from "~/components/Layout";
 import { Spacing } from "~/components/Spacing";
 
 export function DemoEntryPage() {
-  const router = useRouter();
-
   return (
     <>
       <Head>

@@ -25,7 +25,7 @@ import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm } from "../../RegisterForm";
+import type { RegisterForm } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 import { Buttons } from "../Buttons";
 
@@ -63,7 +63,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
     sendMessage({
       content: `${phoneNumber} - 본인 설문 페이지 진입`,
     });
-  }, []);
+  }, [phoneNumber, sendMessage]);
 
   return (
     <div className="flex w-full flex-col gap-8 p-6">
@@ -213,7 +213,7 @@ export function SelfSurvey({ onBack, onNext }: Props) {
         <Controller
           control={control}
           name="workplace"
-          render={({ field: { onChange, value }, fieldState: { error } }) => {
+          render={({ field: { onChange, value } }) => {
             return (
               <TextInput
                 label="직장을 알려주세요."
@@ -880,6 +880,7 @@ function Image({ bucketPath, onRemove }: ImageProps) {
 
   return (
     <div key={bucketPath} className="relative">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className="w-full rounded-lg object-cover"
         src={publicUrl}
@@ -961,6 +962,7 @@ function Video({ bucketPath, onRemove }: ImageProps) {
 
   return (
     <div key={bucketPath} className="relative">
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video
         className="w-full rounded-lg object-cover"
         src={publicUrl}
@@ -1160,6 +1162,7 @@ function Audio({
 
   return (
     <div className="relative">
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio
         className="w-full rounded-lg object-cover"
         src={publicUrl}

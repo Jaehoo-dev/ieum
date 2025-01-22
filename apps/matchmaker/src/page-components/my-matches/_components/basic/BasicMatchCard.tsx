@@ -4,7 +4,7 @@ import type { BasicMatchV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { format } from "date-fns";
 
-import { Member } from "~/providers/MemberAuthProvider";
+import type { Member } from "~/providers/MemberAuthProvider";
 import { api } from "~/utils/api";
 import { calculateRemainingHours } from "../../_utils/calculateRemainingHours";
 import { getStatusLabel } from "../../_utils/getStatusLabel";

@@ -1,4 +1,5 @@
-import { ReactElement, useEffect } from "react";
+import type { ReactElement } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { IEUM_BLIND_HOME_URL } from "@ieum/constants";
 import { assert, formatUniqueMemberName } from "@ieum/utils";
@@ -20,7 +21,7 @@ export function BlindRegisterPage() {
         member,
       )} - 이음 블라인드 신청 페이지 진입`,
     });
-  }, []);
+  }, [member, sendMessage]);
 
   return (
     <>

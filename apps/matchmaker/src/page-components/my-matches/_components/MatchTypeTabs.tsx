@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { 매치_유형 } from "@ieum/constants";
 import { assert } from "@ieum/utils";
 import {

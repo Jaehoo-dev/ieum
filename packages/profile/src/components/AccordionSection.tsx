@@ -1,6 +1,7 @@
-import { ReactNode, useState } from "react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 
-import { Theme } from "../types";
+import type { Theme } from "../types";
 import { Chevron } from "./Chevron";
 
 interface Props {
@@ -24,6 +25,7 @@ export function AccordionSection({
         theme === "BLIND" ? "border-blind-500" : "border-primary-500"
       } p-4`}
     >
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div
         role="button"
         className="flex w-full items-center justify-between"

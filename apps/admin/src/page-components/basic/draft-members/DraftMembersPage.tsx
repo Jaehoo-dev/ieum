@@ -1,4 +1,5 @@
-import { ReactElement, Suspense } from "react";
+import type { ReactElement } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/router";
 import { Gender } from "@ieum/prisma";
 import { format } from "date-fns";

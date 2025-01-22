@@ -1,4 +1,4 @@
-import { FripReview } from "@ieum/prisma";
+import type { FripReview } from "@ieum/prisma";
 import { format } from "date-fns";
 
 import { Stars } from "./Stars";
