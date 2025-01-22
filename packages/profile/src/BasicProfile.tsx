@@ -1,10 +1,5 @@
-import {
-  ComponentPropsWithoutRef,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import type { ComponentPropsWithoutRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import type { MemberAudio, MemberImageV2, MemberVideoV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 
@@ -12,7 +7,7 @@ import { AccordionSection } from "./components/AccordionSection";
 import { DataField } from "./components/DataField";
 import { Watermarks } from "./components/Watermarks";
 import { useSuspenseSignedUrl } from "./hooks/useSuspenseSignedUrl";
-import { BasicMemberProfileWithMediaSources } from "./types";
+import type { BasicMemberProfileWithMediaSources } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
   profile: BasicMemberProfileWithMediaSources;
@@ -233,6 +228,7 @@ function AudioField({ bucketPath }: { bucketPath: string }) {
   });
 
   return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
     <audio
       className="w-full"
       src={signedUrl}
@@ -360,7 +356,7 @@ function ProtectedImageField({
     };
 
     img.src = signedUrl;
-  }, [signedUrl]);
+  }, [customWidth, signedUrl]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -387,7 +383,7 @@ function ProtectedImageField({
         ctx.restore();
       };
     }
-  }, [signedUrl, dimensions]);
+  }, [signedUrl, dimensions, nameWatermark, numberWatermark]);
 
   return <canvas ref={canvasRef} className="m-auto select-none rounded-lg" />;
 }

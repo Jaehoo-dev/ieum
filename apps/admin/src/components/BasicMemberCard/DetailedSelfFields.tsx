@@ -1,15 +1,11 @@
 import {
-  독서량_라벨,
   신분_라벨,
   쌍꺼풀_라벨,
   연간_벌이_라벨,
-  연락_빈도_라벨,
-  연락_수단_라벨,
   자산_라벨,
   종교_라벨,
   주간_운동량_라벨,
   지역_라벨,
-  체형_라벨,
   학력_라벨,
 } from "@ieum/constants";
 import type { BasicMemberV2 } from "@ieum/prisma";

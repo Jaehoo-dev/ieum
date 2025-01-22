@@ -23,7 +23,7 @@ import { Checkbox } from "~/components/Checkbox";
 import { Select } from "~/components/Select";
 import { TextareaInput } from "~/components/TextareaInput";
 import { TextInput } from "~/components/TextInput";
-import { BasicMemberForm } from "../../members/BasicMemberForm";
+import type { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function SelfFields() {
   const {

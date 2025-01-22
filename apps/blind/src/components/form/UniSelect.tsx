@@ -3,10 +3,10 @@ import { isEmptyStringOrNil } from "@ieum/utils";
 
 interface Props<T extends string | number | boolean = string> {
   label: string;
-  options: Array<{
+  options: {
     label: string;
     value: T | null;
-  }>;
+  }[];
   value: T | null | undefined;
   onChange: (value: T | null) => void;
   required?: boolean;
@@ -59,8 +59,9 @@ export function UniSelect<T extends string | number | boolean = string>({
             : "grid-cols-1"
         }`}
       >
-        {options.map((option) => {
+        {options.map((option, index) => {
           return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div
               role="radio"
               key={String(option.value)}
@@ -78,6 +79,8 @@ export function UniSelect<T extends string | number | boolean = string>({
 
                 onChange(option.value);
               }}
+              tabIndex={index}
+              aria-checked={value == option.value}
             >
               {option.label}
             </div>

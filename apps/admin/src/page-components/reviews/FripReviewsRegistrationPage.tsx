@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { FripRating } from "@ieum/prisma";
 import { Controller, useForm } from "react-hook-form";
 

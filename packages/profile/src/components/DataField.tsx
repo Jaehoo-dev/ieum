@@ -1,6 +1,6 @@
 import VerifiedIcon from "@mui/icons-material/Verified";
 
-import { Theme } from "../types";
+import type { Theme } from "../types";
 
 interface Props {
   label: string;

@@ -2,10 +2,10 @@ import { isEmptyStringOrNil } from "@ieum/utils";
 
 interface Props<T extends string | number = string> {
   label: string;
-  options: Array<{
+  options: {
     label: string;
     value: T;
-  }>;
+  }[];
   selectedValues: T[];
   onChange: (value: T[]) => void;
   required?: boolean;
@@ -60,8 +60,9 @@ export function MultiSelect<T extends string | number = string>({
             : "grid-cols-1"
         }`}
       >
-        {options.map(({ label, value }) => {
+        {options.map(({ label, value }, index) => {
           return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div
               role="checkbox"
               key={String(value)}
@@ -83,6 +84,8 @@ export function MultiSelect<T extends string | number = string>({
 
                 onChange(newValue);
               }}
+              tabIndex={index}
+              aria-checked={selectedValues.includes(value)}
             >
               {label}
             </div>

@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { MATCHMAKER_URL } from "@ieum/constants";
 import { isEmptyStringOrNil } from "@ieum/utils";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -24,12 +24,12 @@ https://ieum.love/faq`;
 interface Form {
   subject: string;
   text: string;
-  targets: Array<{
+  targets: {
     value: {
       name: string;
       phoneNumber: string; // "01012345678"
     };
-  }>;
+  }[];
 }
 
 export function MessagingPage() {

@@ -12,7 +12,7 @@ export function Home() {
     sendMessage({
       content: "이음 블라인드 홈 진입",
     });
-  }, []);
+  }, [sendMessage]);
 
   return (
     <>
@@ -32,6 +32,7 @@ export function Home() {
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
         <div className="relative h-2/5 w-full md:h-full md:w-2/3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/heart.webp"
             width={1920}

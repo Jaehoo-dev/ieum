@@ -1,4 +1,5 @@
-import { ReactElement, Suspense, useEffect } from "react";
+import type { ReactElement } from "react";
+import { Suspense, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { HOMEPAGE_URL } from "@ieum/constants";
@@ -56,10 +57,10 @@ function Resolved() {
     sendMessage({
       content: `${formatUniqueMemberName(member)} - 내 추천인 코드 페이지 진입`,
     });
-  }, [member.name]);
+  }, [member, member.name, sendMessage]);
 
   return (
-    <div
+    <button
       className="flex w-full cursor-pointer flex-row items-center justify-between px-4 py-3"
       onClick={async () => {
         sendMessage({
@@ -71,7 +72,7 @@ function Resolved() {
     >
       <p className="text-lg font-semibold text-gray-800">{referralCode}</p>
       <Copy />
-    </div>
+    </button>
   );
 }
 

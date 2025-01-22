@@ -1,4 +1,5 @@
-import { ReactElement, useEffect, useState } from "react";
+import type { ReactElement } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FRIP_PRODUCT_URL, PRODUCT_URL } from "@ieum/constants";
 import { match } from "ts-pattern";
@@ -27,7 +28,7 @@ export function RegisterDemoPage() {
       channel: "알림",
       content: `설문 데모 페이지 진입 from: ${from}`,
     });
-  }, [router.query.from]);
+  }, [router.query.from, sendMessage]);
 
   return match(step)
     .with("환영 및 안내", () => {

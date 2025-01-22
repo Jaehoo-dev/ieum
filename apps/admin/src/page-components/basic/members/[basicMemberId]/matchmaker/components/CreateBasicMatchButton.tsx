@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 import { MatchStatus } from "@ieum/prisma";
 import { match } from "ts-pattern";
 
@@ -39,7 +39,7 @@ export function CreateBasicMatchButton({
           initialStatus: targetStatus,
         });
       }}
-      disabled={disabled || isPending}
+      disabled={disabled ?? isPending}
       {...props}
     >
       {match(targetStatus)

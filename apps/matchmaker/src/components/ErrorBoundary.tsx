@@ -1,4 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import type { ErrorInfo, ReactNode } from "react";
+import React, { Component } from "react";
 import { sendSlackMessage, SLACK_MANAGER1_ID_MENTION } from "@ieum/slack";
 
 interface ErrorBoundaryProps {
@@ -18,7 +19,7 @@ export class ErrorBoundary extends Component<
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
   }
 

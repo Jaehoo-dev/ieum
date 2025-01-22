@@ -29,7 +29,7 @@ export function AuthGuard({ children }: Props) {
       signOut();
       router.push("/register");
     }
-  }, [loading, registered, router, signOut]);
+  }, [loading, loggedIn, registered, router, signOut]);
 
   if (loading || member == null) {
     return null;

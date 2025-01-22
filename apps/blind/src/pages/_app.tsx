@@ -8,7 +8,8 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
-import { Session, SessionProvider } from "@ieum/blind-auth";
+import type { Session } from "@ieum/blind-auth";
+import { SessionProvider } from "@ieum/blind-auth";
 import { blind500 } from "@ieum/constants";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";

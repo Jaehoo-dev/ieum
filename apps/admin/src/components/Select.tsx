@@ -1,4 +1,5 @@
-import { forwardRef, Ref, type InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
+import { forwardRef } from "react";
 import { nanoid } from "nanoid/non-secure";
 
 interface Props extends InputHTMLAttributes<HTMLSelectElement> {

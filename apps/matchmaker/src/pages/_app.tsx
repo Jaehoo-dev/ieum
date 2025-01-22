@@ -2,7 +2,8 @@ import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Session, SessionProvider } from "@ieum/matchmaker-auth";
+import type { Session } from "@ieum/matchmaker-auth";
+import { SessionProvider } from "@ieum/matchmaker-auth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 import { api } from "~/utils/api";

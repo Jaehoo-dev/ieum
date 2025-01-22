@@ -117,14 +117,11 @@ export const draftBasicMemberRouter = createTRPCRouter({
       }
 
       const {
-        id,
-        marriageStatus,
         images,
         videos,
         audios,
         idealMinAgeBirthYear,
         idealMaxAgeBirthYear,
-        idealRegions,
         idealRegionsV2,
         idealMinHeight,
         idealMaxHeight,

@@ -38,6 +38,7 @@ export function Home() {
       </Head>
       <div className="flex h-screen w-screen flex-col md:flex-row">
         <div className="relative h-2/5 w-full md:h-full md:w-2/3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/heart.webp"
             width={1920}
@@ -110,13 +111,13 @@ function Registered() {
         navigator.userAgent
       }`,
     });
-  }, [member]);
+  }, [member, sendMessage]);
 
   useEffect(() => {
     if (status === MemberStatus.INACTIVE) {
       router.push("/settings");
     }
-  }, []);
+  }, [router, status]);
 
   return (
     <div className="flex w-full flex-col items-center gap-2.5 pb-20 md:gap-3">

@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
+import type { ReactNode } from "react";
 import Head from "next/head";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 

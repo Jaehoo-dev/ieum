@@ -4,10 +4,9 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { 베이직_조건_라벨 } from "@ieum/constants";
 import { BasicCondition } from "@ieum/prisma";
-import { assert } from "@ieum/utils";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { BasicMemberForm } from "../../members/BasicMemberForm";
+import type { BasicMemberForm } from "../../members/BasicMemberForm";
 
 const 우선순위 = {
   필수: "DEAL_BREAKER",
@@ -20,10 +19,7 @@ const 우선순위 = {
 type 우선순위 = (typeof 우선순위)[keyof typeof 우선순위];
 
 export function ConditionPrioritiesField() {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<BasicMemberForm>();
+  const { control } = useFormContext<BasicMemberForm>();
   const {
     fields: dealBreakerFields,
     append: appendDealBreaker,

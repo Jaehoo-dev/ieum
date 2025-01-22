@@ -1,4 +1,5 @@
-import { ReactElement, Suspense } from "react";
+import type { ReactElement } from "react";
+import { Suspense } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";

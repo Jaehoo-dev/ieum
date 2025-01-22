@@ -1,4 +1,4 @@
-import { MemberImageV2 } from "@ieum/prisma";
+import type { MemberImageV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
 import { HoverCardArrow } from "@radix-ui/react-hover-card";
@@ -43,5 +43,6 @@ function PreviewImage({ image }: { image: MemberImageV2 }) {
     .from(process.env.NEXT_PUBLIC_SUPABASE_BASIC_MEMBER_IMAGES_BUCKET_NAME!)
     .getPublicUrl(image.bucketPath);
 
+  // eslint-disable-next-line @next/next/no-img-element
   return <img src={publicUrl} alt="미리보기 사진" loading="lazy" />;
 }

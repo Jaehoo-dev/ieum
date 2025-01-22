@@ -5,7 +5,8 @@ import { TextareaInput } from "~/components/form/TextareaInput";
 import { TextInput } from "~/components/form/TextInput";
 import { UniSelect } from "~/components/form/UniSelect";
 import { useSlackNotibot } from "~/hooks/useSlackNotibot";
-import { RegisterForm, registerFormId } from "../../RegisterForm";
+import type { RegisterForm } from "../../RegisterForm";
+import { registerFormId } from "../../RegisterForm";
 import { BackTextButton } from "../BackTextButton";
 
 interface Props {
@@ -27,7 +28,7 @@ export function WrapUp({ onBack }: Props) {
     sendMessage({
       content: `${phoneNumber} - 회원가입 마무리 페이지 진입`,
     });
-  }, []);
+  }, [phoneNumber, sendMessage]);
 
   return (
     <div className="flex w-full flex-col gap-6 p-6">

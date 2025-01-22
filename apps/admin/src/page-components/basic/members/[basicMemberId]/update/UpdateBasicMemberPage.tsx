@@ -1,17 +1,18 @@
-import { ReactElement, Suspense, useState } from "react";
+import type { ReactElement } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/router";
 import { assert, calculateBmi } from "@ieum/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
-import { BasicMemberWithBasicMatchesJoined } from "~/domains/basic/types";
+import type { BasicMemberWithBasicMatchesJoined } from "~/domains/basic/types";
 import { ConditionPrioritiesField } from "~/page-components/basic/components/form/ConditionPrioritiesField";
 import { IdealTypeFields } from "~/page-components/basic/components/form/IdealTypeFields";
 import { MemoField } from "~/page-components/basic/components/form/MemoField";
 import { ReferrerCodeField } from "~/page-components/basic/components/form/ReferrerCodeField";
 import { SelfFields } from "~/page-components/basic/components/form/SelfFields";
 import { api } from "~/utils/api";
-import { BasicMemberForm } from "../../BasicMemberForm";
+import type { BasicMemberForm } from "../../BasicMemberForm";
 import { AudiosField } from "./components/AudiosField";
 import { ImagesField } from "./components/ImagesField";
 import { ReferralsField } from "./components/ReferralsField";

@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { Layout } from "~/components/Layout";
@@ -6,12 +6,12 @@ import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
 
 interface Form {
-  targets: Array<{
+  targets: {
     value: {
       name: string;
       phoneNumber: string; // "01012345678"
     };
-  }>;
+  }[];
 }
 
 export function AlimtalkPage() {

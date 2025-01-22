@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { KAKAOTALK_CHANNEL_CHAT_URL, WORLDCUP_URL } from "@ieum/constants";
@@ -105,6 +105,10 @@ function MenuItem({ label, href, target, onClick, ...props }: MenuItemProps) {
 
 function Overlay({ onClick }: { onClick: () => void }) {
   return (
-    <div className="fixed inset-0 z-40 bg-black opacity-50" onClick={onClick} />
+    <div
+      role="presentation"
+      className="fixed inset-0 z-40 bg-black opacity-50"
+      onClick={onClick}
+    />
   );
 }

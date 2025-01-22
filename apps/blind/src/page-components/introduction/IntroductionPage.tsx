@@ -1,4 +1,5 @@
-import { ReactElement, ReactNode, useEffect } from "react";
+import type { ReactElement, ReactNode } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import VerifiedIcon from "@mui/icons-material/Verified";
 
@@ -13,7 +14,7 @@ export function IntroductionPage() {
     sendMessage({
       content: "이음 블라인드 안내 페이지 진입",
     });
-  }, []);
+  }, [sendMessage]);
 
   return (
     <>

@@ -4,7 +4,8 @@ import type { AppProps, AppType } from "next/app";
 
 import "~/styles/globals.css";
 
-import { Session, SessionProvider } from "@ieum/admin-auth";
+import type { Session } from "@ieum/admin-auth";
+import { SessionProvider } from "@ieum/admin-auth";
 
 import { AuthGuard } from "~/components/AuthGuard";
 import { api } from "~/utils/api";

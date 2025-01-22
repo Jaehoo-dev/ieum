@@ -1,5 +1,5 @@
-import { ImgHTMLAttributes } from "react";
-import { MemberImageV2 } from "@ieum/prisma";
+import type { ImgHTMLAttributes } from "react";
+import type { MemberImageV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 
 interface Props extends ImgHTMLAttributes<HTMLImageElement> {
@@ -14,6 +14,7 @@ export function Avatar({ image, ...props }: Props) {
     .getPublicUrl(image.bucketPath);
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={publicUrl}
       alt="프로필 사진"

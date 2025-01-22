@@ -1,4 +1,5 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import type { ReactElement } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "@ieum/blind-auth";
 import { assert } from "@ieum/utils";

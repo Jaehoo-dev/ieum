@@ -34,7 +34,7 @@ function Resolved() {
     void sendMessage({
       content: `${formatUniqueMemberName(member)} - 내 프로필 페이지 진입`,
     });
-  }, [member.name, sendMessage]);
+  }, [member, member.name, sendMessage]);
 
   const [profile] =
     api.basicMemberProfileRouter.getProfileByMemberId.useSuspenseQuery({

@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 import { MatchStatus } from "@ieum/prisma";
 import CampaignRoundedIcon from "@mui/icons-material/CampaignRounded";
 
@@ -42,7 +42,7 @@ export function CreateMegaphoneButton({
           initialStatus: targetStatus,
         });
       }}
-      disabled={disabled || isPending}
+      disabled={disabled ?? isPending}
       {...props}
     >
       <CampaignRoundedIcon fontSize="small" />

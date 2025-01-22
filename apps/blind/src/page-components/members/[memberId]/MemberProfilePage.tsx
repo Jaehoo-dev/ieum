@@ -1,10 +1,5 @@
-import {
-  ComponentPropsWithoutRef,
-  ReactElement,
-  Suspense,
-  useEffect,
-  useState,
-} from "react";
+import type { ComponentPropsWithoutRef, ReactElement } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";

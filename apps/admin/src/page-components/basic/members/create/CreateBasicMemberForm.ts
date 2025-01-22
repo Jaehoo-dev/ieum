@@ -8,7 +8,7 @@ import {
   Religion,
 } from "@ieum/prisma";
 
-import { BasicMemberForm } from "../BasicMemberForm";
+import type { BasicMemberForm } from "../BasicMemberForm";
 
 export const createBasicMemberFormDefaultValues: BasicMemberForm = {
   self: {

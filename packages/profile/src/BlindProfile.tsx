@@ -1,9 +1,10 @@
-import { ComponentPropsWithoutRef, useEffect } from "react";
+import type { ComponentPropsWithoutRef } from "react";
+import { useEffect } from "react";
 import { 성별_라벨, 지역_라벨 } from "@ieum/constants";
 
 import { AccordionSection } from "./components/AccordionSection";
 import { DataField } from "./components/DataField";
-import { BlindMemberProfile } from "./types";
+import type { BlindMemberProfile } from "./types";
 
 interface Props extends ComponentPropsWithoutRef<"div"> {
   profile: BlindMemberProfile;

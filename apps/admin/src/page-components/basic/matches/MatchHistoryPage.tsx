@@ -1,4 +1,5 @@
-import { useEffect, type ReactElement } from "react";
+import { useEffect } from "react";
+import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { 매치_유형, 상태_라벨, 지역_쿼리 } from "@ieum/constants";
 import { MatchStatus } from "@ieum/prisma";
@@ -60,7 +61,7 @@ export function MatchHistoryPage() {
         },
       });
     }
-  }, [router.query.statuses]);
+  }, [router, router.query.statuses]);
 
   const { control, getValues, register, handleSubmit } = useForm<Form>({
     defaultValues: {

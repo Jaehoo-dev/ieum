@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { Gender, RegionV2 } from "@ieum/prisma";
+import type { Gender, RegionV2 } from "@ieum/prisma";
 import { assert } from "@ieum/utils";
 import { useForm } from "react-hook-form";
 
-type RegisterForm = {
+interface RegisterForm {
   nickname: string;
   gender: Gender | null;
   birthYear: number | null;
@@ -13,7 +13,7 @@ type RegisterForm = {
   job: string;
   selfIntroduction: string;
   personalInfoConsent: boolean | null;
-};
+}
 
 const defaultRegisterForm: RegisterForm = {
   nickname: "",
@@ -58,7 +58,7 @@ export function useRegisterForm() {
         form.setValue(field as keyof RegisterForm, parsedValues[field]);
       });
     }
-  }, [STORAGE_KEY, form.setValue]);
+  }, [form]);
 
   useEffect(() => {
     const subscription = form.watch((values) => {
@@ -70,7 +70,7 @@ export function useRegisterForm() {
     });
 
     return () => subscription.unsubscribe();
-  }, [STORAGE_KEY, form.watch]);
+  }, [form]);
 
   return {
     clearCache: () => {

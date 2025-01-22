@@ -85,6 +85,7 @@ export function ChatUrlFormFormDialog({
               })}
               error={errors.value != null}
               errorText={errors.value?.message}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={true}
               right={
                 <button

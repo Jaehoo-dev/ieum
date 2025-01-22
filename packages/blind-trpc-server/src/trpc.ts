@@ -7,10 +7,11 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import { getServerAuthSession, Session } from "@ieum/blind-auth";
+import type { Session } from "@ieum/blind-auth";
+import { getServerAuthSession } from "@ieum/blind-auth";
 import { prisma, UserType } from "@ieum/prisma";
 import { initTRPC, TRPCError } from "@trpc/server";
-import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 

@@ -1,4 +1,5 @@
-import { Suspense, type ReactElement } from "react";
+import { Suspense } from "react";
+import type { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { 매치_유형, 지역_쿼리 } from "@ieum/constants";
 import { Gender, MemberStatus } from "@ieum/prisma";

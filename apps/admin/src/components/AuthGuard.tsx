@@ -1,4 +1,5 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect } from "react";
+import type { ReactNode } from "react";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "@ieum/admin-auth";
 import { UserType } from "@ieum/prisma";
@@ -22,7 +23,7 @@ export function AuthGuard({ children }: Props) {
       signOut();
       router.push("/login");
     }
-  }, [status, session?.user.type]);
+  }, [status, session?.user.type, router]);
 
   return match(status)
     .with("loading", () => null)

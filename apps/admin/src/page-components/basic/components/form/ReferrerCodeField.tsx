@@ -4,7 +4,7 @@ import { useDebounce } from "use-debounce";
 
 import { TextInput } from "~/components/TextInput";
 import { api } from "~/utils/api";
-import { BasicMemberForm } from "../../members/BasicMemberForm";
+import type { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function ReferrerCodeField() {
   const {

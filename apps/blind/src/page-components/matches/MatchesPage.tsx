@@ -1,4 +1,5 @@
-import { ComponentPropsWithoutRef, ReactElement, Suspense } from "react";
+import type { ComponentPropsWithoutRef, ReactElement } from "react";
+import { Suspense } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { assert } from "@ieum/utils";

@@ -2,7 +2,7 @@ import { isEmptyStringOrNil } from "@ieum/utils";
 import { useFormContext } from "react-hook-form";
 
 import { TextareaInput } from "~/components/TextareaInput";
-import { BasicMemberForm } from "../../members/BasicMemberForm";
+import type { BasicMemberForm } from "../../members/BasicMemberForm";
 
 export function MemoField() {
   const {

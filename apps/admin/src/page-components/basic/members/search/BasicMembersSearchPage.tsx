@@ -23,12 +23,11 @@ export function BasicMembersSearchPage() {
     { enabled: !isEmptyStringOrNil(nameQuery) },
   );
   const utils = api.useUtils();
-  const { mutateAsync: activate, isPending: isActivating } =
-    api.basicMemberRouter.activate.useMutation({
-      onSuccess: () => {
-        return utils.basicMemberRouter.invalidate();
-      },
-    });
+  const { mutateAsync: activate } = api.basicMemberRouter.activate.useMutation({
+    onSuccess: () => {
+      return utils.basicMemberRouter.invalidate();
+    },
+  });
   const { mutateAsync: inactivate, isPending: isInactivating } =
     api.basicMemberRouter.inactivate.useMutation({
       onSuccess: () => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BasicMemberV2, MemberVideoV2 } from "@ieum/prisma";
+import type { BasicMemberV2, MemberVideoV2 } from "@ieum/prisma";
 import { supabase } from "@ieum/supabase";
 import { assert } from "@ieum/utils";
 import { nanoid } from "nanoid";
