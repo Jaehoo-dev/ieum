@@ -12,18 +12,18 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@ieum/matchmaker-trpc-server": "*",
     "@ieum/prisma": "*",
-    "@mui/icons-material": "^5.16.7",
-    "@mui/material": "^5.16.7",
+    "@mui/icons-material": "^6.0.2",
+    "@mui/material": "^6.0.2",
     "@t3-oss/env-nextjs": "^0.7.1",
     "date-fns": "^3.6.0",
     "next": "^14.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "ts-pattern": "^5.4.0",
+    "ts-pattern": "^5.1.1",
     "zod": "^3.22.2"
   },
   "devDependencies": {

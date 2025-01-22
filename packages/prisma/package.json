@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
-    "ts-pattern": "^5.2.0"
+    "ts-pattern": "^5.1.1"
   },
   "devDependencies": {
     "prisma": "^5.22.0",

@@ -34,7 +34,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
-    "lucide-react": "^0.446.0",
+    "lucide-react": "^0.439.0",
     "nanoid": "^5.0.7",
     "next": "^14.0.0",
     "react": "18.2.0",

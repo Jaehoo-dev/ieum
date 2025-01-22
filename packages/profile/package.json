@@ -17,8 +17,7 @@
     "@ieum/prisma": "*",
     "@ieum/supabase": "*",
     "@ieum/utils": "*",
-    "@mui/material": "^6.1.2",
-    "@tanstack/react-query": "^5.25.0",
+    "@mui/material": "^6.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -27,6 +26,7 @@
     "@acme/prettier-config": "^0.1.0",
     "@acme/tailwind-config": "^0.1.0",
     "@acme/tsconfig": "^0.1.0",
+    "@tanstack/react-query": "^5.25.0",
     "@types/node": "^18.18.7",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
