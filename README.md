@@ -23,13 +23,15 @@ packages
   |   └─ blind가 사용하는 trpc server
   ├─ constants
   ├─ matchmaker-trpc-server
-  |   └─ matchmaker가 사용하는 trpc server
+  |   └─ matchmaker와 reviews가 사용하는 trpc server
   ├─ prisma
   ├─ profile
   |   └─ admin과 blind, matchmaker가 사용하는 프로필 컴포넌트
   ├─ slack
   ├─ solapi
+  |   └─ 메시징 서비스 인스턴스
   ├─ supabase
+  |   └─ Supabase 클라이언트 인스턴스
   └─ utils
 tooling
   ├─ eslint
